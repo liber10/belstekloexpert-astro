@@ -1,0 +1,105 @@
+---
+interface Props {
+  title?: string;
+  service?: string;
+}
+
+const { title = 'Отправить VIN или фото повреждения', service = 'VIN/фото' } = Astro.props;
+---
+
+<div class="form-panel" id="vin-form">
+  <div>
+    <p class="section__eyebrow">VIN / фото</p>
+    <h2>{title}</h2>
+    <p>
+      По VIN быстрее подобрать стекло, а по фото проще понять ремонтопригодность
+      скола или трещины.
+    </p>
+  </div>
+
+  <form
+    class="lead-form"
+    action="/api/lead/"
+    method="post"
+    enctype="multipart/form-data"
+    data-lead-form
+    data-submit-event="vin_submit"
+  >
+    <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
+    <input type="hidden" name="service" value={service} />
+    <input type="hidden" name="page_url" data-page-url />
+    <input type="hidden" name="utm_source" data-utm-field />
+    <input type="hidden" name="utm_medium" data-utm-field />
+    <input type="hidden" name="utm_campaign" data-utm-field />
+    <input type="hidden" name="utm_content" data-utm-field />
+    <input type="hidden" name="utm_term" data-utm-field />
+
+    <div class="lead-form__row">
+      <label class="field">
+        <span>Телефон</span>
+        <input name="phone" inputmode="tel" autocomplete="tel" placeholder="+375 ..." required />
+      </label>
+      <label class="field">
+        <span>Способ связи</span>
+        <select name="contact_method">
+          <option>Звонок</option>
+          <option>Telegram</option>
+          <option>Viber</option>
+          <option>WhatsApp</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="lead-form__row">
+      <label class="field">
+        <span>Марка</span>
+        <input name="make" placeholder="Volkswagen" />
+      </label>
+      <label class="field">
+        <span>Модель</span>
+        <input name="model" placeholder="Passat" />
+      </label>
+    </div>
+
+    <div class="lead-form__row">
+      <label class="field">
+        <span>Год</span>
+        <input name="year" inputmode="numeric" placeholder="2018" />
+      </label>
+      <label class="field">
+        <span>Тип стекла</span>
+        <select name="glass_type">
+          <option>Лобовое</option>
+          <option>Боковое</option>
+          <option>Заднее</option>
+          <option>Скол или трещина</option>
+          <option>Не знаю</option>
+        </select>
+      </label>
+    </div>
+
+    <label class="field">
+      <span>VIN</span>
+      <input name="vin" autocomplete="off" placeholder="Можно оставить пустым" />
+    </label>
+
+    <label class="field field--file">
+      <span>Фото повреждения</span>
+      <input
+        name="photos"
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+        multiple
+      />
+      <small>До 5 фото, до 10 МБ каждое. JPG, PNG, WebP, HEIC.</small>
+    </label>
+
+    <label class="field">
+      <span>Комментарий</span>
+      <textarea name="comment" placeholder="Опишите повреждение или удобное время"></textarea>
+    </label>
+
+    <p class="form-status" data-form-status aria-live="polite"></p>
+    <button class="button button--primary" type="submit">Отправить на расчёт</button>
+  </form>
+</div>

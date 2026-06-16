@@ -1,0 +1,25 @@
+---
+import SectionTitle from '@/components/common/SectionTitle.astro';
+import { prices } from '@/data/prices';
+---
+
+<section class="section" id="services">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Услуги"
+      title="Закрываем срочные задачи со стеклом без лишних кругов"
+      lead="От скола после трассы до полной замены стекла с датчиками и камерой. Сначала уточняем комплектацию, потом называем стоимость."
+    />
+    <div class="grid service-grid">
+      {prices.map((item) => (
+        <a class="card service-card" href={item.url}>
+          <div>
+            <h3>{item.title}</h3>
+            <p>Подбор, согласование цены, запись на удобное время и рекомендации после работы.</p>
+          </div>
+          <div class="price-line">от {item.priceFrom} {item.unit}</div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

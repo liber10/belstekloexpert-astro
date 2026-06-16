@@ -1,0 +1,27 @@
+---
+import Button from '@/components/common/Button.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { contacts } from '@/data/contacts';
+import { site } from '@/data/site';
+---
+
+<BaseLayout
+  title="Спасибо за заявку — BelStekloExpert"
+  description="Заявка принята. Обычно отвечаем за 5–10 минут в рабочее время."
+  canonical={`${site.domain}/spasibo/`}
+  noindex
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Заявка принята</p>
+      <h1 class="section__title">Спасибо. Обычно отвечаем за 5–10 минут</h1>
+      <p class="section__lead">
+        Если вопрос срочный, можно позвонить мастеру напрямую.
+      </p>
+      <div class="cta-row">
+        <Button href={contacts.phoneHref} dataEvent="phone_click">Позвонить</Button>
+        <Button href="/" variant="quiet">На главную</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import Button from '@/components/common/Button.astro';
+import SectionTitle from '@/components/common/SectionTitle.astro';
+import { prices, priceNote } from '@/data/prices';
+---
+
+<section class="section section--soft" id="prices">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Цены"
+      title="Стартовые цены для ориентира"
+      lead={priceNote}
+    />
+    <div class="grid price-grid">
+      {prices.map((item) => (
+        <a class="card price-card" href={item.url}>
+          <h3>{item.title}</h3>
+          <p>от {item.priceFrom} {item.unit}</p>
+        </a>
+      ))}
+    </div>
+    <div class="cta-row">
+      <Button href="/ceny/">Смотреть цены</Button>
+      <Button href="#vin-form" variant="quiet">Уточнить по VIN</Button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ServiceLayout from '@/layouts/ServiceLayout.astro';
+import { breadcrumbSchema, faqPageSchema, serviceSchema } from '@/lib/schema';
+import { site } from '@/data/site';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.data.pageSlug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+const path = `/${service.data.pageSlug}/`;
+const canonical = `${site.domain}${path}`;
+const schema = [
+  breadcrumbSchema([
+    { name: 'Главная', url: `${site.domain}/` },
+    { name: 'Услуги', url: `${site.domain}/#services` },
+    { name: service.data.title, url: canonical },
+  ]),
+  serviceSchema({
+    name: service.data.title,
+    description: service.data.metaDescription,
+    url: canonical,
+    priceFrom: service.data.priceFrom,
+  }),
+  ...(service.data.faq.length ? [faqPageSchema(service.data.faq)] : []),
+];
+---
+
+<BaseLayout
+  title={service.data.metaTitle}
+  description={service.data.metaDescription}
+  canonical={canonical}
+  schema={schema}
+>
+  <ServiceLayout service={service.data}>
+    <Content />
+  </ServiceLayout>
+</BaseLayout>

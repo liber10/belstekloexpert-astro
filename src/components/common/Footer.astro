@@ -1,0 +1,55 @@
+---
+import MessengerButtons from '@/components/common/MessengerButtons.astro';
+import { businessHours } from '@/data/business-hours';
+import { contacts } from '@/data/contacts';
+import { serviceNavigation } from '@/data/navigation';
+import { site } from '@/data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <h2>{site.name}</h2>
+        <p>
+          Замена и ремонт автостёкол в Минске: подбор по VIN, работа со сколами,
+          трещинами, боковыми и задними стёклами.
+        </p>
+        <MessengerButtons compact />
+      </div>
+
+      <div>
+        <h3>Услуги</h3>
+        <ul>
+          {serviceNavigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h3>Контакты</h3>
+        <ul>
+          <li>{contacts.address}</li>
+          <li><a href={contacts.phoneHref}>{contacts.phone}</a></li>
+          <li>{businessHours.short}</li>
+          <li>{businessHours.note}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Карты</h3>
+        <ul>
+          <li><a href={contacts.yandexMaps} data-event="route_click">Яндекс Карты</a></li>
+          <li><a href={contacts.googleMaps} data-event="route_click">Google Maps</a></li>
+          <li><a href="/kontakty/">Схема проезда</a></li>
+          <li><a href="/privacy/">Политика обработки данных</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      © {year} {site.legalName}. Все права защищены.
+    </div>
+  </div>
+</footer>

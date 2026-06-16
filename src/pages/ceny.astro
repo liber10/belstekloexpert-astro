@@ -1,0 +1,37 @@
+---
+import Button from '@/components/common/Button.astro';
+import LeadForm from '@/components/forms/LeadForm.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { priceNote, prices } from '@/data/prices';
+import { site } from '@/data/site';
+---
+
+<BaseLayout
+  title="Цены на замену и ремонт автостёкол в Минске — BelStekloExpert"
+  description="Стартовые цены на замену лобового, бокового и заднего стекла, ремонт сколов и трещин, выезд по Минску."
+  canonical={`${site.domain}/ceny/`}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Цены</p>
+      <h1 class="section__title">Стартовые цены на автостёкла</h1>
+      <p class="section__lead">{priceNote}</p>
+      <div class="grid price-grid">
+        {prices.map((item) => (
+          <a class="card price-card" href={item.url}>
+            <h3>{item.title}</h3>
+            <p>от {item.priceFrom} {item.unit}</p>
+          </a>
+        ))}
+      </div>
+      <div class="cta-row">
+        <Button href="/#vin-form">Уточнить по VIN</Button>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <LeadForm service="Цены" />
+    </div>
+  </section>
+</BaseLayout>

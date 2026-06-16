@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+
+const toPostSlug = (id: string) => id.replace(/\.md$/, '');
+---
+
+<BaseLayout
+  title="Блог BelStekloExpert — автостёкла, сколы и трещины"
+  description="Материалы о замене и ремонте автостёкол, сколах, трещинах, датчиках и уходе после установки."
+  canonical={`${site.domain}/blog/`}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Блог</p>
+      <h1 class="section__title">Полезные материалы об автостёклах</h1>
+      <p class="section__lead">
+        Раздел подготовлен под статьи о сколах, трещинах, датчиках, выборе стекла и уходе после замены.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid service-grid">
+      {posts.map((post) => (
+        <a class="card service-card" href={`/blog/${toPostSlug(post.id)}/`}>
+          <div>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.description}</p>
+          </div>
+          <div class="price-line">{post.data.pubDate.toLocaleDateString('ru-RU')}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

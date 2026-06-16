@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+
+const cases = await getCollection('cases');
+const rendered = await Promise.all(
+  cases.map(async (item) => ({
+    item,
+    Content: (await render(item)).Content,
+  })),
+);
+---
+
+<BaseLayout
+  title="Кейсы BelStekloExpert — замена и ремонт автостёкол"
+  description="Примеры типовых работ BelStekloExpert: замена лобового стекла, ремонт скола, боковое стекло и коммерческий транспорт."
+  canonical={`${site.domain}/kejsy/`}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Кейсы</p>
+      <h1 class="section__title">Примеры работ</h1>
+      <p class="section__lead">
+        Стартовый набор сценариев. После съёмки сервиса сюда можно добавить реальные фото до и после.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid case-grid">
+      {rendered.map(({ item, Content }) => (
+        <article class="card case-card">
+          <h3>{item.data.title}</h3>
+          <p>{item.data.service} · {item.data.duration} · {item.data.price}</p>
+          <Content />
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

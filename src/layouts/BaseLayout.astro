@@ -1,0 +1,182 @@
+---
+import Footer from '@/components/common/Footer.astro';
+import Header from '@/components/common/Header.astro';
+import StickyCallBar from '@/components/common/StickyCallBar.astro';
+import { autoRepairSchema, organizationSchema } from '@/lib/schema';
+import { site } from '@/data/site';
+import '@/styles/global.css';
+
+type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+  schema?: JsonLd;
+}
+
+const {
+  title = site.defaultTitle,
+  description = site.defaultDescription,
+  canonical = `${site.domain}${Astro.url.pathname}`,
+  image = '/images/hero-autoglass.png',
+  noindex = false,
+  schema,
+} = Astro.props;
+
+const absoluteImage = image.startsWith('http') ? image : `${site.domain}${image}`;
+const gtmId = import.meta.env.PUBLIC_GTM_ID;
+const ga4Id = import.meta.env.PUBLIC_GA4_ID;
+const ymId = import.meta.env.PUBLIC_YANDEX_METRIKA_ID;
+const baseSchema = [organizationSchema(), autoRepairSchema()];
+const schemas = Array.isArray(schema) ? [...baseSchema, ...schema] : schema ? [...baseSchema, schema] : baseSchema;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absoluteImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0d5f56" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {gtmId && (
+      <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${gtmId}');`} />
+    )}
+
+    {ga4Id && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
+        <script is:inline set:html={`window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','${ga4Id}');`} />
+      </>
+    )}
+
+    {ymId && (
+      <script is:inline set:html={`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();
+for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');
+ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});`} />
+    )}
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schemas)} />
+  </head>
+  <body>
+    {gtmId && (
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+        >
+        </iframe>
+      </noscript>
+    )}
+
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <StickyCallBar />
+
+    <script is:inline>
+      (() => {
+        const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+        const storageKey = 'belstekloexpert_utm';
+        const params = new URLSearchParams(window.location.search);
+        let saved = {};
+
+        try {
+          saved = JSON.parse(window.localStorage.getItem(storageKey) || '{}');
+        } catch {
+          saved = {};
+        }
+
+        const next = { ...saved };
+        utmKeys.forEach((key) => {
+          const value = params.get(key);
+          if (value) next[key] = value;
+        });
+
+        try {
+          window.localStorage.setItem(storageKey, JSON.stringify(next));
+        } catch {
+          // Form submission still works without localStorage.
+        }
+
+        document.querySelectorAll('[data-utm-field]').forEach((field) => {
+          const input = field;
+          const key = input.getAttribute('name');
+          if (key && next[key]) input.value = next[key];
+        });
+
+        document.querySelectorAll('[data-page-url]').forEach((field) => {
+          field.value = window.location.href;
+        });
+
+        document.addEventListener('click', (event) => {
+          const target =
+            event.target instanceof Element ? event.target.closest('[data-event]') : null;
+          if (!target) return;
+          const eventName = target.getAttribute('data-event');
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: eventName });
+          if (typeof window.gtag === 'function') window.gtag('event', eventName);
+        });
+
+        document.addEventListener('submit', (event) => {
+          const form =
+            event.target instanceof HTMLFormElement && event.target.matches('form[data-lead-form]')
+              ? event.target
+              : null;
+          if (!form) return;
+
+          const honeypot = form.querySelector('[name="company"]');
+          const phone = form.querySelector('[name="phone"]');
+          const status = form.querySelector('[data-form-status]');
+
+          if (honeypot?.value) {
+            event.preventDefault();
+            return;
+          }
+
+          const digits = phone?.value.replace(/\D/g, '') || '';
+          if (digits.length < 9) {
+            event.preventDefault();
+            if (status) status.textContent = 'Укажите телефон, чтобы мастер смог связаться с вами.';
+            phone?.focus();
+            return;
+          }
+
+          const eventName = form.getAttribute('data-submit-event') || 'service_lead_submit';
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: eventName });
+          if (typeof window.gtag === 'function') window.gtag('event', eventName);
+        });
+      })();
+    </script>
+  </body>
+</html>

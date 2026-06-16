@@ -1,0 +1,40 @@
+---
+import SectionTitle from '@/components/common/SectionTitle.astro';
+
+const steps = [
+  {
+    title: 'Заявка',
+    text: 'Вы отправляете телефон, VIN или фото повреждения.',
+  },
+  {
+    title: 'Расчёт',
+    text: 'Уточняем стекло, датчики, наличие и срок выполнения.',
+  },
+  {
+    title: 'Запись',
+    text: 'Подбираем время в боксе или обсуждаем выезд по Минску.',
+  },
+  {
+    title: 'Работа',
+    text: 'Выполняем замену или ремонт и даём рекомендации после выдачи.',
+  },
+];
+---
+
+<section class="section">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Процесс"
+      title="Путь от заявки до записи понятен мастеру и клиенту"
+      lead="Главная задача сайта — быстро превратить срочную проблему со стеклом в конкретную запись."
+    />
+    <div class="grid steps">
+      {steps.map((step) => (
+        <article class="card step">
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.md$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const postSlug = post.id.replace(/\.md$/, '');
+---
+
+<BaseLayout
+  title={`${post.data.title} — BelStekloExpert`}
+  description={post.data.description}
+  canonical={`${site.domain}/blog/${postSlug}/`}
+>
+  <article class="section">
+    <div class="container content-flow">
+      <p class="section__eyebrow">Блог</p>
+      <h1 class="section__title">{post.data.title}</h1>
+      <p class="section__lead">{post.data.description}</p>
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

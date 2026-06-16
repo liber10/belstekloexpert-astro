@@ -1,0 +1,33 @@
+---
+import FinalCTA from '@/components/sections/FinalCTA.astro';
+import FAQBlock from '@/components/sections/FAQBlock.astro';
+import Hero from '@/components/sections/Hero.astro';
+import MapBlock from '@/components/sections/MapBlock.astro';
+import PricePreview from '@/components/sections/PricePreview.astro';
+import ProcessSteps from '@/components/sections/ProcessSteps.astro';
+import ReviewsBlock from '@/components/sections/ReviewsBlock.astro';
+import ServiceCards from '@/components/sections/ServiceCards.astro';
+import TrustBlock from '@/components/sections/TrustBlock.astro';
+import CasesGrid from '@/components/sections/CasesGrid.astro';
+import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+---
+
+<BaseLayout title={site.defaultTitle} description={site.defaultDescription} canonical={`${site.domain}/`}>
+  <Hero />
+  <ServiceCards />
+  <section class="section section--soft">
+    <div class="container">
+      <VinPhotoForm />
+    </div>
+  </section>
+  <TrustBlock />
+  <ProcessSteps />
+  <PricePreview />
+  <CasesGrid />
+  <ReviewsBlock />
+  <FAQBlock />
+  <MapBlock />
+  <FinalCTA />
+</BaseLayout>

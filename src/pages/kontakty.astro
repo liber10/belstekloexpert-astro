@@ -1,0 +1,67 @@
+---
+import Button from '@/components/common/Button.astro';
+import MessengerButtons from '@/components/common/MessengerButtons.astro';
+import LeadForm from '@/components/forms/LeadForm.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { businessHours } from '@/data/business-hours';
+import { contacts } from '@/data/contacts';
+import { site } from '@/data/site';
+---
+
+<BaseLayout
+  title="Контакты BelStekloExpert — автостёкла в Минске"
+  description="Адрес, телефон, мессенджеры и маршрут в BelStekloExpert: Минск, Долгиновский тракт, 150."
+  canonical={`${site.domain}/kontakty/`}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Контакты</p>
+      <h1 class="section__title">BelStekloExpert в Минске</h1>
+      <p class="section__lead">
+        Адрес: {contacts.address}. Перед визитом лучше отправить VIN или фото,
+        чтобы мастер подготовил варианты по стеклу.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid contact-grid">
+      <article class="card contact-card">
+        <h3>Телефон</h3>
+        <p><a href={contacts.phoneHref}>{contacts.phone}</a></p>
+      </article>
+      <article class="card contact-card">
+        <h3>График</h3>
+        <p>{businessHours.short}. {businessHours.note}.</p>
+      </article>
+      <article class="card contact-card">
+        <h3>Мессенджеры</h3>
+        <MessengerButtons compact />
+      </article>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="map-box">
+        <div class="map-box__visual">{contacts.address}</div>
+        <div class="map-box__content">
+          <h2 class="section__title">Построить маршрут</h2>
+          <p class="section__lead">
+            Используйте карты или уточните ориентир у мастера перед приездом.
+          </p>
+          <div class="cta-row">
+            <Button href={contacts.yandexMaps} dataEvent="route_click">Яндекс Карты</Button>
+            <Button href={contacts.googleMaps} variant="quiet" dataEvent="route_click">Google Maps</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <LeadForm service="Контакты" />
+    </div>
+  </section>
+</BaseLayout>

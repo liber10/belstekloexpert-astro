@@ -1,0 +1,40 @@
+---
+import { contacts } from '@/data/contacts';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class={`messengers ${compact ? 'messengers--compact' : ''}`} aria-label="Мессенджеры">
+  <a href={contacts.telegram} data-event="telegram_click">Telegram</a>
+  <a href={contacts.viber} data-event="viber_click">Viber</a>
+  <a href={contacts.whatsapp} data-event="whatsapp_click">WhatsApp</a>
+</div>
+
+<style>
+  .messengers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .messengers a {
+    min-height: 34px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 10px;
+    background: var(--white);
+    color: var(--green-dark);
+    font-size: 0.86rem;
+    font-weight: 900;
+  }
+
+  .messengers--compact a {
+    min-height: 30px;
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+</style>

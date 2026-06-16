@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+---
+
+<BaseLayout
+  title="Политика обработки данных — BelStekloExpert"
+  description="Политика обработки персональных данных для заявок на сайте BelStekloExpert."
+  canonical={`${site.domain}/privacy/`}
+  noindex
+>
+  <section class="section">
+    <div class="container content-flow">
+      <h1 class="section__title">Политика обработки данных</h1>
+      <p>
+        Данные из форм используются для связи по заявке, расчёта стоимости и записи
+        на услугу. Не передавайте через формы лишнюю личную информацию.
+      </p>
+      <p>
+        Для production-версии текст политики нужно заменить юридически согласованной
+        редакцией с реквизитами владельца сайта.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+
+const reviews = [
+  'Быстро ответили по VIN и сразу назвали варианты по стеклу.',
+  'После замены лобового всё герметично, датчик дождя работает.',
+  'Помогли со сколом без полной замены стекла.',
+  'Удобно, что можно сначала отправить фото повреждения.',
+  'Для рабочей машины быстро нашли окно записи.',
+];
+---
+
+<BaseLayout
+  title="Отзывы BelStekloExpert — автостёкла в Минске"
+  description="Отзывы клиентов о замене и ремонте автостёкол BelStekloExpert в Минске."
+  canonical={`${site.domain}/otzyvy/`}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Отзывы</p>
+      <h1 class="section__title">Что важно клиентам</h1>
+      <p class="section__lead">
+        Блок подготовлен под реальные отзывы из карт и мессенджеров после подтверждения источников.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid review-grid">
+      {reviews.map((review) => (
+        <article class="card review-card">
+          <h3>Клиент BelStekloExpert</h3>
+          <p>{review}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

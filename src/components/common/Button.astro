@@ -1,0 +1,19 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'quiet';
+  class?: string;
+  dataEvent?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  class: className = '',
+  dataEvent,
+} = Astro.props;
+---
+
+<a class={`button button--${variant} ${className}`} href={href} data-event={dataEvent}>
+  <slot />
+</a>

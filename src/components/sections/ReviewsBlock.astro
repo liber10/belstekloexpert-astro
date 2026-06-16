@@ -1,0 +1,36 @@
+---
+import SectionTitle from '@/components/common/SectionTitle.astro';
+
+const reviews = [
+  {
+    title: 'Быстро рассчитали',
+    text: 'Отправил VIN и фото. Через несколько минут получил варианты по цене и времени.',
+  },
+  {
+    title: 'Аккуратная работа',
+    text: 'После замены ничего не течёт, датчик дождя работает, салон оставили чистым.',
+  },
+  {
+    title: 'Помогли со сколом',
+    text: 'Сказали честно, что ремонт возможен. Стекло менять не пришлось.',
+  },
+];
+---
+
+<section class="section section--soft">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Отзывы"
+      title="Доверие строим на понятной коммуникации"
+      lead="Блок готов к реальным отзывам из карт и мессенджеров, когда они будут подтверждены."
+    />
+    <div class="grid review-grid">
+      {reviews.map((item) => (
+        <article class="card review-card">
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

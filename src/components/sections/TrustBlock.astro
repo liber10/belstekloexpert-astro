@@ -1,0 +1,36 @@
+---
+import SectionTitle from '@/components/common/SectionTitle.astro';
+
+const items = [
+  {
+    title: 'Подбор по VIN',
+    text: 'Уточняем стекло, молдинги, датчики дождя, камеру, обогрев и другие особенности комплектации.',
+  },
+  {
+    title: 'Цена до записи',
+    text: 'Сразу объясняем вилку стоимости и не прячем важные доплаты до момента установки.',
+  },
+  {
+    title: 'Гарантия герметичности',
+    text: 'Работаем аккуратно с кузовом, клеем и посадкой стекла, чтобы после замены не было протечек.',
+  },
+];
+---
+
+<section class="section section--soft">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Доверие"
+      title="Сначала точность, потом установка"
+      lead="Автостекло редко выбирают “на глаз”. Ошибка в датчике, обогреве или камере стоит времени и денег, поэтому начинаем с диагностики комплектации."
+    />
+    <div class="grid feature-grid">
+      {items.map((item) => (
+        <article class="card feature-card">
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

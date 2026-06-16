@@ -1,0 +1,54 @@
+---
+interface Props {
+  title?: string;
+  service?: string;
+  eventName?: string;
+}
+
+const {
+  title = 'Получить расчёт за 5–10 минут',
+  service = 'Общая заявка',
+  eventName = 'service_lead_submit',
+} = Astro.props;
+---
+
+<div class="form-panel" id="lead-form">
+  <div>
+    <p class="section__eyebrow">Заявка</p>
+    <h2>{title}</h2>
+    <p>
+      Оставьте телефон и задачу. Мастер уточнит марку, стекло, датчики и назовёт
+      честную стартовую стоимость.
+    </p>
+  </div>
+
+  <form class="lead-form" action="/api/lead/" method="post" data-lead-form data-submit-event={eventName}>
+    <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
+    <input type="hidden" name="service" value={service} />
+    <input type="hidden" name="page_url" data-page-url />
+    <input type="hidden" name="utm_source" data-utm-field />
+    <input type="hidden" name="utm_medium" data-utm-field />
+    <input type="hidden" name="utm_campaign" data-utm-field />
+    <input type="hidden" name="utm_content" data-utm-field />
+    <input type="hidden" name="utm_term" data-utm-field />
+
+    <div class="lead-form__row">
+      <label class="field">
+        <span>Телефон</span>
+        <input name="phone" inputmode="tel" autocomplete="tel" placeholder="+375 ..." required />
+      </label>
+      <label class="field">
+        <span>Имя</span>
+        <input name="name" autocomplete="name" placeholder="Как к вам обращаться" />
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Комментарий</span>
+      <textarea name="comment" placeholder="Марка, модель, год, что случилось со стеклом"></textarea>
+    </label>
+
+    <p class="form-status" data-form-status aria-live="polite"></p>
+    <button class="button button--primary" type="submit">Получить расчёт</button>
+  </form>
+</div>

@@ -1,0 +1,36 @@
+---
+import SectionTitle from '@/components/common/SectionTitle.astro';
+
+const cases = [
+  {
+    title: 'Volkswagen Passat',
+    text: 'Трещина в зоне обзора. Подбор по VIN, стекло с датчиком дождя, замена в день обращения.',
+  },
+  {
+    title: 'Skoda Octavia',
+    text: 'Скол после трассы. Оценка по фото, ремонт без полной замены стекла.',
+  },
+  {
+    title: 'Renault Master',
+    text: 'Коммерческий автомобиль. Согласовали окно записи, чтобы машина не простаивала.',
+  },
+];
+---
+
+<section class="section">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Кейсы"
+      title="Типовые ситуации, с которыми приезжают в бокс"
+      lead="На старте используем рабочие сценарии. Реальные фото и истории можно добавить после съёмки сервиса."
+    />
+    <div class="grid case-grid">
+      {cases.map((item) => (
+        <article class="card case-card">
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

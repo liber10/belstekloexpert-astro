@@ -1,0 +1,62 @@
+---
+import Button from '@/components/common/Button.astro';
+import MessengerButtons from '@/components/common/MessengerButtons.astro';
+import { contacts } from '@/data/contacts';
+import { mainNavigation } from '@/data/navigation';
+import { site } from '@/data/site';
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/" aria-label={`${site.name} — на главную`}>
+      {site.name}
+      <span>автостёкла в Минске</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Основная навигация">
+      {mainNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <div class="header-actions">
+      <a class="phone-link" href={contacts.phoneHref} data-event="phone_click">
+        {contacts.phone}
+      </a>
+      <Button href="/#vin-form" variant="quiet">Узнать цену</Button>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        data-menu-toggle
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Мобильная навигация" data-mobile-nav>
+    {mainNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    <a href={contacts.phoneHref} data-event="phone_click">Позвонить: {contacts.phone}</a>
+    <Button href="/#vin-form">Узнать цену за 5–10 минут</Button>
+    <MessengerButtons compact />
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-mobile-nav]');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = nav?.classList.toggle('is-open') ?? false;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('menu-open', isOpen);
+  });
+
+  nav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      toggle?.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+    });
+  });
+</script>

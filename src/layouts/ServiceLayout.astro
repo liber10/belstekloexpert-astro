@@ -1,0 +1,131 @@
+---
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import Button from '@/components/common/Button.astro';
+import LeadForm from '@/components/forms/LeadForm.astro';
+import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import { prices, priceNote } from '@/data/prices';
+
+interface ServiceData {
+  title: string;
+  h1: string;
+  pageSlug: string;
+  priceFrom: number;
+  duration: string;
+  cta: string;
+  benefits: string[];
+  includes: string[];
+  faq: Array<{ question: string; answer: string }>;
+}
+
+interface Props {
+  service: ServiceData;
+}
+
+const { service } = Astro.props;
+const related = prices.filter((item) => !item.url.includes(service.pageSlug)).slice(0, 3);
+---
+
+<section class="service-hero">
+  <div class="container">
+    <Breadcrumbs
+      items={[
+        { label: 'Главная', href: '/' },
+        { label: 'Услуги', href: '/#services' },
+        { label: service.title },
+      ]}
+    />
+
+    <div class="service-hero__grid">
+      <div>
+        <p class="section__eyebrow">BelStekloExpert</p>
+        <h1 class="section__title">{service.h1}</h1>
+        <div class="section__lead"><slot /></div>
+        <div class="cta-row">
+          <Button href="#service-form">{service.cta}</Button>
+          <Button href="#photo-form" variant="quiet">Отправить фото</Button>
+        </div>
+      </div>
+
+      <aside class="card service-metrics" aria-label="Параметры услуги">
+        <div>
+          <span>Цена</span>
+          <strong>{service.priceFrom > 0 ? `от ${service.priceFrom} BYN` : 'по расчёту'}</strong>
+        </div>
+        <div>
+          <span>Срок</span>
+          <strong>{service.duration}</strong>
+        </div>
+        <p>{priceNote}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container grid feature-grid">
+    {service.benefits.map((benefit) => (
+      <article class="card feature-card">
+        <h3>{benefit}</h3>
+        <p>Согласуем детали до начала работ и заранее объясним, что влияет на итоговую стоимость.</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container content-flow">
+    <h2>Что входит в работу</h2>
+    <div class="grid service-grid">
+      {service.includes.map((item) => (
+        <article class="card service-card">
+          <h3>{item}</h3>
+          <p>Проверяем совместимость, аккуратно выполняем работу и передаём рекомендации после установки.</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="service-form">
+  <div class="container">
+    <LeadForm title="Получить точный расчёт" service={service.title} eventName="service_lead_submit" />
+  </div>
+</section>
+
+<section class="section section--soft" id="photo-form">
+  <div class="container">
+    <VinPhotoForm title="Оценить по VIN или фото" service={service.title} />
+  </div>
+</section>
+
+{service.faq.length > 0 && (
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow">FAQ</p>
+      <h2 class="section__title">Частые вопросы по услуге</h2>
+      <div class="faq-list">
+        {service.faq.map((item) => (
+          <details class="faq-item">
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<section class="section section--soft">
+  <div class="container">
+    <p class="section__eyebrow">Также смотрят</p>
+    <h2 class="section__title">Связанные услуги</h2>
+    <div class="grid price-grid">
+      {related.map((item) => (
+        <a class="card price-card" href={item.url}>
+          <h3>{item.title}</h3>
+          <p>от {item.priceFrom} {item.unit}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

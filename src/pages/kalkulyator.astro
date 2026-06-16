@@ -1,0 +1,26 @@
+---
+import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+---
+
+<BaseLayout
+  title="Калькулятор автостёкол — BelStekloExpert"
+  description="Быстрый расчёт стоимости замены или ремонта автостекла по VIN, фото и параметрам автомобиля."
+  canonical={`${site.domain}/kalkulyator/`}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Расчёт</p>
+      <h1 class="section__title">Калькулятор стоимости автостекла</h1>
+      <p class="section__lead">
+        Первая версия работает как расширенная заявка. Пошаговый React-калькулятор можно добавить следующим спринтом.
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <VinPhotoForm title="Рассчитать стоимость" service="Калькулятор" />
+    </div>
+  </section>
+</BaseLayout>

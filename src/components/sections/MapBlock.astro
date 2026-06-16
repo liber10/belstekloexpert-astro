@@ -1,0 +1,25 @@
+---
+import Button from '@/components/common/Button.astro';
+import { businessHours } from '@/data/business-hours';
+import { contacts } from '@/data/contacts';
+---
+
+<section class="section section--soft" id="contacts">
+  <div class="container">
+    <div class="map-box">
+      <div class="map-box__visual">{contacts.address}</div>
+      <div class="map-box__content">
+        <p class="section__eyebrow">Контакты</p>
+        <h2 class="section__title">Бокс в Минске и выезд по городу</h2>
+        <p class="section__lead">
+          Адрес: {contacts.address}. Работаем {businessHours.short.toLowerCase()}.
+          Выезд возможен, если условия позволяют выполнить работу безопасно.
+        </p>
+        <div class="cta-row">
+          <Button href={contacts.yandexMaps} dataEvent="route_click">Построить маршрут</Button>
+          <Button href="/kontakty/" variant="quiet">Все контакты</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
