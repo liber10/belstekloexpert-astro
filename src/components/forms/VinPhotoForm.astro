@@ -135,10 +135,15 @@ const { title = 'Отправить VIN или фото повреждения',
           return;
         }
 
+        const largeHeicFile = files.find((file) => file.size > maxServerBytes && isHeicFile(file));
+        if (largeHeicFile) {
+          setStatus(status, getHeicTooLargeMessage(largeHeicFile), 'error');
+          return;
+        }
+
         const unsupportedLargeFile = files.find(
           (file) => file.size > maxServerBytes && !compressibleTypes.has(file.type),
         );
-
         if (unsupportedLargeFile) {
           setStatus(
             status,
@@ -219,6 +224,7 @@ const { title = 'Отправить VIN или фото повреждения',
     async function preparePhoto(file) {
       if (!compressibleTypes.has(file.type)) {
         if (file.size > maxServerBytes) {
+          if (isHeicFile(file)) throw new Error(getHeicTooLargeMessage(file));
           throw new Error(`Файл ${file.name || 'photo'} больше 10 МБ. Сохраните его как JPG, PNG или WebP.`);
         }
         return file;
@@ -307,6 +313,21 @@ const { title = 'Отправить VIN или фото повреждения',
     function toJpegName(name) {
       const base = (name || 'photo').replace(/\.[^.]+$/, '') || 'photo';
       return `${base}-compressed.jpg`;
+    }
+
+    function isHeicFile(file) {
+      const name = (file.name || '').toLowerCase();
+      return (
+        file.type === 'image/heic' ||
+        file.type === 'image/heif' ||
+        name.endsWith('.heic') ||
+        name.endsWith('.heif')
+      );
+    }
+
+    function getHeicTooLargeMessage(file) {
+      const name = file.name ? `${file.name}: ` : '';
+      return `${name}Фото iPhone в HEIC слишком большое. Выберите отправку как JPG или сделайте скрин/фото в совместимом формате.`;
     }
 
     function setStatus(status, message, state = 'info') {

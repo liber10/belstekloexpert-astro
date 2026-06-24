@@ -32,6 +32,10 @@ export function validatePhotos(photos: File[]) {
 
   for (const photo of photos) {
     if (photo.size > maxPhotoSizeBytes) {
+      if (isHeicPhoto(photo)) {
+        return `${photo.name || 'photo'}: Фото iPhone в HEIC слишком большое. Выберите отправку как JPG или сделайте скрин/фото в совместимом формате.`;
+      }
+
       return `Файл ${photo.name || 'photo'} больше 10 МБ.`;
     }
 
@@ -41,4 +45,14 @@ export function validatePhotos(photos: File[]) {
   }
 
   return null;
+}
+
+function isHeicPhoto(photo: File) {
+  const name = photo.name.toLowerCase();
+  return (
+    photo.type === 'image/heic' ||
+    photo.type === 'image/heif' ||
+    name.endsWith('.heic') ||
+    name.endsWith('.heif')
+  );
 }
