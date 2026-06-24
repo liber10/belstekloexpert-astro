@@ -23,6 +23,7 @@ const { title = 'Отправить VIN или фото повреждения',
     method="post"
     enctype="multipart/form-data"
     data-lead-form
+    data-photo-compress-form
     data-submit-event="vin_submit"
   >
     <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
@@ -91,7 +92,7 @@ const { title = 'Отправить VIN или фото повреждения',
         accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
         multiple
       />
-      <small>До 5 фото, до 10 МБ каждое. JPG, PNG, WebP, HEIC.</small>
+      <small>До 5 фото. Большие JPG, PNG и WebP сожмутся перед отправкой.</small>
     </label>
 
     <label class="field">
@@ -103,3 +104,220 @@ const { title = 'Отправить VIN или фото повреждения',
     <button class="button button--primary" type="submit">Отправить на расчёт</button>
   </form>
 </div>
+
+<script is:inline>
+  (() => {
+    const maxPhotoCount = 5;
+    const maxServerBytes = 10 * 1024 * 1024;
+    const targetBytes = 2 * 1024 * 1024;
+    const maxImageSide = 1600;
+    const compressibleTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
+
+    document.querySelectorAll('form[data-photo-compress-form]').forEach((form) => {
+      if (!(form instanceof HTMLFormElement) || form.dataset.photoCompressReady === 'true') return;
+
+      form.dataset.photoCompressReady = 'true';
+      const input = form.querySelector('input[type="file"][name="photos"]');
+      const status = form.querySelector('[data-form-status]');
+      const submitButton = form.querySelector('button[type="submit"]');
+
+      if (!(input instanceof HTMLInputElement)) return;
+
+      input.addEventListener('change', () => {
+        const files = getSelectedFiles(input);
+        if (!files.length) {
+          setStatus(status, '');
+          return;
+        }
+
+        if (files.length > maxPhotoCount) {
+          setStatus(status, `Можно отправить не более ${maxPhotoCount} фото.`, 'error');
+          return;
+        }
+
+        const unsupportedLargeFile = files.find(
+          (file) => file.size > maxServerBytes && !compressibleTypes.has(file.type),
+        );
+
+        if (unsupportedLargeFile) {
+          setStatus(
+            status,
+            `Файл ${unsupportedLargeFile.name || 'photo'} больше 10 МБ. Лучше выбрать JPG, PNG или WebP.`,
+            'error',
+          );
+          return;
+        }
+
+        setStatus(status, `Выбрано ${files.length} фото. Подготовим перед отправкой.`, 'info');
+      });
+
+      form.addEventListener('submit', async (event) => {
+        const files = getSelectedFiles(input);
+        if (!files.length || !window.fetch || !window.FormData || typeof HTMLCanvasElement === 'undefined') {
+          return;
+        }
+
+        event.preventDefault();
+
+        const honeypot = form.querySelector('[name="company"]');
+        if (honeypot instanceof HTMLInputElement && honeypot.value) return;
+
+        const phone = form.querySelector('[name="phone"]');
+        const digits = phone instanceof HTMLInputElement ? phone.value.replace(/\D/g, '') : '';
+        if (digits.length < 9) {
+          setStatus(status, 'Укажите телефон, чтобы мастер смог связаться с вами.', 'error');
+          phone instanceof HTMLInputElement && phone.focus();
+          return;
+        }
+
+        if (files.length > maxPhotoCount) {
+          setStatus(status, `Можно отправить не более ${maxPhotoCount} фото.`, 'error');
+          return;
+        }
+
+        setBusy(submitButton, true);
+        setStatus(status, 'Готовим фото...', 'info');
+
+        try {
+          const formData = new FormData(form);
+          formData.delete('photos');
+
+          for (const [index, file] of files.entries()) {
+            setStatus(status, `Готовим фото ${index + 1} из ${files.length}...`, 'info');
+            const preparedFile = await preparePhoto(file);
+            formData.append('photos', preparedFile, preparedFile.name || file.name);
+          }
+
+          setStatus(status, 'Отправляем заявку...', 'info');
+          const response = await fetch(form.action, {
+            method: form.method || 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' },
+          });
+          const payload = await response.json().catch(() => ({}));
+
+          if (!response.ok || payload.ok === false) {
+            throw new Error(payload.message || 'Не удалось отправить заявку. Попробуйте ещё раз.');
+          }
+
+          const thanksUrl = new URL('/spasibo/', window.location.origin);
+          if (payload.leadId) thanksUrl.searchParams.set('leadId', payload.leadId);
+          window.location.href = thanksUrl.toString();
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.';
+          setStatus(status, message, 'error');
+          setBusy(submitButton, false);
+        }
+      });
+    });
+
+    function getSelectedFiles(input) {
+      return Array.from(input.files || []).filter((file) => file.size > 0);
+    }
+
+    async function preparePhoto(file) {
+      if (!compressibleTypes.has(file.type)) {
+        if (file.size > maxServerBytes) {
+          throw new Error(`Файл ${file.name || 'photo'} больше 10 МБ. Сохраните его как JPG, PNG или WebP.`);
+        }
+        return file;
+      }
+
+      const { image, revoke } = await loadImage(file);
+      try {
+        const largestSide = Math.max(image.naturalWidth, image.naturalHeight);
+        const needsResize = largestSide > maxImageSide;
+        const needsCompression = file.size > targetBytes || needsResize || file.type !== 'image/jpeg';
+
+        if (!needsCompression && file.size <= maxServerBytes) return file;
+
+        let bestBlob = null;
+        let sideLimit = maxImageSide;
+        let quality = 0.82;
+
+        for (let attempt = 0; attempt < 7; attempt += 1) {
+          const scale = Math.min(1, sideLimit / largestSide);
+          const width = Math.max(1, Math.round(image.naturalWidth * scale));
+          const height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const blob = await renderJpeg(image, width, height, quality);
+
+          if (!bestBlob || blob.size < bestBlob.size) bestBlob = blob;
+          if (blob.size <= targetBytes) break;
+
+          quality = Math.max(0.58, quality - 0.08);
+          if (attempt >= 2) sideLimit = Math.max(900, Math.round(sideLimit * 0.82));
+        }
+
+        if (!bestBlob) throw new Error(`Не удалось подготовить файл ${file.name || 'photo'}.`);
+        if (bestBlob.size >= file.size && file.size <= maxServerBytes) return file;
+        if (bestBlob.size > maxServerBytes) {
+          throw new Error(`Файл ${file.name || 'photo'} не удалось сжать до 10 МБ.`);
+        }
+
+        return new File([bestBlob], toJpegName(file.name), {
+          type: 'image/jpeg',
+          lastModified: Date.now(),
+        });
+      } finally {
+        revoke();
+      }
+    }
+
+    function loadImage(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+        image.decoding = 'async';
+        image.onload = () => resolve({ image, revoke: () => URL.revokeObjectURL(url) });
+        image.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error(`Не удалось открыть файл ${file.name || 'photo'} для сжатия.`));
+        };
+        image.src = url;
+      });
+    }
+
+    function renderJpeg(image, width, height, quality) {
+      return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const context = canvas.getContext('2d');
+        if (!context) {
+          reject(new Error('Браузер не смог подготовить фото.'));
+          return;
+        }
+
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, width, height);
+        context.drawImage(image, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error('Браузер не смог сжать фото.'));
+          },
+          'image/jpeg',
+          quality,
+        );
+      });
+    }
+
+    function toJpegName(name) {
+      const base = (name || 'photo').replace(/\.[^.]+$/, '') || 'photo';
+      return `${base}-compressed.jpg`;
+    }
+
+    function setStatus(status, message, state = 'info') {
+      if (!status) return;
+      status.textContent = message;
+      if (message) status.setAttribute('data-state', state);
+      else status.removeAttribute('data-state');
+    }
+
+    function setBusy(button, isBusy) {
+      if (button instanceof HTMLButtonElement) button.disabled = isBusy;
+    }
+  })();
+</script>

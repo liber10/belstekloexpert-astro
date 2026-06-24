@@ -457,6 +457,14 @@ textarea {
   font-weight: 800;
 }
 
+.form-status[data-state='info'] {
+  color: var(--green);
+}
+
+.form-status[data-state='error'] {
+  color: #9b2c2c;
+}
+
 .faq-list {
   display: grid;
   gap: 12px;
