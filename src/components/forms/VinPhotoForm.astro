@@ -205,6 +205,13 @@ const { title = 'Отправить VIN или фото повреждения',
             throw new Error(payload.message || 'Не удалось отправить заявку. Попробуйте ещё раз.');
           }
 
+          if (typeof window.bseTrack === 'function') {
+            window.bseTrack('lead_success', {
+              form_service: form.querySelector('[name="service"]')?.value || 'VIN/фото',
+              photo_count: files.length,
+            });
+          }
+
           const thanksUrl = new URL('/spasibo/', window.location.origin);
           if (payload.leadId) thanksUrl.searchParams.set('leadId', payload.leadId);
           window.location.href = thanksUrl.toString();

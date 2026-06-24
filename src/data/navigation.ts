@@ -1,9 +1,10 @@
 export const mainNavigation = [
   { label: 'Услуги', href: '/#services' },
   { label: 'Цены', href: '/ceny/' },
+  { label: 'Марки', href: '/marki/' },
   { label: 'Кейсы', href: '/kejsy/' },
   { label: 'Отзывы', href: '/otzyvy/' },
-  { label: 'FAQ', href: '/faq/' },
+  { label: 'О компании', href: '/o-kompanii/' },
   { label: 'Контакты', href: '/kontakty/' },
 ];
 

@@ -1,0 +1,28 @@
+---
+import Button from '@/components/common/Button.astro';
+import SectionTitle from '@/components/common/SectionTitle.astro';
+import { reviewLinks } from '@/data/contacts';
+---
+
+<section class="section">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Отзывы"
+      title="Собираем подтверждённые отзывы в картах"
+      lead="После выдачи автомобиля клиент получает короткую ссылку на карты. Так отзывы привязаны к реальному месту, а не выглядят как декоративный блок на сайте."
+    />
+    <div class="grid review-grid">
+      {reviewLinks.map((link) => (
+        <article class="card review-card">
+          <h3>{link.label}</h3>
+          <p>{link.text}</p>
+          <a href={link.href} data-event="review_source_click">Открыть</a>
+        </article>
+      ))}
+    </div>
+    <div class="cta-row">
+      <Button href="/otzyv/" dataEvent="review_request_click">Оставить отзыв</Button>
+      <Button href="/otzyvy/" variant="quiet">Как собираем отзывы</Button>
+    </div>
+  </div>
+</section>

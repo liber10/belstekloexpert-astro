@@ -1,0 +1,100 @@
+---
+import Button from '@/components/common/Button.astro';
+import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { brandModels } from '@/data/brands';
+import { site } from '@/data/site';
+import { breadcrumbSchema, serviceSchema } from '@/lib/schema';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return brandModels.map(({ brand, model }) => ({
+    params: { brand: brand.slug, model: model.slug },
+    props: { brand, model },
+  }));
+}
+
+const { brand, model } = Astro.props;
+const carName = `${brand.name} ${model.name}`;
+const path = `/marki/${brand.slug}/${model.slug}/`;
+const canonical = `${site.domain}${path}`;
+const schema = [
+  breadcrumbSchema([
+    { name: 'Главная', url: `${site.domain}/` },
+    { name: 'Марки авто', url: `${site.domain}/marki/` },
+    { name: brand.name, url: `${site.domain}/marki/${brand.slug}/` },
+    { name: model.name, url: canonical },
+  ]),
+  serviceSchema({
+    name: `Замена автостекла ${carName}`,
+    description: `Замена лобового, бокового и заднего стекла ${carName} в Минске. Подбор по VIN, расчёт цены и запись в бокс.`,
+    url: canonical,
+    priceFrom: brand.priceFrom,
+  }),
+];
+---
+
+<BaseLayout
+  title={`Замена лобового стекла ${carName} в Минске — BelStekloExpert`}
+  description={`Подбор и замена автостекла ${carName}: лобовое, боковое, заднее стекло, ремонт сколов и трещин. Расчёт по VIN или фото.`}
+  canonical={canonical}
+  schema={schema}
+>
+  <section class="section section--soft">
+    <div class="container split-section">
+      <div>
+        <p class="section__eyebrow">{brand.name}</p>
+        <h1 class="section__title">Замена автостекла {carName} в Минске</h1>
+        <p class="section__lead">
+          Подберём стекло {carName} по VIN, году и комплектации. Проверим датчики,
+          камеру, обогрев, молдинги и предложим понятный вариант по цене.
+        </p>
+        <div class="cta-row">
+          <Button href="#model-form">Узнать цену</Button>
+          <Button href={`/marki/${brand.slug}/`} variant="quiet">Другие модели {brand.name}</Button>
+        </div>
+      </div>
+      <aside class="card service-metrics">
+        <div>
+          <span>Ориентир</span>
+          <strong>от {brand.priceFrom} BYN</strong>
+        </div>
+        <p>Финальную цену называем после сверки VIN или фото маркировки стекла.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow">Варианты работ</p>
+      <h2 class="section__title">Что можно рассчитать для {carName}</h2>
+      <div class="grid service-grid">
+        {['Лобовое стекло', 'Боковое стекло', 'Заднее стекло', 'Ремонт скола', 'Ремонт трещины', 'Выезд по Минску'].map((item) => (
+          <article class="card service-card">
+            <h3>{item}</h3>
+            <p>Согласуем наличие, цену, срок и ограничения перед записью.</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container content-flow">
+      <p class="section__eyebrow">Почему нужен VIN</p>
+      <h2>Одна модель может иметь несколько разных стёкол</h2>
+      <p>
+        В зависимости от года и комплектации у {carName} могут отличаться датчик
+        дождя, камера, обогрев, крепления зеркала, молдинги и цвет полосы. VIN
+        помогает подобрать стекло точнее и не менять цену на месте.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="model-form">
+    <div class="container">
+      <VinPhotoForm title={`Рассчитать стекло ${carName}`} service={`Модель ${carName}`} />
+    </div>
+  </section>
+</BaseLayout>

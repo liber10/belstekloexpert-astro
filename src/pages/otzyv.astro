@@ -1,0 +1,62 @@
+---
+import Button from '@/components/common/Button.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { contacts, reviewLinks } from '@/data/contacts';
+import { site } from '@/data/site';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const schema = breadcrumbSchema([
+  { name: 'Главная', url: `${site.domain}/` },
+  { name: 'Оставить отзыв', url: `${site.domain}/otzyv/` },
+]);
+---
+
+<BaseLayout
+  title="Оставить отзыв о BelStekloExpert"
+  description="Ссылки на карты, где можно оставить отзыв о замене или ремонте автостекла BelStekloExpert в Минске."
+  canonical={`${site.domain}/otzyv/`}
+  schema={schema}
+>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Спасибо за доверие</p>
+      <h1 class="section__title">Оставить отзыв о работе BelStekloExpert</h1>
+      <p class="section__lead">
+        Самый полезный отзыв короткий и конкретный: какое авто, что делали со
+        стеклом, насколько быстро ответили, совпала ли цена и чисто ли выдали машину.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid review-grid">
+      {reviewLinks.map((link) => (
+        <article class="card review-card">
+          <h3>{link.label}</h3>
+          <p>{link.text}</p>
+          <a class="button button--quiet" href={link.href} data-event="review_source_click">
+            Открыть карту
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container split-section">
+      <div>
+        <p class="section__eyebrow">Если что-то пошло не так</p>
+        <h2 class="section__title">Сначала напишите или позвоните мастеру</h2>
+        <p class="section__lead">
+          Если после замены появились вопросы по герметичности, датчику, звуку
+          или внешнему виду, лучше связаться напрямую. Так проблему можно решить
+          быстрее, чем через публичный комментарий.
+        </p>
+      </div>
+      <div class="cta-row">
+        <Button href={contacts.phoneHref} dataEvent="phone_click">Позвонить</Button>
+        <Button href={contacts.telegram} variant="quiet" dataEvent="messenger_click">Telegram</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

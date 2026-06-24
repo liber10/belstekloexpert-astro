@@ -1,13 +1,14 @@
 ---
+import Button from '@/components/common/Button.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { reviewLinks } from '@/data/contacts';
 import { site } from '@/data/site';
 
-const reviews = [
-  'Быстро ответили по VIN и сразу назвали варианты по стеклу.',
-  'После замены лобового всё герметично, датчик дождя работает.',
-  'Помогли со сколом без полной замены стекла.',
-  'Удобно, что можно сначала отправить фото повреждения.',
-  'Для рабочей машины быстро нашли окно записи.',
+const principles = [
+  'просим отзыв после выдачи автомобиля, а не до результата',
+  'ведём клиента в карты, где виден реальный сервис и маршрут',
+  'собираем конкретику: авто, работа, срок, чистота, цена',
+  'не публикуем неподтверждённые цитаты как реальные отзывы',
 ];
 ---
 
@@ -19,20 +20,39 @@ const reviews = [
   <section class="section section--soft">
     <div class="container">
       <p class="section__eyebrow">Отзывы</p>
-      <h1 class="section__title">Что важно клиентам</h1>
+      <h1 class="section__title">Отзывы должны подтверждать реальный сервис</h1>
       <p class="section__lead">
-        Блок подготовлен под реальные отзывы из карт и мессенджеров после подтверждения источников.
+        Для молодого сервиса репутация важнее декоративных цитат. Поэтому отзывы
+        собираем в картах и добавляем на сайт только после подтверждения источника.
       </p>
     </div>
   </section>
   <section class="section">
     <div class="container grid review-grid">
-      {reviews.map((review) => (
+      {principles.map((review) => (
         <article class="card review-card">
-          <h3>Клиент BelStekloExpert</h3>
+          <h3>Принцип сбора</h3>
           <p>{review}</p>
         </article>
       ))}
+    </div>
+  </section>
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Где оставить отзыв</p>
+      <h2 class="section__title">Карты и локальные площадки</h2>
+      <div class="grid review-grid">
+        {reviewLinks.map((link) => (
+          <article class="card review-card">
+            <h3>{link.label}</h3>
+            <p>{link.text}</p>
+            <a href={link.href} data-event="review_source_click">Открыть</a>
+          </article>
+        ))}
+      </div>
+      <div class="cta-row">
+        <Button href="/otzyv/" dataEvent="review_request_click">Оставить отзыв</Button>
+      </div>
     </div>
   </section>
 </BaseLayout>

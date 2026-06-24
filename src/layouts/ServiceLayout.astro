@@ -1,6 +1,7 @@
 ---
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import Button from '@/components/common/Button.astro';
+import B2BForm from '@/components/forms/B2BForm.astro';
 import LeadForm from '@/components/forms/LeadForm.astro';
 import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
 import { prices, priceNote } from '@/data/prices';
@@ -12,6 +13,7 @@ interface ServiceData {
   priceFrom: number;
   duration: string;
   cta: string;
+  serviceType?: string;
   benefits: string[];
   includes: string[];
   faq: Array<{ question: string; answer: string }>;
@@ -23,6 +25,12 @@ interface Props {
 
 const { service } = Astro.props;
 const related = prices.filter((item) => !item.url.includes(service.pageSlug)).slice(0, 3);
+const isB2B = service.serviceType === 'b2b';
+const proofItems = [
+  'защищаем салон и торпедо перед демонтажем',
+  'сверяем датчики, камеру, обогрев и крепления',
+  'проговариваем цену, срок и ограничения до начала работ',
+];
 ---
 
 <section class="service-hero">
@@ -86,9 +94,28 @@ const related = prices.filter((item) => !item.url.includes(service.pageSlug)).sl
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <p class="section__eyebrow">Контроль качества</p>
+    <h2 class="section__title">Что проверяем в каждой работе</h2>
+    <div class="grid feature-grid">
+      {proofItems.map((item) => (
+        <article class="card feature-card">
+          <h3>{item}</h3>
+          <p>Это снижает риск ошибок, грязного салона и неожиданных доплат на месте.</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
 <section class="section" id="service-form">
   <div class="container">
-    <LeadForm title="Получить точный расчёт" service={service.title} eventName="service_lead_submit" />
+    {isB2B ? (
+      <B2BForm />
+    ) : (
+      <LeadForm title="Получить точный расчёт" service={service.title} eventName="service_lead_submit" />
+    )}
   </div>
 </section>
 

@@ -1,8 +1,9 @@
 ---
 import Button from '@/components/common/Button.astro';
 import LeadForm from '@/components/forms/LeadForm.astro';
+import PricePackages from '@/components/sections/PricePackages.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { priceNote, prices } from '@/data/prices';
+import { priceFactors, priceNote, prices } from '@/data/prices';
 import { site } from '@/data/site';
 ---
 
@@ -14,8 +15,11 @@ import { site } from '@/data/site';
   <section class="section section--soft">
     <div class="container">
       <p class="section__eyebrow">Цены</p>
-      <h1 class="section__title">Стартовые цены на автостёкла</h1>
-      <p class="section__lead">{priceNote}</p>
+      <h1 class="section__title">Цены на автостёкла без сюрпризов на месте</h1>
+      <p class="section__lead">
+        Показываем стартовую стоимость работ и ориентиры “под ключ”. Финальную цену
+        подтверждаем по VIN, фото маркировки или комплектации автомобиля. {priceNote}
+      </p>
       <div class="grid price-grid">
         {prices.map((item) => (
           <a class="card price-card" href={item.url}>
@@ -26,6 +30,16 @@ import { site } from '@/data/site';
       </div>
       <div class="cta-row">
         <Button href="/#vin-form">Уточнить по VIN</Button>
+      </div>
+    </div>
+  </section>
+  <PricePackages />
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">Факторы</p>
+      <h2 class="section__title">Почему одинаковые модели могут стоить по-разному</h2>
+      <div class="factor-strip factor-strip--cards">
+        {priceFactors.map((factor) => <span>{factor}</span>)}
       </div>
     </div>
   </section>

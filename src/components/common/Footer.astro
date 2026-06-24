@@ -24,6 +24,19 @@ const year = new Date().getFullYear();
         <h3>Услуги</h3>
         <ul>
           {serviceNavigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          <li><a href="/marki/">Марки авто</a></li>
+          <li><a href="/dlya-yurlic/">Для юрлиц</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Компания</h3>
+        <ul>
+          <li><a href="/o-kompanii/">О компании</a></li>
+          <li><a href="/kejsy/">Кейсы</a></li>
+          <li><a href="/otzyvy/">Отзывы</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/privacy/">Политика обработки данных</a></li>
         </ul>
       </div>
 
@@ -33,17 +46,9 @@ const year = new Date().getFullYear();
           <li>{contacts.address}</li>
           <li><a href={contacts.phoneHref}>{contacts.phone}</a></li>
           <li>{businessHours.short}</li>
-          <li>{businessHours.note}</li>
-        </ul>
-      </div>
-
-      <div>
-        <h3>Карты</h3>
-        <ul>
           <li><a href={contacts.yandexMaps} data-event="route_click">Яндекс Карты</a></li>
           <li><a href={contacts.googleMaps} data-event="route_click">Google Maps</a></li>
-          <li><a href="/kontakty/">Схема проезда</a></li>
-          <li><a href="/privacy/">Политика обработки данных</a></li>
+          <li><a href="/otzyv/">Оставить отзыв</a></li>
         </ul>
       </div>
     </div>

@@ -2,6 +2,7 @@
 import Button from '@/components/common/Button.astro';
 import MessengerButtons from '@/components/common/MessengerButtons.astro';
 import LeadForm from '@/components/forms/LeadForm.astro';
+import ServiceSummaryBlock from '@/components/sections/ServiceSummaryBlock.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { businessHours } from '@/data/business-hours';
 import { contacts } from '@/data/contacts';
@@ -35,8 +36,20 @@ import { site } from '@/data/site';
         <p>{businessHours.short}. {businessHours.note}.</p>
       </article>
       <article class="card contact-card">
+        <h3>Координаты</h3>
+        <p>{contacts.coordinates.latitude}, {contacts.coordinates.longitude}</p>
+      </article>
+      <article class="card contact-card">
         <h3>Мессенджеры</h3>
         <MessengerButtons compact />
+      </article>
+      <article class="card contact-card">
+        <h3>Перед визитом</h3>
+        <p>Отправьте VIN или фото маркировки стекла, чтобы мастер подготовил варианты заранее.</p>
+      </article>
+      <article class="card contact-card">
+        <h3>Для отзывов</h3>
+        <p><a href="/otzyv/">Ссылки на карты и площадки</a></p>
       </article>
     </div>
   </section>
@@ -49,6 +62,7 @@ import { site } from '@/data/site';
           <h2 class="section__title">Построить маршрут</h2>
           <p class="section__lead">
             Используйте карты или уточните ориентир у мастера перед приездом.
+            После подтверждения записи можно прислать фото въезда, чтобы мы подсказали маршрут точнее.
           </p>
           <div class="cta-row">
             <Button href={contacts.yandexMaps} dataEvent="route_click">Яндекс Карты</Button>
@@ -58,6 +72,8 @@ import { site } from '@/data/site';
       </div>
     </div>
   </section>
+
+  <ServiceSummaryBlock />
 
   <section class="section">
     <div class="container">

@@ -1,5 +1,6 @@
 import { businessHours } from '@/data/business-hours';
 import { contacts } from '@/data/contacts';
+import { pricePackages, prices } from '@/data/prices';
 import { site } from '@/data/site';
 
 const businessId = `${site.domain}/#business`;
@@ -14,6 +15,7 @@ export function organizationSchema() {
     url: site.domain,
     email: site.email,
     telephone: contacts.phone,
+    taxID: site.unp,
   };
 }
 
@@ -41,6 +43,43 @@ export function autoRepairSchema() {
     areaServed: {
       '@type': 'City',
       name: site.city,
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Услуги BelStekloExpert',
+      itemListElement: [
+        ...prices.map((item) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: item.title,
+            url: `${site.domain}${item.url}`,
+          },
+          priceCurrency: 'BYN',
+          price: item.priceFrom,
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            priceCurrency: 'BYN',
+            price: item.priceFrom,
+            description: item.unit,
+          },
+        })),
+        ...pricePackages.map((item) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: `Пакет ${item.title}: автостекло под ключ`,
+          },
+          priceCurrency: 'BYN',
+          price: item.priceFrom,
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            priceCurrency: 'BYN',
+            price: item.priceFrom,
+            description: item.unit,
+          },
+        })),
+      ],
     },
   };
 }

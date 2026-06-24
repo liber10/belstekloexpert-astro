@@ -1,0 +1,114 @@
+---
+import Button from '@/components/common/Button.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { businessHours } from '@/data/business-hours';
+import { contacts } from '@/data/contacts';
+import { site } from '@/data/site';
+import { breadcrumbSchema } from '@/lib/schema';
+
+const facts = [
+  { title: 'Юридическое лицо', text: `${site.legalName}, УНП ${site.unp}` },
+  { title: 'Дата регистрации', text: site.registeredAt },
+  { title: 'Сервисный бокс', text: contacts.address },
+  { title: 'График', text: `${businessHours.short}. ${businessHours.note}` },
+];
+
+const standards = [
+  'подбор стекла по VIN и комплектации',
+  'аккуратный демонтаж с защитой салона',
+  'работа с датчиками, камерой и обогревом',
+  'согласование цены до записи',
+  'рекомендации на первые сутки после замены',
+  'гарантия герметичности шва',
+];
+
+const schema = breadcrumbSchema([
+  { name: 'Главная', url: `${site.domain}/` },
+  { name: 'О компании', url: `${site.domain}/o-kompanii/` },
+]);
+---
+
+<BaseLayout
+  title="О компании BelStekloExpert — автостёкла в Минске"
+  description="Факты о BelStekloExpert: сервисный бокс на Долгиновском тракте, 150, подбор автостёкол по VIN, аккуратная замена и гарантия герметичности."
+  canonical={`${site.domain}/o-kompanii/`}
+  schema={schema}
+>
+  <section class="section section--soft">
+    <div class="container split-section">
+      <div>
+        <p class="section__eyebrow">О компании</p>
+        <h1 class="section__title">Молодой сервис, который делает ставку на аккуратность</h1>
+        <p class="section__lead">
+          BelStekloExpert фокусируется только на автостёклах: замена лобовых,
+          боковых и задних стёкол, ремонт сколов и трещин, подбор по VIN и выезд
+          по Минску, когда условия позволяют выполнить работу безопасно.
+        </p>
+        <div class="cta-row">
+          <Button href="/#vin-form">Рассчитать стекло</Button>
+          <Button href="/kontakty/" variant="quiet">Как добраться</Button>
+        </div>
+      </div>
+      <aside class="card fact-card">
+        {facts.map((fact) => (
+          <div>
+            <span>{fact.title}</span>
+            <strong>{fact.text}</strong>
+          </div>
+        ))}
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow">Стандарт работы</p>
+      <h2 class="section__title">Что должно быть понятно до начала работ</h2>
+      <div class="grid feature-grid">
+        {standards.map((item) => (
+          <article class="card feature-card">
+            <h3>{item}</h3>
+            <p>
+              Объясняем это до записи, чтобы клиент понимал цену, срок и ограничения
+              после ремонта или замены стекла.
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container content-flow">
+      <p class="section__eyebrow">Почему это важно</p>
+      <h2>Автостекло — это не только стекло</h2>
+      <p>
+        В современных автомобилях в стекле могут быть датчики дождя и света,
+        камера ассистентов, обогрев, антенны, разные крепления зеркала и молдинги.
+        Поэтому основной риск — не сама установка, а ошибка в подборе. Мы начинаем
+        с VIN, фото маркировки или уточнения комплектации, а уже потом предлагаем
+        варианты по бюджету.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="map-box">
+        <div class="map-box__visual">{contacts.address}</div>
+        <div class="map-box__content">
+          <p class="section__eyebrow">Маршрут</p>
+          <h2 class="section__title">Бокс на Долгиновском тракте</h2>
+          <p class="section__lead">
+            Перед приездом лучше отправить VIN или фото повреждения: так мастер
+            подготовит варианты стекла и сэкономит время на месте.
+          </p>
+          <div class="cta-row">
+            <Button href={contacts.yandexMaps} dataEvent="route_click">Яндекс Карты</Button>
+            <Button href={contacts.googleMaps} variant="quiet" dataEvent="route_click">Google Maps</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

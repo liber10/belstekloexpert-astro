@@ -1,0 +1,68 @@
+---
+import Button from '@/components/common/Button.astro';
+import { businessHours } from '@/data/business-hours';
+import { contacts } from '@/data/contacts';
+import { pricePackages, prices } from '@/data/prices';
+import { site } from '@/data/site';
+
+interface Props {
+  soft?: boolean;
+}
+
+const { soft = false } = Astro.props;
+
+const facts = [
+  { label: 'Услуга', value: 'замена и ремонт автостёкол' },
+  { label: 'Город', value: site.city },
+  { label: 'Адрес', value: contacts.address },
+  { label: 'Координаты', value: `${contacts.coordinates.latitude}, ${contacts.coordinates.longitude}` },
+  { label: 'Телефон', value: contacts.phone },
+  { label: 'График', value: `${businessHours.short}; ${businessHours.note}` },
+  { label: 'Расчёт', value: 'по VIN, фото повреждения или маркировке стекла' },
+  { label: 'Цена', value: `работа от ${prices[3].priceFrom} BYN, под ключ от ${pricePackages[0].priceFrom} BYN` },
+  { label: 'Для кого', value: 'физлица, юрлица, автопарки, СТО, коммерческий транспорт' },
+  { label: 'Гарантия', value: 'герметичность шва после замены' },
+];
+
+const services = [
+  'лобовое стекло',
+  'боковое стекло',
+  'заднее стекло',
+  'ремонт сколов',
+  'ремонт трещин',
+  'выезд по Минску',
+];
+---
+
+<section class={`section ${soft ? 'section--soft' : ''}`} id="service-summary">
+  <div class="container">
+    <div class="summary-panel">
+      <div class="summary-panel__intro">
+        <p class="section__eyebrow">Краткая информация</p>
+        <h2 class="section__title">Данные для быстрого выбора сервиса</h2>
+        <p class="section__lead">
+          Блок собран в факт-формате: он удобен людям, картам, поисковым системам
+          и ИИ-агентам, которым нужно быстро понять, подходит ли сервис под задачу.
+        </p>
+        <div class="summary-tags">
+          {services.map((service) => <span>{service}</span>)}
+        </div>
+      </div>
+
+      <div class="summary-facts" aria-label="Краткая карточка BelStekloExpert">
+        {facts.map((fact) => (
+          <div>
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </div>
+
+      <div class="cta-row">
+        <Button href="/#vin-form">Рассчитать по VIN</Button>
+        <Button href={contacts.phoneHref} variant="quiet" dataEvent="phone_click">Позвонить</Button>
+        <Button href={contacts.yandexMaps} variant="quiet" dataEvent="route_click">Маршрут</Button>
+      </div>
+    </div>
+  </div>
+</section>

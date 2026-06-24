@@ -1,0 +1,115 @@
+---
+import Button from '@/components/common/Button.astro';
+import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { brands } from '@/data/brands';
+import { pricePackages } from '@/data/prices';
+import { site } from '@/data/site';
+import { breadcrumbSchema, serviceSchema } from '@/lib/schema';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return brands.map((brand) => ({
+    params: { brand: brand.slug },
+    props: { brand },
+  }));
+}
+
+const { brand } = Astro.props;
+const path = `/marki/${brand.slug}/`;
+const canonical = `${site.domain}${path}`;
+const schema = [
+  breadcrumbSchema([
+    { name: 'Главная', url: `${site.domain}/` },
+    { name: 'Марки авто', url: `${site.domain}/marki/` },
+    { name: brand.name, url: canonical },
+  ]),
+  serviceSchema({
+    name: `Замена автостекла ${brand.name}`,
+    description: brand.lead,
+    url: canonical,
+    priceFrom: brand.priceFrom,
+  }),
+];
+---
+
+<BaseLayout
+  title={`Замена автостекла ${brand.name} в Минске — BelStekloExpert`}
+  description={`${brand.lead} Расчёт по VIN, фото или маркировке стекла.`}
+  canonical={canonical}
+  schema={schema}
+>
+  <section class="section section--soft">
+    <div class="container split-section">
+      <div>
+        <p class="section__eyebrow">Марка авто</p>
+        <h1 class="section__title">Замена автостекла {brand.name} в Минске</h1>
+        <p class="section__lead">{brand.lead}</p>
+        <div class="cta-row">
+          <Button href="#brand-form">Рассчитать по VIN</Button>
+          <Button href="/marki/" variant="quiet">Все марки</Button>
+        </div>
+      </div>
+      <aside class="card service-metrics">
+        <div>
+          <span>Ориентир под ключ</span>
+          <strong>от {brand.priceFrom} BYN</strong>
+        </div>
+        <p>Точная цена зависит от стекла, года, кузова, датчиков, камеры, обогрева и наличия.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow">Модели</p>
+      <h2 class="section__title">Частые модели {brand.name}</h2>
+      <div class="grid model-grid">
+        {brand.models.map((model) => (
+          <a class="card model-card" href={`/marki/${brand.slug}/${model.slug}/`}>
+            <h3>{model.name}</h3>
+            <p>Лобовое, боковое, заднее стекло, ремонт скола или трещины.</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <p class="section__eyebrow">На что смотрим</p>
+      <h2 class="section__title">Что уточняем перед заказом стекла</h2>
+      <div class="grid feature-grid">
+        {brand.notes.map((note) => (
+          <article class="card feature-card">
+            <h3>{note}</h3>
+            <p>Это помогает избежать ошибки в стекле и назвать честную цену до записи.</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow">Пакеты</p>
+      <h2 class="section__title">Можно подобрать вариант под бюджет</h2>
+      <div class="grid package-grid">
+        {pricePackages.map((item) => (
+          <article class="card package-card">
+            <p class="package-card__label">{item.title}</p>
+            <h3>от {item.priceFrom} {item.unit}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="brand-form">
+    <div class="container">
+      <VinPhotoForm title={`Рассчитать стекло ${brand.name}`} service={`Марка ${brand.name}`} />
+    </div>
+  </section>
+</BaseLayout>

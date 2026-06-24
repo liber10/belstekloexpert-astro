@@ -1,20 +1,8 @@
 ---
 import SectionTitle from '@/components/common/SectionTitle.astro';
+import { getCollection } from 'astro:content';
 
-const cases = [
-  {
-    title: 'Volkswagen Passat',
-    text: 'Трещина в зоне обзора. Подбор по VIN, стекло с датчиком дождя, замена в день обращения.',
-  },
-  {
-    title: 'Skoda Octavia',
-    text: 'Скол после трассы. Оценка по фото, ремонт без полной замены стекла.',
-  },
-  {
-    title: 'Renault Master',
-    text: 'Коммерческий автомобиль. Согласовали окно записи, чтобы машина не простаивала.',
-  },
-];
+const cases = (await getCollection('cases')).slice(0, 3);
 ---
 
 <section class="section">
@@ -22,13 +10,14 @@ const cases = [
     <SectionTitle
       eyebrow="Кейсы"
       title="Типовые ситуации, с которыми приезжают в бокс"
-      lead="На старте используем рабочие сценарии. Реальные фото и истории можно добавить после съёмки сервиса."
+      lead="Кейсы помогают быстро понять, когда стекло можно спасти ремонтом, а когда лучше не тянуть с заменой."
     />
     <div class="grid case-grid">
       {cases.map((item) => (
         <article class="card case-card">
-          <h3>{item.title}</h3>
-          <p>{item.text}</p>
+          <h3>{item.data.title}</h3>
+          <p>{item.data.service} · {item.data.duration} · {item.data.price}</p>
+          <small>{item.body}</small>
         </article>
       ))}
     </div>

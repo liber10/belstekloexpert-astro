@@ -24,4 +24,14 @@ import { site } from '@/data/site';
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    (() => {
+      window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const leadId = params.get('leadId') || undefined;
+        window.bseTrack?.('lead_success', { lead_id: leadId });
+      });
+    })();
+  </script>
 </BaseLayout>

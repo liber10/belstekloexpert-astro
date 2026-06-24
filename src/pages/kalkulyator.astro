@@ -1,5 +1,6 @@
 ---
 import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import PricePackages from '@/components/sections/PricePackages.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
 ---
@@ -14,7 +15,20 @@ import { site } from '@/data/site';
       <p class="section__eyebrow">Расчёт</p>
       <h1 class="section__title">Калькулятор стоимости автостекла</h1>
       <p class="section__lead">
-        Первая версия работает как расширенная заявка. Пошаговый React-калькулятор можно добавить следующим спринтом.
+        Быстрый расчёт работает через VIN, фото маркировки или параметры автомобиля.
+        Мастер видит заявку в Telegram, уточняет стекло и возвращает цену с учётом опций.
+      </p>
+    </div>
+  </section>
+  <PricePackages showExamples={false} />
+  <section class="section section--soft">
+    <div class="container content-flow">
+      <p class="section__eyebrow">Что ускорит расчёт</p>
+      <h2>Лучше отправить VIN и фото повреждения</h2>
+      <p>
+        VIN помогает подобрать стекло без ошибки, а фото показывает, можно ли ремонтировать
+        скол или трещину без полной замены. Большие JPG, PNG и WebP автоматически
+        сжимаются перед отправкой.
       </p>
     </div>
   </section>

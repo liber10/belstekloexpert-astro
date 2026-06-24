@@ -1,11 +1,14 @@
 ---
 import FinalCTA from '@/components/sections/FinalCTA.astro';
 import FAQBlock from '@/components/sections/FAQBlock.astro';
+import BrandTeaser from '@/components/sections/BrandTeaser.astro';
 import Hero from '@/components/sections/Hero.astro';
 import MapBlock from '@/components/sections/MapBlock.astro';
-import PricePreview from '@/components/sections/PricePreview.astro';
+import PricePackages from '@/components/sections/PricePackages.astro';
+import ProofBlock from '@/components/sections/ProofBlock.astro';
 import ProcessSteps from '@/components/sections/ProcessSteps.astro';
-import ReviewsBlock from '@/components/sections/ReviewsBlock.astro';
+import ReviewRequestBlock from '@/components/sections/ReviewRequestBlock.astro';
+import ServiceSummaryBlock from '@/components/sections/ServiceSummaryBlock.astro';
 import ServiceCards from '@/components/sections/ServiceCards.astro';
 import TrustBlock from '@/components/sections/TrustBlock.astro';
 import CasesGrid from '@/components/sections/CasesGrid.astro';
@@ -23,11 +26,14 @@ import { site } from '@/data/site';
     </div>
   </section>
   <TrustBlock />
+  <ProofBlock />
   <ProcessSteps />
-  <PricePreview />
+  <PricePackages soft />
+  <BrandTeaser />
   <CasesGrid />
-  <ReviewsBlock />
+  <ReviewRequestBlock />
   <FAQBlock />
+  <ServiceSummaryBlock soft />
   <MapBlock />
   <FinalCTA />
 </BaseLayout>

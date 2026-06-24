@@ -1,6 +1,8 @@
 export const site = {
   name: 'BelStekloExpert',
-  legalName: 'BelStekloExpert',
+  legalName: 'ООО «БелСтеклоЭксперт»',
+  unp: '193845742',
+  registeredAt: '24 февраля 2025',
   city: 'Минск',
   address: 'Долгиновский тракт, 150',
   phone: '+375 33 682-81-35',

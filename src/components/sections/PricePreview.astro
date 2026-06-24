@@ -1,7 +1,7 @@
 ---
 import Button from '@/components/common/Button.astro';
 import SectionTitle from '@/components/common/SectionTitle.astro';
-import { prices, priceNote } from '@/data/prices';
+import { prices, priceNote, pricePackages } from '@/data/prices';
 ---
 
 <section class="section section--soft" id="prices">
@@ -11,6 +11,15 @@ import { prices, priceNote } from '@/data/prices';
       title="Стартовые цены для ориентира"
       lead={priceNote}
     />
+    <div class="grid package-grid package-grid--compact">
+      {pricePackages.map((item) => (
+        <a class="card package-card" href="/kalkulyator/" data-event={item.eventName}>
+          <p class="package-card__label">{item.title}</p>
+          <h3>от {item.priceFrom} {item.unit}</h3>
+          <p>{item.text}</p>
+        </a>
+      ))}
+    </div>
     <div class="grid price-grid">
       {prices.map((item) => (
         <a class="card price-card" href={item.url}>

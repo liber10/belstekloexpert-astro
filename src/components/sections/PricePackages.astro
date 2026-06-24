@@ -1,0 +1,71 @@
+---
+import Button from '@/components/common/Button.astro';
+import SectionTitle from '@/components/common/SectionTitle.astro';
+import { popularPriceExamples, priceFactors, pricePackages } from '@/data/prices';
+
+interface Props {
+  soft?: boolean;
+  showExamples?: boolean;
+}
+
+const { soft = false, showExamples = true } = Astro.props;
+---
+
+<section class={`section ${soft ? 'section--soft' : ''}`} id="price-packages">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Под ключ"
+      title="Три уровня цены вместо тумана"
+      lead="Итоговая сумма складывается из стекла, работы и опций автомобиля. Поэтому показываем ориентиры пакетами, а точную цену считаем по VIN или фото маркировки."
+    />
+
+    <div class="grid package-grid">
+      {pricePackages.map((item) => (
+        <article class="card package-card">
+          <div>
+            <p class="package-card__label">{item.title}</p>
+            <h3>от {item.priceFrom} {item.unit}</h3>
+            <p>{item.text}</p>
+          </div>
+          <ul class="check-list">
+            {item.includes.map((include) => <li>{include}</li>)}
+          </ul>
+          <a class="button button--quiet" href="/kalkulyator/" data-event={item.eventName}>
+            Рассчитать пакет
+          </a>
+        </article>
+      ))}
+    </div>
+
+    {showExamples && (
+      <div class="price-examples">
+        <div>
+          <h3>Примеры ориентиров</h3>
+          <p>
+            Это не публичная “фиксированная цена”, а быстрый коридор для популярных машин.
+            Окончательно сверяем стекло по VIN, году и опциям.
+          </p>
+        </div>
+        <div class="price-table" role="table" aria-label="Примеры цен на автостёкла">
+          {popularPriceExamples.map((item) => (
+            <div class="price-table__row" role="row">
+              <strong role="cell">{item.car}</strong>
+              <span role="cell">{item.glass}</span>
+              <b role="cell">{item.range}</b>
+              <small role="cell">{item.note}</small>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="factor-strip" aria-label="Что влияет на стоимость">
+      {priceFactors.map((factor) => <span>{factor}</span>)}
+    </div>
+
+    <div class="cta-row">
+      <Button href="/kalkulyator/" dataEvent="calculator_click">Рассчитать по VIN</Button>
+      <Button href="/ceny/" variant="quiet">Все стартовые цены</Button>
+    </div>
+  </div>
+</section>

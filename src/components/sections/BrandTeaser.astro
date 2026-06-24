@@ -1,0 +1,30 @@
+---
+import Button from '@/components/common/Button.astro';
+import SectionTitle from '@/components/common/SectionTitle.astro';
+import { brands } from '@/data/brands';
+
+const visibleBrands = brands.slice(0, 8);
+---
+
+<section class="section section--soft" id="brands">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Марки авто"
+      title="Посадочные страницы под частые модели"
+      lead="Для автостекла важны не только марка и модель, но и год, кузов, датчики, камера, обогрев и молдинги. Поэтому каждую популярную марку ведём к расчёту по VIN."
+    />
+    <div class="grid brand-grid">
+      {visibleBrands.map((brand) => (
+        <a class="card brand-card" href={`/marki/${brand.slug}/`}>
+          <h3>{brand.name}</h3>
+          <p>от {brand.priceFrom} BYN под ключ</p>
+          <span>{brand.models.map((model) => model.name).join(' · ')}</span>
+        </a>
+      ))}
+    </div>
+    <div class="cta-row">
+      <Button href="/marki/">Все марки</Button>
+      <Button href="/#vin-form" variant="quiet">Не нашли модель</Button>
+    </div>
+  </div>
+</section>

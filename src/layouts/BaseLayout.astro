@@ -51,7 +51,9 @@ const schemas = Array.isArray(schema) ? [...baseSchema, ...schema] : schema ? [.
     <meta property="og:image" content={absoluteImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#0d5f56" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico?v=2" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM summary" />
 
     {gtmId && (
       <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -102,12 +104,28 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
     <Footer />
     <StickyCallBar />
 
-    <script is:inline>
+    <script is:inline define:vars={{ yandexMetrikaId: ymId }}>
       (() => {
         const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
         const storageKey = 'belstekloexpert_utm';
         const params = new URLSearchParams(window.location.search);
+        const ymCounterId = Number(yandexMetrikaId);
         let saved = {};
+
+        window.bseTrack = (eventName, eventParams = {}) => {
+          if (!eventName) return;
+
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: eventName, ...eventParams });
+
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', eventName, eventParams);
+          }
+
+          if (Number.isFinite(ymCounterId) && ymCounterId > 0 && typeof window.ym === 'function') {
+            window.ym(ymCounterId, 'reachGoal', eventName, eventParams);
+          }
+        };
 
         try {
           saved = JSON.parse(window.localStorage.getItem(storageKey) || '{}');
@@ -142,9 +160,23 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
             event.target instanceof Element ? event.target.closest('[data-event]') : null;
           if (!target) return;
           const eventName = target.getAttribute('data-event');
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: eventName });
-          if (typeof window.gtag === 'function') window.gtag('event', eventName);
+          window.bseTrack(eventName, {
+            event_url: target instanceof HTMLAnchorElement ? target.href : window.location.href,
+            event_text: target.textContent?.trim().slice(0, 80) || undefined,
+          });
+        });
+
+        document.addEventListener('change', (event) => {
+          const input = event.target instanceof HTMLInputElement ? event.target : null;
+          if (!input || input.type !== 'file') return;
+
+          const files = Array.from(input.files || []);
+          if (!files.length) return;
+
+          window.bseTrack('photo_select', {
+            photo_count: files.length,
+            total_bytes: files.reduce((sum, file) => sum + file.size, 0),
+          });
         });
 
         document.addEventListener('submit', (event) => {
@@ -172,9 +204,9 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
           }
 
           const eventName = form.getAttribute('data-submit-event') || 'service_lead_submit';
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: eventName });
-          if (typeof window.gtag === 'function') window.gtag('event', eventName);
+          window.bseTrack(eventName, {
+            form_service: form.querySelector('[name="service"]')?.value || 'unknown',
+          });
         });
       })();
     </script>
