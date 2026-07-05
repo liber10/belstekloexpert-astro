@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "check": "astro check",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "prices:update": "node scripts/update-glass-prices.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^7.0.13",

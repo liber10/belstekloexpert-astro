@@ -28,7 +28,7 @@ The workshop opened in 2025. Its technicians have 18 years of practical auto gla
 - Crack repair
 - Mobile service in Minsk when conditions allow safe installation
 - Auto glass selection by VIN, photo, or glass marking
-- Model-based online estimate with immediate indicative price
+- Model-based online estimate with immediate indicative price in BYN
 - VIN request for manual precise selection by a specialist
 - Services for passenger cars, Tesla, minibuses, passenger transport, trucks, special machinery, excavators, cranes, fleets, taxi, delivery, body shops, and service stations
 
@@ -40,7 +40,6 @@ The workshop opened in 2025. Its technicians have 18 years of practical auto gla
 - Crack repair: from 35 BYN
 - Mobile service in Minsk: from 20 BYN
 - Turnkey auto glass packages: from 220 BYN
-- Installation work in the model calculator: 50 USD
 
 Final price depends on make, model, year, glass type, heating, camera, rain sensor, ADAS options, molding, consumables, availability, and installation conditions.
 

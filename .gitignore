@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 .netlify/
+.private/
 .env
 .env.local
 npm-debug.log*

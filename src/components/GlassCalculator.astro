@@ -1,7 +1,18 @@
 ---
 import prices from '../data/glass-prices.json';
 
-const dataJson = JSON.stringify(prices);
+const USD_TO_BYN_RATE = 3;
+const INSTALLATION_WORK_USD = 50;
+
+const calculatorPrices = prices.map((item) => ({
+  id: item.id,
+  name: item.name,
+  eurocode: item.eurocode,
+  years: item.years,
+  totalPriceByn: Math.round((Number(item.glassPriceUsd) + INSTALLATION_WORK_USD) * USD_TO_BYN_RATE),
+}));
+
+const dataJson = JSON.stringify(calculatorPrices);
 ---
 
 <section class="section section--soft glass-calculator" id="calculator" aria-labelledby="glass-calculator-title">
@@ -68,36 +79,6 @@ const dataJson = JSON.stringify(prices);
         <div class="glass-calculator__range" data-range-summary hidden>
           <span>Ориентировочная стоимость с установкой</span>
           <strong data-range-price></strong>
-          <small data-range-meta></small>
-        </div>
-
-        <div class="glass-calculator__results" data-results hidden></div>
-
-        <div class="glass-calculator__summary" data-summary hidden>
-          <div>
-            <span>Выбранное стекло</span>
-            <strong data-selected-name></strong>
-            <small data-selected-meta></small>
-          </div>
-
-          <dl>
-            <div>
-              <dt>Стекло</dt>
-              <dd data-glass-price></dd>
-            </div>
-            <div>
-              <dt>Работа</dt>
-              <dd data-work-price></dd>
-            </div>
-            <div class="glass-calculator__total-row">
-              <dt>Итого ориентировочно</dt>
-              <dd data-total-price></dd>
-            </div>
-          </dl>
-
-          <a class="glass-calculator__cta" href="#contacts">
-            Уточнить наличие и записаться
-          </a>
         </div>
       </div>
 
@@ -191,8 +172,7 @@ const dataJson = JSON.stringify(prices);
 
     if (!root || !source) return;
 
-    const WORK_PRICE_USD = 50;
-    const MAX_RESULTS = 30;
+    const MAX_MATCHES = 30;
     const prices = JSON.parse(source.textContent || '[]');
 
     const modeButtons = [...root.querySelectorAll('[data-mode-button]')];
@@ -201,25 +181,27 @@ const dataJson = JSON.stringify(prices);
     const search = root.querySelector('[data-search]');
     const clearButton = root.querySelector('[data-clear]');
     const helper = root.querySelector('[data-helper]');
-    const results = root.querySelector('[data-results]');
     const rangeSummary = root.querySelector('[data-range-summary]');
     const rangePrice = root.querySelector('[data-range-price]');
-    const rangeMeta = root.querySelector('[data-range-meta]');
-    const summary = root.querySelector('[data-summary]');
-    const selectedName = root.querySelector('[data-selected-name]');
-    const selectedMeta = root.querySelector('[data-selected-meta]');
-    const glassPrice = root.querySelector('[data-glass-price]');
-    const workPrice = root.querySelector('[data-work-price]');
-    const totalPrice = root.querySelector('[data-total-price]');
 
     const vinForm = root.querySelector('[data-vin-form]');
     const vinInput = root.querySelector('[data-vin-input]');
     const vinHelper = root.querySelector('[data-vin-helper]');
     const vinDecoded = root.querySelector('[data-vin-decoded]');
 
-    const formatUsd = (value) => `$${Number(value).toLocaleString('en-US', {
-      maximumFractionDigits: Number.isInteger(value) ? 0 : 2,
-    })}`;
+    const formatBynNumber = (value) => Math.round(Number(value)).toLocaleString('ru-RU');
+
+    const formatBynLabel = (value) => `${formatBynNumber(value)} белорусских рублей`;
+
+    const formatBynHtml = (value) => {
+      const label = formatBynLabel(value);
+      return `
+        <span class="glass-calculator__currency" aria-label="${label}">
+          <span>${formatBynNumber(value)}</span>
+          <span class="glass-calculator__currency-icon" aria-hidden="true"></span>
+        </span>
+      `;
+    };
 
     const BRAND_ALIASES = {
       'ауди': 'audi',
@@ -426,23 +408,12 @@ const dataJson = JSON.stringify(prices);
       return searchablePrices
         .map((item) => ({ item, score: scoreItem(item, tokens, query, years) }))
         .filter((entry) => entry.score >= 0)
-        .sort((a, b) => b.score - a.score || a.item.glassPriceUsd - b.item.glassPriceUsd)
-        .slice(0, MAX_RESULTS)
+        .sort((a, b) => b.score - a.score || a.item.totalPriceByn - b.item.totalPriceByn)
+        .slice(0, MAX_MATCHES)
         .map((entry) => entry.item);
     };
 
-    const escapeHtml = (value) => {
-      return String(value || '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-    };
-
     const renderEmpty = (message) => {
-      results.hidden = true;
-      results.innerHTML = '';
       rangeSummary.hidden = true;
       helper.textContent = message;
     };
@@ -453,55 +424,25 @@ const dataJson = JSON.stringify(prices);
         return;
       }
 
-      const totals = items.map((item) => Number(item.glassPriceUsd) + WORK_PRICE_USD);
+      const totals = items.map((item) => Number(item.totalPriceByn));
       const min = Math.min(...totals);
       const max = Math.max(...totals);
 
-      rangePrice.textContent = min === max
-        ? formatUsd(min)
-        : `${formatUsd(min)} – ${formatUsd(max)}`;
-      rangeMeta.textContent = `Найдено вариантов: ${items.length}${items.length === MAX_RESULTS ? '+' : ''}. Работа включена: ${formatUsd(WORK_PRICE_USD)}.`;
+      rangePrice.innerHTML = min === max
+        ? formatBynHtml(min)
+        : `${formatBynHtml(min)} <span class="glass-calculator__range-dash">–</span> ${formatBynHtml(max)}`;
+      rangePrice.setAttribute('aria-label', min === max ? formatBynLabel(min) : `${formatBynLabel(min)} – ${formatBynLabel(max)}`);
       rangeSummary.hidden = false;
     };
 
-    const renderResults = (items) => {
+    const renderMatches = (items) => {
       if (!items.length) {
         renderEmpty('Ничего не найдено. Попробуйте марку + модель + год или еврокод. Для точного подбора отправьте VIN.');
         return;
       }
 
-      helper.textContent = 'Выберите позицию, если знаете комплектацию стекла. Если не уверены — отправьте VIN на ручной подбор.';
+      helper.textContent = 'Показан ориентировочный диапазон с установкой. Для точного подбора по комплектации отправьте VIN.';
       renderRange(items);
-      results.hidden = false;
-      results.innerHTML = items.map((item) => {
-        const meta = [item.years, item.eurocode].filter(Boolean).join(' · ');
-        const total = Number(item.glassPriceUsd) + WORK_PRICE_USD;
-        return `
-          <button class="glass-calculator__result" type="button" data-id="${item.id}">
-            <span>
-              <strong>${escapeHtml(item.name)}</strong>
-              <small>${escapeHtml(meta)}</small>
-            </span>
-            <b>${formatUsd(total)}</b>
-          </button>
-        `;
-      }).join('');
-    };
-
-    const selectItem = (item) => {
-      const glass = Number(item.glassPriceUsd);
-      const total = glass + WORK_PRICE_USD;
-      const meta = [item.years, item.eurocode].filter(Boolean).join(' · ');
-
-      selectedName.textContent = item.name;
-      selectedMeta.textContent = meta;
-      glassPrice.textContent = formatUsd(glass);
-      workPrice.textContent = formatUsd(WORK_PRICE_USD);
-      totalPrice.textContent = formatUsd(total);
-      summary.hidden = false;
-
-      search.value = item.name;
-      helper.textContent = 'Расчёт готов. Для точной записи уточните наличие стекла.';
     };
 
     const handleSearch = () => {
@@ -509,7 +450,6 @@ const dataJson = JSON.stringify(prices);
 
       if (/^[A-HJ-NPR-Z0-9]{17}$/.test(cleanedVin)) {
         renderEmpty('Это похоже на VIN. Для VIN используйте вкладку «Подбор по VIN» — цена по нему не рассчитывается автоматически.');
-        summary.hidden = true;
         return;
       }
 
@@ -517,13 +457,11 @@ const dataJson = JSON.stringify(prices);
 
       if (!tokens.length) {
         renderEmpty('Начните вводить марку или модель. Один год без модели не даст полезный расчёт.');
-        summary.hidden = true;
         return;
       }
 
       const found = findMatches({ query, tokens, years });
-      summary.hidden = true;
-      renderResults(found);
+      renderMatches(found);
     };
 
     const setMode = (mode) => {
@@ -580,17 +518,8 @@ const dataJson = JSON.stringify(prices);
 
     clearButton.addEventListener('click', () => {
       search.value = '';
-      summary.hidden = true;
       renderEmpty('Начните вводить марку, модель и год выпуска. Двигатель можно не указывать.');
       search.focus();
-    });
-
-    results.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-id]');
-      if (!button) return;
-
-      const item = searchablePrices.find((entry) => String(entry.id) === button.dataset.id);
-      if (item) selectItem(item);
     });
 
     vinInput.addEventListener('input', updateVinState);
@@ -602,7 +531,6 @@ const dataJson = JSON.stringify(prices);
       }
     });
 
-    workPrice.textContent = formatUsd(WORK_PRICE_USD);
   })();
 </script>
 
@@ -774,130 +702,42 @@ const dataJson = JSON.stringify(prices);
     border: 1px solid var(--line);
   }
 
-  .glass-calculator__range span,
-  .glass-calculator__range small {
+  .glass-calculator__range span {
     display: block;
     color: var(--green-dark);
   }
 
   .glass-calculator__range strong {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
     margin-top: 6px;
     font-size: clamp(26px, 4vw, 38px);
     line-height: 1;
     color: var(--ink);
   }
 
-  .glass-calculator__range small {
-    margin-top: 8px;
-    line-height: 1.45;
-  }
-
-  .glass-calculator__results {
-    margin-top: 12px;
-    max-height: 380px;
-    overflow: auto;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--white);
-  }
-
-  .glass-calculator__result {
-    width: 100%;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    border: 0;
-    border-bottom: 1px solid var(--line);
-    background: transparent;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .glass-calculator__result:last-child {
-    border-bottom: 0;
-  }
-
-  .glass-calculator__result:hover,
-  .glass-calculator__result:focus-visible {
-    background: var(--blue-soft);
-  }
-
-  .glass-calculator__result strong {
-    display: block;
-    color: var(--ink);
-    font-size: 15px;
-    line-height: 1.35;
-  }
-
-  .glass-calculator__result small {
-    display: block;
-    margin-top: 4px;
-    color: var(--muted);
-    line-height: 1.35;
-  }
-
-  .glass-calculator__result b {
-    flex: 0 0 auto;
-    color: var(--green);
+  .glass-calculator__currency {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.12em;
+    color: inherit;
     white-space: nowrap;
   }
 
-  .glass-calculator__summary {
-    margin-top: 18px;
-    padding: 20px;
-    border-radius: 8px;
-    background: var(--green-dark);
-    color: var(--white);
+  .glass-calculator__currency-icon {
+    display: inline-block;
+    width: 0.46em;
+    height: 0.6em;
+    background: currentColor;
+    transform: translateY(0.04em);
+    -webkit-mask: url('/byn-ico.svg') center / contain no-repeat;
+    mask: url('/byn-ico.svg') center / contain no-repeat;
   }
 
-  .glass-calculator__summary span,
-  .glass-calculator__summary dt,
-  .glass-calculator__summary small {
-    color: rgba(255, 255, 255, 0.68);
-  }
-
-  .glass-calculator__summary strong {
-    display: block;
-    margin-top: 6px;
-    font-size: 18px;
-    line-height: 1.35;
-  }
-
-  .glass-calculator__summary small {
-    display: block;
-    margin-top: 6px;
-  }
-
-  .glass-calculator__summary dl {
-    margin: 18px 0 0;
-  }
-
-  .glass-calculator__summary dl > div {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 10px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-  }
-
-  .glass-calculator__summary dt,
-  .glass-calculator__summary dd {
-    margin: 0;
-  }
-
-  .glass-calculator__summary dd {
-    font-weight: 700;
-  }
-
-  .glass-calculator__total-row {
-    font-size: 20px;
-  }
-
-  .glass-calculator__total-row dd {
-    color: var(--amber);
+  .glass-calculator__range-dash {
+    color: var(--ink);
   }
 
   .glass-calculator__cta {
@@ -949,10 +789,5 @@ const dataJson = JSON.stringify(prices);
       grid-template-columns: 1fr;
     }
 
-    .glass-calculator__result {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 8px;
-    }
   }
 </style>
