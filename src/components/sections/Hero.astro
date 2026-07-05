@@ -6,22 +6,23 @@ import { contacts } from '@/data/contacts';
 <section class="hero">
   <div class="container hero__inner">
     <div class="hero__content">
-      <p class="hero__kicker">Минск · Долгиновский тракт, 150 · ответ за 5–10 минут</p>
+      <p class="hero__kicker">Минск · мастерская 2025 года · 18 лет практики у мастеров</p>
       <h1>Замена и ремонт автостёкол в Минске</h1>
       <p class="hero__lead">
-        Подберём стекло по VIN, заранее объясним цену с учётом датчиков и опций,
-        аккуратно защитим салон и дадим понятную гарантию герметичности.
+        Рассчитайте ориентировочную стоимость по марке и модели или отправьте VIN
+        для точного подбора специалистом. Работаем с легковыми авто, Tesla,
+        пассажирским, грузовым и специальным транспортом.
       </p>
       <div class="hero__actions">
-        <Button href="#vin-form">Узнать цену по VIN</Button>
-        <Button href="#vin-form" variant="secondary">Отправить фото повреждения</Button>
+        <Button href="#calculator">Рассчитать по модели</Button>
+        <Button href="#calculator" variant="secondary">Подбор по VIN</Button>
         <Button href={contacts.phoneHref} variant="secondary" dataEvent="phone_click">Позвонить</Button>
       </div>
       <div class="hero__trust" aria-label="Стартовые цены">
         <span>Под ключ от 220 BYN</span>
         <span>Ремонт скола от 40 BYN</span>
-        <span>Датчики и камера по VIN</span>
-        <span>Чистый салон после работ</span>
+        <span>Установка стекла: $50</span>
+        <span>Легковые, грузовые, спецтехника</span>
       </div>
     </div>
   </div>

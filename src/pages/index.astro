@@ -1,4 +1,6 @@
 ---
+import AboutSection from '@/components/AboutSection.astro';
+import GlassCalculator from '@/components/GlassCalculator.astro';
 import FinalCTA from '@/components/sections/FinalCTA.astro';
 import FAQBlock from '@/components/sections/FAQBlock.astro';
 import BrandTeaser from '@/components/sections/BrandTeaser.astro';
@@ -12,7 +14,6 @@ import ServiceSummaryBlock from '@/components/sections/ServiceSummaryBlock.astro
 import ServiceCards from '@/components/sections/ServiceCards.astro';
 import TrustBlock from '@/components/sections/TrustBlock.astro';
 import CasesGrid from '@/components/sections/CasesGrid.astro';
-import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
 ---
@@ -20,12 +21,9 @@ import { site } from '@/data/site';
 <BaseLayout title={site.defaultTitle} description={site.defaultDescription} canonical={`${site.domain}/`}>
   <Hero />
   <ServiceCards />
-  <section class="section section--soft">
-    <div class="container">
-      <VinPhotoForm />
-    </div>
-  </section>
+  <GlassCalculator />
   <TrustBlock />
+  <AboutSection />
   <ProofBlock />
   <ProcessSteps />
   <PricePackages soft />

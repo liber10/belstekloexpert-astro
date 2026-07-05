@@ -1,5 +1,5 @@
 ---
-import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import GlassCalculator from '@/components/GlassCalculator.astro';
 import PricePackages from '@/components/sections/PricePackages.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
@@ -20,6 +20,7 @@ import { site } from '@/data/site';
       </p>
     </div>
   </section>
+  <GlassCalculator />
   <PricePackages showExamples={false} />
   <section class="section section--soft">
     <div class="container content-flow">
@@ -30,11 +31,6 @@ import { site } from '@/data/site';
         скол или трещину без полной замены. Большие JPG, PNG и WebP автоматически
         сжимаются перед отправкой.
       </p>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <VinPhotoForm title="Рассчитать стоимость" service="Калькулятор" />
     </div>
   </section>
 </BaseLayout>

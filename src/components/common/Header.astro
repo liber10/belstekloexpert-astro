@@ -21,7 +21,7 @@ import { site } from '@/data/site';
       <a class="phone-link" href={contacts.phoneHref} data-event="phone_click">
         {contacts.phone}
       </a>
-      <Button href="/#vin-form" variant="quiet">Узнать цену</Button>
+      <Button href="/#calculator" variant="quiet">Узнать цену</Button>
       <button
         class="menu-toggle"
         type="button"
@@ -37,7 +37,7 @@ import { site } from '@/data/site';
   <nav class="mobile-nav" aria-label="Мобильная навигация" data-mobile-nav>
     {mainNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
     <a href={contacts.phoneHref} data-event="phone_click">Позвонить: {contacts.phone}</a>
-    <Button href="/#vin-form">Узнать цену за 5–10 минут</Button>
+    <Button href="/#calculator">Узнать цену за 5–10 минут</Button>
     <MessengerButtons compact />
   </nav>
 </header>

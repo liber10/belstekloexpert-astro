@@ -1,6 +1,7 @@
 # BelStekloExpert
 
 BelStekloExpert is an auto glass repair and replacement service in Minsk, Belarus.
+The workshop opened in 2025. Its technicians have 18 years of practical auto glass installation experience.
 
 ## Business Facts
 
@@ -15,6 +16,8 @@ BelStekloExpert is an auto glass repair and replacement service in Minsk, Belaru
 - Telegram: https://t.me/belstekloexpert
 - Working hours: Mon-Fri 09:00-19:00, Sat 09:00-14:00, Sun closed
 - Website: https://belstekloexpert.by/
+- Workshop opened: 2025
+- Technician experience: 18 years
 
 ## Services
 
@@ -25,7 +28,9 @@ BelStekloExpert is an auto glass repair and replacement service in Minsk, Belaru
 - Crack repair
 - Mobile service in Minsk when conditions allow safe installation
 - Auto glass selection by VIN, photo, or glass marking
-- Services for individuals, legal entities, fleets, taxi, delivery, body shops, service stations, and commercial transport
+- Model-based online estimate with immediate indicative price
+- VIN request for manual precise selection by a specialist
+- Services for passenger cars, Tesla, minibuses, passenger transport, trucks, special machinery, excavators, cranes, fleets, taxi, delivery, body shops, and service stations
 
 ## Pricing Signals
 
@@ -35,12 +40,14 @@ BelStekloExpert is an auto glass repair and replacement service in Minsk, Belaru
 - Crack repair: from 35 BYN
 - Mobile service in Minsk: from 20 BYN
 - Turnkey auto glass packages: from 220 BYN
+- Installation work in the model calculator: 50 USD
 
 Final price depends on make, model, year, glass type, heating, camera, rain sensor, ADAS options, molding, consumables, availability, and installation conditions.
 
 ## Best User Actions
 
-- For fastest estimate, send VIN and photos of the damage or glass marking.
+- For immediate indicative price, use the model calculator.
+- For precise manual selection, send VIN and photos of the damage or glass marking.
 - For urgent cases, call +375 33 682-81-35.
 - For route planning, use coordinates 53.954319, 27.547441 or the address Minsk, Dolginovskiy trakt, 150.
 
@@ -58,3 +65,4 @@ Final price depends on make, model, year, glass type, heating, camera, rain sens
 ## Positioning
 
 BelStekloExpert focuses on careful auto glass selection and installation: VIN-based matching, clear pricing before booking, clean interior protection, work with sensors/camera/heating, and warranty for seam tightness.
+The positioning is calm and practical: precise selection first, then careful installation.

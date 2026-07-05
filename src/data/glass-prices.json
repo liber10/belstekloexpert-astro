@@ -1,0 +1,8017 @@
+[
+  {
+    "id": 1,
+    "name": "ALFA ROMEO GIULIA SEDAN 2016-23 (Small 1Z)",
+    "eurocode": "2048AGACMVZ-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 2,
+    "name": "ALFA ROMEO 147 HBK 2000-10 (CP)",
+    "eurocode": "2037AGNBL-XYG",
+    "years": "2000-2010",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 3,
+    "name": "ALFA ROMEO 156 SED 1997-05",
+    "eurocode": "2034AGNGN-KMK",
+    "years": "1997-2005",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 4,
+    "name": "ALFA ROMEO 156 SEDAN 1997-05",
+    "eurocode": "2034AGNGN-XYG",
+    "years": "1997-2005",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 5,
+    "name": "ALFA ROMEO STELVIO SUV 2017-24 (Small 1Z)",
+    "eurocode": "2049AGNCMVZ-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 6,
+    "name": "AUDI 100 C4 1990-93 /A6 1994-97",
+    "eurocode": "8540AGNBL-XYG",
+    "years": "1990-1997",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 7,
+    "name": "AUDI 100 C4 1990-93 /A6 1994-97",
+    "eurocode": "8540AGNGN-KMK",
+    "years": "1990-1997",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 8,
+    "name": "AUDI 100 C4 1990-93 /A6 1994-97 (левое, опускное, зад)",
+    "eurocode": "8540LGNS4RD-NG",
+    "years": "1990-1997",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 9,
+    "name": "AUDI 100 C4 1990-93 /A6 1994-97 (правое, опускное, зад)",
+    "eurocode": "8540RGNS4RD-NG",
+    "years": "1990-1997",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 10,
+    "name": "AUDI 100 SED/WAGON 1982-91 (M/B#004)",
+    "eurocode": "8532AGNBL-XYG",
+    "years": "1982-1991",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 11,
+    "name": "AUDI 80 4D SEDAN 1978-86",
+    "eurocode": "8526AGNGN-KMK",
+    "years": "1978-1986",
+    "glassPriceUsd": 41
+  },
+  {
+    "id": 12,
+    "name": "AUDI 80 4D SEDAN 1987-95",
+    "eurocode": "8534AGNBLV-XYG",
+    "years": "1987-1995",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 13,
+    "name": "AUDI 80 4D SEDAN 1987-95 (правое, опускное, перед)",
+    "eurocode": "8534RGNS4FD-NG",
+    "years": "1987-1995",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 14,
+    "name": "AUDI A2 HBK 2000-05",
+    "eurocode": "8562AGNGN-KMK",
+    "years": "2000-2005",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 15,
+    "name": "AUDI A3 HATCHBACK 2013-19",
+    "eurocode": "8616AGNGYMVWZ-XYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 16,
+    "name": "AUDI A3 HATCHBACK 2013-19 (наличие шелкографии дд не менялся)",
+    "eurocode": "8616AGNGYMVWZ6T-XYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 17,
+    "name": "AUDI A3 HATCHBACK 2013-19 (наличие шелкография дд не менялся)",
+    "eurocode": "8616AGNGYMVWZ6T-FYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 18,
+    "name": "AUDI A3 HBK 2003-12",
+    "eurocode": "8580AGNGYMVW1B-FYG",
+    "years": "2003-2012",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 19,
+    "name": "AUDI A3 SEDAN 2014-19",
+    "eurocode": "8620AGNGYMVZ-FYG",
+    "years": "2014-2019",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 20,
+    "name": "AUDI A4 B5 SEDAN 1994-01 (левое, опускное, зад)",
+    "eurocode": "8547LGNS4RD-NG",
+    "years": "1994-2001",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 21,
+    "name": "AUDI A4 B5 SEDAN 1994-01 (левое, опускное,перед)",
+    "eurocode": "8547LGNS4FD-NG",
+    "years": "1994-2001",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 22,
+    "name": "AUDI A4 B5 SEDAN 1994-01 (правое, опускное, зад)",
+    "eurocode": "8547RGNS4RD-NG",
+    "years": "1994-2001",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 23,
+    "name": "AUDI A4 B5 SEDAN 1994-01 (правое, опускное, перед)",
+    "eurocode": "8547RGNS4FD-NG",
+    "years": "1994-2001",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 24,
+    "name": "AUDI A4 B5 SEDAN 1994-01 /WAGON",
+    "eurocode": "8547AGNGYV1V-XYG",
+    "years": "1994-2001",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 25,
+    "name": "AUDI A4 B5 SEDAN 1994-01 /WAGON",
+    "eurocode": "8547AGNGNV-KMK",
+    "years": "1994-2001",
+    "glassPriceUsd": 46
+  },
+  {
+    "id": 26,
+    "name": "AUDI A4 B6/B7 SEDAN/STW 2001-08",
+    "eurocode": "8572AGSVW1B-FYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 27,
+    "name": "AUDI A4 B6/B7 SEDAN/STW 2001-08",
+    "eurocode": "8572AGNGYMVW1B-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 28,
+    "name": "AUDI A4 B6/B7 SEDAN/STW 2001-08",
+    "eurocode": "8572AGNGYV-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 29,
+    "name": "AUDI A4 B6/B7 SEDAN/STW 2001-08",
+    "eurocode": "8572AGNGYVW1B-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 30,
+    "name": "AUDI A4 B6/B7 SEDAN/STW 2001-08",
+    "eurocode": "8572AGNGNPV-KMK",
+    "years": "2001-2008",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 31,
+    "name": "AUDI A4 B8 SEDAN/WAGON 2008-11 (дд капелька)",
+    "eurocode": "8589AGNGYMVZ1P-XYG",
+    "years": "2008-2015",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 32,
+    "name": "AUDI A4 B9 SED/STW 2016-24",
+    "eurocode": "8631AGNMVZ-FYG",
+    "years": "2016-2024",
+    "glassPriceUsd": 81
+  },
+  {
+    "id": 33,
+    "name": "AUDI A5 2D COUPE/5D SPORTBACK 2007-16",
+    "eurocode": "8592AGSVZ-XYG",
+    "years": "2007-2016",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 34,
+    "name": "AUDI A5 2D COUPE/5D SPORTBACK 2007-16",
+    "eurocode": "8592AGSVZ-PIL",
+    "years": "2007-2016",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 35,
+    "name": "AUDI A5 2D COUPE/5D SPORTBACK 2007-16 (Drop RS)",
+    "eurocode": "8592AGSGYMVZ1P-FYG",
+    "years": "2007-2016",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 36,
+    "name": "AUDI A5 COUPE/5D SPORTBACK 2016-Q",
+    "eurocode": "8633AGNMVZ-FYG",
+    "years": "2017-2024",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 37,
+    "name": "AUDI A6 C5 4D SEDAN",
+    "eurocode": "8557AGNGNV-KMK",
+    "years": "1997-2004",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 38,
+    "name": "AUDI A6 C5 4D SEDAN 1997-04",
+    "eurocode": "8557LGNS4RD-NG",
+    "years": "1997-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 39,
+    "name": "AUDI A6 C5 4D SEDAN 1997-04",
+    "eurocode": "8557LGNS4FD-NG",
+    "years": "1997-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 40,
+    "name": "AUDI A6 C6 SED/STW 2005-11",
+    "eurocode": "8582AGNGYPV-KMK",
+    "years": "2005-2011",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 41,
+    "name": "AUDI A6 C6 SED/STW 2005-11",
+    "eurocode": "8582AGNGYMVW-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 42,
+    "name": "AUDI A6 C7 SED 2014-18 (круглый дд)",
+    "eurocode": "8611AGNPV1W-KMK",
+    "years": "2012-2018",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 43,
+    "name": "AUDI A6 C7 SED 2014-18 (круглый дд)",
+    "eurocode": "8611AGNMVWZ1W-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 44,
+    "name": "AUDI A6 C7 SEDAN 2012-13 (1Z+Drop RS)",
+    "eurocode": "8611AGNCMVW6B-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 45,
+    "name": "AUDI A6 C7 SEDAN 2012-13 (1Z+Drop RS)",
+    "eurocode": "8611AGNCMVWZ6B-FYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 138
+  },
+  {
+    "id": 46,
+    "name": "AUDI A7 SPORTBACK 2014-18 (Round RS)",
+    "eurocode": "8608AGNMVWZ1W-XYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 47,
+    "name": "AUDI A8 4D SEDAN 2018-21 (1Z+RS)",
+    "eurocode": "8638AGACMUVZ-FYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 217
+  },
+  {
+    "id": 48,
+    "name": "AUDI A8 D3 SEDAN 2005-10 (дд капелька)",
+    "eurocode": "8578AGNGYMVW6T-XYG",
+    "years": "2003-2010",
+    "glassPriceUsd": 81
+  },
+  {
+    "id": 49,
+    "name": "AUDI Q3 SUV 2012-18",
+    "eurocode": "8614AGNGYVZ-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 50,
+    "name": "AUDI Q3 SUV 2016-18 (Middle 1Z)",
+    "eurocode": "8614AGNGYMVZ6P-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 51,
+    "name": "AUDI Q3 SUV 2016-18 (Middle 1Z)",
+    "eurocode": "8614AGNGYCMVZ6T-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 52,
+    "name": "AUDI Q3 SUV 2019-`20 (1Z+RS)",
+    "eurocode": "8648AGNCMVZ-FYG",
+    "years": "2019-2025",
+    "glassPriceUsd": 99
+  },
+  {
+    "id": 53,
+    "name": "AUDI Q3 SUV 2019-Q",
+    "eurocode": "8648AGNMVZ-FYG",
+    "years": "2019-2025",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 54,
+    "name": "AUDI Q5 SUV 2013-16 (1Z+Round RS)",
+    "eurocode": "8596AGNCMVW2W-XYG",
+    "years": "2008-2016",
+    "glassPriceUsd": 81
+  },
+  {
+    "id": 55,
+    "name": "AUDI Q5 SUV 2013-16 (Round RS)",
+    "eurocode": "8596AGSGYMVWZ1W-FYG",
+    "years": "2008-2016",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 56,
+    "name": "AUDI Q5 SUV 2017- /SPORTBACK 2021-",
+    "eurocode": "8634AGSMVZ-XYG",
+    "years": "2017-2024",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 57,
+    "name": "AUDI Q5 SUV 2017-24 (1Z) /Sportback 2021-25",
+    "eurocode": "8634AGNCMVZ-XYG",
+    "years": "2017-2024",
+    "glassPriceUsd": 119
+  },
+  {
+    "id": 58,
+    "name": "AUDI Q7 SUV 2006-15",
+    "eurocode": "8588AGNGYMVZ-XYG",
+    "years": "2006-2015",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 59,
+    "name": "AUDI Q7 SUV 2006-15",
+    "eurocode": "8588AGNGYPV-KMK",
+    "years": "2006-2015",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 60,
+    "name": "AUDI Q7 SUV 2016-18",
+    "eurocode": "8623AGNMVZ-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 106
+  },
+  {
+    "id": 61,
+    "name": "AUDI Q8 SUV 2019-23",
+    "eurocode": "8645AGNCMVZ-FYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 83
+  },
+  {
+    "id": 62,
+    "name": "AUDI Q8 SUV 2019-23",
+    "eurocode": "8645AGNCMVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 83
+  },
+  {
+    "id": 63,
+    "name": "AUDI Q8 SUV 2019-23 (1Z+RS+hud)",
+    "eurocode": "8645AGACMUVZ-FYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 280
+  },
+  {
+    "id": 64,
+    "name": "AUDI TT 2D COUPE 2007-14 8J8845099ENVB",
+    "eurocode": "8591AGSGYMVW-OEM",
+    "years": "2007-2014",
+    "glassPriceUsd": 253
+  },
+  {
+    "id": 65,
+    "name": "BMW 1-SERIES E87/ E82/ E88 HBK 2004-12,CPE/CABRIOLET",
+    "eurocode": "2448AGNGYPV1B-XYG",
+    "years": "2004-2012",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 66,
+    "name": "BMW 1-SERIES F40 5D HBK 2019-24 (1Z+RS)",
+    "eurocode": "2496AGNCMVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 67,
+    "name": "BMW 2-SERIES F45 5D HBK 2015-21",
+    "eurocode": "2477AGNPVZ-XYG",
+    "years": "2015-2021",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 68,
+    "name": "BMW 2-SERIES F45 5D HBK 2015-21",
+    "eurocode": "2477AGNMVZ-XYG",
+    "years": "2015-2021",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 69,
+    "name": "BMW 3 E90 / E91 4LIM,5KOM",
+    "eurocode": "2447AGNGYPV-KMK",
+    "years": "2005-2011",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 70,
+    "name": "BMW 3 GT F34 5D FASTBACK 2013-18 F34",
+    "eurocode": "2469AGSGYMV2P-XYG",
+    "years": "2013-2018",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 71,
+    "name": "BMW 3-SERIES E36 SEDAN 1990-98",
+    "eurocode": "2431AGNGYV-XYG",
+    "years": "1990-1998",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 72,
+    "name": "BMW 3-SERIES E36 SEDAN 1990-98 левое опускное зад",
+    "eurocode": "2431LGNS4RD-NG",
+    "years": "1990-1998",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 73,
+    "name": "BMW 3-SERIES E46 SEDAN 1999-05",
+    "eurocode": "2436AGNGNV-KMK",
+    "years": "1999-2005",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 74,
+    "name": "BMW 3-SERIES E46 SEDAN/WAGON 1999-05",
+    "eurocode": "2436AGNBLV-XYG",
+    "years": "1998-2005",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 75,
+    "name": "BMW 3-SERIES E92 2D COUPE 2006-11",
+    "eurocode": "2454AGSGYMV1B-XYG",
+    "years": "2006-2011",
+    "glassPriceUsd": 113
+  },
+  {
+    "id": 76,
+    "name": "BMW 3-SERIES F30 SEDAN 2012-18",
+    "eurocode": "2465AGSCMV3P-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 77,
+    "name": "BMW 3-SERIES F30 SEDAN 2012-18",
+    "eurocode": "2465AGSMV2P-FYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 72
+  },
+  {
+    "id": 78,
+    "name": "BMW 3-SERIES F30 SEDAN 2012-18",
+    "eurocode": "2465AGNGYMV2P-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 79,
+    "name": "BMW 3-SERIES F30 SEDAN правое опускное зад",
+    "eurocode": "2465RGNS4RD-PIL",
+    "years": "2012-2018",
+    "glassPriceUsd": 64
+  },
+  {
+    "id": 80,
+    "name": "BMW 3-SERIES G20 SEDAN 2019-25 (Small 1Z+RS)",
+    "eurocode": "2490AGNCMVZ-XYG",
+    "years": "2019-2025",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 81,
+    "name": "BMW 3-SERIES G20 SEDAN 2019-Q (03 Lens Big 1Z)",
+    "eurocode": "2490AGACMVZ1L-FYG",
+    "years": "2019-2025",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 82,
+    "name": "BMW 3-SERIES G20 SEDAN 2019-Q (03 Lens Big 1Z+hud)",
+    "eurocode": "2490AGACMUVZ1L-XYG",
+    "years": "2019-2025",
+    "glassPriceUsd": 245
+  },
+  {
+    "id": 83,
+    "name": "BMW 3-SERIES G20 SEDAN 2021-Q (Small 1Z+RS)",
+    "eurocode": "2490AGSCMVZ2L-XYG",
+    "years": "2019-2025",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 84,
+    "name": "BMW 3-SERIES SEDAN 1999-05 левое, опускное, зад",
+    "eurocode": "2436LGNS4RD-NG",
+    "years": "1999-2005",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 85,
+    "name": "BMW 3-SERIES SEDAN 1999-05 правое, опускное, зад",
+    "eurocode": "2436RGNS4RD-NG",
+    "years": "1999-2005",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 86,
+    "name": "BMW 4-SERIES F32 2D COUPE 2013-/ F36 4D GRAN COUPE 2014-",
+    "eurocode": "2471AGSGYMV2P-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 87,
+    "name": "BMW 5-SERIES E34 SED/STW 1987-95",
+    "eurocode": "2426LGNS4FD-NG",
+    "years": "1987-1995",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 88,
+    "name": "BMW 5-SERIES E34 SED/STW 1987-95",
+    "eurocode": "2426AGNGN-KMK",
+    "years": "1987-1995",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 89,
+    "name": "BMW 5-SERIES E34 SED/STW 1987-95",
+    "eurocode": "2426RGNS4FD-NG",
+    "years": "1987-1995",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 90,
+    "name": "BMW 5-SERIES E39 SEDAN 1995-03",
+    "eurocode": "2434LGNS4RD-NG",
+    "years": "1995-2003",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 91,
+    "name": "BMW 5-SERIES E39 SEDAN 1995-03",
+    "eurocode": "2434AGNGNV-FYG",
+    "years": "1995-2003",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 92,
+    "name": "BMW 5-SERIES E39 SEDAN 1995-03",
+    "eurocode": "2434RGNS4RD-NG",
+    "years": "1995-2003",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 93,
+    "name": "BMW 5-SERIES E39 SEDAN 1995-03",
+    "eurocode": "2434LGNS4FD-NG",
+    "years": "1995-2003",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 94,
+    "name": "BMW 5-SERIES E60 2003-06 (Square RS)",
+    "eurocode": "2445AGNGYPV-KMK",
+    "years": "2003-2010",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 95,
+    "name": "BMW 5-SERIES E60 2003-06 (Square RS)",
+    "eurocode": "2445AGNGYMV-XYG",
+    "years": "2003-2010",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 96,
+    "name": "BMW 5-SERIES G30 SEDAN 2020-23 (03 Lens Big 1Z)",
+    "eurocode": "2485AGACMVZ1L-FYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 97,
+    "name": "BMW 5-SERIES G30 SEDAN 2020-23 (Small 1Z+обогрев камеры)",
+    "eurocode": "2485AGACMVZ2L-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 108
+  },
+  {
+    "id": 98,
+    "name": "BMW 5-SERIES G30 SEDAN 2020-23 (Small 1Z+проекция+обогрев камеры)",
+    "eurocode": "2485AGACMUVZ2L-FYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 295
+  },
+  {
+    "id": 99,
+    "name": "BMW 5-SERIES GT F07 FBK 2010-12 (камера справа)",
+    "eurocode": "2461AGNGYCMV1B-XYG",
+    "years": "2010-2016",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 100,
+    "name": "BMW 5-SERIES SED F10/F11 2010-12 (Big RSΦ40mm)",
+    "eurocode": "2459AGSGYMV-FYG",
+    "years": "2010-2016",
+    "glassPriceUsd": 74
+  },
+  {
+    "id": 101,
+    "name": "BMW 7-SERIES E38 740 SED 1994-01",
+    "eurocode": "2433AGNGNV-KMK",
+    "years": "1994-2001",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 102,
+    "name": "BMW 7-SERIES E38 740 SED 1994-98 (RS 120mm)",
+    "eurocode": "2433AGNGNHPV-KMK",
+    "years": "1994-2001",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 103,
+    "name": "BMW 7-SERIES E65 SED 2004-08 (RS+Nose 23cm)",
+    "eurocode": "2443AGNGNHMV6T-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 104,
+    "name": "BMW 7-SERIES F01/F02 SED 2013-15 (Small RSΦ30mm)",
+    "eurocode": "2457AGNGYMV6T-XYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 105,
+    "name": "BMW 7-SERIES G11/G12 SED 2016-18 (2Z)",
+    "eurocode": "2481AGSCMVZ-FYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 106,
+    "name": "BMW 7-SERIES G11/G12 SED 2016-18 (2Z)",
+    "eurocode": "2481AGNCMVZ-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 107,
+    "name": "BMW 7-SERIES G11/G12 SED 2016-18 (2Z) (HUD)",
+    "eurocode": "2481AGACMUVZ-FYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 250
+  },
+  {
+    "id": 108,
+    "name": "BMW 7-SERIES G11/G12 SED 2019-22 (03 Lens Big 1Z)",
+    "eurocode": "2481AGACMUVZ2L-FYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 260
+  },
+  {
+    "id": 109,
+    "name": "BMW 7-SERIES SEDAN 2019-22 (1Z+HUD)",
+    "eurocode": "2481AGACMUVZ1L-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 342
+  },
+  {
+    "id": 110,
+    "name": "BMW X1 E84 SUV 2010-15",
+    "eurocode": "2460AGNGYMV1B-XYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 61
+  },
+  {
+    "id": 111,
+    "name": "BMW X1 E84 SUV 2010-15",
+    "eurocode": "2460AGNGYV-FYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 112,
+    "name": "BMW X1 F48 SUV 2016-22",
+    "eurocode": "2482AGNCMVZ-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 113,
+    "name": "BMW X2 F39 SUV 2018-23",
+    "eurocode": "2480AGACMUVZ-FYG",
+    "years": "2018-2023",
+    "glassPriceUsd": 220
+  },
+  {
+    "id": 114,
+    "name": "BMW X2 F39 SUV 2018-23",
+    "eurocode": "2480AGNCMVZ-FYG",
+    "years": "2018-2023",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 115,
+    "name": "BMW X2 F39 SUV 2018-23",
+    "eurocode": "2480AGNMVZ-FYG",
+    "years": "2018-2023",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 116,
+    "name": "BMW X3 E83 SUV 2004-10",
+    "eurocode": "2449AGNGNMVW1B-XYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 78
+  },
+  {
+    "id": 117,
+    "name": "BMW X3 F25 SUV 2013-17 (Small RSΦ30mm)",
+    "eurocode": "2464AGNGYMV6B-XYG",
+    "years": "2010-2017",
+    "glassPriceUsd": 64
+  },
+  {
+    "id": 118,
+    "name": "BMW X3 F25 SUV 2013-17(1Z+Small RSΦ30mm)",
+    "eurocode": "2464AGNCMV6B-XYG",
+    "years": "2010-2017",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 119,
+    "name": "BMW X3 G01 SUV 2018- (2Z+ HUD)",
+    "eurocode": "2487AGACMUVZ-FYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 329
+  },
+  {
+    "id": 120,
+    "name": "BMW X3 G01 SUV 2022-24 (03 Lens Big 1Z+RS+HUD)",
+    "eurocode": "2487AGACMUVZ3L-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 335
+  },
+  {
+    "id": 121,
+    "name": "BMW X3 G01/G08 SUV 2018- (2Z)",
+    "eurocode": "2487AGNCMVZ-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 122,
+    "name": "BMW X3 G01/G08 SUV 2018- (2Z)",
+    "eurocode": "2487AGNCMVZ-FYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 123,
+    "name": "BMW X3 G01/G08 SUV 2018- (2Z+hud)",
+    "eurocode": "2487AGACMUVZ-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 329
+  },
+  {
+    "id": 124,
+    "name": "BMW X4 F26 SUV 2015-18",
+    "eurocode": "2468AGNMV-XYG",
+    "years": "2015-2018",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 125,
+    "name": "BMW X4 F26 SUV 2015-18 (1Z+RS)",
+    "eurocode": "2468AGNCMV-FYG",
+    "years": "2015-2018",
+    "glassPriceUsd": 98
+  },
+  {
+    "id": 126,
+    "name": "BMW X4 F26 SUV 2015-18 (1Z+RS+hud)",
+    "eurocode": "2468AGACMUV-FYG",
+    "years": "2015-2018",
+    "glassPriceUsd": 246
+  },
+  {
+    "id": 127,
+    "name": "BMW X4 G02 SUV 2019-",
+    "eurocode": "2488AGNIMVZ-FYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 128,
+    "name": "BMW X4 G02 SUV 2019- (2Z)",
+    "eurocode": "2488AGSCMVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 79
+  },
+  {
+    "id": 129,
+    "name": "BMW X4 G02 SUV 2019- (2Z)",
+    "eurocode": "2488AGNCMVZ-FYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 78
+  },
+  {
+    "id": 130,
+    "name": "BMW X4 G02 SUV 2019- (2Z+hud)",
+    "eurocode": "2488AGACMUVZ-FYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 199
+  },
+  {
+    "id": 131,
+    "name": "BMW X4 G02 SUV 2019-(1 мал. Камера)",
+    "eurocode": "2488AGSCMVZ1L-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 88
+  },
+  {
+    "id": 132,
+    "name": "BMW X5 E53 SUV 2000-06",
+    "eurocode": "2439AGNGYV-KMK",
+    "years": "2000-2006",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 133,
+    "name": "BMW X5 E53 SUV 2000-06 (VCS-RS#073)",
+    "eurocode": "2439AGNGYMV1T-XYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 64
+  },
+  {
+    "id": 134,
+    "name": "BMW X5 E70 SUV 2009-10 (Metal RS)",
+    "eurocode": "2452AGNGYMV2T-XYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 135,
+    "name": "BMW X5 E70 SUV 2011-13 (Plastic RS+1Z)",
+    "eurocode": "2452AGSGYCMV2T-XYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 136,
+    "name": "BMW X5 E70 SUV 2011-13 (Plastic RS+1Z)",
+    "eurocode": "2452AGACMUV2T-FYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 137,
+    "name": "BMW X5 E70 SUV 2011-13 (Plastic RS+1Z)",
+    "eurocode": "2452AGSCMUV2T-XYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 142
+  },
+  {
+    "id": 138,
+    "name": "BMW X5 F15 SUV 2014-18",
+    "eurocode": "2473AGNGYCMV1P-XYG",
+    "years": "2014-2018",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 139,
+    "name": "BMW X5 F15 SUV 2014-18",
+    "eurocode": "2473AGNGYMV-XYG",
+    "years": "2014-2018",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 140,
+    "name": "BMW X5 X7 G05/G07 SUV 2019-22 (1 мал. камера)(2493)",
+    "eurocode": "2492AGNCMVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 106
+  },
+  {
+    "id": 141,
+    "name": "BMW X5 X7 G05/G07 SUV 2022- (Center 02 Lens Big 1Z=177mm)",
+    "eurocode": "2492AGACMUVZ3L-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 417.7
+  },
+  {
+    "id": 142,
+    "name": "BMW X5 X7 G05/G07 SUV 2022- (left 01 Lens Big 1Z=177mm)",
+    "eurocode": "2492AGACMVZ4L-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 127
+  },
+  {
+    "id": 143,
+    "name": "BMW X5 X7 G05/G07 SUV 2023- (Right 02 Lens Big 1Z=187mm)",
+    "eurocode": "2492AGACMVZ2L-XYG",
+    "years": "2023-Q",
+    "glassPriceUsd": 127
+  },
+  {
+    "id": 144,
+    "name": "BMW X6 E71 SUV 2008-14",
+    "eurocode": "2456AGNGYCMV2T-XYG",
+    "years": "2008-2014",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 145,
+    "name": "BMW X6 E71 SUV 2008-14",
+    "eurocode": "2456AGSGYMV2T-XYG",
+    "years": "2008-2014",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 146,
+    "name": "BMW X6 E71 SUV 2008-14",
+    "eurocode": "2456AGNGYCMV1T-FYG",
+    "years": "2008-2014",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 147,
+    "name": "BMW X6 E71 SUV 2008-14 HUD",
+    "eurocode": "2456AGACMUV2T-FYG",
+    "years": "2008-2014",
+    "glassPriceUsd": 250
+  },
+  {
+    "id": 148,
+    "name": "BMW X6 E71 SUV 2008-14 HUD",
+    "eurocode": "2456AGAMUV2T-FYG",
+    "years": "2008-2014",
+    "glassPriceUsd": 248
+  },
+  {
+    "id": 149,
+    "name": "BMW X6 F16 SUV 2015-19",
+    "eurocode": "2478AGNCMV-FYG",
+    "years": "2015-2019",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 150,
+    "name": "BMW X6 F16 SUV 2015-19",
+    "eurocode": "2478AGNCMV-XYG",
+    "years": "2015-2019",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 151,
+    "name": "BMW X6 F16 SUV 2015-19",
+    "eurocode": "2478AGNMV-FYG",
+    "years": "2015-2019",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 152,
+    "name": "BMW X6 F16 SUV 2015-19 (HUD)",
+    "eurocode": "2478AGACMUV-XYG",
+    "years": "2015-2019",
+    "glassPriceUsd": 268
+  },
+  {
+    "id": 153,
+    "name": "BMW X6 G06 SUV 2020-23 (03 Lens Big 1Z)",
+    "eurocode": "2498AGACMUVZ1L-XYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 300
+  },
+  {
+    "id": 154,
+    "name": "BMW X6 G06 SUV 2020-23 (Small 1Z)",
+    "eurocode": "2498AGACMUVZ-XYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 300
+  },
+  {
+    "id": 155,
+    "name": "BUICK ENCORE GX 5D SUV 2020- (1Z+RS)",
+    "eurocode": "DW02653AGNCMVZ-XYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 128
+  },
+  {
+    "id": 156,
+    "name": "BUICK ENVISTA SUV 2024- (1Z+RS)",
+    "eurocode": "DW02985AGSCMVZ-XYG",
+    "years": "2024-Q",
+    "glassPriceUsd": 165
+  },
+  {
+    "id": 157,
+    "name": "BYD ATTO-3 YUAN PLUS SUV 2023-24 (1Z W=153mm+DV)",
+    "eurocode": "E402AGSCVZ-XYG",
+    "years": "2023-Q",
+    "glassPriceUsd": 117
+  },
+  {
+    "id": 158,
+    "name": "BYD DOLPHIN/ATTO-2 HBK 2022-Q",
+    "eurocode": "E407AGNV-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 108
+  },
+  {
+    "id": 159,
+    "name": "BYD E2 HBK/E3 SED 2020-",
+    "eurocode": "BYDE2AGSV-XYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 160,
+    "name": "BYD HAN SEDAN 2022-24 (1Z W=173mm+DV+solar+hud)",
+    "eurocode": "E403AGSCMUVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 352
+  },
+  {
+    "id": 161,
+    "name": "BYD SONG PLUS SUV 2021-22 (Small 1Z+DV)",
+    "eurocode": "E406AGACVZ1L-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 162,
+    "name": "BYD SONG PLUS SUV 2023-Q (Big 1Z 140mm+DV+RS)",
+    "eurocode": "E406AGACMV-XYG",
+    "years": "2023-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 163,
+    "name": "BYD SONG PLUS SUV 2025-Q (03 Lens 1Z+DV)",
+    "eurocode": "E406AGNCMVZ3L-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 164,
+    "name": "BYD SONG PLUS/SEAL U SUV 2023-Q (Big 1Z 124mm+DV)",
+    "eurocode": "E406AGACVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 165,
+    "name": "BYD TANG SUV 2018-21 (Small 1Z+DV)",
+    "eurocode": "E401AGSCMVZ-XYG",
+    "years": "2018-2023",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 166,
+    "name": "BYD YUAN/S1 5D SUV 2016-",
+    "eurocode": "BYDS1AGSV-XYG",
+    "years": "2016-2023",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 167,
+    "name": "CADILLAC DTS 4D SEDAN 2006-11 (1Z+RS)",
+    "eurocode": "DW01718GBNAP-XYG",
+    "years": "2006-2011",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 168,
+    "name": "CADILLAC SRX SUV 2010-16 (Round RS) (DW02036)",
+    "eurocode": "A133GSMVZ1B-FYG",
+    "years": "2010-2016",
+    "glassPriceUsd": 89
+  },
+  {
+    "id": 169,
+    "name": "CADILLAC XT4 SUV 2018-22 (Small 1Z+RS)",
+    "eurocode": "DW02524AGNCMVZ-FYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 170,
+    "name": "CHEV AVEO HBK/SEDAN 2011-20 T300",
+    "eurocode": "3031AGNGN-KMK",
+    "years": "2011-2020",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 171,
+    "name": "CHEV AVEO HBK/SEDAN 2011-20 T300",
+    "eurocode": "3031AGSBLV-FYG",
+    "years": "2011-2020",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 172,
+    "name": "CHEV BOLT HBK 2018-21 (Small Visor) OPEL AMPERA-E",
+    "eurocode": "6347AGNV-KUVO",
+    "years": "2018-2021",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 173,
+    "name": "CHEV BOLT HBK 2018-21 (Small Visor) OPEL AMPERA-E",
+    "eurocode": "6347AGSVZ-XYG",
+    "years": "2018-2021",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 174,
+    "name": "CHEV CAPTIVA SUV 2006-18 /OPEL ANTARA (6314)",
+    "eurocode": "3024AGSBLMV1B-FYG",
+    "years": "2006-2018",
+    "glassPriceUsd": 83
+  },
+  {
+    "id": 175,
+    "name": "CHEV COBALT SEDAN 2012-20 /RAVON R4",
+    "eurocode": "3038AGNGNV-KMK",
+    "years": "2012-2020",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 176,
+    "name": "CHEV COBALT SEDAN 2012-20 /RAVON R4",
+    "eurocode": "3038AGNBLV-XYG",
+    "years": "",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 177,
+    "name": "CHEV EQUINOX SUV 2017-24 /GMC TERRAIN (DW02426/DW02585/DW02662/DW02654)",
+    "eurocode": "DW02369AGNCV-KMK",
+    "years": "2017-2024",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 178,
+    "name": "CHEV EQUINOX SUV 2025- (1Z+RS) /GMC Terrain",
+    "eurocode": "DW03006AGNCMVZ-XYG",
+    "years": "2025-Q",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 179,
+    "name": "CHEV MALIBU SED 2012-15 (1Z Only)",
+    "eurocode": "DW1299AGNGNCV-KMK",
+    "years": "2012-2015",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 180,
+    "name": "CHEV MALIBU SED 2016- (USA Long Nose Type)",
+    "eurocode": "DW02228AGNW-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 181,
+    "name": "CHEV MALIBU SED 2016- (USA Long Nose Type)",
+    "eurocode": "DW02228GGYW-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 182,
+    "name": "CHEV MALIBU SED 2016- (USA Long Nose Type)",
+    "eurocode": "DW02228AGNGNW-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 183,
+    "name": "CHEV ORLANDO MPV 2011-17",
+    "eurocode": "3030AGNV-FYG",
+    "years": "2011-2017",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 184,
+    "name": "CHEV SUBURBAN TAHOE 2007-14 /YUKON/ESCALADE/SILVERADO",
+    "eurocode": "DW1659GBVM-XYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 185,
+    "name": "CHEV TRAILBLAZER Small SUV 2019- (1Z Only)",
+    "eurocode": "DW02679AGSCVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 138
+  },
+  {
+    "id": 186,
+    "name": "CHEV TRAILBLAZER SUV 2019- (1Z Only)",
+    "eurocode": "DW02679AGNCV-KMK",
+    "years": "2019-Q",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 187,
+    "name": "CHEVROLET CRUZE J300 Sed (09-) / 5D Hbk (11-) // DAEWOO LACETTI '2009-2015",
+    "eurocode": "3026AGNBLPV-XYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 188,
+    "name": "CHEVROLET TRAVERSE SUV 2018-23",
+    "eurocode": "DW02413AGNCVW-XYG",
+    "years": "2018-2023",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 189,
+    "name": "CHRYSLER PACIFICA 5D SUV 2004-08 (VCP)",
+    "eurocode": "DW01526AGNBL-XYG",
+    "years": "2004-2008",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 190,
+    "name": "CHRYSLER PACIFICA MPV 2017-22 (Drop RS)",
+    "eurocode": "DW02323AGNMVZ-XYG",
+    "years": "2017-2022",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 191,
+    "name": "CHRYSLER PACIFICA MPV 2017-22 (Drop RS)есть крепеж под дд",
+    "eurocode": "DW02323AGNPVWZ-XYG",
+    "years": "2017-2022",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 192,
+    "name": "CHRYSLER PT CRUISER HBK (Encapsulated-CP)(DW01390/A224)",
+    "eurocode": "DW01465AGNVZ-XYG",
+    "years": "2001-2010",
+    "glassPriceUsd": 92
+  },
+  {
+    "id": 193,
+    "name": "CITROEN BERLINGO 1996-07 /PEU PARTNER",
+    "eurocode": "2724AGNBL1P-XYG",
+    "years": "1996-2007",
+    "glassPriceUsd": 35.88
+  },
+  {
+    "id": 194,
+    "name": "CITROEN BERLINGO 1996-07 /PEU PARTNER",
+    "eurocode": "2724AGSGN1P-FYG",
+    "years": "1996-2007",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 195,
+    "name": "CITROEN BERLINGO 1996-07 /PEU PARTNER",
+    "eurocode": "2724AGSBL1P-FYG",
+    "years": "1999-2007",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 196,
+    "name": "CITROEN BERLINGO/PEU PARTNER B9 2008-17 (6558)",
+    "eurocode": "2741AGSMVZ2P-FYG",
+    "years": "2008-2022",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 197,
+    "name": "CITROEN BERLINGO/PEU PARTNER B9 2008-17 (With M/B) (6558)",
+    "eurocode": "2741AGNBLVZ1P-XYG",
+    "years": "2008-2022",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 198,
+    "name": "CITROEN C1 HBK 2005-14/PEU 107/ TOY AYGO/BYD F0 (2734/8363)",
+    "eurocode": "6549AGNGN-XYG",
+    "years": "2005-2014",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 199,
+    "name": "CITROEN C2 3D HBK 2003-09 (9,пот-ть 2см и 3см)",
+    "eurocode": "2731ACCMV1B-PIL",
+    "years": "2003-2009",
+    "glassPriceUsd": 133
+  },
+  {
+    "id": 200,
+    "name": "CITROEN C3 HBK 2002-10",
+    "eurocode": "2726AGNGYV-XYG",
+    "years": "2002-2010",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 201,
+    "name": "CITROEN C3 PICASSO MPV 2009-17 (VCP)",
+    "eurocode": "2742AGSVWZ-XYG",
+    "years": "2009-2017",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 202,
+    "name": "CITROEN C3 PICASSO MPV 2009-17 (VCP)",
+    "eurocode": "2742AGNGN-KMK",
+    "years": "2009-2017",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 203,
+    "name": "CITROEN C4 4D/5D HBK 2010-18",
+    "eurocode": "2746AGSVW-FYG",
+    "years": "2010-2018",
+    "glassPriceUsd": 88
+  },
+  {
+    "id": 204,
+    "name": "CITROEN C4 5D HBK 2010-18 (VCS+Fully Heated)",
+    "eurocode": "2746AGNBLHMVW-XYG",
+    "years": "2010-2018",
+    "glassPriceUsd": 195
+  },
+  {
+    "id": 205,
+    "name": "CITROEN C4 HBK/SEDAN 2004-09",
+    "eurocode": "2732AGSVW-FYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 206,
+    "name": "CITROEN C4 HBK/SEDAN 2004-09",
+    "eurocode": "2732AGSMVW1P-XYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 87
+  },
+  {
+    "id": 207,
+    "name": "CITROEN C4 PICASSO 2013-20 (1Z+RS))",
+    "eurocode": "2753AGNCPV-KMK",
+    "years": "2013-2020",
+    "glassPriceUsd": 154
+  },
+  {
+    "id": 208,
+    "name": "CITROEN C4 PICASSO 2013-20/C4 SPACETOURER (Big RS=40*34mm)",
+    "eurocode": "2753AGNIPVZ-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 220
+  },
+  {
+    "id": 209,
+    "name": "CITROEN C4 PICASSO 2013-20/C4 SPACETOURER (Big RS=40*34mm)",
+    "eurocode": "2753AGNPV-KMK",
+    "years": "2013-2020",
+    "glassPriceUsd": 154
+  },
+  {
+    "id": 210,
+    "name": "CITROEN C4 PICASSO MPV 2007-13",
+    "eurocode": "2735AGNPVZ6A-XYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 210
+  },
+  {
+    "id": 211,
+    "name": "CITROEN C5 4D SEDAN/5D WAGON 2008-",
+    "eurocode": "2740AGNGYMVZ1B-XYG",
+    "years": "2008-2017",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 212,
+    "name": "CITROEN C5 SEDAN 2001-03 (Double RS)",
+    "eurocode": "2727AGNBLMV1B-FYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 213,
+    "name": "CITROEN C5 SEDAN 2001-07",
+    "eurocode": "2727AGNBLV-FYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 214,
+    "name": "CITROEN C5 SEDAN 2003-07 (Single RS)",
+    "eurocode": "2727AGNGNPV6T-KMK",
+    "years": "2001-2007",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 215,
+    "name": "CITROEN C8 /PEU 807 2002-07 (Round RS) (2728)",
+    "eurocode": "6546AGNGNPV-KMK",
+    "years": "2002-2014",
+    "glassPriceUsd": 155
+  },
+  {
+    "id": 216,
+    "name": "CITROEN C8 /PEU 807 2002-14 (2728)",
+    "eurocode": "6546AGNVZ-XYG",
+    "years": "2002-2014",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 217,
+    "name": "CITROEN C8 /PEU 807 2002-14 (2728)",
+    "eurocode": "6546AGSVZ-XYG",
+    "years": "2002-2014",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 218,
+    "name": "CITROEN CACTUS SUV 2018-20 (1Z+RS)",
+    "eurocode": "2755AGACIMVZ95-XYG",
+    "years": "2015-2020",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 219,
+    "name": "CITROEN DS3 3D HBK 2010-19",
+    "eurocode": "2745AGSVZ-FYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 220,
+    "name": "CITROEN EVASION/JUMPY/SCUDO/ULYSSE/EXPERT/806",
+    "eurocode": "2721AGNGY-XYG",
+    "years": "1994-2006",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 221,
+    "name": "CITROEN JUMPY/ EXPERT/ SCUDO/ PROACE 2007-15 (6553/3752/8413)",
+    "eurocode": "2736AGNVZ-XYG",
+    "years": "2007-2015",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 222,
+    "name": "CITROEN SPACETOURER/JUMPY/PEUGEOT TRAVELLER/EXPERT/VIVARO`19-(6569/3783/6349/8423)",
+    "eurocode": "2756AGNGNV-KMK",
+    "years": "2016-Q",
+    "glassPriceUsd": 74
+  },
+  {
+    "id": 223,
+    "name": "CITROEN SPACETOURER/JUMPY/PEUGEOT TRAVELLER/EXPERT/VIVARO`19-(6569/3783/6349/8423)",
+    "eurocode": "2756AGNHVZ-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 178
+  },
+  {
+    "id": 224,
+    "name": "CITROEN XANTIA 5D HBK/STW 1993-01",
+    "eurocode": "2720AGNGNPV-KMK",
+    "years": "1993-2001",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 225,
+    "name": "CITROEN XANTIA 5D HBK/STW 1993-01 (Square M/P+French M/B)",
+    "eurocode": "2720AGNBL-XYG",
+    "years": "1993-2001",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 226,
+    "name": "CITROEN XANTIA 5D HBK/STW 1993-01 (Square M/P+French M/B)",
+    "eurocode": "2720AGNGN-KMK",
+    "years": "1993-2001",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 227,
+    "name": "CITROEN XSARA 1997-06",
+    "eurocode": "2725AGNGNV-KMK",
+    "years": "1997-2006",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 228,
+    "name": "CITROEN XSARA 1997-06",
+    "eurocode": "2725AGNBLV-XYG",
+    "years": "1997-2006",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 229,
+    "name": "CITROEN XSARA PICASSO MPV",
+    "eurocode": "2729AGNGYV-XYG",
+    "years": "1999-2007",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 230,
+    "name": "DAEWOO LANOS/CHEVROLET LANOS 4LIM,3T,5T",
+    "eurocode": "3003AGNBL-FYG",
+    "years": "1997-2008",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 231,
+    "name": "DAEWOO MATIZ I/CHEVROLET SPARK HBK 1998-05",
+    "eurocode": "3006AGNGN-KMK",
+    "years": "1998-2015",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 232,
+    "name": "DAEWOO MATIZ I/CHEVROLET SPARK HBK 1998-05",
+    "eurocode": "3006AGNGY-XYG",
+    "years": "1998-2015",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 233,
+    "name": "DAEWOO NEXIA SED/HBK 1995-",
+    "eurocode": "3000AGNBL-FYG",
+    "years": "1995-2015",
+    "glassPriceUsd": 38
+  },
+  {
+    "id": 234,
+    "name": "DAEWOO NEXIA SED/HBK 1995-",
+    "eurocode": "3000AGNGN-KMK",
+    "years": "1995-2015",
+    "glassPriceUsd": 37
+  },
+  {
+    "id": 235,
+    "name": "DAF \"XF 106\" '2013- опускное двери левое ТЗ (859*744)",
+    "eurocode": "4635LGNL2FD-KMK",
+    "years": "2013-Q",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 236,
+    "name": "DAF \"XF 106\" '2013- опускное двери правое ТЗ (859*744)",
+    "eurocode": "4635RGNL2FD-KMK",
+    "years": "2013-Q",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 237,
+    "name": "DAF 65-75-85 (92-01), 65-75-85CF TRUCK (98-00) / CF65-75-85 (00-13), CF TRUCK (13- )",
+    "eurocode": "4625AGN1N-XYG",
+    "years": "1993-Q",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 238,
+    "name": "DAF 95 (87-97)/TE47-TE48 XS(88-05)/95XF (97-02)/XF95(02-06)",
+    "eurocode": "4624AGNBL-XYG",
+    "years": "1987-2006",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 239,
+    "name": "DAF XF105 TRUCK (05-13) / XF460-XF510 TRUCK (13-)/KENWORTH K500",
+    "eurocode": "4635AGNGY-XYG",
+    "years": "2006-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 240,
+    "name": "DAF XF105 TRUCK 2006- /KENWORTH K500",
+    "eurocode": "4635AGN1B-OEM",
+    "years": "2006-Q",
+    "glassPriceUsd": 525
+  },
+  {
+    "id": 241,
+    "name": "DAIHATSU MOVE 5D HBK 1995-99 L600",
+    "eurocode": "2920AGN-XYG",
+    "years": "1995-1999",
+    "glassPriceUsd": 39
+  },
+  {
+    "id": 242,
+    "name": "DODGE CALIBER HBK 2007-12 (AD47)",
+    "eurocode": "DW01643GGN-KMK",
+    "years": "2007-2012",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 243,
+    "name": "DODGE CARAVAN /VOYAGER /TOWN COUNTRY (9320/DW1410/DW1225/AD32)",
+    "eurocode": "A223AGNBLHW-XYG",
+    "years": "1996-2007",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 244,
+    "name": "DODGE CARAVAN /VOYAGER /TOWN COUNTRY (A223/DW1410/DW1225/AD32)",
+    "eurocode": "9320AGNGN-KMK",
+    "years": "1996-2007",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 245,
+    "name": "DODGE CARAVAN /VOYAGER /TOWN COUNTRY (A223/DW1410/DW1225/AD32)",
+    "eurocode": "9320AGNGNH-KMK",
+    "years": "1996-2007",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 246,
+    "name": "DODGE CARAVAN /VOYAGER /TOWN COUNTRY (A223/DW1410/DW1225/AD32)",
+    "eurocode": "9320AGNGNH-KMK",
+    "years": "1996-2007",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 247,
+    "name": "DODGE CHALLENGER 2D COUPE 2015- (RS+HS)",
+    "eurocode": "AD51AGSMVZ1C-XYG",
+    "years": "2008-2023",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 248,
+    "name": "DODGE CHARGER SEDAN 2005-10 /CHRYSLER 300С/MAGNUM `03-`08 (A234)",
+    "eurocode": "DW1571GG-KMK",
+    "years": "2005-2010",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 249,
+    "name": "DODGE GR CARAVAN VOYAGER 2008- (AD46/A230/DW01708)",
+    "eurocode": "4741AGNGN-KMK",
+    "years": "2008-2020",
+    "glassPriceUsd": 64
+  },
+  {
+    "id": 250,
+    "name": "DONGFENG C100 23- / Captain C120 23-",
+    "eurocode": "CDF12AGNGN-KMK",
+    "years": "2023-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 251,
+    "name": "DONGFENG TIANLONG GX-520 DFH-4180, DFH-4251",
+    "eurocode": "CDFMGX21AGNCPO-KMK",
+    "years": "2023-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 252,
+    "name": "DONGFENG TIANLONG GX-520 DFH-4180, DFH-4251",
+    "eurocode": "CDFMGX21AGNCPO-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 170
+  },
+  {
+    "id": 253,
+    "name": "FAW J7 TRUCK 2022-",
+    "eurocode": "FAWJ7AGNCP-KMK",
+    "years": "2022-Q",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 254,
+    "name": "FIAT 500L MPV 2012-17 (Drop RS)",
+    "eurocode": "3373AGSMVWZ-XYG",
+    "years": "2012-2022",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 255,
+    "name": "FIAT BRAVO 5D HBK 2007-14",
+    "eurocode": "3365AGSBLZ-XYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 256,
+    "name": "FIAT BRAVO/BRAVA/MAREA 1995-07",
+    "eurocode": "3348AGNBL-XYG",
+    "years": "1995-2007",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 257,
+    "name": "FIAT DOBLO VAN 2010-/OPEL COMBO 2011-18",
+    "eurocode": "3369AGNGYV-XYG",
+    "years": "2010-Q",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 258,
+    "name": "FIAT DUCATO-3/BOXER-2/JUMPER-2 2006-2021 (2737/6552/6353)",
+    "eurocode": "3750AGNBLVZ-XYG",
+    "years": "2006-Q",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 259,
+    "name": "FIAT FIORINO VAN 2008-22 (VCP+M/B) /CITR NEMO/PEU BIPPER 2008-17(6557/3360)",
+    "eurocode": "2739AGNGNV-KMK",
+    "years": "2008-2022",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 260,
+    "name": "FIAT OM 50/100 HIGH 1973-93 (1823*891mm)",
+    "eurocode": "3720ACL-NG",
+    "years": "1973-1993",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 261,
+    "name": "FIAT PANDA 5D HBK 2003-12",
+    "eurocode": "3359AGNBL-FYG",
+    "years": "2003-2012",
+    "glassPriceUsd": 46
+  },
+  {
+    "id": 262,
+    "name": "FIAT PUNTO HBK 1993-99",
+    "eurocode": "3341AGNGN-KMK",
+    "years": "1993-1999",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 263,
+    "name": "FIAT PUNTO HBK 1993-99",
+    "eurocode": "3341AGNBL-XYG",
+    "years": "1993-1999",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 264,
+    "name": "FIAT PUNTO HBK 1999-05",
+    "eurocode": "3351AGNBL-XYG",
+    "years": "1999-2005",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 265,
+    "name": "FIAT PUNTO HBK 1999-05",
+    "eurocode": "3351AGNGY-FYG",
+    "years": "1999-2005",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 266,
+    "name": "FIAT PUNTO HBK 2005-18 /LINEA",
+    "eurocode": "3362AGAMZ3B-FYG",
+    "years": "2005-2018",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 267,
+    "name": "FIAT PUNTO HBK 2005-18 /LINEA",
+    "eurocode": "3362AGSZ2B-XYG",
+    "years": "2005-2018",
+    "glassPriceUsd": 72
+  },
+  {
+    "id": 268,
+    "name": "FIAT STILO 5D HBK/STW 2001-",
+    "eurocode": "3355AGNBLZ-FYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 269,
+    "name": "FIAT(IVECO) DAILY TRUCK/VAN 1979-98 (1788*750mm)",
+    "eurocode": "3725AGNGN-KMK",
+    "years": "1979-1998",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 270,
+    "name": "FORD BRONCO SPORT SUV 2021-24 (Small 1Z+RS)(подогрев камеры)",
+    "eurocode": "DW02706AGSCMVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 271,
+    "name": "FORD BRONCO SPORT SUV 2021-24 (Small 1Z+RS+H)(подогрев камеры+дворников)",
+    "eurocode": "DW02706AGNCHPV-KMK",
+    "years": "2021-Q",
+    "glassPriceUsd": 98
+  },
+  {
+    "id": 272,
+    "name": "FORD BRONCO SPORT SUV 2021-24 (Small 1Z+RS+H)(подогрев камеры+дворников)(2706)",
+    "eurocode": "DW02707AGNCHPV-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 273,
+    "name": "FORD C-MAX MPV 2003-10 (with sunvisor print)",
+    "eurocode": "3565AGSVW1B-FYG",
+    "years": "2003-2010",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 274,
+    "name": "FORD C-MAX MPV 2010-12 (Square RS+Fully Heated)",
+    "eurocode": "3577AGNHMVW1P-XYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 215
+  },
+  {
+    "id": 275,
+    "name": "FORD C-MAX MPV 2010-19 (расст. до зеркала 193mm)",
+    "eurocode": "3577AGSVW-XYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 99
+  },
+  {
+    "id": 276,
+    "name": "FORD C-MAX MPV 2013-19",
+    "eurocode": "3577AGNGNV-KMK",
+    "years": "2010-2019",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 277,
+    "name": "FORD CONNECT 2002-13 (Visor 177mm)",
+    "eurocode": "3743AGNGYV1C-XYG",
+    "years": "2002-2013",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 278,
+    "name": "FORD CONNECT 2002-13 (Visor 177mm)",
+    "eurocode": "3743AGNGYV1C-FYG",
+    "years": "2002-2013",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 279,
+    "name": "FORD CONNECT 2014-17 (VCP 335mm+Round M/B)",
+    "eurocode": "3770AGSEVZ2C-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 280,
+    "name": "FORD CONNECT 2014-21 (VCP 141mm+Square M/B)",
+    "eurocode": "3770AGSVZ1C-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 281,
+    "name": "FORD CUSTOM 2013-23 (VCP+M/B)",
+    "eurocode": "3769AGNVW1C-XYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 282,
+    "name": "FORD ECOSPORT SUV 2013-17 (Y:3/4) EURO Type",
+    "eurocode": "3583AGNVZ-FYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 283,
+    "name": "FORD ECOSPORT SUV 2018-23 (Round RS,Y:3/4) EURO Type",
+    "eurocode": "3583AGSMVZ6P-XYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 284,
+    "name": "FORD ECOSPORT SUV 2018-23 (Round RS+Fully Heated+Y:3/4)EURO Type",
+    "eurocode": "3583AGAHMVZ6P-XYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 165
+  },
+  {
+    "id": 285,
+    "name": "FORD EDGE SUV 2019- (Open 1Z,Y:3/4.бок. мол-ги)",
+    "eurocode": "AF63AGSBLCMVW3Z-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 286,
+    "name": "FORD EDGE SUV 2019- (обогрев камеры)",
+    "eurocode": "AF63AGNGNCP-KMK",
+    "years": "2015-Q",
+    "glassPriceUsd": 94
+  },
+  {
+    "id": 287,
+    "name": "FORD EDGE SUV 2019- (обогрев камеры)",
+    "eurocode": "AF63AGNCP-KMK",
+    "years": "2015-Q",
+    "glassPriceUsd": 94
+  },
+  {
+    "id": 288,
+    "name": "FORD ESCAPE SUV 2001-07 /MAZDA TRIBUTE",
+    "eurocode": "5162AGSBLVW-FYG",
+    "years": "2001-2012",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 289,
+    "name": "FORD ESCAPE SUV 2001-07 /MAZDA TRIBUTE",
+    "eurocode": "5162AGSBLVW-XYG",
+    "years": "2001-2012",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 290,
+    "name": "FORD ESCAPE/KUGA EURO 2016-19 (Right RS)(AF62)",
+    "eurocode": "3581AGSMVZ6T-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 88
+  },
+  {
+    "id": 291,
+    "name": "FORD ESCAPE/KUGA SUV 2012-15 (Vase VCP=382mm)",
+    "eurocode": "3581AGAVZ1P-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 292,
+    "name": "FORD ESCORT MK3 HBK/WAGON 1980-90 (Europe)",
+    "eurocode": "3534ACLBL-XYG",
+    "years": "1980-1990",
+    "glassPriceUsd": 25
+  },
+  {
+    "id": 293,
+    "name": "FORD EXPLORER 5D SUV 2011-19",
+    "eurocode": "3588AGNBLVW-XYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 294,
+    "name": "FORD EXPLORER 5D SUV 2011-19",
+    "eurocode": "3588AGNGNV-KMK",
+    "years": "2011-2019",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 295,
+    "name": "FORD EXPLORER SUV 2020- (обогрев камеры)",
+    "eurocode": "AF64AGNCPV-KMK",
+    "years": "2020-2024",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 296,
+    "name": "FORD EXPLORER SUV 2020-24 (1Z+RS+H) обогрев щеток+камеры",
+    "eurocode": "AF64AGNCHMVZ-XYG",
+    "years": "2020-2024",
+    "glassPriceUsd": 220
+  },
+  {
+    "id": 297,
+    "name": "FORD FIESTA EURO 2008-17 (V=182mm)",
+    "eurocode": "3572AGNVW-XYG",
+    "years": "2008-2017",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 298,
+    "name": "FORD FIESTA Hatchback 2017-23 (Small 1Z) /PUMA 20-23(3595)(обогрев камеры)",
+    "eurocode": "3592AGSCMVZ-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 299,
+    "name": "FORD FOCUS 3 2015-20 (VCS+Y Shape+L Distance 20mm+Fully Heated))",
+    "eurocode": "3578AGSHMVW1U-XYG",
+    "years": "2011-2020",
+    "glassPriceUsd": 215
+  },
+  {
+    "id": 300,
+    "name": "FORD FOCUS 3 HBK/SED 2011-20",
+    "eurocode": "3578AGNMVW1P-XYG",
+    "years": "2011-2020",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 301,
+    "name": "FORD FOCUS 4D SEDAN 1998-04",
+    "eurocode": "3556AGNGNV-KMK",
+    "years": "1998-2004",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 302,
+    "name": "FORD FOCUS 4D SEDAN 1998-04",
+    "eurocode": "3556AGNGYV-XYG",
+    "years": "1998-2004",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 303,
+    "name": "FORD FOCUS 4D SEDAN 1998-04",
+    "eurocode": "3556AGNBLV-FYG",
+    "years": "1998-2004",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 304,
+    "name": "FORD FOCUS HBK/SEDAN (1Z+RS+обогрев камеры)",
+    "eurocode": "3593AGACMVZ-XYG",
+    "years": "2018-2025",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 305,
+    "name": "FORD FOCUS HBK/SEDAN (1Z+RS+обогрев камеры)",
+    "eurocode": "3593AGNCMVZ-XYG",
+    "years": "2018-2025",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 306,
+    "name": "FORD FOCUS HBK/SEDAN 2004-11",
+    "eurocode": "3566AGSMVW7X-PIL",
+    "years": "2004-2011",
+    "glassPriceUsd": 148
+  },
+  {
+    "id": 307,
+    "name": "FORD FOCUS HBK/SEDAN 2004-11 (with sunrise print)",
+    "eurocode": "3566AGNV2R-FYG",
+    "years": "2004-2011",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 308,
+    "name": "FORD FUSION EUROPE HBK 2002-12",
+    "eurocode": "3563AGNV-FYG",
+    "years": "2002-2012",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 309,
+    "name": "FORD FUSION EUROPE HBK 2002-12",
+    "eurocode": "3563AGNBLV-XYG",
+    "years": "2002-2012",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 310,
+    "name": "FORD FUSION SEDAN 2017-20 (Open 1Z)(обогрев только камеры)",
+    "eurocode": "3585AGNGYCHMVZ6X-XYG",
+    "years": "2014-2022",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 311,
+    "name": "FORD GALAXY MPV 2006-09 (Square RS+Fully Heated)",
+    "eurocode": "3567AGNHPV-KMK",
+    "years": "2006-2015",
+    "glassPriceUsd": 172
+  },
+  {
+    "id": 312,
+    "name": "FORD GALAXY MPV 2006-09 (Square RS+Fully Heated)",
+    "eurocode": "3567AGSHPVW2P-XYG",
+    "years": "2006-2015",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 313,
+    "name": "FORD KA EUROPE 3D HBK 2008-15 (VC)",
+    "eurocode": "3575AGSVZ-XYG",
+    "years": "2008-2015",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 314,
+    "name": "FORD KUGA 5D SUV 2008-12",
+    "eurocode": "3574AGNGNV-KMK",
+    "years": "2008-2012",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 315,
+    "name": "FORD KUGA 5D SUV 2008-12",
+    "eurocode": "3574AGSVW-FYG",
+    "years": "2008-2012",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 316,
+    "name": "FORD MONDEO 2009-12 (Nose 287mm+Square RS)",
+    "eurocode": "3569AGSMVW3P-XYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 317,
+    "name": "FORD MONDEO 2014-18 (1Z H=261mm) /FUSION",
+    "eurocode": "3585AGNCMVZ2X-FYG",
+    "years": "2014-2022",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 318,
+    "name": "FORD MONDEO 2014-18/FUSION (1Z H=261mm+FH)",
+    "eurocode": "3585AGNCHMVZ2X-XYG",
+    "years": "2014-2022",
+    "glassPriceUsd": 195
+  },
+  {
+    "id": 319,
+    "name": "FORD MONDEO 2014-22/FUSION",
+    "eurocode": "3585AGNGNV-KMK",
+    "years": "2014-2022",
+    "glassPriceUsd": 61
+  },
+  {
+    "id": 320,
+    "name": "FORD MONDEO SEDAN 1993-00",
+    "eurocode": "3546AGNGYV-XYG",
+    "years": "1993-2000",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 321,
+    "name": "FORD MONDEO SEDAN/HBK 1993-96 (левое, опускное, зад)",
+    "eurocode": "3546LGNH5RD-NG",
+    "years": "1993-2000",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 322,
+    "name": "FORD MONDEO SEDAN/HBK 2007-08 (Nose 228mm+Square RS)",
+    "eurocode": "3569AGNGNP-KMK",
+    "years": "2007-2013",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 323,
+    "name": "FORD MONDEO SEDAN/HBK/WAGON 2000-07",
+    "eurocode": "3559AGNGNPV-KMK",
+    "years": "2000-2007",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 324,
+    "name": "FORD MONDEO SEDAN/HBK/WAGON 2000-07",
+    "eurocode": "3559AGNGNV-XYG",
+    "years": "2000-2007",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 325,
+    "name": "FORD MUSTANG CPE/CABRIO 2015- (AF61)",
+    "eurocode": "DW02147AGNV-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 326,
+    "name": "FORD MUSTANG CPE/CABRIO 2015- (AF61)",
+    "eurocode": "DW02147AGNGY-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 327,
+    "name": "FORD PROBE 2D HATCHBACK 1993-",
+    "eurocode": "3553AGNBL-XYG",
+    "years": "1993-1997",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 328,
+    "name": "FORD RANGER T6 BT50 2011-15 (Drop RS)",
+    "eurocode": "3579AGNMV1B-FYG",
+    "years": "2011-2021",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 329,
+    "name": "FORD RANGER T6 BT50 EVEREST 2011-21",
+    "eurocode": "3579AGNV-FYG",
+    "years": "2011-2021",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 330,
+    "name": "FORD S-MAX MPV 2006-09 (Square RS)",
+    "eurocode": "3568AGNGYMVW2P-XYG",
+    "years": "2006-2014",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 331,
+    "name": "FORD S-MAX MPV 2006-09 (Square RS)",
+    "eurocode": "3568AGNMVW2P-XYG",
+    "years": "2006-2014",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 332,
+    "name": "FORD S-MAX MPV 2006-09 (Square RS+FH)",
+    "eurocode": "3568AGNHPVW2P-XYG",
+    "years": "2006-2014",
+    "glassPriceUsd": 195
+  },
+  {
+    "id": 333,
+    "name": "FORD TRANSIT High-Roof VAN 2014- (VCP+M/B)",
+    "eurocode": "3773AGNV-KMK",
+    "years": "2014-Q",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 334,
+    "name": "FORD TRANSIT High-Roof VAN 2014- (VCP+M/B)",
+    "eurocode": "3773AGSVZ1C-XYG",
+    "years": "2014-Q",
+    "glassPriceUsd": 97
+  },
+  {
+    "id": 335,
+    "name": "FORD TRANSIT HIGH-Roof VAN 2014-17 (Small 1Z+Right RS+FH)",
+    "eurocode": "3773AGSCHMVZ-XYG",
+    "years": "2014-Q",
+    "glassPriceUsd": 200
+  },
+  {
+    "id": 336,
+    "name": "FORD TRANSIT HIGH-Roof VAN 2014-17 (Small 1Z+Right RS+FH)",
+    "eurocode": "3773AGSCHMVZ-FYG",
+    "years": "2014-Q",
+    "glassPriceUsd": 200
+  },
+  {
+    "id": 337,
+    "name": "FORD TRANSIT VAN 2000-13 (Fully Heated,CP+NO M/B)",
+    "eurocode": "3739AGNH-XYG",
+    "years": "2000-2013",
+    "glassPriceUsd": 205
+  },
+  {
+    "id": 338,
+    "name": "FORD TRANSIT VAN 2000-13 (Fully Heated,CP+NO M/B)",
+    "eurocode": "3739AGSH-XYG",
+    "years": "2000-2013",
+    "glassPriceUsd": 205
+  },
+  {
+    "id": 339,
+    "name": "FORD TRANSIT VAN 2006-",
+    "eurocode": "3739AGNGN-KMK",
+    "years": "2000-2013",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 340,
+    "name": "FORD TRANSIT VAN 2006- (VCP+M/B)",
+    "eurocode": "3739AGNGYV1P-XYG",
+    "years": "2000-2013",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 341,
+    "name": "FORD TRANSIT VAN 2006- (VCS+FH)",
+    "eurocode": "3739AGNHMV1P-XYG",
+    "years": "2000-2013",
+    "glassPriceUsd": 210
+  },
+  {
+    "id": 342,
+    "name": "GAZ GAZELLE 2705 VAN 1995-/3302/3310 Валдай\" (04-15)",
+    "eurocode": "4514ACLBL-XYG",
+    "years": "1995-2013",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 343,
+    "name": "GAZ GAZELLE 2705 VAN 1995-/3302/3310 Валдай\" (04-15)",
+    "eurocode": "4514AGNGN-KMK",
+    "years": "1995-2013",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 344,
+    "name": "GAZ GAZELLE 2705 VAN 1995-/3302/3310 Валдай\" (04-15)",
+    "eurocode": "4514AGN-KMK",
+    "years": "1995-2013",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 345,
+    "name": "GAZ GAZELLE NEXT/\"Газон Next\" / Урал \"Next\" '2013-",
+    "eurocode": "4584AGNBL-XYG",
+    "years": "2013-Q",
+    "glassPriceUsd": 72
+  },
+  {
+    "id": 346,
+    "name": "GAZ GAZELLE NEXT/\"Газон Next\" / Урал \"Next\" '2013- переднее двери неподвижное левое",
+    "eurocode": "4584LGSV2FV-KMK",
+    "years": "2013-Q",
+    "glassPriceUsd": 18
+  },
+  {
+    "id": 347,
+    "name": "GEELY ATLAS 2017-",
+    "eurocode": "NL3AGNGY-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 86
+  },
+  {
+    "id": 348,
+    "name": "GEELY ATLAS 2017- (RH18)",
+    "eurocode": "NL3AGNGYM-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 349,
+    "name": "GEELY ATLAS PRO (BELGEE X70) (NL-3B)",
+    "eurocode": "E806AGNBLCHMVZ-FYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 350,
+    "name": "GEELY EMGRAND EC7 4D Sed / 5D Hbk",
+    "eurocode": "9422AGNVZ-XYG",
+    "years": "2009-2018",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 351,
+    "name": "GEELY EMGRAND G4 (SS11) SEDAN 2022-Q",
+    "eurocode": "EMGRAND22AGNVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 352,
+    "name": "GEELY EMGRAND X7 белорусская сборка",
+    "eurocode": "X7EMGRANDAGNGNV-KMK",
+    "years": "2013-2021",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 353,
+    "name": "GEELY EMGRAND X7 белорусская сборка +Ant",
+    "eurocode": "X7EMGRANDAGNGNAV-KMK",
+    "years": "2013-2021",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 354,
+    "name": "GEELY MONJARO SUV 2022- (1Z)",
+    "eurocode": "E808AGNCMVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 103
+  },
+  {
+    "id": 355,
+    "name": "GEELY MONJARO SUV 2022- (1Z+HUD)",
+    "eurocode": "E808AGACMUVZ-FYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 235
+  },
+  {
+    "id": 356,
+    "name": "GEELY MONJARO SUV 2022- (1Z+HUD+FH)",
+    "eurocode": "E808AGACHMUVZ-FYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 359
+  },
+  {
+    "id": 357,
+    "name": "GEELY TUGELLA FY11 2019- (1Z+DV) (E807) (без обогрева)",
+    "eurocode": "E807AGNCMVWZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 358,
+    "name": "HAVAL H9 SUV 2020-23 (1Z+RS)",
+    "eurocode": "HAVALH920LSZH-XYG",
+    "years": "2020-2023",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 359,
+    "name": "HAVAL JOLION SUV 2021- (EA06)",
+    "eurocode": "HAVAL-JOLIONAGNGNCPV-KMK",
+    "years": "2021-Q",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 360,
+    "name": "HONDA ACCORD 2018-22 (1Z Only+Small Visor)",
+    "eurocode": "FW04793AGNCVWZ-XYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 155
+  },
+  {
+    "id": 361,
+    "name": "HONDA ACCORD EURO 4/5D/ACURA TSX 2003-07",
+    "eurocode": "3986AGNGYMV-XYG",
+    "years": "2003-2007",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 362,
+    "name": "HONDA ACCORD EURO 2008-10 (RS H=138mm)",
+    "eurocode": "4003AGNGNP-KMK",
+    "years": "2008-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 363,
+    "name": "HONDA ACCORD EURO SEDAN/WAGON 2008-15",
+    "eurocode": "4003AGNGN-KMK",
+    "years": "2008-2015",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 364,
+    "name": "HONDA ACCORD EURO TYPE SEDAN 1997-02",
+    "eurocode": "3960AGNV-FYG",
+    "years": "1997-2002",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 365,
+    "name": "HONDA ACCORD SEDAN 2018-22 (1Z H=114mm+RS+Wide Visor 320mm)",
+    "eurocode": "FW04796AGNCMVWZ-XYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 155
+  },
+  {
+    "id": 366,
+    "name": "HONDA CITY/FIT ARIA 02-09",
+    "eurocode": "4002AGNV-NG",
+    "years": "2002-2008",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 367,
+    "name": "HONDA CIVIC 3D HATCHBACK 2001-05",
+    "eurocode": "3976AGNBLV-KMK",
+    "years": "2001-2005",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 368,
+    "name": "HONDA CIVIC 4D SEDAN 2011-16",
+    "eurocode": "4012AGNMV1B-XYG",
+    "years": "2011-2016",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 369,
+    "name": "HONDA CIVIC 4D SEDAN 2011-16",
+    "eurocode": "4012AGNV-FYG",
+    "years": "2011-2016",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 370,
+    "name": "HONDA CIVIC 5D Hatchback 2005-11 (M/B 128mm)",
+    "eurocode": "3998AGSPVZ1B-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 74
+  },
+  {
+    "id": 371,
+    "name": "HONDA CIVIC 5D HBK 2000-05",
+    "eurocode": "3974AGSBLV-FYG",
+    "years": "2000-2005",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 372,
+    "name": "HONDA CIVIC EK3 3D HBK/2D COUPE 1996-00",
+    "eurocode": "3956AGNBLV-XYG",
+    "years": "1996-2000",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 373,
+    "name": "HONDA CIVIC ES8 SEDAN 2001-05",
+    "eurocode": "3980AGNGNV-KMK",
+    "years": "2001-2005",
+    "glassPriceUsd": 44
+  },
+  {
+    "id": 374,
+    "name": "HONDA CIVIC ES8 SEDAN 2001-05",
+    "eurocode": "3980AGNGYVW-XYG",
+    "years": "2001-2005",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 375,
+    "name": "HONDA CIVIC EURO 5D HBK 1994-00 /ROVER 400/45",
+    "eurocode": "3954AGNGYV-XYG",
+    "years": "1994-2000",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 376,
+    "name": "HONDA CIVIC EURO HATCHBACK 2012-16",
+    "eurocode": "4010AGNV-XYG",
+    "years": "2012-2016",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 377,
+    "name": "HONDA CIVIC EURO HATCHBACK 2012-16 (VCS-L)",
+    "eurocode": "4010AGSMV1B-XYG",
+    "years": "2012-2016",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 378,
+    "name": "HONDA CIVIC HBK 2017-21 (1Z+RS)/",
+    "eurocode": "4019AGNCIMVW-XYG",
+    "years": "2017-2021",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 379,
+    "name": "HONDA CIVIC SED/HBK 2022- (1Z+RS) /INTEGRA",
+    "eurocode": "4026AGACMVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 380,
+    "name": "HONDA CIVIC SED/HBK 2022- (1Z+RS) /INTEGRA",
+    "eurocode": "4026AGNCMVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 381,
+    "name": "HONDA CIVIC SEDAN 2005-11",
+    "eurocode": "3999AGNGN-KMK",
+    "years": "2005-2011",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 382,
+    "name": "HONDA CRV EURO 2012-14 (RS Only)",
+    "eurocode": "4011AGNCIMV2P-XYG",
+    "years": "2012-2016",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 383,
+    "name": "HONDA CRV G2 RD5 2002-06",
+    "eurocode": "3983AGNGYV-XYG",
+    "years": "2002-2006",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 384,
+    "name": "HONDA CRV SUV 2007-11",
+    "eurocode": "4000AGNGNPV-KMK",
+    "years": "2007-2011",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 385,
+    "name": "HONDA CRV SUV 2007-11",
+    "eurocode": "4000AGNGNV-KMK",
+    "years": "2007-2011",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 386,
+    "name": "HONDA CRV SUV 2007-11",
+    "eurocode": "4000AGNGYMVZ1B-XYG",
+    "years": "2007-2011",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 387,
+    "name": "HONDA CRV SUV 2017-22",
+    "eurocode": "4021AGNHMV-FYG",
+    "years": "2017-2022",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 388,
+    "name": "HONDA CRV SUV 2017-22 (EUROPE 1Z+RS+H)(подогрев щеток)",
+    "eurocode": "4021AGNCHMVZ-XYG",
+    "years": "2017-2022",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 389,
+    "name": "HONDA CRV SUV 2024- (1Z+RS+Open Bracket)",
+    "eurocode": "4029AGSCMVZ-XYG",
+    "years": "2023-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 390,
+    "name": "HONDA E:NS1/E:NP1 SUV 2022- (1Z+RS+ETC)",
+    "eurocode": "ENS1AGSCIMVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 391,
+    "name": "HONDA FIT HBK 2014-19",
+    "eurocode": "4015AGNGNV-KMK",
+    "years": "2014-2019",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 392,
+    "name": "HONDA FR-V/EDIX MPV 2004-09 праворульная",
+    "eurocode": "3992AGNBV-FYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 393,
+    "name": "HONDA HRV EURO SUV 2016-18 (2Z ONLY)",
+    "eurocode": "4017AGNCV-FYG",
+    "years": "2013-2022",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 394,
+    "name": "HONDA HRV EURO SUV 2016-22 (3Z+RS)",
+    "eurocode": "4017AGNCMV1L-FYG",
+    "years": "2013-2022",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 395,
+    "name": "HONDA INSIGHT HBK 2009-14",
+    "eurocode": "4005AGNGYV-XYG",
+    "years": "2009-2014",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 396,
+    "name": "HONDA JAZZ HBK 2001-08",
+    "eurocode": "3979AGNGNV-KMK",
+    "years": "2001-2008",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 397,
+    "name": "HONDA JAZZ HBK 2008-10 (ASIA/EURO-MB 216mm+RS)",
+    "eurocode": "4004AGSPV1B-XYG",
+    "years": "2008-2014",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 398,
+    "name": "HOWO HOMAN TRUCK 2011- (1959*810mm-Wide Cab)",
+    "eurocode": "CDW777AGNBL-XYG",
+    "years": "2011-Q",
+    "glassPriceUsd": 170
+  },
+  {
+    "id": 399,
+    "name": "HYUNDAI ACCENT/VERNA 1995-00 (CP+Big M/B)",
+    "eurocode": "4109AGNGN-KMK",
+    "years": "1995-2000",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 400,
+    "name": "HYUNDAI ACCENT/VERNA 1999-06",
+    "eurocode": "4118AGN-FYG",
+    "years": "1999-2006",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 401,
+    "name": "HYUNDAI ACCENT/VERNA SED/HBK 2006-10",
+    "eurocode": "4134AGNBLV-XYG",
+    "years": "2006-2010",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 402,
+    "name": "HYUNDAI ACCENT/VERNA SED/HBK 2006-10",
+    "eurocode": "4134AGNBLV-NG",
+    "years": "2006-2010",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 403,
+    "name": "HYUNDAI ACCENT/VERNA SED/HBK 2006-10 расслоения",
+    "eurocode": "4134AGNBLV-SK",
+    "years": "2006-2010",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 404,
+    "name": "HYUNDAI CRETA /IX25 SUV 2015-19 (винкод смещен вниз)",
+    "eurocode": "4164AGNBLV-XYG",
+    "years": "2015-2019",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 405,
+    "name": "HYUNDAI ELANTRA 4D SEDAN",
+    "eurocode": "4170AGNBLV-FYG",
+    "years": "2016-2020",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 406,
+    "name": "HYUNDAI ELANTRA 4D SEDAN",
+    "eurocode": "4170AGNBLMOV-FYG",
+    "years": "2016-2020",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 407,
+    "name": "HYUNDAI ELANTRA SED/HBK 2001-06/ сб.ТагАЗ `06-`11",
+    "eurocode": "4122AGNGN-KMK",
+    "years": "2001-2006",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 408,
+    "name": "HYUNDAI GENESIS 2D COUPE 2009-",
+    "eurocode": "4145AGNBLHV-XYG",
+    "years": "2009-2013",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 409,
+    "name": "HYUNDAI GENESIS SEDAN 2014-16",
+    "eurocode": "4158AGRBLCHIMOV-FYG",
+    "years": "2014-2016",
+    "glassPriceUsd": 113
+  },
+  {
+    "id": 410,
+    "name": "HYUNDAI GRAND SANTA FE (DM) 5D SUV 2013-",
+    "eurocode": "4154AGNBLHMV-XYG",
+    "years": "2013-2018",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 411,
+    "name": "HYUNDAI H100 04- ,PORTER 04-/KIA Frontier K/Bongo",
+    "eurocode": "4423AGNBL-FYG",
+    "years": "2004-Q",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 412,
+    "name": "HYUNDAI I10 EUROPE 5D HBK 2014-19",
+    "eurocode": "4155AGNV-XYG",
+    "years": "2014-2019",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 413,
+    "name": "HYUNDAI I20 3D/5D HBK 2009-14",
+    "eurocode": "4139AGNV-FYG",
+    "years": "2009-2014",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 414,
+    "name": "HYUNDAI I30 HBK 2007-11 (RS+V=50mm From Bottom)",
+    "eurocode": "4135AGNMV1B-XYG",
+    "years": "2007-2011",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 415,
+    "name": "HYUNDAI I30 HBK 2007-11 (RS+V=50mm From Bottom)",
+    "eurocode": "4135AGNBLHMV1G-XYG",
+    "years": "2007-2011",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 416,
+    "name": "HYUNDAI i40 SEDAN/STW 2011-20",
+    "eurocode": "4146AGNGYHV-FYG",
+    "years": "2011-2020",
+    "glassPriceUsd": 71
+  },
+  {
+    "id": 417,
+    "name": "HYUNDAI i40 SEDAN/STW 2011-20",
+    "eurocode": "4146AGNGYHV-XYG",
+    "years": "2011-2020",
+    "glassPriceUsd": 71
+  },
+  {
+    "id": 418,
+    "name": "HYUNDAI KONA SUV 2018-",
+    "eurocode": "4167AGNBLV1G-FYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 419,
+    "name": "HYUNDAI KONA SUV 2018-20 (Small 1Z открытая+RS)",
+    "eurocode": "4167AGNBLCIMOVW-FYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 420,
+    "name": "HYUNDAI MATRIX/LAVITA HBK 2001-07",
+    "eurocode": "4125AGS-FYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 421,
+    "name": "HYUNDAI MIGHTY HD65/HD72/HD78 TRUCK 1999-",
+    "eurocode": "4131AGNBL-XYG",
+    "years": "1999-2018",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 422,
+    "name": "HYUNDAI MIGHTY TRUCK 2020-",
+    "eurocode": "4183AGNGN-KMK",
+    "years": "2016-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 423,
+    "name": "HYUNDAI PALISADE SUV 2020-22 (Closed 1Z+RS+HUD)",
+    "eurocode": "FW05242AGACMUV-XYG",
+    "years": "2020-2025",
+    "glassPriceUsd": 310
+  },
+  {
+    "id": 424,
+    "name": "HYUNDAI SANTAFE SUV 2001-06",
+    "eurocode": "4123AGNGY-XYG",
+    "years": "2001-2006",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 425,
+    "name": "HYUNDAI SANTAFE SUV 2006-12 (Big M/B)",
+    "eurocode": "4133AGNBLHMVZ1B-XYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 426,
+    "name": "HYUNDAI SANTAFE SUV 2006-12 (Big M/B)",
+    "eurocode": "4133AGNBLV-FYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 427,
+    "name": "HYUNDAI SANTAFE SUV 2006-12 (Big M/B)",
+    "eurocode": "4133AGNGN-KMK",
+    "years": "2006-2012",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 428,
+    "name": "HYUNDAI SANTAFE SUV 2006-12 (Big M/B)",
+    "eurocode": "4133AGSBLHMV1B-FYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 429,
+    "name": "HYUNDAI SANTAFE SUV 2013-18",
+    "eurocode": "4153AGNBLHMV-XYG",
+    "years": "2013-2018",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 430,
+    "name": "HYUNDAI SANTAFE SUV 2021-23 (1Z 200mm+RS)",
+    "eurocode": "4172AGSCIMOV1L-XYG",
+    "years": "2019-2023",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 431,
+    "name": "HYUNDAI SOLARIS/ ACCENT SEDAN/KIA RIO RUS 2011-18 (4150)",
+    "eurocode": "4148AGNGNHV-KMK",
+    "years": "2011-2018",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 432,
+    "name": "HYUNDAI SOLARIS/ ACCENT SEDAN/KIA RIO RUS 2011-18 (4150)",
+    "eurocode": "4148AGNGYV-XYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 433,
+    "name": "HYUNDAI SOLARIS/ ACCENT SEDAN/KIA RIO RUS 2011-18 (4150)",
+    "eurocode": "4148AGNGYHV-XYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 434,
+    "name": "HYUNDAI SOLARIS/ ACCENT SEDAN/KIA RIO RUS 2011-18 (FH)(4150)",
+    "eurocode": "4148AGNBLHV1E-XYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 435,
+    "name": "HYUNDAI SOLARIS/ACCENT RUSSIA SED 2017-22",
+    "eurocode": "4166AGNGNV-KMK",
+    "years": "2017-2022",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 436,
+    "name": "HYUNDAI SOLARIS/ACCENT RUSSIA SED 2017-22",
+    "eurocode": "4166AGSV-FYG",
+    "years": "2017-2022",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 437,
+    "name": "HYUNDAI SONATA (YF) SEDAN (Big M/B)",
+    "eurocode": "41A5AGNBLHMV1B-FYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 438,
+    "name": "HYUNDAI SONATA правое опускное перед",
+    "eurocode": "4108RGNS4FD-NG",
+    "years": "1994-1998",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 439,
+    "name": "HYUNDAI SSANG YONG VAN MB100 98- 12970LFW/X 5423AGNBL 30XXAGNBL (WS30XXBX)-F",
+    "eurocode": "30XXAGNBL-FYG",
+    "years": "1998-2003",
+    "glassPriceUsd": 41
+  },
+  {
+    "id": 440,
+    "name": "HYUNDAI TERRACAN SUV 2001-07",
+    "eurocode": "4124AGN-FYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 441,
+    "name": "HYUNDAI TERRACAN SUV 2001-07 + H",
+    "eurocode": "4124AGNGNH-KMK",
+    "years": "2001-2007",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 442,
+    "name": "HYUNDAI TUCSON SUV 2004-09",
+    "eurocode": "4129AGNBLV-XYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 443,
+    "name": "HYUNDAI TUCSON SUV 2004-09",
+    "eurocode": "4129AGNBLV-KMK",
+    "years": "2004-2009",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 444,
+    "name": "HYUNDAI TUCSON SUV 2004-09 (H)",
+    "eurocode": "4129AGNBLHV1H-XYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 445,
+    "name": "HYUNDAI TUCSON SUV 2016-21",
+    "eurocode": "4159AGNBLVW-XYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 79
+  },
+  {
+    "id": 446,
+    "name": "HYUNDAI TUCSON SUV 2016-21",
+    "eurocode": "4159AGSBLMVW-XYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 447,
+    "name": "HYUNDAI TUCSON SUV 2021-24 (1Z+RS+Bracket Differ)",
+    "eurocode": "4179AGACIMOV-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 448,
+    "name": "HYUNDAI TUCSON/IX35 SUV 2010-15",
+    "eurocode": "4141AGSHMV1B-FYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 449,
+    "name": "HYUNDAI TUCSON/IX35 SUV 2010-15",
+    "eurocode": "4141AGNGYV-XYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 450,
+    "name": "HYUNDAI VERACRUZ IX55 SUV",
+    "eurocode": "4140AGSBLHMV1B-FYG",
+    "years": "2007-Q",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 451,
+    "name": "INFINITI FX35 SUV 2008-13 / QX70 2014-17",
+    "eurocode": "6057AGSBLMVZ-XYG",
+    "years": "2008-2013",
+    "glassPriceUsd": 78
+  },
+  {
+    "id": 452,
+    "name": "INFINITI QX50 5D SUV 2014-18 /EX35 (J50) 2008-13",
+    "eurocode": "6056AGNBLVZ-FYG",
+    "years": "2014-2018",
+    "glassPriceUsd": 71
+  },
+  {
+    "id": 453,
+    "name": "INFINITI QX50 SUV 2019-21 (1Z+Big RSΦ39mm)",
+    "eurocode": "FW04904AGSCMVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 454,
+    "name": "INFINITI QX55 SUV 2022- (1Z+RS)",
+    "eurocode": "FW05693AGNCMVWZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 455,
+    "name": "ISUZU ELF 700P/NMR 2006- (1650*799mm-High Cab)",
+    "eurocode": "6320AGN-XYG",
+    "years": "2006-Q",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 456,
+    "name": "IVECO DAILY 2 1999-13/RENAULT MASTER/MASCOTT/MOVANO 97- (7247)",
+    "eurocode": "3741AGNGN-KMK",
+    "years": "1999-2013",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 457,
+    "name": "IVECO DAILY 3 VAN 2020-23 (Flat Visor+1Z+RS)",
+    "eurocode": "3771AGSCMZ2L-XYG",
+    "years": "2014-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 458,
+    "name": "IVECO DAILY VI VAN 2014-",
+    "eurocode": "3771AGNGN-KMK",
+    "years": "2014-Q",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 459,
+    "name": "IVECO EUROCARGO EUROTECH 1993-02 (Wide-2180*820mm)/STRALIS узк. каб-на",
+    "eurocode": "3734AGNGN-KMK",
+    "years": "1993-Q",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 460,
+    "name": "IVECO EUROCARGO TECTOR 2003- (1992*833mm) EUROTECH CURSOR",
+    "eurocode": "3744ACL-FYG",
+    "years": "2003-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 461,
+    "name": "JAC SUNRAY 2012- /MAZ 3650/281/ Sollers \"Atlant\" '2022- (E603)",
+    "eurocode": "3650AGNA-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 462,
+    "name": "JAC SUNRAY 2012- /MAZ 3650/281/ Sollers \"Atlant\" '2022- (E603)",
+    "eurocode": "3650AGNA-KMK",
+    "years": "2022-Q",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 463,
+    "name": "JAC SUNRAY 2012- /MAZ 3650/281/ Sollers \"Atlant\" '2022- (E603)",
+    "eurocode": "3650AGNBLA-FYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 464,
+    "name": "JEEP CHEROKEE SUV 2014-18",
+    "eurocode": "AJ20AGNVZ-FYG",
+    "years": "2014-2018",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 465,
+    "name": "JEEP COMPASS SUV 2017-21 (1Z+Drop RS+H)",
+    "eurocode": "AJ21AGACHIMVWZ-XYG",
+    "years": "2017-2021",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 466,
+    "name": "JEEP COMPASS SUV 2017-21 (Drop RS)",
+    "eurocode": "AJ21AGSMVWZ-XYG",
+    "years": "2017-2021",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 467,
+    "name": "JEEP GR CHEROKEE 2011-13 (Square RS) /DURANGO",
+    "eurocode": "AJ18AGSMVW1B-FYG",
+    "years": "2011-2021",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 468,
+    "name": "JEEP GRAND CHEROKEE 2005-10",
+    "eurocode": "AJ10AGNBLV-FYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 469,
+    "name": "JEEP RENEGADE SUV 2019-23 (Big 1Z+Round RS+H)",
+    "eurocode": "AJ19AGNCHMVZ1W-XYG",
+    "years": "2015-2023",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 470,
+    "name": "KAMAZ КамАЗ \"6520\" Евро (2050*661)",
+    "eurocode": "4597AGNGN-KMK",
+    "years": "2002-Q",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 471,
+    "name": "KIA CARENS III/RONDO MPV 2006-12 ()",
+    "eurocode": "4430AGNBLHV-XYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 472,
+    "name": "KIA CARNIVAL 2006-14 (Big M/B) /HYU TRAJET",
+    "eurocode": "4429AGNBLHMV1B-FYG",
+    "years": "2006-2014",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 473,
+    "name": "KIA CARNIVAL MPV 2021-23 (1Z+RS)",
+    "eurocode": "K905AGSCMVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 474,
+    "name": "KIA CARNIVAL/SEDONA MPV 1998-06",
+    "eurocode": "4408AGNGN-KMK",
+    "years": "1998-2006",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 475,
+    "name": "KIA CEED 5D HBK 2012-18",
+    "eurocode": "4442AGNGNV-KMK",
+    "years": "2012-2018",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 476,
+    "name": "KIA CEED HBK/WAGON 2006-12 (Big M/B)",
+    "eurocode": "4431AGNGYV-XYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 477,
+    "name": "KIA CEED HBK/WAGON 2006-12 (Big M/B)",
+    "eurocode": "4431AGNGNV-KMK",
+    "years": "2006-2012",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 478,
+    "name": "KIA CERATO / K3 4D SEDAN",
+    "eurocode": "4451AGNBLHOV-FYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 79
+  },
+  {
+    "id": 479,
+    "name": "KIA CERATO SEDAN/HBK 2009-12 /FORTE",
+    "eurocode": "4436AGNBLHV-XYG",
+    "years": "2009-2012",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 480,
+    "name": "KIA K2/RUSSIA RIO FB 4D SEDAN 2017-",
+    "eurocode": "4456AGSBLV-FYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 481,
+    "name": "KIA K5 OPTIMA SEDAN 2018-20 (Big 1Z+RS)",
+    "eurocode": "4448AGSBLCHMO2Z-XYG",
+    "years": "2016-2020",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 482,
+    "name": "KIA MOHAVE/BORREGO SUV 2008- (VCPH+Small M/B)",
+    "eurocode": "4452AGNBLH-XYG",
+    "years": "2008-Q",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 483,
+    "name": "KIA PICANTO MORNING HBK 2011-17",
+    "eurocode": "4439AGSBL-FYG",
+    "years": "2011-2017",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 484,
+    "name": "KIA PRO-CEE'D 3D HBK `12-",
+    "eurocode": "4444AGNBLHMPV-FYG",
+    "years": "2012-2014",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 485,
+    "name": "KIA PROCEED 3D HBK 2007-12",
+    "eurocode": "4433AGNMV1P-FYG",
+    "years": "2007-2012",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 486,
+    "name": "KIA PROCEED 3D HBK 2007-12",
+    "eurocode": "4433AGNMV1P-XYG",
+    "years": "2007-2012",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 487,
+    "name": "KIA RIO HBK/SEDAN 2005-11 (Big M/B)",
+    "eurocode": "4426AGNBLV-FYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 488,
+    "name": "KIA RIO UB SEDAN/HBK 2011- (не подходит на росс. сб-ку)",
+    "eurocode": "4440AGNBLV-XYG",
+    "years": "2011-2017",
+    "glassPriceUsd": 46.8
+  },
+  {
+    "id": 489,
+    "name": "Kia Rio/K2 4D SEDAN (Russia RIO FB) /RIO X-Line 5D Hbk 2017-",
+    "eurocode": "4456AGNBLV-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 490,
+    "name": "KIA SEPHIA/SHUMA SEDAN/HBK 1998-04 KIA SPECTRA (Ижевск)`98-`11",
+    "eurocode": "4409AGN6Z-FYG",
+    "years": "1998-2004",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 491,
+    "name": "KIA SEPHIA/SHUMA SEDAN/HBK 1998-04 KIA SPECTRA (Ижевск)`98-`11",
+    "eurocode": "4409AGNGN-KMK",
+    "years": "1998-2004",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 492,
+    "name": "KIA SORENTO 5D SUV 2015-20",
+    "eurocode": "4446AGNBLHMVW-XYG",
+    "years": "2015-2020",
+    "glassPriceUsd": 89
+  },
+  {
+    "id": 493,
+    "name": "KIA SORENTO BL SUV 2003-10 (VCPH-L+Big M/B)",
+    "eurocode": "4418AGNGNHV-XYG",
+    "years": "2003-2010",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 494,
+    "name": "KIA SORENTO SUV 2009-12 (RS H=120mm)",
+    "eurocode": "4437AGSHMV1B-XYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 495,
+    "name": "KIA SORENTO SUV 2021-23 (1Z+RS)",
+    "eurocode": "4462AGNCMV-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 496,
+    "name": "KIA SOUL HBK 2009-13",
+    "eurocode": "4434AGSBLV-XYG",
+    "years": "2009-2013",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 497,
+    "name": "KIA SPORTAGE 5D SUV 2004-10",
+    "eurocode": "4424AGNBL-XYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 498,
+    "name": "KIA SPORTAGE 5D SUV 2004-10",
+    "eurocode": "4424AGNBLHV-FYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 499,
+    "name": "KIA SPORTAGE 5D SUV 2004-10",
+    "eurocode": "4424AGNGNV-KMK",
+    "years": "2004-2010",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 500,
+    "name": "KIA SPORTAGE 5D SUV 2004-10",
+    "eurocode": "4424AGN-FYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 501,
+    "name": "KIA SPORTAGE 5D SUV 2010-",
+    "eurocode": "4438AGNBLHMV-XYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 502,
+    "name": "KIA SPORTAGE SUV 2016-21 (heated)",
+    "eurocode": "4447AGNBLHIMOVW-XYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 503,
+    "name": "KIA SPORTAGE SUV 2022-24 (Closed 1Z+RS+HS#07)",
+    "eurocode": "4464AGNCIMOV-XYG",
+    "years": "2022-2024",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 504,
+    "name": "LADA GRANTA 2190/2191 2014-/KALINA 2192/2194 2016-",
+    "eurocode": "4599AGNBL-XYG",
+    "years": "2014-Q",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 505,
+    "name": "LADA GRANTA 2190/2191 2014-/KALINA 2192/2194 2016-",
+    "eurocode": "4599AGNGN-KMK",
+    "years": "2014-Q",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 506,
+    "name": "LADA VESTA 2015-",
+    "eurocode": "4592AGNBL-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 507,
+    "name": "LADA VESTA 2015-",
+    "eurocode": "4592AGNGN-KMK",
+    "years": "2015-Q",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 508,
+    "name": "LADA VESTA 2015-19 (Fully Heated L427+L420)(2 коннектора)",
+    "eurocode": "4592AGSHM-FYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 170
+  },
+  {
+    "id": 509,
+    "name": "LADA VESTA 2020- (Sensor+Fully Heated L427+L432)(1 коннектор)",
+    "eurocode": "4592AGNHM1E-FYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 170
+  },
+  {
+    "id": 510,
+    "name": "LADA X-RAY 5D SUV 2015-",
+    "eurocode": "4591AGN-XYG",
+    "years": "2015-2022",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 511,
+    "name": "LADA X-RAY 5D SUV 2015-22",
+    "eurocode": "4591AGNGN-KMK",
+    "years": "2015-2022",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 512,
+    "name": "LADA/VAZ 2110 4D SEDAN 1999-/PRIORA 2111 /2112/2170/2171",
+    "eurocode": "4503AGNGN-KMK",
+    "years": "1995-2014",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 513,
+    "name": "LANCIA YPSILON 3D HBK 2003-11",
+    "eurocode": "4737AGS-XYG",
+    "years": "2003-2011",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 514,
+    "name": "LAND ROVER DISCOVERY LR3 SUV 2005-10",
+    "eurocode": "7032AGSMVW1P-FYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 515,
+    "name": "LAND ROVER DISCOVERY LR3 SUV 2005-10",
+    "eurocode": "7032AGSVW-XYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 516,
+    "name": "LDV MAXUS /AVIOR V90 VAN 2019-",
+    "eurocode": "4637AGNVZ1C-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 517,
+    "name": "LEAPMOTOR C11 SUV 2021-23 (02 Lens 1Z)",
+    "eurocode": "EO02AGNCPV-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 518,
+    "name": "LEXUS ES300H SEDAN 2019-Q",
+    "eurocode": "8433AGABLV-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 119
+  },
+  {
+    "id": 519,
+    "name": "LEXUS GS SEDAN 1991-97 (VP) ARISTO JS10 (1)рассл.,3)рассл.)",
+    "eurocode": "8285ABZGY-NG",
+    "years": "1991-1997",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 520,
+    "name": "LEXUS GS SEDAN 2012-17 (RS+HS)",
+    "eurocode": "8407AGNBLHMV-XYG",
+    "years": "2012-2020",
+    "glassPriceUsd": 71
+  },
+  {
+    "id": 521,
+    "name": "LEXUS GS SEDAN 2012-17 (RS+HS)",
+    "eurocode": "8407AGNBLHMV-FYG",
+    "years": "2012-2020",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 522,
+    "name": "LEXUS NX SUV 2015-17",
+    "eurocode": "8419AGABLAHMV-FYG",
+    "years": "2015-2021",
+    "glassPriceUsd": 116
+  },
+  {
+    "id": 523,
+    "name": "LEXUS RX 5D SUV 2016- обогрев дворников (камера без обогрева)",
+    "eurocode": "8416AGNCHIMVZ-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 524,
+    "name": "LEXUS RX SUV 2009-15",
+    "eurocode": "8384AGNBLHMV-XYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 525,
+    "name": "LEXUS RX330 SUV 2004-09 (8354)",
+    "eurocode": "FW02412GBH-FYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 526,
+    "name": "LIFAN X60 5D SUV",
+    "eurocode": "RV55AGNBLV-FYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 527,
+    "name": "LINCOLN AVIATOR SUV 2020-24 (Small 1Z+RS)(обогрев камеры)",
+    "eurocode": "DW02570AGSCPV-XYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 170
+  },
+  {
+    "id": 528,
+    "name": "LINCOLN CORSAIR SUV 2020-23 (Small 1Z+RS+H)обогрев щеток+камеры",
+    "eurocode": "DW02587AGACMVW-XYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 529,
+    "name": "LINCOLN NAUTILUS SUV 2019-20 (1Z+RS)",
+    "eurocode": "DW02495AGSCMVZ-XYG",
+    "years": "2019-2023",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 530,
+    "name": "LIXIANG L7 SUV 2023-Q (01 Lens 1Z) Можно менять площадку под (02 Lens 1Z)",
+    "eurocode": "LIXL7AGSCMV-XYG",
+    "years": "2023-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 531,
+    "name": "LIXIANG L8/L9 SUV 2023-Q (02 Lens 1Z+H+SOLAR+HUD)",
+    "eurocode": "LIXL8ACDCMHUVZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 515
+  },
+  {
+    "id": 532,
+    "name": "LIXIANG L9/L8 SUV 2022-Q (02 Lens 1Z)",
+    "eurocode": "LIXL9AGNCHMVWZ-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 533,
+    "name": "MAN \"F90 L28\" Wide (86-)/ \"F2000\" (94-)/ МАЗ-МАН/Shacman \"X3000-1\" (20-) шир. к-на",
+    "eurocode": "4907AGNGN-KMK",
+    "years": "1986-2000",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 534,
+    "name": "MAN F90 STAND TRUCK (86-94), F2000 STAND TRUCK (94-01) / M90 TRUCK (88-95), M2000 (F-CAB) TRUCK (96-05) (2300*820)",
+    "eurocode": "4908AGNGN-KMK",
+    "years": "1986-2000",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 535,
+    "name": "MAN L2000 1993- (1925*758mm) SINOTRUCK SWZ10",
+    "eurocode": "4909AGNGN-KMK",
+    "years": "1993-1997",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 536,
+    "name": "MAN TGA SLEEPER CAB 2000- (226*114cm) /SITRAK G7H/G7S/C9H",
+    "eurocode": "4913AGNGN-KMK",
+    "years": "2000-Q",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 537,
+    "name": "MAN TGX BIG TRUCK 2000- (226*88cm) SITRAK G7/C7H/FAW JH6",
+    "eurocode": "4912AGNGY-XYG",
+    "years": "2000-Q",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 538,
+    "name": "MAN TGX BIG TRUCK 2000- (226*88cm) SITRAK G7/C7H/FAW JH6",
+    "eurocode": "4912AGNGN-KMK",
+    "years": "2000-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 539,
+    "name": "MAZ Евро-МАЗ 5440, 6430 (97- ), 6310, 6312 (05- ), 6501, 6516 (11- )(4590)",
+    "eurocode": "6430AGNGN-KUVO",
+    "years": "1997-Q",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 540,
+    "name": "MAZ МАЗ \"103\" '1996-2021 лев. 103-004С",
+    "eurocode": "103-0004C-KMK",
+    "years": "1996-2021",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 541,
+    "name": "MAZ Супер-МАЗ 5336, 6303 (87-20) / 5432, 6422 (81-20) / 5551, 5516, 6516 (85-20) / 4370, 4570 (99-15)",
+    "eurocode": "4577AGN-KUVO",
+    "years": "1981-2020",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 542,
+    "name": "MAZ Супер-МАЗ 5336, 6303 (87-20) / 5432, 6422 (81-20) / 5551, 5516, 6516 (85-20) / 4370, 4570 (99-15)",
+    "eurocode": "4577AGNGN-KMK",
+    "years": "1981-2020",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 543,
+    "name": "MAZDA 3 EURO 2004-09 SED/HBK (VCP)",
+    "eurocode": "5166AGNVZ2B-XYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 544,
+    "name": "MAZDA 3 EURO 2004-09 SED/HBK (VCP)",
+    "eurocode": "5166AGNGNV2B-KMK",
+    "years": "2004-2009",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 545,
+    "name": "MAZDA 3 SEDAN/HBK 2009-10 (Mid RS+FH) (праворульная)",
+    "eurocode": "5175AGNBHMVW1B-SK",
+    "years": "2009-2013",
+    "glassPriceUsd": 218.17
+  },
+  {
+    "id": 546,
+    "name": "MAZDA 3 SEDAN/HBK 2019-23 (Small 1Z+HUD)",
+    "eurocode": "5188AGACMUVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 315
+  },
+  {
+    "id": 547,
+    "name": "MAZDA 3 SEDAN/HBK BL 2009-",
+    "eurocode": "5175AGNVW-FYG",
+    "years": "2009-2013",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 548,
+    "name": "MAZDA 3 SEDAN/HBK BM 2014-16",
+    "eurocode": "5181AGNMVW-XYG",
+    "years": "2014-2018",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 549,
+    "name": "MAZDA 3 SEDAN/HBK BM 2014-18",
+    "eurocode": "5181AGNGNV-KMK",
+    "years": "2014-2018",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 550,
+    "name": "MAZDA 3 SEDAN/HBK BM 2014-18",
+    "eurocode": "5181AGNBLVW-FYG",
+    "years": "2014-2018",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 551,
+    "name": "MAZDA 323F HBK 1994-98",
+    "eurocode": "5149AGNGN-KMK",
+    "years": "1994-1998",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 552,
+    "name": "MAZDA 6 G3 SED 2013-16 (2Z+RS)",
+    "eurocode": "5180AGACMW-OEM",
+    "years": "2013-2023",
+    "glassPriceUsd": 379
+  },
+  {
+    "id": 553,
+    "name": "MAZDA 6 G3 SED 2017-23 (Small RS)",
+    "eurocode": "5180AGNMVW6T-XYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 554,
+    "name": "MAZDA 6 SEDAN 2002-08",
+    "eurocode": "5164AGNBLPW1P-XYG",
+    "years": "2002-2008",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 555,
+    "name": "MAZDA 6 SEDAN 2002-08",
+    "eurocode": "5164AGNP1P-FYG",
+    "years": "2002-2008",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 556,
+    "name": "MAZDA 6 SEDAN 2002-08",
+    "eurocode": "5164AGNGNPV-KMK",
+    "years": "2002-2008",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 557,
+    "name": "MAZDA 6 SEDAN 2008-12 /LBK",
+    "eurocode": "5174AGNBLVW-FYG",
+    "years": "2008-2012",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 558,
+    "name": "MAZDA 6 SEDAN 2013-16 (Left Big RS)",
+    "eurocode": "5180AGNGNPV-KMK",
+    "years": "2013-2023",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 559,
+    "name": "MAZDA 6 SEDAN 2018-23 (Left 1Z 179mm+Small RS)",
+    "eurocode": "5180AGACMVZ95-XYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 560,
+    "name": "MAZDA 626 SEDAN/LBK 1997-02",
+    "eurocode": "5153AGNBL-XYG",
+    "years": "1997-2002",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 561,
+    "name": "MAZDA CX5 SUV 2013-14 (2Z+RS)",
+    "eurocode": "5179AGNCIMVW2V-FYG",
+    "years": "2013-2017",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 562,
+    "name": "MAZDA CX5 SUV 2015-17 (2Z+RS+Bracket Differ)",
+    "eurocode": "5179AGSCIMVW4V-XYG",
+    "years": "2013-2017",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 563,
+    "name": "MAZDA CX5 SUV 2015-17 (3кам+дд)",
+    "eurocode": "5179AGNCMW5V-XYG",
+    "years": "2013-2017",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 564,
+    "name": "MAZDA CX5/CX8 SUV 2017-",
+    "eurocode": "5187AGAMVZ-FYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 565,
+    "name": "MAZDA CX5/CX8 SUV 2017-",
+    "eurocode": "5187AGNCMVZ-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 106
+  },
+  {
+    "id": 566,
+    "name": "MAZDA CX7 SUV 2006-12",
+    "eurocode": "5171AGNMW1B-FYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 567,
+    "name": "MAZDA CX9 SUV 2007-15 (5177)",
+    "eurocode": "W2752GGY-XYG",
+    "years": "2007-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 568,
+    "name": "MAZDA CX9 SUV 2007-15 (5177)",
+    "eurocode": "W2752GGY-FYG",
+    "years": "2007-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 569,
+    "name": "MAZDA FAMILIA 323 4D SEDAN 1994-",
+    "eurocode": "5150AGNGN-KMK",
+    "years": "1994-1998",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 570,
+    "name": "MAZDA MPV 2000-06",
+    "eurocode": "5160AGN1C-FYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 571,
+    "name": "MAZDA MPV LC70 2000-06",
+    "eurocode": "5160AGNBL-XYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 572,
+    "name": "MAZDA PREMACY 5 MPV 2005-10 (EURO)",
+    "eurocode": "5168AGS-FYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 573,
+    "name": "MAZDA PREMACY MPV 1998-04",
+    "eurocode": "5159AGNBL-XYG",
+    "years": "1998-2004",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 574,
+    "name": "MERCEDES 190E W201 SEDAN 1985-93 (One Wiper H=734mm)",
+    "eurocode": "5329AGNGYV-KMK",
+    "years": "1985-1993",
+    "glassPriceUsd": 44
+  },
+  {
+    "id": 575,
+    "name": "MERCEDES 207",
+    "eurocode": "5419AGNGN-KMK",
+    "years": "1976/01...1995/01",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 576,
+    "name": "MERCEDES A-CLASS W168 HBK 1997-04",
+    "eurocode": "5342AGNGYMV-XYG",
+    "years": "1997-2004",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 577,
+    "name": "MERCEDES A-CLASS W168 HBK 1997-04",
+    "eurocode": "5342AGNGYV-FYG",
+    "years": "1997-2004",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 578,
+    "name": "MERCEDES A-CLASS W169 HBK 2005-12 /B-CLASS W245",
+    "eurocode": "5358AGSMV1B-FYG",
+    "years": "2005-2012",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 579,
+    "name": "MERCEDES ACTROS IV WIDE (11-)/AROCS (13-)/КамАЗ -K5 54901 (19-)",
+    "eurocode": "5444AGNGN-KMK",
+    "years": "2012-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 580,
+    "name": "MERCEDES ACTROS IV WIDE (11-)/AROCS (13-)/КамАЗ -K5 54901 (19-)",
+    "eurocode": "5444AGNGY-XYG",
+    "years": "2012-Q",
+    "glassPriceUsd": 165
+  },
+  {
+    "id": 581,
+    "name": "MERCEDES ACTROS SMALL TRUCK 2012- (2109*891mm)",
+    "eurocode": "5443AGNGY-XYG",
+    "years": "2012-Q",
+    "glassPriceUsd": 155
+  },
+  {
+    "id": 582,
+    "name": "MERCEDES ACTROS SMALL TRUCK 2012- (2109*891mm)",
+    "eurocode": "5443AGN-KMK",
+    "years": "2012-Q",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 583,
+    "name": "MERCEDES ACTROS TRUCK 1996-11/FOTON AUMAN 17-",
+    "eurocode": "5429AGNBL-XYG",
+    "years": "1996-2011",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 584,
+    "name": "MERCEDES ATEGO 1998- /AXOR/FUSO FJ/КамАЗ-К4 5490,65206,6580",
+    "eurocode": "5430AGNGY1A-XYG",
+    "years": "1998-Q",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 585,
+    "name": "MERCEDES C-CLASS SEDAN 1993- (опускное, левое зад.двери)",
+    "eurocode": "5334LGNS4RD-NG",
+    "years": "1993-2000",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 586,
+    "name": "MERCEDES C-CLASS SEDAN 1993- (опускное, правое зад.двери)",
+    "eurocode": "5334RGNS4RD-NG",
+    "years": "1993-2000",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 587,
+    "name": "MERCEDES C-CLASS W202 SEDAN/WAGON 1993-",
+    "eurocode": "5334AGNGYV-XYG",
+    "years": "1993-2000",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 588,
+    "name": "MERCEDES C-CLASS W202 SEDAN/WAGON 1993-",
+    "eurocode": "5334AGNGYPV-FYG",
+    "years": "1993-2000",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 589,
+    "name": "MERCEDES C-CLASS W202 SEDAN/WAGON 1993-",
+    "eurocode": "5334AGNGYMV-PIL",
+    "years": "1993-2000",
+    "glassPriceUsd": 182
+  },
+  {
+    "id": 590,
+    "name": "MERCEDES C-CLASS W202 SEDAN/WAGON 1993-",
+    "eurocode": "5334AGNGNV-KMK",
+    "years": "1993-2000",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 591,
+    "name": "MERCEDES C-CLASS W203 4D SED 2001-02 (Two RS)",
+    "eurocode": "5351AGNGYPV1T-KMK",
+    "years": "2001-2008",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 592,
+    "name": "MERCEDES C-CLASS W203 4D SEDAN 2001-02 (Two RS#111)",
+    "eurocode": "5351AGNGYPVW-XYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 593,
+    "name": "MERCEDES C-CLASS W204 SED 2007-14",
+    "eurocode": "5364AGNMVZ1K-XYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 594,
+    "name": "MERCEDES C-CLASS W204 SED 2007-14",
+    "eurocode": "5364AGNCMVZ6T-FYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 595,
+    "name": "MERCEDES C-CLASS W205 SEDAN 2014-17 (Left 1Z H=114mm)",
+    "eurocode": "5385AGSCMVZ-FYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 596,
+    "name": "MERCEDES C-CLASS W205 SEDAN 2014-17 (Left 1Z H=114mm)",
+    "eurocode": "5385AGNCMVZ-FYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 597,
+    "name": "MERCEDES CL-CLASS C215 2D COUPE 2000-06 (Two RS)",
+    "eurocode": "5345AGNGYHPV-XYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 598,
+    "name": "MERCEDES CL-CLASS C215 2D COUPE 2000-06 (Two RS)",
+    "eurocode": "5345AGNGYHPVW-XYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 599,
+    "name": "MERCEDES E-CLASS SEDAN 2014-16 (2Z Type+H)",
+    "eurocode": "5371AGSCHMVWZ2L-XYG",
+    "years": "2010-2016",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 600,
+    "name": "MERCEDES E-CLASS W124 SED левое опускное зад",
+    "eurocode": "5328LGNS4RD-NG",
+    "years": "1985-1996",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 601,
+    "name": "MERCEDES E-CLASS W124 SED правое опускное зад",
+    "eurocode": "5328RGNS4RD-NG",
+    "years": "1985-1996",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 602,
+    "name": "MERCEDES E-CLASS W124 SED правое опускное перед",
+    "eurocode": "5328RCLS4FD-NG",
+    "years": "1985-1996",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 603,
+    "name": "MERCEDES E-CLASS W124 SED/STW 1985-96",
+    "eurocode": "5328AGN-XYG",
+    "years": "1985-1996",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 604,
+    "name": "MERCEDES E-CLASS W124 левое опускное перед",
+    "eurocode": "5328LCLS4FD-NG",
+    "years": "1985-1996",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 605,
+    "name": "MERCEDES E-CLASS W210 SED/STW 1995-01",
+    "eurocode": "5337AGNGYV-XYG",
+    "years": "1995-2001",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 606,
+    "name": "MERCEDES E-CLASS W210 SED/STW 1995-01",
+    "eurocode": "5337AGNGYV-KMK",
+    "years": "1995-2001",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 607,
+    "name": "MERCEDES E-CLASS W210 SED/STW 1995-01 левое опускное зад",
+    "eurocode": "5337LGNS4RD-NG",
+    "years": "1995-2001",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 608,
+    "name": "MERCEDES E-CLASS W210 SED/STW 1995-01 правое опускное зад",
+    "eurocode": "5337RGNS4RD-NG",
+    "years": "1995-2001",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 609,
+    "name": "MERCEDES E-CLASS W210 SED/STW 1995-01(avangard, без полосы)",
+    "eurocode": "5337ABSGYV-XYG",
+    "years": "1995-2001",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 610,
+    "name": "MERCEDES E-CLASS W211 SEDAN 2002-09",
+    "eurocode": "5347AGNGYMVW1K-XYG",
+    "years": "2002-2009",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 611,
+    "name": "MERCEDES E-CLASS W211 SEDAN 2002-09 (AVANGARD)",
+    "eurocode": "5347ABSBLMVW1K-XYG",
+    "years": "2002-2009",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 612,
+    "name": "MERCEDES E-CLASS W212 SEDAN 2010-16",
+    "eurocode": "5371AGNHMVWZ1K-XYG",
+    "years": "2010-2016",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 613,
+    "name": "MERCEDES GLB/EQB SUV 2020-",
+    "eurocode": "5505AGAMVZ-FYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 614,
+    "name": "MERCEDES GLE/GLS W166 SUV 2016-18 (Right 1Z+Left RS)",
+    "eurocode": "5394AGNCHMVZ-XYG",
+    "years": "2016-2018",
+    "glassPriceUsd": 98
+  },
+  {
+    "id": 615,
+    "name": "MERCEDES GLE/ML W166 SUV 2012-15 (Mid 1Z+H)",
+    "eurocode": "5378AGSCHMVWZ-XYG",
+    "years": "2012-2015",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 616,
+    "name": "MERCEDES L207/307/407 1977-95 (1693*756mm)",
+    "eurocode": "5419ACLBL-XYG",
+    "years": "1977-1995",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 617,
+    "name": "MERCEDES ML SUV W163 2000-05 (VCS,Encapsulated)",
+    "eurocode": "5343AGSGYMVZ1C-XYG",
+    "years": "2000-2005",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 618,
+    "name": "MERCEDES ML SUV W163 2000-05 (VCS,Encapsulated,avangard)",
+    "eurocode": "5343ABLBLMVZ1C-XYG",
+    "years": "2000-2005",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 619,
+    "name": "MERCEDES ML W164 5D SUV 2005-11/GL X164 2006-12 (Encapsulated)",
+    "eurocode": "5361AGNGYMVZ-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 620,
+    "name": "MERCEDES ML W164 5D SUV 2005-11/GL X164 2006-12 (Encapsulated, avangard)",
+    "eurocode": "5361ABSPVZ-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 621,
+    "name": "MERCEDES ML W164 5D SUV 2005-11/GL X164 2006-12 (Encapsulated, avangard)",
+    "eurocode": "5361ABSMVZ-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 622,
+    "name": "MERCEDES S-CLASS W140 SEDAN 1991-99",
+    "eurocode": "5333AGNGNPV-XYG",
+    "years": "1991-1999",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 623,
+    "name": "MERCEDES S-CLASS W220/S350 4D SEDAN 2003-06 (One RS)",
+    "eurocode": "5344AGNGYHMVW6T-XYG",
+    "years": "1999-2006",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 624,
+    "name": "MERCEDES S-CLASS W221 4D SEDAN 2006-09 (Left Open 1Z)",
+    "eurocode": "5362AGNGYСHMV-XYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 97
+  },
+  {
+    "id": 625,
+    "name": "MERCEDES S-CLASS W221 4D SEDAN 2009-13 (Mid Open 2Z)",
+    "eurocode": "5362AGSCHMVZ1K-XYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 117
+  },
+  {
+    "id": 626,
+    "name": "MERCEDES SPRINTER High Roof 1995-06/Sprinter classic RUS 13-20 (CP+NO M/B)",
+    "eurocode": "5427AGNGN-KMK",
+    "years": "1995-2006",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 627,
+    "name": "MERCEDES SPRINTER Low-Roof 1995-06",
+    "eurocode": "5426RCLV2FD-NG",
+    "years": "1995-2006",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 628,
+    "name": "MERCEDES SPRINTER Low-Roof 1995-06",
+    "eurocode": "5426AGNGY-XYG",
+    "years": "1995-2006",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 629,
+    "name": "MERCEDES SPRINTER Low-Roof 1995-06 правое опускное перед",
+    "eurocode": "5426RGNV2FD-NG",
+    "years": "1995-2006",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 630,
+    "name": "MERCEDES SPRINTER Low-Roof 1995-06 правое перед дверь треугольник",
+    "eurocode": "5426RGNV2FV-NG",
+    "years": "1995-2006",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 631,
+    "name": "MERCEDES SPRINTER W906 2006-18 (With M/B 1797*1008mm)/VW CRAFTER",
+    "eurocode": "5439AGNGN-KMK",
+    "years": "2006-2018",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 632,
+    "name": "MERCEDES SPRINTER W907/W910 VAN 2018-",
+    "eurocode": "5447ACLBL1C-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 633,
+    "name": "MERCEDES SPRINTER W907/W910 VAN 2018-",
+    "eurocode": "5447AGSBLCMZ1L-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 634,
+    "name": "MERCEDES VITO W447 METRIS VAN 2015-19 (Small 1Z+L331)",
+    "eurocode": "5382AGNACMZ1B-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 635,
+    "name": "MERCEDES VITO W638 VAN 1996-03",
+    "eurocode": "5428AGNGN-XYG",
+    "years": "1996-2003",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 636,
+    "name": "MERCEDES VITO W638 VAN 1996-03",
+    "eurocode": "5428AGNGY-KMK",
+    "years": "1996-2003",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 637,
+    "name": "MERCEDES VITO/VIANO W639",
+    "eurocode": "5438AGSGYA-XYG",
+    "years": "2003-2014",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 638,
+    "name": "MERCEDES W177 A-CLASS/CLA C118 2018-22 (1Z Type)",
+    "eurocode": "5399AGNCMVZ1L-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 639,
+    "name": "MERCEDES W177 C118 (A-CLASS / CLA-CLASS ) 5D/COUPE 4D 18-",
+    "eurocode": "5399AGAMVZ-FYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 61
+  },
+  {
+    "id": 640,
+    "name": "MINI CLUBMAN WAGON 2016- F54",
+    "eurocode": "2483AGNMVZ-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 641,
+    "name": "MINI CLUBMAN WAGON 2016- F54",
+    "eurocode": "2483AGSHMVZ-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 200
+  },
+  {
+    "id": 642,
+    "name": "MINI COOPER COUPE/CABRIO 2012-15 (R58/R59)",
+    "eurocode": "2466AGSMVZ1B-FYG",
+    "years": "2012-2015",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 643,
+    "name": "MINI COOPER COUPE/CABRIO 2012-15 (R58/R59)",
+    "eurocode": "2466AGSVZ-FYG",
+    "years": "2012-2015",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 644,
+    "name": "MINI COOPER R56 3D HBK 2007-13 /R57 2D Cabriolet 2009-15 /CLUBMAN",
+    "eurocode": "2455AGNGYV-XYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 645,
+    "name": "MIT ASX/CITROEN AIRCROSS/PEUGEOT 4008 2018-22 (Small RS 24*31mm)(2750/6565AM1T)",
+    "eurocode": "5689AGNGNPV2B-KMK",
+    "years": "2010-2022",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 646,
+    "name": "MIT L200 1997-05 (Big M/B) PAJERO SPORT/NATIVA (NO M/B)",
+    "eurocode": "5650AGNGN-KMK",
+    "years": "1997-2005",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 647,
+    "name": "MIT LANCER SEDAN 1995-00",
+    "eurocode": "5648AGNBL-XYG",
+    "years": "1995-2000",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 648,
+    "name": "MIT LANCER SEDAN 1995-00",
+    "eurocode": "5648AGNBL-NG",
+    "years": "1995-2000",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 649,
+    "name": "MIT LANCER SEDAN/HBK 2007- /FORTIS",
+    "eurocode": "5684AGNGYV-XYG",
+    "years": "2007-2017",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 650,
+    "name": "MIT LANCER SEDAN/HBK 2007- /FORTIS",
+    "eurocode": "5684AGNGN-KMK",
+    "years": "2007-2017",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 651,
+    "name": "MIT OUTLANDER 2006-12 /PEU 4007/CITR C-CROSSER (RS+H) (2738/6555)",
+    "eurocode": "5680AGNHM1B-XYG",
+    "years": "2006-2012",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 652,
+    "name": "MIT OUTLANDER SUV 2022- (1Z+RS+H)",
+    "eurocode": "FW05655AGSCHMV-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 653,
+    "name": "MIT PAJERO V93 SUV 2007-21 (Square M/B)",
+    "eurocode": "5661AGNBL1C-FYG",
+    "years": "2001-2021",
+    "glassPriceUsd": 46
+  },
+  {
+    "id": 654,
+    "name": "MIT PAJERO V93 SUV 2007-21 (Square M/B)",
+    "eurocode": "5661AGNBLH1C-XYG",
+    "years": "2001-2021",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 655,
+    "name": "MIT PAJERO/MONTERO 5D SUV 2001-21(обогрев щеток)",
+    "eurocode": "5661AGNGNH-KMK",
+    "years": "2001-2021",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 656,
+    "name": "MITSUBISHI CARISMA 5D SED/HBK 1995-",
+    "eurocode": "5646AGNBL-FYG",
+    "years": "1995-Q",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 657,
+    "name": "MITSUBISHI FUSO CANTER FE800 WIDE TRUCK 2001-",
+    "eurocode": "5696AGNGN-KMK",
+    "years": "2001-Q",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 658,
+    "name": "MITSUBISHI GALANT 4D SEDAN/LEGNUM 5D WAGON 1997-",
+    "eurocode": "5649AGNGN-KMK",
+    "years": "1997-2006",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 659,
+    "name": "MITSUBISHI OUTLANDER SUV 2003-06 /AIRTREK 2002-08",
+    "eurocode": "5668AGNGNHV-KMK",
+    "years": "2003-2006",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 660,
+    "name": "MITSUBISHI OUTLANDER SUV 2003-06 /AIRTREK 2002-08",
+    "eurocode": "5668AGNGN-KMK",
+    "years": "2003-2006",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 661,
+    "name": "MITSUBISHI SPACE WAGON III",
+    "eurocode": "5658AGNBL-XYG",
+    "years": "1997-2003",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 662,
+    "name": "MITSUBISHI SPACESTAR EUROPE MPV 1998-05",
+    "eurocode": "5655AGNGN-KMK",
+    "years": "1998-2005",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 663,
+    "name": "MITSUBISHI SPACESTAR EUROPE MPV 1998-05",
+    "eurocode": "5655AGNBL-XYG",
+    "years": "1998-2005",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 664,
+    "name": "NEFAZ НЕФАЗ 5299 (до 2004) АМАЗ 103 (1112*1269) правый",
+    "eurocode": "WSR AMAЗ 103-107-KMK",
+    "years": "",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 665,
+    "name": "NEFAZ НЕФАЗ 5299 (до 2004) АМАЗ 103(1112*1269) левый",
+    "eurocode": "WSR Автобус MAЗ 103-107-KMK",
+    "years": "",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 666,
+    "name": "NISSAN ALMERA N16 SEDAN 2000-06",
+    "eurocode": "6007AGNBL-XYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 667,
+    "name": "NISSAN ALMERA N16 SEDAN 2000-06",
+    "eurocode": "6007AGS-FYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 668,
+    "name": "NISSAN ALMERA RUSSIA 4D SEDAN 2012-18 (59B5)",
+    "eurocode": "6090AGNBL-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 669,
+    "name": "NISSAN ALMERA RUSSIA 4D SEDAN 2012-18 (6090)",
+    "eurocode": "59B5AGN-FYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 670,
+    "name": "NISSAN ARIYA SUV 2023-Q (Big 1Z-3 Lens)",
+    "eurocode": "6107AGACMVZ1T-XYG",
+    "years": "2023-Q",
+    "glassPriceUsd": 290
+  },
+  {
+    "id": 671,
+    "name": "NISSAN JUKE EURO HBK 2011-",
+    "eurocode": "6069AGNGNPV-KMK",
+    "years": "2011-2019",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 672,
+    "name": "NISSAN JUKE EURO HBK 2011-",
+    "eurocode": "6069AGNGNV-KMK",
+    "years": "2011-2019",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 673,
+    "name": "NISSAN JUKE EURO HBK 2011-19 (VCP+M/B 136mm)",
+    "eurocode": "6069AGNGYVW-XYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 674,
+    "name": "NISSAN LEAF HBK 2011-17",
+    "eurocode": "6077AGNGNVZ-XYG",
+    "years": "2011-2017",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 675,
+    "name": "NISSAN MICRA K13 HBK 2011-16",
+    "eurocode": "6076AGNBLV-SG",
+    "years": "2011-2016",
+    "glassPriceUsd": 36
+  },
+  {
+    "id": 676,
+    "name": "NISSAN MURANO Z50 SUV 2003-07",
+    "eurocode": "6032AGNBLVZ-FYG",
+    "years": "2003-2007",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 677,
+    "name": "NISSAN MURANO Z51 SUV 2009-11 (RS+Big Visor)",
+    "eurocode": "6051AGSGNMWZ-FYG",
+    "years": "2009-2014",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 678,
+    "name": "NISSAN MURANO Z51 SUV 2009-11 (RS+Big Visor)",
+    "eurocode": "6051AGSBLMWZ-FYG",
+    "years": "2009-2014",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 679,
+    "name": "NISSAN MURANO Z51 SUV 2009-11 (RS+Big Visor)",
+    "eurocode": "6051AGSBLMWZ-XYG",
+    "years": "2009-2014",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 680,
+    "name": "NISSAN NAVARA PATHFINDER 2005-12 (Soft Moulding)",
+    "eurocode": "6037AGSBLMVZ1B-XYG",
+    "years": "2005-2012",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 681,
+    "name": "NISSAN NOTE E11 HBK 2005-12 Euro Type",
+    "eurocode": "6041AGSV1B-FYG",
+    "years": "2005-2012",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 682,
+    "name": "NISSAN NOTE EURO HBK 2013-20",
+    "eurocode": "6082AGS-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 683,
+    "name": "NISSAN NOTE HBK 2005-12 (Euro Type)",
+    "eurocode": "6041AGNGNPV-KMK",
+    "years": "2005-2012",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 684,
+    "name": "NISSAN NOTE HBK 2005-12 (Euro Type)",
+    "eurocode": "6041AGNGYV-XYG",
+    "years": "2005-2012",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 685,
+    "name": "NISSAN PATROL Y62/INFINITY QX56/QX80 2010-13 (Sensor H=140mm)",
+    "eurocode": "60A2AGNBLHMV-FYG",
+    "years": "2010-2021",
+    "glassPriceUsd": 87
+  },
+  {
+    "id": 686,
+    "name": "NISSAN PATROL/SAFARI Y61 SUV 1997-",
+    "eurocode": "6006AGNBL-FYG",
+    "years": "1997-2010",
+    "glassPriceUsd": 44
+  },
+  {
+    "id": 687,
+    "name": "NISSAN PATROL/SAFARI Y61 SUV 1997-",
+    "eurocode": "6006AGNGN-KMK",
+    "years": "1997-2010",
+    "glassPriceUsd": 44
+  },
+  {
+    "id": 688,
+    "name": "NISSAN PATROL/SAFARI Y61 SUV 1997-",
+    "eurocode": "6006AGNBL-XYG",
+    "years": "1997-2010",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 689,
+    "name": "NISSAN PIXO/ SUZUKI A-STAR/ALTO/CELERIO",
+    "eurocode": "6058AGNGY-XYG",
+    "years": "2009-2013",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 690,
+    "name": "NISSAN PRIMERA P11 1995-",
+    "eurocode": "6002AGS-FYG",
+    "years": "1995-2002",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 691,
+    "name": "NISSAN PRIMERA P11 4/5T/WAGON",
+    "eurocode": "6002AGNBL-XYG",
+    "years": "1995-2002",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 692,
+    "name": "NISSAN PRIMERA P12 SED/HBK 2001-08",
+    "eurocode": "6020AGNGN-KMK",
+    "years": "2001-2008",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 693,
+    "name": "NISSAN PRIMERA P12 SED/HBK 2001-08",
+    "eurocode": "6020AGNGYP1B-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 694,
+    "name": "NISSAN PRIMERA P12 SED/HBK 2001-08",
+    "eurocode": "6020AGNGNPV-KMK",
+    "years": "2001-2008",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 695,
+    "name": "NISSAN PRIMERA WAGON, W 10",
+    "eurocode": "5983AGNBL-XYG",
+    "years": "1990-1998",
+    "glassPriceUsd": 37
+  },
+  {
+    "id": 696,
+    "name": "NISSAN QASHQAI EURO 2014-16 (Big RS 207mm,Φ40mm,FH)",
+    "eurocode": "6084AGNHMVZ1C-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 697,
+    "name": "NISSAN QASHQAI EURO 2014-16 (Big RSΦ40mm+Open 1Z)",
+    "eurocode": "6084AGNCMVZ1C-FYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 698,
+    "name": "NISSAN QASHQAI EURO 2014-21 (MB 153mm)",
+    "eurocode": "6084AGNGYV-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 699,
+    "name": "NISSAN QASHQAI EURO SUV 2017-21 (Small RSΦ24mm+Open 1Z+FH)",
+    "eurocode": "6084AGACHIMVZ95-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 700,
+    "name": "NISSAN QASHQAI EURO SUV 2017-21 (Small RSΦ24mm+Open 1Z+FH)",
+    "eurocode": "6084AGSCHIMVZ95-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 701,
+    "name": "NISSAN QASHQAI SUV 2006-13",
+    "eurocode": "6044AGNGYMV1P-XYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 702,
+    "name": "NISSAN QASHQAI SUV 2006-13",
+    "eurocode": "6044AGNGNV-KMK",
+    "years": "2006-2013",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 703,
+    "name": "NISSAN ROGUE USA SUV 2021- (1Z Only)",
+    "eurocode": "6108AGSCVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 704,
+    "name": "NISSAN ROGUE USA SUV 2021- (1Z Only)",
+    "eurocode": "6108AGSCVW-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 705,
+    "name": "NISSAN SUNNY Y10 WAGON",
+    "eurocode": "5987AGNBL-XYG",
+    "years": "1990-1999",
+    "glassPriceUsd": 35
+  },
+  {
+    "id": 706,
+    "name": "NISSAN TEANA L33 SEDAN 2012-18",
+    "eurocode": "6096AGNBLMW-XYG",
+    "years": "2012-2018",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 707,
+    "name": "NISSAN TIIDA/VERSA C11 SEDAN/HBK 05-11",
+    "eurocode": "6046AGSMV1B-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 708,
+    "name": "NISSAN XTRAIL 2014-16 /ROGUE",
+    "eurocode": "6091AGNZ-XYG",
+    "years": "2014-2020",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 709,
+    "name": "NISSAN XTRAIL 2014-16 /ROGUE",
+    "eurocode": "6091AGNGNV-KMK",
+    "years": "2014-2020",
+    "glassPriceUsd": 41
+  },
+  {
+    "id": 710,
+    "name": "NISSAN XTRAIL EURO 2014-16 (Big 1Z+RS+FH)",
+    "eurocode": "6091AGSCHMZ-XYG",
+    "years": "2014-2020",
+    "glassPriceUsd": 165
+  },
+  {
+    "id": 711,
+    "name": "NISSAN XTRAIL EURO SUV 2017-20 (Small 1Z+RS223+Fully Heated)",
+    "eurocode": "6091AGACHMZ95-XYG",
+    "years": "2014-2020",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 712,
+    "name": "NISSAN XTRAIL Europe SUV 2017-20 (Small 1Z+RS)",
+    "eurocode": "6091AGNCMVZ1L-XYG",
+    "years": "2014-2020",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 713,
+    "name": "NISSAN XTRAIL SUV 2007-13 (Visor+Nose M/B)",
+    "eurocode": "6047AGN1B-FYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 714,
+    "name": "NISSAN XTRAIL T31 SUV 2007-10",
+    "eurocode": "6047AGNM1B-FYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 715,
+    "name": "NISSAN XTRAIL T31 SUV 2007-13",
+    "eurocode": "6047AGNGNP-KMK",
+    "years": "2007-2013",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 716,
+    "name": "NISSAN XTRAIL T31 SUV 2007-13",
+    "eurocode": "6047AGNGY-FYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 717,
+    "name": "NISSAN XTRAIL T33/ROGUE USA SUV 2023- (1Z+RS+Cam Heat)no vin",
+    "eurocode": "6108AGSCM-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 718,
+    "name": "NISSAN XTRAIL T33/ROGUE USA SUV 2023- (1Z+RS+Cam Heat)no vin",
+    "eurocode": "6108AGACMW-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 719,
+    "name": "OPEL ANTARA S5/CHEV CAPTIVA (3024)",
+    "eurocode": "6314AGNGYV-XYG",
+    "years": "2006-2018",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 720,
+    "name": "OPEL ASCONA/MONZA SED/HBK 1981-88 (WithM/B)",
+    "eurocode": "6244AGNBL1C-XYG",
+    "years": "1981-1988",
+    "glassPriceUsd": 25
+  },
+  {
+    "id": 721,
+    "name": "OPEL ASTRA 4D/5D правое опускное перед",
+    "eurocode": "6284RGNS4FD-NG",
+    "years": "1998-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 722,
+    "name": "OPEL ASTRA F 1991-98",
+    "eurocode": "6257AGNBL-XYG",
+    "years": "1991-1998",
+    "glassPriceUsd": 44
+  },
+  {
+    "id": 723,
+    "name": "OPEL ASTRA G 4D/5D левое, опускное, зад",
+    "eurocode": "6284LGNS4RD-NG",
+    "years": "1998-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 724,
+    "name": "OPEL ASTRA G 5D HBK 1998-04",
+    "eurocode": "6284AGNGN-KMK",
+    "years": "1998-2004",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 725,
+    "name": "OPEL ASTRA G 5D HBK 1998-04 левый неоп. зад. дв.",
+    "eurocode": "6284LGNH5RV-NG",
+    "years": "1998-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 726,
+    "name": "OPEL ASTRA G 5D HBK 1998-04 правый неоп. зад. дв.",
+    "eurocode": "6284RGNH5RV-NG",
+    "years": "1998-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 727,
+    "name": "OPEL ASTRA G SEDAN/HBK 1998-04 (No Visor)",
+    "eurocode": "6284AGNBL-XYG",
+    "years": "1998-2004",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 728,
+    "name": "OPEL ASTRA H 2004-10 HBK/STW",
+    "eurocode": "6302AGNPV1R-FYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 729,
+    "name": "OPEL ASTRA H 2004-10 HBK/STW",
+    "eurocode": "6302AGNBLMVZ1R-XYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 730,
+    "name": "OPEL ASTRA H 2004-10 HBK/STW",
+    "eurocode": "6302AGNBLVZ1R-XYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 731,
+    "name": "OPEL ASTRA H 2004-10 HBK/STW",
+    "eurocode": "6302AGNV1Q-FYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 732,
+    "name": "OPEL ASTRA J HBK 2010-",
+    "eurocode": "6324AGNGYV-KMK",
+    "years": "2010-2015",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 733,
+    "name": "OPEL ASTRA J HBK 2010-12 (Open 1Z+Square RS)",
+    "eurocode": "6324AGNIMVWZ2I-XYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 734,
+    "name": "OPEL ASTRA K HBK 2016-18 (Right Small 1Z 209mm+RS) /CHEV CRUZE",
+    "eurocode": "6342AGACMVZ-XYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 91
+  },
+  {
+    "id": 735,
+    "name": "OPEL ASTRA K HBK 2016-18 (RS H=226mm) /CHEV CRUZE",
+    "eurocode": "6342AGSMVZ-FYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 736,
+    "name": "OPEL ASTRA K HBK 2016-21 (STD M/B 133mm)",
+    "eurocode": "6342AGSVZ-FYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 84
+  },
+  {
+    "id": 737,
+    "name": "OPEL ASTRA K HBK 2019-21 (Mid 1Z)",
+    "eurocode": "6342AGSCMVZ1L-XYG",
+    "years": "2016-2021",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 738,
+    "name": "OPEL COMBO VAN 2001-11",
+    "eurocode": "6292AGS-FYG",
+    "years": "2001-2011",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 739,
+    "name": "OPEL CORSA C HBK 2000-06",
+    "eurocode": "6290AGNBL-FYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 740,
+    "name": "OPEL CORSA-D HBK 2007-14",
+    "eurocode": "6312AGSPVZ1R-XYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 741,
+    "name": "OPEL CORSA-D HBK 2007-14",
+    "eurocode": "6312AGNGNPV-KMK",
+    "years": "2007-2014",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 742,
+    "name": "OPEL FRONTERA B/ISUZU RODEO SUV 1998-04 (VP)/PASSPORT",
+    "eurocode": "6287AGNBLV-XYG",
+    "years": "1998-2004",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 743,
+    "name": "OPEL INSIGNIA HBK/STW 2018-22 /COMMODORE (1Z+RS)",
+    "eurocode": "6344AGNCIMVZ1C-XYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 744,
+    "name": "OPEL INSIGNIA SEDAN/HBK 2008-17",
+    "eurocode": "6293AGNMVWZ1R-XYG",
+    "years": "2008-2017",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 745,
+    "name": "OPEL MERIVA A 5D MPV 2003-10",
+    "eurocode": "6288AGNGNV-KMK",
+    "years": "2003-2010",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 746,
+    "name": "OPEL MERIVA B 5D WAGON 2010",
+    "eurocode": "6325AGNMVWZ1B-XYG",
+    "years": "2010-2017",
+    "glassPriceUsd": 89
+  },
+  {
+    "id": 747,
+    "name": "OPEL MERIVA B 5D WAGON 2010",
+    "eurocode": "6325AGNGNV-KMK",
+    "years": "2010-2017",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 748,
+    "name": "OPEL MOKKA SUV 2013- /ENCORE 2013-19/CHEV TRAX 2013-23",
+    "eurocode": "6337AGNGNPV-KMK",
+    "years": "2013-2023",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 749,
+    "name": "OPEL MOKKA SUV 2013- /ENCORE 2013-19/CHEV TRAX 2013-23",
+    "eurocode": "6337AGNMVZ-XYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 750,
+    "name": "OPEL MOKKA SUV 2013- /ENCORE 2013-19/CHEV TRAX 2013-23",
+    "eurocode": "6337AGNGYV-KMK",
+    "years": "2013-2023",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 751,
+    "name": "OPEL MOKKA SUV 2013- /ENCORE 2013-22/CHEV TRAX",
+    "eurocode": "6337AGNVZ-FYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 752,
+    "name": "OPEL MOKKA SUV 2013- /ENCORE 2013-22/CHEV TRAX",
+    "eurocode": "6337AGNVZ-XYG",
+    "years": "2013-2023",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 753,
+    "name": "OPEL OMEGA B SEDAN/STW 1994-",
+    "eurocode": "6261AGNBLV1B-XYG",
+    "years": "1994-2004",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 754,
+    "name": "OPEL OMEGA B SEDAN/STW 1994-",
+    "eurocode": "6261AGNGNPV-KMK",
+    "years": "1994-2004",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 755,
+    "name": "OPEL OMEGA B WAGON заднее",
+    "eurocode": "6261BGNE-XYG",
+    "years": "1994-2004",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 756,
+    "name": "OPEL SINTRA/CHEVROLET VENTURE MINI VAN 1997-",
+    "eurocode": "6281AGNBLAV-XYG",
+    "years": "1997-2005",
+    "glassPriceUsd": 88
+  },
+  {
+    "id": 757,
+    "name": "OPEL TIGRA 2D COUPE 1994-00",
+    "eurocode": "6263AGNBL-XYG",
+    "years": "1994-2000",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 758,
+    "name": "OPEL VECTRA A SED/5D HBK 1988-95",
+    "eurocode": "6253AGNBL-XYG",
+    "years": "1988-1995",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 759,
+    "name": "OPEL VECTRA B SEDAN/HBK 1995-03 правое опускное зад",
+    "eurocode": "6277RGNH5RD-NG",
+    "years": "1995-2003",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 760,
+    "name": "OPEL VECTRA B SEDAN/HBK/WAGON 1995-03",
+    "eurocode": "6277AGNBL-XYG",
+    "years": "1995-2003",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 761,
+    "name": "OPEL VECTRA B SEDAN/HBK/WAGON 1995-03",
+    "eurocode": "6277AGNGN-KMK",
+    "years": "1995-2003",
+    "glassPriceUsd": 44
+  },
+  {
+    "id": 762,
+    "name": "OPEL VECTRA C SED/HBK 2002-08/OPEL SIGNUM",
+    "eurocode": "6294AGNGY-KMK",
+    "years": "2002-2008",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 763,
+    "name": "OPEL VECTRA C SED/HBK 2002-08/OPEL SIGNUM",
+    "eurocode": "6294AGNGYVW-XYG",
+    "years": "2002-2008",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 764,
+    "name": "OPEL VECTRA C SED/HBK 2002-08/OPEL SIGNUM (незакр. дд)",
+    "eurocode": "6294AGNBLPVW2B-XYG",
+    "years": "2002-2008",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 765,
+    "name": "OPEL ZAFIRA A MPV 1999-05",
+    "eurocode": "6283AGNBLV-XYG",
+    "years": "1999-2005",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 766,
+    "name": "OPEL ZAFIRA B MPV 2005-",
+    "eurocode": "6307AGSMVW1R-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 767,
+    "name": "OPEL ZAFIRA B MPV 2005-",
+    "eurocode": "6307AGNGYVW1M-XYG",
+    "years": "2005-2011",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 768,
+    "name": "OPEL ZAFIRA C MPV 2012-16 (Small Roof+Open 1Z)",
+    "eurocode": "6332AGSCIPVWZ1I-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 769,
+    "name": "OPEL ZAFIRA C MPV 2012-16 (Small Roof+Open 1Z)",
+    "eurocode": "6332AGSCIMVWZ1I-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 136
+  },
+  {
+    "id": 770,
+    "name": "PEUGEOT 2008 SUV 2019-23 (1Z+RS)",
+    "eurocode": "6575AGACIMVZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 771,
+    "name": "PEUGEOT 206 HBK/SED",
+    "eurocode": "6539AGNGYV-XYG",
+    "years": "1998-2013",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 772,
+    "name": "PEUGEOT 206 HBK/SED 2002-13 (Square RS)",
+    "eurocode": "6539AGSPV6T-XYG",
+    "years": "1998-2013",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 773,
+    "name": "PEUGEOT 206 HBK/SEDAN 1998-02 (Long RS)",
+    "eurocode": "6539AGSPV-XYG",
+    "years": "1998-2013",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 774,
+    "name": "PEUGEOT 206 HBK/SEDAN 1998-02 (Long RS)",
+    "eurocode": "6539AGNGNPV-KMK",
+    "years": "1998-2013",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 775,
+    "name": "PEUGEOT 206 HBK/SEDAN 2002-13 (Square RS)",
+    "eurocode": "6539AGSBLPV6T-XYG",
+    "years": "1998-2013",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 776,
+    "name": "PEUGEOT 206 HBK/SEDAN 2002-13 (Square RS)",
+    "eurocode": "6539AGNGNPV6T-KMK",
+    "years": "1998-2013",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 777,
+    "name": "PEUGEOT 207 HBK 2006-14",
+    "eurocode": "6548AGNVZ-FYG",
+    "years": "2006-2014",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 778,
+    "name": "PEUGEOT 208 3D/5D HBK 2012-18 /2008 SUV",
+    "eurocode": "6564AGNGNPV-KMK",
+    "years": "2012-2018",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 779,
+    "name": "PEUGEOT 3008 5008 SUV 2017-23 (1Z+RS) /C5 AIRCROSS/GRANDLAND X",
+    "eurocode": "6571AGNCIMVZ-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 780,
+    "name": "PEUGEOT 3008 5008 SUV 2017-23 (1Z+RS) /C5 AIRCROSS/GRANDLAND X обогрев щеток",
+    "eurocode": "6571AGNCHPV-KMK",
+    "years": "2017-2023",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 781,
+    "name": "PEUGEOT 3008 SUV 2009-16 /5008 MPV",
+    "eurocode": "6560AGNMVW1B-XYG",
+    "years": "2009-2016",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 782,
+    "name": "PEUGEOT 3008/5008 SUV 2017-23 (1Z+RS+обог щеток) /C5 AIRCROSS/GRANDLAND",
+    "eurocode": "6571AGRCHIMVZ-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 783,
+    "name": "PEUGEOT 306 HBK/STW/SEDAN 1992-",
+    "eurocode": "6521AGNGN-XYG",
+    "years": "1992-2002",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 784,
+    "name": "PEUGEOT 306 HBK/STW/SEDAN 1992-",
+    "eurocode": "6521AGNGN-KMK",
+    "years": "1992-2002",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 785,
+    "name": "PEUGEOT 306 HBK/STW/SEDAN 1992- (RS Type)",
+    "eurocode": "6521AGNGNPV-KMK",
+    "years": "1992-2002",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 786,
+    "name": "PEUGEOT 307 5D HBK /WAGON 2003-08 (квадр. дд)",
+    "eurocode": "6542AGNGNPV6P-KMK",
+    "years": "2001-2008",
+    "glassPriceUsd": 64
+  },
+  {
+    "id": 787,
+    "name": "PEUGEOT 307 5D HBK /WAGON 2003-08 (квадр. дд)",
+    "eurocode": "6542AGNMVZ6P-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 88
+  },
+  {
+    "id": 788,
+    "name": "PEUGEOT 307 5D HBK /WAGON 2003-08 (квадр. дд)",
+    "eurocode": "6542AGNGYMVZ6P-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 789,
+    "name": "PEUGEOT 307 HATCHBACK 2001-02 (круг,д,д)",
+    "eurocode": "6542AGNBLMVZ1P-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 790,
+    "name": "PEUGEOT 307 HATCHBACK 2001-02 (Кругл. ДД)",
+    "eurocode": "6542AGNMVZ1B-FYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 791,
+    "name": "PEUGEOT 307 HBK/WAGON 2001-08",
+    "eurocode": "6542AGNBLVZ-XYG",
+    "years": "2001-2008",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 792,
+    "name": "PEUGEOT 308 5D T9 HBK/WAGON 2014-",
+    "eurocode": "6570AGSCIMVZ-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 793,
+    "name": "PEUGEOT 308 HBK/WAGON 2007-13",
+    "eurocode": "6554AGNVW2B-XYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 83
+  },
+  {
+    "id": 794,
+    "name": "PEUGEOT 308 HBK/WAGON 2007-13(H)",
+    "eurocode": "6554AGNGNH-KMK",
+    "years": "2007-2013",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 795,
+    "name": "PEUGEOT 308 HBK/WAGON 2007-13/408 SEDAN 2011-14",
+    "eurocode": "6554AGNGNPV-KMK",
+    "years": "2007-2013",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 796,
+    "name": "PEUGEOT 308 T9 HBK/WAGON 2014-21",
+    "eurocode": "6570AGSMVZ-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 797,
+    "name": "PEUGEOT 406 SED/STW 1995-01 (Flat Полоска RS)",
+    "eurocode": "6525AGNGYMV-XYG",
+    "years": "1995-2004",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 798,
+    "name": "PEUGEOT 406 SED/STW 2001-04 (Ромб RS)",
+    "eurocode": "6525AGNMV1T-XYG",
+    "years": "2001-2004",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 799,
+    "name": "PEUGEOT 407 SEDAN 2007-10 (RS+круглый пятак)",
+    "eurocode": "6544AGNGYMVZ2P-XYG",
+    "years": "2004-2010",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 800,
+    "name": "PEUGEOT 508 5D HBK/WAGON 2018-",
+    "eurocode": "6572AGACIMVZ-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 801,
+    "name": "PEUGEOT 508 SEDAN/STW 2010-17",
+    "eurocode": "6562AGNMVZ2B-XYG",
+    "years": "2010-2017",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 802,
+    "name": "PEUGEOT 508 SEDAN/STW 2010-17",
+    "eurocode": "6562AGNVZ-XYG",
+    "years": "2010-2017",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 803,
+    "name": "PEUGEOT 605 SEDAN 1989-99",
+    "eurocode": "6519AGNGNP-KMK",
+    "years": "1989-1999",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 804,
+    "name": "PEUGEOT 607 4D SEDAN 2000-04 (Round RS)",
+    "eurocode": "6540AGNGYPVZ-XYG",
+    "years": "2000-2009",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 805,
+    "name": "PEUGEOT BOXER/DUCATO/JUMPER 1994-06 (6523/2722)",
+    "eurocode": "3735AGNBL1B-XYG",
+    "years": "1994-2006",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 806,
+    "name": "PEUGEOT BOXER/DUCATO/JUMPER 1994-06 (6523/2722)",
+    "eurocode": "3735AGNGN-KMK",
+    "years": "1994-2006",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 807,
+    "name": "PROFIL -25",
+    "eurocode": "PR05051/027-СТ",
+    "years": "",
+    "glassPriceUsd": 1.5
+  },
+  {
+    "id": 808,
+    "name": "RANGE ROVER EVOQUE 3D SUV 2014-18 (RS 150mm+Fully Heated)",
+    "eurocode": "7042AGSHMOVWZ6P-FYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 219
+  },
+  {
+    "id": 809,
+    "name": "RANGE ROVER EVOQUE 3D SUV 2016-18 (2Z+Fully Heated)",
+    "eurocode": "7042AGACHMOVW2Z-FYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 210
+  },
+  {
+    "id": 810,
+    "name": "RANGE ROVER EVOQUE 5D 2015-19 (RS 150mm)",
+    "eurocode": "7043AGAMOVWZ6P-FYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 811,
+    "name": "RANGE ROVER SPORT L320 SUV 2005-13",
+    "eurocode": "7036AGSVW-PIL",
+    "years": "2005-2013",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 812,
+    "name": "RENAULT 12 SEDAN/WAGON 1969-80",
+    "eurocode": "7213ACL-NG",
+    "years": "1969-1980",
+    "glassPriceUsd": 29
+  },
+  {
+    "id": 813,
+    "name": "RENAULT ARKANA 5D SUV(LJC) 2019-",
+    "eurocode": "7309AGSMW-FYG",
+    "years": "2019-2022",
+    "glassPriceUsd": 72
+  },
+  {
+    "id": 814,
+    "name": "RENAULT CLIO 3/5D HB/SYMBOL 4D SED",
+    "eurocode": "7248AGNGNV-KMK",
+    "years": "1998-2005",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 815,
+    "name": "RENAULT CLIO 3/5D HB/SYMBOL 4D SED (99-07)",
+    "eurocode": "7248AGNGY-XYG",
+    "years": "1998-2005",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 816,
+    "name": "RENAULT CLIO 4 HBK/STW 2013-16 (Big RSΦ40mm)",
+    "eurocode": "7290AGAMV1M-FYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 817,
+    "name": "RENAULT CLIO III 2005-14",
+    "eurocode": "7262AGNMV1R-FYG",
+    "years": "2005-2014",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 818,
+    "name": "RENAULT CLIO III 2005-14",
+    "eurocode": "7262AGNBLV1M-XYG",
+    "years": "2005-2014",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 819,
+    "name": "RENAULT ESPACE III MPV 1996-02",
+    "eurocode": "7243AGNBLV-XYG",
+    "years": "1996-2002",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 820,
+    "name": "RENAULT ESPACE MPV 2016-17 (1Z+Big RSΦ40mm)",
+    "eurocode": "7299AGNCPV-KMK",
+    "years": "2016-2022",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 821,
+    "name": "RENAULT KADJAR SUV 2019-22 (Right 1Z+Small RSΦ30mm)",
+    "eurocode": "7300AGNCIMVZ96-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 822,
+    "name": "RENAULT KADJAR SUV 2019-22 (Right 1Z+Small RSΦ30mm+Fully Heated)",
+    "eurocode": "7300AGNCHIMVZ96-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 823,
+    "name": "RENAULT KANGOO 2008-21/MERCEDES CITAN W415 MPV 2012-21 (5384)",
+    "eurocode": "7274AGSPV1B-XYG",
+    "years": "2008-2021",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 824,
+    "name": "RENAULT KANGOO 2008-21/MERCEDES CITAN W415 MPV 2012-21 (5384)",
+    "eurocode": "7274AGSV-FYG",
+    "years": "2008-2021",
+    "glassPriceUsd": 61
+  },
+  {
+    "id": 825,
+    "name": "RENAULT KANGOO VAN 2002-07/NISSAN CUBISTAR (CP+Big Visor)",
+    "eurocode": "7246AGNBL6Z-XYG",
+    "years": "1997-2007",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 826,
+    "name": "RENAULT KOLEOS SUV 2007-12 (RS#131) /SAMSUNG QM5",
+    "eurocode": "7277AGNGY-XYG",
+    "years": "2007-2012",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 827,
+    "name": "RENAULT KOLEOS SUV 2018 Only (Mid 1Z+Small RSΦ30mm)",
+    "eurocode": "7305AGSCMVW1L-XYG",
+    "years": "2018-2024",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 828,
+    "name": "RENAULT LAGUNA 1 HBK 1994-01 заднее",
+    "eurocode": "7237BGNH-XYG",
+    "years": "1994-2001",
+    "glassPriceUsd": 89
+  },
+  {
+    "id": 829,
+    "name": "RENAULT LAGUNA 1 HBK/STW 1994-01",
+    "eurocode": "7237AGNBL-XYG",
+    "years": "1993-2001",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 830,
+    "name": "RENAULT LAGUNA G2 2001-02 (Long RS)",
+    "eurocode": "7249AGNBLMV1R-XYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 831,
+    "name": "RENAULT LAGUNA G2 2001-07",
+    "eurocode": "7249AGNGNV-KMK",
+    "years": "2001-2007",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 832,
+    "name": "RENAULT LAGUNA G2 2001-07",
+    "eurocode": "7249AGSV2R-FYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 833,
+    "name": "RENAULT LAGUNA HBK/WAGON 2007-15",
+    "eurocode": "7273AGNMVZ1R-XYG",
+    "years": "2007-2015",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 834,
+    "name": "RENAULT LAGUNA HBK/WAGON 2007-15",
+    "eurocode": "7273AGNBLV-KMK",
+    "years": "2007-2015",
+    "glassPriceUsd": 36
+  },
+  {
+    "id": 835,
+    "name": "RENAULT LAGUNA HBK/WAGON 2007-15",
+    "eurocode": "7273AGNGNPV-KMK",
+    "years": "2007-2015",
+    "glassPriceUsd": 42
+  },
+  {
+    "id": 836,
+    "name": "RENAULT LAGUNA II 2003-07 (Square RS)",
+    "eurocode": "7249AGNGNPV6X-KMK",
+    "years": "2001-2007",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 837,
+    "name": "RENAULT LAGUNA II 2003-07 (Square RS)",
+    "eurocode": "7249AGSMV6X-FYG",
+    "years": "2001-2007",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 838,
+    "name": "RENAULT LATITUDE SM5 SEDAN 2010-15 /TALISMAN SM7",
+    "eurocode": "7286AGSMVZ1M-FYG",
+    "years": "2010-2015",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 839,
+    "name": "RENAULT LODGY MPV 2012-22 /DOKKER/EXPRESS 21-",
+    "eurocode": "7289AGNGN-KMK",
+    "years": "2012-2022",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 840,
+    "name": "RENAULT LODGY MPV 2012-22 /DOKKER/EXPRESS 21-",
+    "eurocode": "7289AGNBL-XYG",
+    "years": "2012-2022",
+    "glassPriceUsd": 53
+  },
+  {
+    "id": 841,
+    "name": "RENAULT LODGY MPV 2012-22 /DOKKER/EXPRESS 21-",
+    "eurocode": "7289AGNBL-KMK",
+    "years": "2012-2022",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 842,
+    "name": "RENAULT LOGAN SEDAN 2005-12/LADA LARGUS 2012-",
+    "eurocode": "7264AGNGY-XYG",
+    "years": "2005-2012",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 843,
+    "name": "RENAULT LOGAN SEDAN 2013-20 /SANDERO HBK 2013- (полный обогрев)",
+    "eurocode": "7292AGNHV-KMK",
+    "years": "2013-2020",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 844,
+    "name": "RENAULT LOGAN SEDAN 2013-20 /SANDERO HBK 2013-(FH)",
+    "eurocode": "7292AGNBLHV-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 153
+  },
+  {
+    "id": 845,
+    "name": "RENAULT LOGAN задн. дв.оп.лев.",
+    "eurocode": "7292LGNS4RD-KMK",
+    "years": "2013-2020",
+    "glassPriceUsd": 28
+  },
+  {
+    "id": 846,
+    "name": "RENAULT MAGNUM TRUCK (90-13) / MACK MAGNUM TRUCK (99-03)",
+    "eurocode": "7233AGNGN-KMK",
+    "years": "1990-2013",
+    "glassPriceUsd": 200
+  },
+  {
+    "id": 847,
+    "name": "RENAULT MASTER /MASCOTT/FIAT DAILY II /MOVANO 97-(3741)",
+    "eurocode": "7247AGNBL-XYG",
+    "years": "1997-2009",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 848,
+    "name": "RENAULT MASTER /MASCOTT/FIAT DAILY II /MOVANO 97-(3741)",
+    "eurocode": "7247AGN-XYG",
+    "years": "1997-2009",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 849,
+    "name": "RENAULT MASTER 3 VAN 2009- /OPEL MOVANO 10-/NISSAN NV 400 11-",
+    "eurocode": "7281AGSBLV1C-XYG",
+    "years": "2009-2023",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 850,
+    "name": "RENAULT MASTER 3 VAN 2009- /OPEL MOVANO 10-/NISSAN NV 400 11-(M/B H=86mm)",
+    "eurocode": "7281AGSMV1P-XYG",
+    "years": "2009-2023",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 851,
+    "name": "RENAULT MASTER VAN 1981-97",
+    "eurocode": "7223ACL-XYG",
+    "years": "1981-1997",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 852,
+    "name": "RENAULT MAXITY/ NISSAN CABSTAR/NT400 TRUCK 2007- (1684*720mm)(6045)",
+    "eurocode": "7272AGN-FYG",
+    "years": "2007-2013",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 853,
+    "name": "RENAULT MEGANE 1996-02 SED/HBK/STW",
+    "eurocode": "7239AGNBL-XYG",
+    "years": "1996-2002",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 854,
+    "name": "RENAULT MEGANE G4 2016-19 (Big RSΦ40mm)",
+    "eurocode": "7302AGNMVZ1C-XYG",
+    "years": "2016-2025",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 855,
+    "name": "RENAULT MEGANE G4 HBK/STW 2020- (Left 1Z+RS) (камера не калибруется)",
+    "eurocode": "7302AGNCPV1L-KMK",
+    "years": "2016-2025",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 856,
+    "name": "RENAULT MEGANE HBK/STW 2009-16/FLUENCE",
+    "eurocode": "7279AGNV1M-FYG",
+    "years": "2009-2016",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 857,
+    "name": "RENAULT MEGANE HBK/STW 2009-16/FLUENCE",
+    "eurocode": "7279AGNMV1P-XYG",
+    "years": "2009-2016",
+    "glassPriceUsd": 67
+  },
+  {
+    "id": 858,
+    "name": "RENAULT MEGANE HBK/STW 2009-16/FLUENCE",
+    "eurocode": "7279AGNGNPV-KMK",
+    "years": "2009-2016",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 859,
+    "name": "RENAULT MEGANE II 2002-08 HBK/SED/STW",
+    "eurocode": "7260AGNGNV-KMK",
+    "years": "2002-2008",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 860,
+    "name": "RENAULT MEGANE II 2002-08 HBK/SED/STW",
+    "eurocode": "7260AGNMV1R-XYG",
+    "years": "2002-2009",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 861,
+    "name": "RENAULT MEGANE II HBK/SEDAN/STW 2002-08 (VCS)",
+    "eurocode": "7260AGNGNPV-KMK",
+    "years": "2002-2009",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 862,
+    "name": "RENAULT MIDLUM/KERAX 1999- (199*88cm) / DAF LF 45-55 / VOLVO FL",
+    "eurocode": "7253AGNGN-KMK",
+    "years": "1999-Q",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 863,
+    "name": "RENAULT MIDLUM/KERAX 1999- (199*88cm) / DAF LF 45-55 / VOLVO FL",
+    "eurocode": "7253AGNGY-XYG",
+    "years": "1999-Q",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 864,
+    "name": "RENAULT MODUS MPV 2004- (NO Visor)",
+    "eurocode": "7263AGNV1M-FYG",
+    "years": "2004-2012",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 865,
+    "name": "RENAULT MODUS MPV 2004- (Visor Type)",
+    "eurocode": "7263AGNGYV1R-XYG",
+    "years": "2004-2012",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 866,
+    "name": "RENAULT PREMIUM TRUCK 1996- (219*88cm) /VOLVO FE 07-13",
+    "eurocode": "7242AGN-FYG",
+    "years": "1996-2014",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 867,
+    "name": "RENAULT PREMIUM TRUCK 1996- (219*88cm) /VOLVO FE 07-13",
+    "eurocode": "7242AGNGY-XYG",
+    "years": "1996-2014",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 868,
+    "name": "RENAULT SANDERO I 2008-12/DUSTER 10-/NISSAN TERRANO`14-`22",
+    "eurocode": "7276AGNGYH-XYG",
+    "years": "2008-2012",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 869,
+    "name": "RENAULT SANDERO I 2008-12/DUSTER 10-/NISSAN TERRANO`14-`22",
+    "eurocode": "7276AGNGY-XYG",
+    "years": "2008-2012",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 870,
+    "name": "RENAULT SCENIC I RX4 MPV 1997-03",
+    "eurocode": "7245AGNGY-XYG",
+    "years": "1998-2003",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 871,
+    "name": "RENAULT SCENIC II MPV 2003-",
+    "eurocode": "7257AGSBLV1M-FYG",
+    "years": "2003-2008",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 872,
+    "name": "RENAULT SCENIC II MPV 2003-",
+    "eurocode": "7257AGSBLV1M-XYG",
+    "years": "2003-2008",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 873,
+    "name": "RENAULT SCENIC MPV 2016-22 (1Z+RS-L)",
+    "eurocode": "7303AGSCMVZ-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 190
+  },
+  {
+    "id": 874,
+    "name": "RENAULT TALISMAN 2016-20 (Mid 1Z)",
+    "eurocode": "7301AGNGNCPV-KMK",
+    "years": "2016-Q",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 875,
+    "name": "RENAULT TALISMAN 4D SEDAN/5D WAGON 2016-",
+    "eurocode": "7301AGNMVZ-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 79
+  },
+  {
+    "id": 876,
+    "name": "RENAULT TRAFIC 3 2015-/NISSAN NV300/OPEL VIVARO (With M/B)(3775/6098/6340)",
+    "eurocode": "7296AGNV1C-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 877,
+    "name": "RENAULT TRAFIC 3 2015-20/NISSAN NV300/OPEL VIVARO (NO M/B)(3775/6098/7296)",
+    "eurocode": "6340AGNV-FYG",
+    "years": "2015-2020",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 878,
+    "name": "RENAULT TRAFIC II 2001-14/OPEL VIVARO/NISSAN PRIMASTAR",
+    "eurocode": "7252AGNGNPV-KMK",
+    "years": "2001-2014",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 879,
+    "name": "RENAULT TWINGO III 5D HBK 2014-24 (Big RS#179 H=165mm)",
+    "eurocode": "7295AGSMV6I-FYG",
+    "years": "2014-2024",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 880,
+    "name": "ROVER 200/ROVER 25/MG ZR HBK 1995-",
+    "eurocode": "7027AGNGYV-XYG",
+    "years": "1995-2005",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 881,
+    "name": "ROVER R75",
+    "eurocode": "7035AGNBLV-XYG",
+    "years": "1999-2005",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 882,
+    "name": "SAAB 9000 5D HBK/4D SEDAN 1985-93",
+    "eurocode": "7406AGNGNV-KMK",
+    "years": "1985-1996",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 883,
+    "name": "SAAB 9-3 SEDAN/WAGON 2002-11/CADILLAC BLS 2006-09",
+    "eurocode": "7411AGNGNV-KMK",
+    "years": "2002-2011",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 884,
+    "name": "SAAB 9-5 4D SEDAN 1997-09",
+    "eurocode": "7410AGNVW-XYG",
+    "years": "1997-2009",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 885,
+    "name": "SANY JIANGSHAN TRUCK D495AS, D525AL, D525ML, D595 (2259*886mm,2Z Type+Antenna)",
+    "eurocode": "9831AGNAC2L-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 175
+  },
+  {
+    "id": 886,
+    "name": "SCANIA 94/114/124/144 TRUCK 1996-03",
+    "eurocode": "7506AGNGN-KMK",
+    "years": "1996-2003",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 887,
+    "name": "SCANIA 94/114/124/144 TRUCK 1996-03",
+    "eurocode": "7506AGNGY-XYG",
+    "years": "1996-2003",
+    "glassPriceUsd": 105
+  },
+  {
+    "id": 888,
+    "name": "SCANIA P500/R580 TRUCK 2016-",
+    "eurocode": "7508AGN-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 889,
+    "name": "SCANIA P500/R580 TRUCK 2016-",
+    "eurocode": "7508AGN-BGC",
+    "years": "2016-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 890,
+    "name": "SCANIA R-SERIES/R124-R164, R250-R730 TRUCK (04-16)",
+    "eurocode": "7507AGNGY-XYG",
+    "years": "2004-2015",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 891,
+    "name": "SCANIA R-SERIES/R124-R164P380/R420 TRUCK 2004-15",
+    "eurocode": "7507AGNGN-KMK",
+    "years": "2004-2015",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 892,
+    "name": "SEAT AROSA 3D HBK 1997-05 (VP)/ VW LUPO",
+    "eurocode": "7607AGNGYVZ-FYG",
+    "years": "1997-2005",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 893,
+    "name": "SEAT IBIZA 3 2002-08 (RS Type) /CORDOBA",
+    "eurocode": "7610AGSMVZ-XYG",
+    "years": "2002-2008",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 894,
+    "name": "SEAT LEON HBK/TOLEDO SEDAN 1998-05",
+    "eurocode": "7608AGSVZ-FYG",
+    "years": "1998-2005",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 895,
+    "name": "SEAT LEON HBK/TOLEDO SEDAN 1998-05",
+    "eurocode": "7608AGNGNV-KMK",
+    "years": "1998-2005",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 896,
+    "name": "SEAT TOLEDO 5D HBK 1995-99 (MB#017) CHERY A15",
+    "eurocode": "7603AGNBL-FYG",
+    "years": "1995-1999",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 897,
+    "name": "SEAT TOLEDO HBK 2004-09 /ALTEA MPV 2004-15",
+    "eurocode": "7612AGNBLVZ-XYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 898,
+    "name": "SHACMAN X6000",
+    "eurocode": "SHACX6000AGNCP-KMK",
+    "years": "2023-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 899,
+    "name": "SKODA FABIA HBK 2007-14 /ROOMSTER",
+    "eurocode": "7811AGNGYVW-XYG",
+    "years": "2007-2014",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 900,
+    "name": "SKODA FABIA I 1999-07 (VCP) SED/HBK/STW",
+    "eurocode": "7808AGNGYVZ-XYG",
+    "years": "1999-2007",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 901,
+    "name": "SKODA FABIA I 1999-07 SEDAN/HBK/WAGON левое опускное перед",
+    "eurocode": "7808LGNH5FD-NG",
+    "years": "1999-2007",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 902,
+    "name": "SKODA KAROQ 2016-19 (1Z+P#486)/SEAT ATECA 16-",
+    "eurocode": "7821AGNCMVZ1C-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 170
+  },
+  {
+    "id": 903,
+    "name": "SKODA KAROQ SUV 2020- /SEAT ATECA (1Z+P#1219)",
+    "eurocode": "7821AGACMVZ1L-XYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 165
+  },
+  {
+    "id": 904,
+    "name": "SKODA KODIAQ SUV 2016-19 (1Z 70mm)",
+    "eurocode": "7820AGNCMVZ1C-FYG",
+    "years": "2016-2023",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 905,
+    "name": "SKODA OCTAVIA 2 SEDAN 2004-07 (RS 147mm)",
+    "eurocode": "7810AGNGNPV1P-KMK",
+    "years": "2004-2011",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 906,
+    "name": "SKODA OCTAVIA 2 SEDAN 2004-11",
+    "eurocode": "7810AGNGNV-KMK",
+    "years": "2004-2011",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 907,
+    "name": "SKODA OCTAVIA 2 SEDAN 2004-11",
+    "eurocode": "7810AGNGYV-FYG",
+    "years": "2004-2011",
+    "glassPriceUsd": 58
+  },
+  {
+    "id": 908,
+    "name": "SKODA OCTAVIA 2 SEDAN 2008-11 (RS 95mm)",
+    "eurocode": "7810AGSMVZ6T-XYG",
+    "years": "2004-2011",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 909,
+    "name": "SKODA OCTAVIA 2 SEDAN 2008-11 (RS 95mm)",
+    "eurocode": "7810AGSMVZ6T-FYG",
+    "years": "2004-2011",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 910,
+    "name": "SKODA OCTAVIA 3 2013-15 (RS 126mm)",
+    "eurocode": "7816AGNMVW-FYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 911,
+    "name": "SKODA OCTAVIA 3 A7 2016-19 (RS 108mm)",
+    "eurocode": "7816AGNMVWZ6T-FYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 912,
+    "name": "SKODA OCTAVIA 3 A7 2016-19 (RS 108mm+FH)",
+    "eurocode": "7816AGNHMVWZ6T-XYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 175
+  },
+  {
+    "id": 913,
+    "name": "SKODA OCTAVIA G1 1996-04 (левое, опускное, зад)",
+    "eurocode": "7807LGNH5RD-NG",
+    "years": "1996-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 914,
+    "name": "SKODA OCTAVIA G1 1996-04 (левое, опускное, перед)",
+    "eurocode": "7807LGNH5FD-NG",
+    "years": "1996-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 915,
+    "name": "SKODA OCTAVIA G1 1996-04 (правое, опускное, зад)",
+    "eurocode": "7807RGNH5RD-NG",
+    "years": "1996-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 916,
+    "name": "SKODA OCTAVIA G1 1996-04 /OCTAVIA TOUR `04-`11",
+    "eurocode": "7807AGNGYVW1K-XYG",
+    "years": "1996-2004",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 917,
+    "name": "SKODA OCTAVIA G1 1996-04 /OCTAVIA TOUR `04-`11",
+    "eurocode": "7807AGNGNV-KMK",
+    "years": "1996-2004",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 918,
+    "name": "SKODA RAPID HBK 2012-19 (VCP)/ SEAT TOLEDO/VW Polo Russia 2020-",
+    "eurocode": "7815AGNGYV-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 919,
+    "name": "SKODA RAPID HBK 2012-19 (VCP)/ SEAT TOLEDO/VW Polo Russia 2020-",
+    "eurocode": "7815AGSGYVW-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 920,
+    "name": "SKODA RAPID HBK 2016-19/ SEAT TOLEDO/VW Polo Russia 2020-22",
+    "eurocode": "7815AGSMVW6T-XYG",
+    "years": "2012-2019",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 921,
+    "name": "SKODA SUPERB G3 2016-23 (RS 83mm)",
+    "eurocode": "7819AGSMVZ-FYG",
+    "years": "2016-2023",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 922,
+    "name": "SKODA SUPERB HBK/WAGON 2009-15",
+    "eurocode": "7812AGNGYMVZ-XYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 923,
+    "name": "SKODA YETI 5D SUV 2009-",
+    "eurocode": "7813AGSVWZ-FYG",
+    "years": "2009-2017",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 924,
+    "name": "SSANGYONG REXTON 5D SUV 2001-17",
+    "eurocode": "3015AGNBL-FYG",
+    "years": "2001-2017",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 925,
+    "name": "SUBARU FORESTER SG 2002-08",
+    "eurocode": "7928AGNGYHZ-XYG",
+    "years": "2002-2008",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 926,
+    "name": "SUBARU FORESTER SH 2008-13",
+    "eurocode": "7934AGNBLHVZ-XYG",
+    "years": "2008-2013",
+    "glassPriceUsd": 71
+  },
+  {
+    "id": 927,
+    "name": "SUBARU FORESTER SUV 1997-02",
+    "eurocode": "7923AGNGNHZ-XYG",
+    "years": "1997-2002",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 928,
+    "name": "SUBARU FORESTER SUV 2022-",
+    "eurocode": "FW05847AGNCHV-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 929,
+    "name": "SUBARU LEGACY",
+    "eurocode": "7925AGNGNH-G",
+    "years": "1999-2004",
+    "glassPriceUsd": 5
+  },
+  {
+    "id": 930,
+    "name": "SUBARU LEGACY BL5/OUTBACK 2003-09 (Round M/B)",
+    "eurocode": "7929AGNGYHV-FYG",
+    "years": "2003-2009",
+    "glassPriceUsd": 71
+  },
+  {
+    "id": 931,
+    "name": "SUBARU LEGACY BW9/OUTBACK USA 2023-25 (Open 2Z Only+H)",
+    "eurocode": "FW06070AGNCHVW-XYG",
+    "years": "2020-2025",
+    "glassPriceUsd": 152
+  },
+  {
+    "id": 932,
+    "name": "SUBARU TRIBECA B9 SUV 2006-14",
+    "eurocode": "7931AGNGNHV-KMK",
+    "years": "2006-2014",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 933,
+    "name": "SUBARU TRIBECA B9 SUV 2006-14",
+    "eurocode": "7931AGSGNHV-XYG",
+    "years": "2006-2014",
+    "glassPriceUsd": 102
+  },
+  {
+    "id": 934,
+    "name": "SUZUKI SWIFT ESTEEM SED/HBK 89-95",
+    "eurocode": "8012AGNBL-XYG",
+    "years": "1989-1995",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 935,
+    "name": "SUZUKI SX4 HBK/SED 2006-13",
+    "eurocode": "8033AGN-FYG",
+    "years": "2006-2013",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 936,
+    "name": "SUZUKI SX4 S-CROSS SUV 2014-21",
+    "eurocode": "8039AGNV-XYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 937,
+    "name": "SUZUKI SX4 S-CROSS SUV 2014-21",
+    "eurocode": "8039AGNV-FYG",
+    "years": "2014-2021",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 938,
+    "name": "SUZUKI VITARA 5D SUV 2015-",
+    "eurocode": "8041AGNV-XYG",
+    "years": "2015-2024",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 939,
+    "name": "SUZUKI VITARA 5D SUV 2015-",
+    "eurocode": "8041AGNMV-XYG",
+    "years": "2015-2024",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 940,
+    "name": "TESLA 3 SEDAN 2017-21 (обогрев только камеры)(9789)",
+    "eurocode": "8104AGACIMVZ-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 300
+  },
+  {
+    "id": 941,
+    "name": "TESLA S HBK 2013-16 (Closed 1Z)",
+    "eurocode": "9684/8101AGNCMVWZ-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 330
+  },
+  {
+    "id": 942,
+    "name": "TESLA S HBK 2013-16 (Closed 1Z) (8101)",
+    "eurocode": "9684AGNCIHMVZ-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 185
+  },
+  {
+    "id": 943,
+    "name": "TESLA S HBK 2013-16 (Closed 1Z) (9684)",
+    "eurocode": "8101AGNCIHPV-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 180
+  },
+  {
+    "id": 944,
+    "name": "TESLA S HBK 2013-16 (RS+H)",
+    "eurocode": "9684/8101AGNHMVWZ-XYG",
+    "years": "2013-2020",
+    "glassPriceUsd": 300
+  },
+  {
+    "id": 945,
+    "name": "TESLA X SUV 2017-18 (Big 1Z+RS)",
+    "eurocode": "8102CGSGYCHM1Z-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 480
+  },
+  {
+    "id": 946,
+    "name": "TOYOTA AURIS HATCHBACK 2007-12",
+    "eurocode": "8374AGNGYW-FYG",
+    "years": "2007-2012",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 947,
+    "name": "TOYOTA AVENSIS 1997-02 (CP) ST220/RT30",
+    "eurocode": "8305AGNBL-XYG",
+    "years": "1997-2002",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 948,
+    "name": "TOYOTA AVENSIS 1997-02 (CP+H)",
+    "eurocode": "8305AGNGYH-XYG",
+    "years": "1997-2002",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 949,
+    "name": "TOYOTA AVENSIS 2 2003-09 SED/LBK (VCS+H)",
+    "eurocode": "8346AGNHP6P-XYG",
+    "years": "2003-2009",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 950,
+    "name": "TOYOTA AVENSIS 3 2009-18 (RS+C=150mm+MB 70mm)",
+    "eurocode": "8379AGSMZ1B-FYG",
+    "years": "2009-2018",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 951,
+    "name": "TOYOTA AVENSIS 3 2009-18 (RS+C=150mm+MB 70mm)(обогрев щеток)",
+    "eurocode": "8379AGNGNHMZ1B-XYG",
+    "years": "2009-2018",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 952,
+    "name": "TOYOTA CAMRY ACV30 SEDAN 2001-05",
+    "eurocode": "8339AGNBLMV-FYG",
+    "years": "2001-2005",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 953,
+    "name": "TOYOTA CAMRY ACV30 SEDAN 2001-05",
+    "eurocode": "8339AGNBLMV-XYG",
+    "years": "2001-2005",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 954,
+    "name": "TOYOTA CAMRY CV50 SEDAN 2012-17",
+    "eurocode": "8403AGNMV1B-FYG",
+    "years": "2012-2017",
+    "glassPriceUsd": 77
+  },
+  {
+    "id": 955,
+    "name": "TOYOTA CAMRY CV50 SEDAN 2012-17",
+    "eurocode": "8403AGNBLV-SG",
+    "years": "2012-2017",
+    "glassPriceUsd": 41
+  },
+  {
+    "id": 956,
+    "name": "TOYOTA CAMRY CV50 SEDAN 2012-17 (полный обогрев)",
+    "eurocode": "8403AGNGNHMW1E-FYG",
+    "years": "2012-2017",
+    "glassPriceUsd": 210
+  },
+  {
+    "id": 957,
+    "name": "TOYOTA CAMRY CV70 SEDAN 2018-20 (1Z 190mm)",
+    "eurocode": "8428AGNBLCMVZ-FYG",
+    "years": "2018-2024",
+    "glassPriceUsd": 89
+  },
+  {
+    "id": 958,
+    "name": "TOYOTA CAMRY SEDAN 2006-11XV40/ACV40/SV90 06-11(Sixth Generation)",
+    "eurocode": "8377AGNGNV-KMK",
+    "years": "2006-2011",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 959,
+    "name": "TOYOTA CAMRY SEDAN 2012-17",
+    "eurocode": "8403AGNBLHMVZW-XYG",
+    "years": "2012-2017",
+    "glassPriceUsd": 107
+  },
+  {
+    "id": 960,
+    "name": "TOYOTA COROLLA 2000-07 /GEELY SC7/BYD F3 (NO M/B)",
+    "eurocode": "8340AGNGYV1P-XYG",
+    "years": "2000-2007",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 961,
+    "name": "TOYOTA COROLLA 2007-12",
+    "eurocode": "8376AGSMVW1P-FYG",
+    "years": "2007-2012",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 962,
+    "name": "TOYOTA COROLLA 2007-12",
+    "eurocode": "8376AGNGYVW-XYG",
+    "years": "2007-2012",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 963,
+    "name": "TOYOTA COROLLA 2018-",
+    "eurocode": "8430AGNHMZ-FYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 964,
+    "name": "TOYOTA COROLLA 5D LIFTBACK 1991-95",
+    "eurocode": "8281AGNBL-XYG",
+    "years": "1991-1995",
+    "glassPriceUsd": 31
+  },
+  {
+    "id": 965,
+    "name": "TOYOTA COROLLA EURO SED (E160,E170,E180) 2014-",
+    "eurocode": "8409AGSVZ6Z-FYG",
+    "years": "2014-2017",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 966,
+    "name": "TOYOTA COROLLA EURO SED (E160,E170,E180) 2014-",
+    "eurocode": "8409AGNGNP6Z-KMK",
+    "years": "2014-2017",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 967,
+    "name": "TOYOTA COROLLA EURO SED (E160,E170,E180) 2014-",
+    "eurocode": "8409AGSVZ6Z-XYG",
+    "years": "2014-2017",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 968,
+    "name": "TOYOTA COROLLA VERSO 2 MPV 2004-09",
+    "eurocode": "8356AGNGYM1P-FYG",
+    "years": "2004-2009",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 969,
+    "name": "TOYOTA HIGHLANDER JSU50 2014-19",
+    "eurocode": "QT22AGNHMVZ-FYG",
+    "years": "2014-2019",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 970,
+    "name": "TOYOTA HIGHLANDER JSU70 SUV 2020-23 (1Z+RS+H+Squar M/B)(8445)",
+    "eurocode": "FW05235AGNCHMVZ-XYG",
+    "years": "2020-2023",
+    "glassPriceUsd": 125
+  },
+  {
+    "id": 971,
+    "name": "TOYOTA HIGHLANDER KLUGER SUV 2020-23 (1Z+RS+Fully Heated)",
+    "eurocode": "8445AGACHMVZ1E-XYG",
+    "years": "2020-2023",
+    "glassPriceUsd": 200
+  },
+  {
+    "id": 972,
+    "name": "TOYOTA HILUX 2004-15 /FORTUNER SUV",
+    "eurocode": "8367AGNGNV-KMK",
+    "years": "2004-2015",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 973,
+    "name": "TOYOTA HILUX/VIGO/REVO PICK-UP/FORTUNER",
+    "eurocode": "8424AGNGNAH-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 69
+  },
+  {
+    "id": 974,
+    "name": "TOYOTA HILUX/VIGO/REVO PICK-UP/FORTUNER",
+    "eurocode": "8424AGSGN-FYG",
+    "years": "2016-Q",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 975,
+    "name": "TOYOTA IPSUM/AVENSIS VERSO CM20/BS20 MPV",
+    "eurocode": "8333AGNGNV-KMK",
+    "years": "2001-2010",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 976,
+    "name": "TOYOTA IPSUM/AVENSIS VERSO CM20/BS20 MPV",
+    "eurocode": "8333AGN-FYG",
+    "years": "2001-2010",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 977,
+    "name": "TOYOTA LANDCRUISER 200 2008-21",
+    "eurocode": "8378AGNGNHV-FYG",
+    "years": "2008-2021",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 978,
+    "name": "TOYOTA LANDCRUISER 200 SUV 2008-21",
+    "eurocode": "8378AGNGNV-SK",
+    "years": "2008-2021",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 979,
+    "name": "TOYOTA LANDCRUISER FJ100 SUV 1998-07 /LX470",
+    "eurocode": "8306AGNGNMV-XYG",
+    "years": "1998-2007",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 980,
+    "name": "TOYOTA LANDCRUISER FJ100 SUV 1998-07 /LX470",
+    "eurocode": "8306AGNGNPV-KMK",
+    "years": "1998-2007",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 981,
+    "name": "TOYOTA LANDCRUISER J200 SUV 2008-15/LEXUS LX570 (обогрев щеток)",
+    "eurocode": "8378AGNGNHMV1B-XYG",
+    "years": "2008-2015",
+    "glassPriceUsd": 76
+  },
+  {
+    "id": 982,
+    "name": "TOYOTA LANDCRUISER J200 SUV 2016-17 (1Z+RS+Bracket Differ+Fully Heated) /LX570",
+    "eurocode": "8378AGNBLCHMVZ2S-XYG",
+    "years": "2008-2021",
+    "glassPriceUsd": 175
+  },
+  {
+    "id": 983,
+    "name": "TOYOTA LANDCRUISER PRADO FJ120 SUV 2003-09 /LEXUS GX470",
+    "eurocode": "8341AGNGYMV-XYG",
+    "years": "2003-2009",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 984,
+    "name": "TOYOTA LANDCRUISER PRADO FJ90 SUV 1996-03",
+    "eurocode": "8301AGNGN-KMK",
+    "years": "1996-2003",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 985,
+    "name": "TOYOTA MATRIX VOLTZ/PONTIAC VIBE 2003-08 (2302)",
+    "eurocode": "DW01489GGN-XYG",
+    "years": "2003-2008",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 986,
+    "name": "TOYOTA PICNIC/IPSUM MPV 1996-01",
+    "eurocode": "8303AGN-FYG",
+    "years": "1996-2001",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 987,
+    "name": "TOYOTA PICNIC/IPSUM MPV 1996-01",
+    "eurocode": "8303AGNBL-XYG",
+    "years": "1996-2001",
+    "glassPriceUsd": 64.94
+  },
+  {
+    "id": 988,
+    "name": "TOYOTA PRADO J120 SUV 2003-09",
+    "eurocode": "8341AGNV-FYG",
+    "years": "2003-2009",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 989,
+    "name": "TOYOTA PRADO J150 SUV 2017-23 (VCS-L+Fully Heated)",
+    "eurocode": "8394AGABLHMZ1S-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 990,
+    "name": "TOYOTA PREVIA/TARAGO MPV 2000-05",
+    "eurocode": "8312AGNGY-XYG",
+    "years": "2000-2005",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 991,
+    "name": "TOYOTA PRIUS USA Type LIFTBACK 2009-15(ZVW30)",
+    "eurocode": "W3138AGNBL-XYG",
+    "years": "2009-2015",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 992,
+    "name": "TOYOTA PRIUS ZVW50 LIFTBACK 2016-17 (1Z+RS+A)",
+    "eurocode": "8422AGNACMVZ-XYG",
+    "years": "2016-2022",
+    "glassPriceUsd": 108
+  },
+  {
+    "id": 993,
+    "name": "TOYOTA PRIUS-V (USA Type) WAGON 2012-21 (VCP+STD MB)",
+    "eurocode": "FW03527AGNBL-KMK",
+    "years": "2012-2021",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 994,
+    "name": "TOYOTA RAV4 AS10 SUV 1994-00",
+    "eurocode": "8287AGNGN-KMK",
+    "years": "1994-2000",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 995,
+    "name": "TOYOTA RAV4 AS20 SUV 2000-06",
+    "eurocode": "8323AGNGNV-KMK",
+    "years": "2000-2006",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 996,
+    "name": "TOYOTA RAV4 AS20 SUV 2000-06",
+    "eurocode": "8323AGNGYV1B-FYG",
+    "years": "2000-2006",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 997,
+    "name": "TOYOTA RAV4 AS30 SUV 2006-12",
+    "eurocode": "8372AGNGNPV-KMK",
+    "years": "2006-2012",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 998,
+    "name": "TOYOTA RAV4 AS30 SUV 2006-12",
+    "eurocode": "8372AGNGNHPV-KMK",
+    "years": "2006-2012",
+    "glassPriceUsd": 61
+  },
+  {
+    "id": 999,
+    "name": "TOYOTA SIENNA MPV 1998-03",
+    "eurocode": "FW02246GBN-NG",
+    "years": "1998-2003",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 1000,
+    "name": "TOYOTA SIENNA MPV 2021-Q (1Z Only+H)",
+    "eurocode": "FW05570AGNCHVWZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 1001,
+    "name": "TOYOTA VENZA SUV 2009-16 (мет. крыша)",
+    "eurocode": "82C2AGNVZ-FYG",
+    "years": "2009-2016",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 1002,
+    "name": "TOYOTA VENZA SUV 2009-16 (под панараму)",
+    "eurocode": "8425AGNHVZ-XYG",
+    "years": "2009-2016",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 1003,
+    "name": "TOYOTA VENZA SUV 2021- (1Z Only)",
+    "eurocode": "FW05562AGNCVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 1004,
+    "name": "TOYOTA YARIS Euro HatchBack 2017-19 (1Z+RS)",
+    "eurocode": "8400AGACM2L-XYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 1005,
+    "name": "TOYOTA YARIS Euro HatchBack 2018-19 (1Z+RS+Cam Heat)",
+    "eurocode": "8400AGACM1L-XYG",
+    "years": "2011-2019",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 1006,
+    "name": "TOYOTA YARIS VERSO NP20 5D WAGON 2000-",
+    "eurocode": "8317AGNGY1P-XYG",
+    "years": "2000-2005",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 1007,
+    "name": "TOYOTA YARIS/VITZ HBK 2005-10 (VCP) VOLEEX C20/HAVAL H1",
+    "eurocode": "8370AGNGNV-KMK",
+    "years": "2005-2010",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 1008,
+    "name": "UAZ PATRIOT 5D SUV 2015- (Fully Heated+M/B)",
+    "eurocode": "4593AGNH-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 1009,
+    "name": "UAZ УАЗ PATRIOT 3163 UNLIMITED 5D SUV 2015-",
+    "eurocode": "4593AGN-XYG",
+    "years": "2015-Q",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 1010,
+    "name": "UAZ УАЗ PATRIOT 3163 UNLIMITED 5D SUV 2015-",
+    "eurocode": "4593AGNGN-KMK",
+    "years": "2015-Q",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 1011,
+    "name": "VOLKSWAGEN ATLAS/TERAMONT SUV 2017-",
+    "eurocode": "FW04697AGSMVZ-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 120
+  },
+  {
+    "id": 1012,
+    "name": "VOLKSWAGEN GOL",
+    "eurocode": "8601AGNGYW-SK",
+    "years": "2008-2016",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 1013,
+    "name": "VOLKSWAGEN ID6 SUV 2021-",
+    "eurocode": "VWID6AGSCMVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 1014,
+    "name": "VOLKSWAGEN TOUAREG SUV 2011-18",
+    "eurocode": "8606AGSGYMVWZ1B-FYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 1015,
+    "name": "VOLKSWAGEN TOUAREG SUV 2013-18",
+    "eurocode": "8606AGNCMVWZ1B-XYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 1016,
+    "name": "VOLVO 440 HBK/460 SEDAN 1988-97",
+    "eurocode": "8820AGNBLV-XYG",
+    "years": "1988-1997",
+    "glassPriceUsd": 43
+  },
+  {
+    "id": 1017,
+    "name": "VOLVO C30/S40 (04-12)/V50 (04-12) 2003-06 (Visor 228mm)",
+    "eurocode": "8832AGNBLVZ1M-XYG",
+    "years": "2003-2013",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 1018,
+    "name": "VOLVO C30/S40/V50 2007-13 (RS 198mm)",
+    "eurocode": "8832AGNMVZ2R-XYG",
+    "years": "2003-2013",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 1019,
+    "name": "VOLVO FH TRUCK 2013-Q (C,Encapsulated)",
+    "eurocode": "8844AGNGYIZ-XYG",
+    "years": "2013-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 1020,
+    "name": "VOLVO FH12-FH16 (93-05)/FH12 (05-12)/FM TRUCK (98- )/SINOTRUK HOWO A7/T7H (09- )",
+    "eurocode": "8823AGNBL-XYG",
+    "years": "1993-2020",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 1021,
+    "name": "VOLVO FL7/FL12 TRUCK 1985-00 (2270*856mm) HOWO A5/420",
+    "eurocode": "8814AGNGN-KMK",
+    "years": "1985-2000",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 1022,
+    "name": "VOLVO S40 SEDAN 1996-04 /V40 WAGON",
+    "eurocode": "8824AGNBLV1M-FYG",
+    "years": "1996-2004",
+    "glassPriceUsd": 52
+  },
+  {
+    "id": 1023,
+    "name": "VOLVO S40 SEDAN 1996-04 /V40 WAGON",
+    "eurocode": "8824AGNBLV3R-XYG",
+    "years": "1996-2004",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 1024,
+    "name": "VOLVO S80 4D SEDAN 1998-06",
+    "eurocode": "8828AGNBLMW1R-XYG",
+    "years": "1998-2006",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 1025,
+    "name": "VOLVO S80 4D SEDAN 1998-06",
+    "eurocode": "8828AGNBLW1M-XYG",
+    "years": "1998-2006",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 1026,
+    "name": "VOLVO S80 SEDAN 2007-16 /V70/XC70 WAGON",
+    "eurocode": "8836AGNVZ1R-XYG",
+    "years": "2007-2016",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 1027,
+    "name": "VOLVO S80 SEDAN 2011-13 (2Z Only)/V70/XC70 STW",
+    "eurocode": "8836AGNGNPV2P-KMK",
+    "years": "2007-2016",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 1028,
+    "name": "VOLVO S90 4D SEDAN 2017-20 (акустик+подогрев камеры+полный)",
+    "eurocode": "8845AGCCGHMVZ1M-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 270
+  },
+  {
+    "id": 1029,
+    "name": "VOLVO XC40 SUV 2018-20 (1Z+Left RS)",
+    "eurocode": "8847AGACMVZ1M-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 1030,
+    "name": "VOLVO XC60 5D SUV 2018-20 (1Z+Left RS)",
+    "eurocode": "8846AGNCGMVZ1M-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 137
+  },
+  {
+    "id": 1031,
+    "name": "VOLVO XC60 5D SUV 2021- (1Z+Right RS)",
+    "eurocode": "8846AGACMVZ1X-XYG",
+    "years": "2018-Q",
+    "glassPriceUsd": 155
+  },
+  {
+    "id": 1032,
+    "name": "VOLVO XC60 SUV 2010-13 (2Z+Square RS 137mm)",
+    "eurocode": "8840AGNMPVWZ95-XYG",
+    "years": "2008-2017",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 1033,
+    "name": "VOLVO XC60 SUV 2013-17 (2Z+Round RS 141mm)",
+    "eurocode": "8840AGNMPVWZ7X-XYG",
+    "years": "2008-2017",
+    "glassPriceUsd": 104
+  },
+  {
+    "id": 1034,
+    "name": "VOYAH FREE SUV 2021-23",
+    "eurocode": "EW01AGSCPV-XYG",
+    "years": "2021-2023",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 1035,
+    "name": "VW AMAROK G1 PICKUP 2012-20 (Round RS)",
+    "eurocode": "8609AGNMVW1P-XYG",
+    "years": "2010-2020",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 1036,
+    "name": "VW AMAROK PICKUP 2010-20",
+    "eurocode": "8609AGSVW1B-FYG",
+    "years": "2010-2020",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1037,
+    "name": "VW ARTEON SEDAN 2018-20 (1Z H=77mm)",
+    "eurocode": "8637AGACMVZ1C-XYG",
+    "years": "2018-2023",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 1038,
+    "name": "VW BORA 4D 98-02 (левое, опускное, зад)",
+    "eurocode": "8558LGNS4RDW-NG",
+    "years": "1998-2002",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1039,
+    "name": "VW BORA 4D 98-02 (правое, опускное, зад)",
+    "eurocode": "8558RGNS4RDW-NG",
+    "years": "1998-2002",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1040,
+    "name": "VW CADDY VAN 2004-",
+    "eurocode": "8581AGNGYV-KMK",
+    "years": "2004-2020",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 1041,
+    "name": "VW CADDY VAN 2004-15",
+    "eurocode": "8581AGNGYVZ-XYG",
+    "years": "2004-2020",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 1042,
+    "name": "VW CRAFTER VAN 2017-18/MAN TGE VAN 17- (1Z+NO M/B)",
+    "eurocode": "8635AGSCMVZ-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 1043,
+    "name": "VW CRAFTER VAN 2017-Q (NO M/B)/MAN TGE VAN 17-",
+    "eurocode": "8635AGSIVZ-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 1044,
+    "name": "VW CRAFTER VAN 2019-Q (1Z+02 RS+NO M/B)/MAN TGE (4919)",
+    "eurocode": "8635AGSCMVZ1T-XYG",
+    "years": "2017-Q",
+    "glassPriceUsd": 150
+  },
+  {
+    "id": 1045,
+    "name": "VW GOLF 5 HBK 2003-09 (VCP)",
+    "eurocode": "8568AGSGYVZ-FYG",
+    "years": "2003-2009",
+    "glassPriceUsd": 80
+  },
+  {
+    "id": 1046,
+    "name": "VW GOLF 5/6 HBK 2003-13 (VCS)",
+    "eurocode": "8600AGNGYMVZ1P-XYG",
+    "years": "2009-2013",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 1047,
+    "name": "VW GOLF A2 3D HBK 1987-91 /JETTA 2D",
+    "eurocode": "8533ACLBL-XYG",
+    "years": "1987-1991",
+    "glassPriceUsd": 32
+  },
+  {
+    "id": 1048,
+    "name": "VW GOLF A2 3D HBK 1987-91 /JETTA 2D",
+    "eurocode": "8533ACLBL-FYG",
+    "years": "1987-1991",
+    "glassPriceUsd": 32
+  },
+  {
+    "id": 1049,
+    "name": "VW GOLF A3 HBK 1991-98 /VENTO SED",
+    "eurocode": "8541AGNBL00-XYG",
+    "years": "1991-1998",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 1050,
+    "name": "VW GOLF A4 3D HBK 1997-04 (правое, опускное, перед)",
+    "eurocode": "8558RGNH3FD-NG",
+    "years": "1997-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1051,
+    "name": "VW GOLF A4 5D HBK 1997-04 (зад. правое, опускное)",
+    "eurocode": "8558RGNH5RDW-NG",
+    "years": "1997-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1052,
+    "name": "VW GOLF A4 5D HBK 1997-04 (левое, опускное, зад)",
+    "eurocode": "8558LGNH5RDW-NG",
+    "years": "1997-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1053,
+    "name": "VW GOLF A4 5D HBK 1997-04 (перед. опускн, правое)",
+    "eurocode": "8558RGNH5FD-NG",
+    "years": "1997-2004",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1054,
+    "name": "VW GOLF A4 97-04 (VP) /VENTO/BORA 98-02",
+    "eurocode": "8558AGNGNV-KMK",
+    "years": "1997-2004",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 1055,
+    "name": "VW GOLF A4 97-04 (VS) /VENTO/BORA 98-02",
+    "eurocode": "8558AGNGNPV-KMK",
+    "years": "1997-2004",
+    "glassPriceUsd": 51
+  },
+  {
+    "id": 1056,
+    "name": "VW GOLF A4 97-04 (VS) /VENTO/BORA 98-02",
+    "eurocode": "8558AGNGYV-KMK",
+    "years": "1997-2004",
+    "glassPriceUsd": 48
+  },
+  {
+    "id": 1057,
+    "name": "VW GOLF A6 HBK 2009-13",
+    "eurocode": "8600AGNGYV-KMK",
+    "years": "2009-2013",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 1058,
+    "name": "VW GOLF A6 HBK 2009-13",
+    "eurocode": "8600AGNBLV-KMK",
+    "years": "2009-2013",
+    "glassPriceUsd": 54
+  },
+  {
+    "id": 1059,
+    "name": "VW GOLF A7 HBK 2017-19 (Mid 1Z)",
+    "eurocode": "8618AGACMVZ6P-XYG",
+    "years": "2013-2019",
+    "glassPriceUsd": 110
+  },
+  {
+    "id": 1060,
+    "name": "VW GOLF PLUS 5D HBK 2005-14 (VCP+M/B 159mm)",
+    "eurocode": "8583AGNGYVZ1H-XYG",
+    "years": "2005-2014",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 1061,
+    "name": "VW JETTA A7 SEDAN 2019-",
+    "eurocode": "8663AGSMVWZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1062,
+    "name": "VW JETTA A7 SEDAN 2019-",
+    "eurocode": "8663AGNVWZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 1063,
+    "name": "VW JETTA A7 SEDAN 2019-",
+    "eurocode": "8663AGNPV-KMK",
+    "years": "2019-Q",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 1064,
+    "name": "VW JETTA A7 SEDAN 2019-21 (1Z H=72mm)",
+    "eurocode": "8663AGNCPV-KMK",
+    "years": "2019-Q",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1065,
+    "name": "VW JETTA SEDAN 2011-18 Square Corner",
+    "eurocode": "8612AGSVZ-XYG",
+    "years": "2011-2018",
+    "glassPriceUsd": 61
+  },
+  {
+    "id": 1066,
+    "name": "VW JETTA SEDAN 2022- (1Z H=62mm)(FW06161)",
+    "eurocode": "8663AGSCMVWZ-XYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 135
+  },
+  {
+    "id": 1067,
+    "name": "VW JETTA/BORA SEDAN 2005-10 /GOLF 5/6 WAGON",
+    "eurocode": "8586AGNGYMVZ1P-FYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 74
+  },
+  {
+    "id": 1068,
+    "name": "VW JETTA/BORA SEDAN 2005-10/ GOLF 5/6 WAGON 2007-13 (VCP+MB 97mm)",
+    "eurocode": "8586AGNGYVZ-XYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1069,
+    "name": "VW LT28/LT35 TRUCK 1975-96 WORKER/TITAN 08-",
+    "eurocode": "8522AGNGN-KMK",
+    "years": "1975-1996",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1070,
+    "name": "VW MULTIVAN VAN 2022-25 (Small 1Z)",
+    "eurocode": "8664AGACHMVZ-FYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 400
+  },
+  {
+    "id": 1071,
+    "name": "VW PASSAT B3/B4 SEDAN/WAGON 1988-97 (No Base)",
+    "eurocode": "8535AGNBL00-XYG",
+    "years": "1988-1997",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 1072,
+    "name": "VW PASSAT B5 1997-05 /SKODA SUPERB 01-08",
+    "eurocode": "8556AGNGYPV-KMK",
+    "years": "1997-2005",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 1073,
+    "name": "VW PASSAT B5 1997-05(правое, опускное, перед)",
+    "eurocode": "8556RGNS4FD-NG",
+    "years": "1997-2005",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1074,
+    "name": "VW PASSAT B6 SEDAN 2005-10",
+    "eurocode": "8584AGNGYV-KMK",
+    "years": "2005-2010",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 1075,
+    "name": "VW PASSAT B6 SEDAN 2005-10 (RS 95mm)",
+    "eurocode": "8584AGNGYPV1B-KMK",
+    "years": "2005-2010",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 1076,
+    "name": "VW PASSAT B6 SEDAN 2005-10 (RS 95mm)",
+    "eurocode": "8584AGNGYMVW1B-XYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1077,
+    "name": "VW PASSAT B6 SEDAN 2005-10 (VCP+M/B 144mm)",
+    "eurocode": "8584AGNGYVW1H-XYG",
+    "years": "2005-2010",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1078,
+    "name": "VW PASSAT B7 SEDAN 2011-14 (RS 121mm)",
+    "eurocode": "8584AGNGYMVW35-XYG",
+    "years": "2011-2014",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1079,
+    "name": "VW PASSAT B8 SEDAN 2015-18 (1Z 74mm)",
+    "eurocode": "8626AGSCMVZ1D-FYG",
+    "years": "2015-2022",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 1080,
+    "name": "VW PASSAT B8 SEDAN 2015-18 (1Z 74mm) ( С КАМЕРОЙ)",
+    "eurocode": "8626AGNGNPV-KMK",
+    "years": "2015-2022",
+    "glassPriceUsd": 56
+  },
+  {
+    "id": 1081,
+    "name": "VW PASSAT B8 SEDAN/WAGON 2015-22",
+    "eurocode": "8626AGNVZ-XYG",
+    "years": "2015-2022",
+    "glassPriceUsd": 62
+  },
+  {
+    "id": 1082,
+    "name": "VW PASSAT B8 SEDAN/WAGON 2015-22",
+    "eurocode": "8626AGNGYMVZ-XYG",
+    "years": "2015-2022",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 1083,
+    "name": "VW PASSAT CC 4D SEDAN 2013-17 (Кругл. RS)",
+    "eurocode": "8598AGNGYPVW6T-XYG",
+    "years": "2008-2017",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 1084,
+    "name": "VW PASSAT CC 4D SEDAN 2013-17 (Кругл.RS)",
+    "eurocode": "8598AGAMVW6T-SK",
+    "years": "2008-2017",
+    "glassPriceUsd": 210
+  },
+  {
+    "id": 1085,
+    "name": "VW POLO CLASSIC SED/ CADDY 1995-04/SEAT IBIZA HBK 1993-99",
+    "eurocode": "8549AGNGN-KMK",
+    "years": "1995-2001",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 1086,
+    "name": "VW POLO CLASSIC SED/ CADDY 1995-04/SEAT IBIZA HBK 1993-99",
+    "eurocode": "8549AGNGYZ-XYG",
+    "years": "1995-2001",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 1087,
+    "name": "VW POLO CLASSIC/SEAT IBIZA HBK 1993-99 (Hi M/B 33mm) /CORDOBA/INCA(8549)",
+    "eurocode": "7604AGNBL-XYG",
+    "years": "1995-1999",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 1088,
+    "name": "VW POLO CLASSIC/SEAT IBIZA HBK 1993-99 (Hi M/B 33mm) /CORDOBA/INCA(8549)",
+    "eurocode": "7604AGNBL-FYG",
+    "years": "1993-1999",
+    "glassPriceUsd": 45
+  },
+  {
+    "id": 1089,
+    "name": "VW POLO HBK/SEDAN 2001-10 (Visor Type)",
+    "eurocode": "8573AGNPVZ6J-XYG",
+    "years": "2001-2010",
+    "glassPriceUsd": 64
+  },
+  {
+    "id": 1090,
+    "name": "VW POLO HBK/SEDAN 2001-10 (Visor Type)",
+    "eurocode": "8573AGSVZ7J-FYG",
+    "years": "2001-2010",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 1091,
+    "name": "VW POLO II 3D HBK 1981-94 (01 Hole)",
+    "eurocode": "8530BCLH1H-NG",
+    "years": "1981-1994",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1092,
+    "name": "VW POLO SEDAN 2010-14 (квад. верх.)",
+    "eurocode": "8603AGNBLWZ1P-XYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 1093,
+    "name": "VW POLO SEDAN 2010-14/VW POLO HBK 2010-17(квадр,вверх, полный обогрев)",
+    "eurocode": "8603AGNHVW1U-XYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 160
+  },
+  {
+    "id": 1094,
+    "name": "VW POLO SEDAN 2010-14/VW POLO HBK 2010-17(квадрат, полный обогрев)",
+    "eurocode": "8603AGNHV1U-KMK",
+    "years": "2010-2019",
+    "glassPriceUsd": 140
+  },
+  {
+    "id": 1095,
+    "name": "VW POLO SEDAN 2010-19 (заднее)",
+    "eurocode": "8603BGNS-KMK",
+    "years": "2010-2019",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 1096,
+    "name": "VW POLO SEDAN 2010-19 (опускное, пасс, заднее)",
+    "eurocode": "8603RGNS4RD-KMK",
+    "years": "2010-2019",
+    "glassPriceUsd": 30
+  },
+  {
+    "id": 1097,
+    "name": "VW POLO SEDAN 2010-19 переднее опускное правое",
+    "eurocode": "8603RGNS4FD-KMK",
+    "years": "2010-2019",
+    "glassPriceUsd": 30
+  },
+  {
+    "id": 1098,
+    "name": "VW POLO SEDAN 2010-19(опускное, вод., заднее)",
+    "eurocode": "8603LGNS4RD-KMK",
+    "years": "2010-2019",
+    "glassPriceUsd": 30
+  },
+  {
+    "id": 1099,
+    "name": "VW POLO SEDAN 2015-19/VW POLO HBK 2010-17(круг. низ)",
+    "eurocode": "8603AGNGYVWZ-XYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 57
+  },
+  {
+    "id": 1100,
+    "name": "VW POLO SEDAN 2015-19/VW POLO HBK 2010-17(круг. низ)",
+    "eurocode": "8603AGNGYV-XYG",
+    "years": "2010-2019",
+    "glassPriceUsd": 50
+  },
+  {
+    "id": 1101,
+    "name": "VW SHARAN 5D MPV 2016-22 (1Z+Plastic RS)",
+    "eurocode": "8605AGSCMVWZ6T-XYG",
+    "years": "2010-2022",
+    "glassPriceUsd": 130
+  },
+  {
+    "id": 1102,
+    "name": "VW SHARAN MPV 1995-10 /FORD GALAXY/SEAT ALHAMB левое опускное перед",
+    "eurocode": "3550/8548LGNV5FD-NG",
+    "years": "1995-2010",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1103,
+    "name": "VW SHARAN MPV 1995-10 /FORD GALAXY/SEAT ALHAMB правое опускное перед",
+    "eurocode": "3550/8548RGNV5FD-NG",
+    "years": "1995-2010",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1104,
+    "name": "VW SHARAN MPV 1995-10/FORD GALAXY 2000-06/SEAT ALHAMB 5D MPV 1995-",
+    "eurocode": "8548AGNGYV-KMK",
+    "years": "1995-2010",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 1105,
+    "name": "VW SHARAN MPV 1995-10/FORD GALAXY 2000-06/SEAT ALHAMB 5D MPV 1995-",
+    "eurocode": "8548AGNBLV1P-XYG",
+    "years": "1995-2010",
+    "glassPriceUsd": 65
+  },
+  {
+    "id": 1106,
+    "name": "VW SHARAN MPV 1995-10/FORD GALAXY 2000-06/SEAT ALHAMB 5D MPV 1995-",
+    "eurocode": "8548AGNBLHVZ2P-XYG",
+    "years": "1995-2010",
+    "glassPriceUsd": 172
+  },
+  {
+    "id": 1107,
+    "name": "VW SHARAN/FORD GALAXY 1995-00 (NO Hole) заднее",
+    "eurocode": "8548BGNVB-XYG",
+    "years": "1995-2010",
+    "glassPriceUsd": 55
+  },
+  {
+    "id": 1108,
+    "name": "VW SHARAN/SEAT ALHAMBRA 5D MPV 2010-22",
+    "eurocode": "8605AGSVWZ-XYG",
+    "years": "2010-2022",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 1109,
+    "name": "VW SHARAN/SEAT ALHAMBRA 5D MPV 2010-22",
+    "eurocode": "8605AGNGNPV-KMK",
+    "years": "2010-2022",
+    "glassPriceUsd": 70
+  },
+  {
+    "id": 1110,
+    "name": "VW SHARAN/SEAT ALHAMBRA 5D MPV 2010-22",
+    "eurocode": "8605AGSVW-XYG",
+    "years": "2010-2022",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 1111,
+    "name": "VW TAOS SUV 2021- (1Z+RS+Bracket Differ)",
+    "eurocode": "FW05476AGSCMVZ-XYG",
+    "years": "2021-Q",
+    "glassPriceUsd": 145
+  },
+  {
+    "id": 1112,
+    "name": "VW TIGUAN SUV 2007-16",
+    "eurocode": "8595AGNGYVZ-XYG",
+    "years": "2007-2016",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 1113,
+    "name": "VW TIGUAN SUV 2007-16",
+    "eurocode": "8595AGNGYPV-KMK",
+    "years": "2007-2016",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 1114,
+    "name": "VW TIGUAN SUV 2007-16",
+    "eurocode": "8595AGNGNPV-KMK",
+    "years": "2007-2016",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 1115,
+    "name": "VW TIGUAN SUV 2007-16",
+    "eurocode": "8595AGNGYMVZ1P-XYG",
+    "years": "2007-2016",
+    "glassPriceUsd": 73
+  },
+  {
+    "id": 1116,
+    "name": "VW TIGUAN SUV 2017-20 (1Z 71mm) SEAT TARRACO",
+    "eurocode": "8627AGSCMVZ1C-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 93
+  },
+  {
+    "id": 1117,
+    "name": "VW TIGUAN SUV 2017-20 (1Z 71mm+FH)",
+    "eurocode": "8627AGNCHMVZ1C-XYG",
+    "years": "2017-2023",
+    "glassPriceUsd": 215
+  },
+  {
+    "id": 1118,
+    "name": "VW TOUAREG SUV 2002-10 /PORSCHE CAYENNE",
+    "eurocode": "8576AGSGYMVZ2B-XYG",
+    "years": "2002-2010",
+    "glassPriceUsd": 95
+  },
+  {
+    "id": 1119,
+    "name": "VW TOUAREG SUV 2002-10 /PORSCHE CAYENNE",
+    "eurocode": "8576AGNGNV-KMK",
+    "years": "2002-2010",
+    "glassPriceUsd": 47
+  },
+  {
+    "id": 1120,
+    "name": "VW TOUAREG SUV 2002-10 /PORSCHE CAYENNE",
+    "eurocode": "8576AGNGNPV-KMK",
+    "years": "2002-2010",
+    "glassPriceUsd": 49
+  },
+  {
+    "id": 1121,
+    "name": "VW TOUAREG SUV 2019-",
+    "eurocode": "8643AGNCMVZ-FYG",
+    "years": "2019-Q",
+    "glassPriceUsd": 92.68
+  },
+  {
+    "id": 1122,
+    "name": "VW TOURAN MPV 2003-06 (NO M/B Без держателя)",
+    "eurocode": "8577AGNGYVZ-XYG",
+    "years": "2003-2015",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 1123,
+    "name": "VW TOURAN MPV 2003-06 (NO M/B)",
+    "eurocode": "8577AGNGNV-KMK",
+    "years": "2003-2015",
+    "glassPriceUsd": 63
+  },
+  {
+    "id": 1124,
+    "name": "VW TOURAN MPV 2003-06 (RS H=24cm)",
+    "eurocode": "8577AGSMVW1B-XYG",
+    "years": "2003-2015",
+    "glassPriceUsd": 75
+  },
+  {
+    "id": 1125,
+    "name": "VW TOURAN MPV 2007-10 (RS H=10cm)",
+    "eurocode": "8577AGNMVW6T-XYG",
+    "years": "2003-2015",
+    "glassPriceUsd": 82
+  },
+  {
+    "id": 1126,
+    "name": "VW TOURAN MPV 2010-15 (VCS,RS=127mm)",
+    "eurocode": "8577AGNMVZ95-XYG",
+    "years": "2003-2015",
+    "glassPriceUsd": 83
+  },
+  {
+    "id": 1127,
+    "name": "VW TRANSPORTER T4 1990-03",
+    "eurocode": "8537AGNGY-XYG",
+    "years": "1990-2003",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 1128,
+    "name": "VW TRANSPORTER T4 1990-03 (1290mm-520mm)(левое, неподв. зад)",
+    "eurocode": "8537LCLV2RQ-NG",
+    "years": "1990-2003",
+    "glassPriceUsd": 15
+  },
+  {
+    "id": 1129,
+    "name": "VW TRANSPORTER T4 1990-03 (P+ANT)",
+    "eurocode": "8537AGNA-XYG",
+    "years": "1990-2003",
+    "glassPriceUsd": 68
+  },
+  {
+    "id": 1130,
+    "name": "VW TRANSPORTER T4 1990-03 (P+ANT)",
+    "eurocode": "8537AGNGYA-XYG",
+    "years": "1990-2003",
+    "glassPriceUsd": 66
+  },
+  {
+    "id": 1131,
+    "name": "VW TRANSPORTER T4 1990-03 (зад. левое)",
+    "eurocode": "8537BGNVL-XYG",
+    "years": "1990-2003",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 1132,
+    "name": "VW TRANSPORTER T4 1990-03 (зад. правое)",
+    "eurocode": "8537BGNVR-XYG",
+    "years": "1990-2003",
+    "glassPriceUsd": 40
+  },
+  {
+    "id": 1133,
+    "name": "VW TRANSPORTER T4 VAN 1990-03 (P+ANT)",
+    "eurocode": "8537AGNBLA-KMK",
+    "years": "1990-2003",
+    "glassPriceUsd": 59
+  },
+  {
+    "id": 1134,
+    "name": "VW TRANSPORTER T5 2003-15 (M/B 108mm)",
+    "eurocode": "8579AGNGYVZ1B-XYG",
+    "years": "2003-2015",
+    "glassPriceUsd": 85
+  },
+  {
+    "id": 1135,
+    "name": "VW TRANSPORTER T5 2003-15 (M/B 108mm)",
+    "eurocode": "8579AGNGYV-KMK",
+    "years": "2003-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 1136,
+    "name": "VW TRANSPORTER T5 2010-15 (Square RS)",
+    "eurocode": "8579AGNGYPV6T-KMK",
+    "years": "2003-2015",
+    "glassPriceUsd": 60
+  },
+  {
+    "id": 1137,
+    "name": "WELTMEISTER EX5 SUV 2018-22",
+    "eurocode": "CWMEX5AGSPV-XYG",
+    "years": "2018-2022",
+    "glassPriceUsd": 90
+  },
+  {
+    "id": 1138,
+    "name": "WELTMEISTER W6 SUV 2021-22",
+    "eurocode": "CWMW6AGSCPV-XYG",
+    "years": "2021-2022",
+    "glassPriceUsd": 115
+  },
+  {
+    "id": 1139,
+    "name": "XIAOMI SU7 SEDAN 2024-Q (02 Lens 1Z-Flat Top)",
+    "eurocode": "XMISU7AGNCMVZ-XYG",
+    "years": "2024-Q",
+    "glassPriceUsd": 250
+  },
+  {
+    "id": 1140,
+    "name": "ZEEKR 001 SEDAN 2022- (1Z+RS)( без обогрева под камеру)",
+    "eurocode": "EZ01AGACPUV-XYG",
+    "years": "2022-Q",
+    "glassPriceUsd": 280
+  },
+  {
+    "id": 1141,
+    "name": "ВАЗ \"2101\" | \"2102\" | \"2103\" | \"2104\" | \"2105\" | \"2106\" | \"2107\" '1970-2012 #4500 полоса ТЗ 4500AGNGN - КМК",
+    "eurocode": "4500AGNGN-KMK",
+    "years": "1970-2012",
+    "glassPriceUsd": 36
+  },
+  {
+    "id": 1142,
+    "name": "ВАЗ \"2108\" | \"2109\" | \"21099\" | \"2113\" | \"2114\" | \"2115\" 3/5D Hbk / 4D Sed",
+    "eurocode": "4502AGNGN-KMK",
+    "years": "1984-2013",
+    "glassPriceUsd": 38
+  },
+  {
+    "id": 1143,
+    "name": "ГАЗ GAZ ВАЛДАЙ NEXT 20-/FOTON OLLIN AUMARK TRUCK 2017- (1933*807mm-Mid Cab)",
+    "eurocode": "4561AGN-FYG",
+    "years": "2020-Q",
+    "glassPriceUsd": 100
+  },
+  {
+    "id": 1144,
+    "name": "ГАЗ GAZ ВАЛДАЙ NEXT 20-/FOTON OLLIN AUMARK TRUCK 2017- (1933*807mm-Mid Cab)",
+    "eurocode": "4561AGNGN-KMK",
+    "years": "2020-Q",
+    "glassPriceUsd": 87
+  },
+  {
+    "id": 1145,
+    "name": "Стекло ветровое триплекс УАЗ \"3160\" ЗП ТЗ WS4532AGNGN - КМК",
+    "eurocode": "4532AGNGN-KMK",
+    "years": "2004...2014",
+    "glassPriceUsd": 57
+  }
+]

@@ -1,11 +1,11 @@
 export const mainNavigation = [
   { label: 'Услуги', href: '/#services' },
+  { label: 'Калькулятор', href: '/#calculator' },
+  { label: 'О нас', href: '/#about' },
   { label: 'Цены', href: '/ceny/' },
   { label: 'Марки', href: '/marki/' },
-  { label: 'Кейсы', href: '/kejsy/' },
   { label: 'Отзывы', href: '/otzyvy/' },
-  { label: 'О компании', href: '/o-kompanii/' },
-  { label: 'Контакты', href: '/kontakty/' },
+  { label: 'Контакты', href: '/#contacts' },
 ];
 
 export const serviceNavigation = [
