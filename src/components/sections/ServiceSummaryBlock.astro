@@ -2,7 +2,6 @@
 import Button from '@/components/common/Button.astro';
 import { businessHours } from '@/data/business-hours';
 import { contacts } from '@/data/contacts';
-import { pricePackages, prices } from '@/data/prices';
 import { site } from '@/data/site';
 
 interface Props {
@@ -20,7 +19,7 @@ const facts = [
   { label: 'Телефон', value: contacts.phone },
   { label: 'График', value: `${businessHours.short}; ${businessHours.note}` },
   { label: 'Расчёт', value: 'по модели сразу, по VIN — ручной точный подбор' },
-  { label: 'Цена', value: `работа от ${prices[3].priceFrom} BYN, под ключ от ${pricePackages[0].priceFrom} BYN` },
+  { label: 'Цена', value: 'ориентир по модели сразу, точное подтверждение по VIN' },
   { label: 'Для кого', value: 'легковые авто, Tesla, пассажирский, грузовой и специальный транспорт' },
   { label: 'Гарантия', value: 'герметичность шва после замены' },
 ];

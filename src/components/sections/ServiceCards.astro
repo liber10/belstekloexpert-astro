@@ -1,4 +1,5 @@
 ---
+import Currency from '@/components/common/Currency.astro';
 import SectionTitle from '@/components/common/SectionTitle.astro';
 import { prices } from '@/data/prices';
 ---
@@ -17,7 +18,7 @@ import { prices } from '@/data/prices';
             <h3>{item.title}</h3>
             <p>Подбор, согласование цены, запись на удобное время и рекомендации после работы.</p>
           </div>
-          <div class="price-line">от {item.priceFrom} {item.unit}</div>
+          <div class="price-line"><Currency value={item.priceFrom} suffix={item.unit} /></div>
         </a>
       ))}
     </div>

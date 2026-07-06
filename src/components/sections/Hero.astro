@@ -1,5 +1,6 @@
 ---
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import { contacts } from '@/data/contacts';
 ---
 
@@ -19,9 +20,8 @@ import { contacts } from '@/data/contacts';
         <Button href={contacts.phoneHref} variant="secondary" dataEvent="phone_click">Позвонить</Button>
       </div>
       <div class="hero__trust" aria-label="Стартовые цены">
-        <span>Под ключ от 220 BYN</span>
-        <span>Ремонт скола от 40 BYN</span>
-        <span>Установка стекла: $50</span>
+        <span>Под ключ <Currency value={220} /></span>
+        <span>Ремонт скола <Currency value={40} /></span>
         <span>Легковые, грузовые, спецтехника</span>
       </div>
     </div>

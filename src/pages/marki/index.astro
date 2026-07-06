@@ -1,5 +1,6 @@
 ---
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { brands } from '@/data/brands';
@@ -35,7 +36,7 @@ const schema = breadcrumbSchema([
         {brands.map((brand) => (
           <a class="card brand-card" href={`/marki/${brand.slug}/`}>
             <h3>{brand.name}</h3>
-            <p>от {brand.priceFrom} BYN под ключ</p>
+            <p><Currency value={brand.priceFrom} suffix="под ключ" /></p>
             <span>{brand.models.map((model) => model.name).join(' · ')}</span>
           </a>
         ))}

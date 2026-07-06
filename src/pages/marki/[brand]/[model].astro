@@ -1,5 +1,6 @@
 ---
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { brandModels } from '@/data/brands';
@@ -58,7 +59,7 @@ const schema = [
       <aside class="card service-metrics">
         <div>
           <span>Ориентир</span>
-          <strong>от {brand.priceFrom} BYN</strong>
+          <strong><Currency value={brand.priceFrom} /></strong>
         </div>
         <p>Финальную цену называем после сверки VIN или фото маркировки стекла.</p>
       </aside>

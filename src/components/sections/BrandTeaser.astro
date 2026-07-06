@@ -1,5 +1,6 @@
 ---
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import SectionTitle from '@/components/common/SectionTitle.astro';
 import { brands } from '@/data/brands';
 
@@ -17,7 +18,7 @@ const visibleBrands = brands.slice(0, 8);
       {visibleBrands.map((brand) => (
         <a class="card brand-card" href={`/marki/${brand.slug}/`}>
           <h3>{brand.name}</h3>
-          <p>от {brand.priceFrom} BYN под ключ</p>
+          <p><Currency value={brand.priceFrom} suffix="под ключ" /></p>
           <span>{brand.models.map((model) => model.name).join(' · ')}</span>
         </a>
       ))}

@@ -1,10 +1,12 @@
 ---
 import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import B2BForm from '@/components/forms/B2BForm.astro';
 import LeadForm from '@/components/forms/LeadForm.astro';
 import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
 import { prices, priceNote } from '@/data/prices';
+import { site } from '@/data/site';
 
 interface ServiceData {
   title: string;
@@ -57,7 +59,9 @@ const proofItems = [
       <aside class="card service-metrics" aria-label="Параметры услуги">
         <div>
           <span>Цена</span>
-          <strong>{service.priceFrom > 0 ? `от ${service.priceFrom} BYN` : 'по расчёту'}</strong>
+          <strong>
+            {service.priceFrom > 0 ? <Currency value={service.priceFrom} /> : 'по расчёту'}
+          </strong>
         </div>
         <div>
           <span>Срок</span>
@@ -68,6 +72,26 @@ const proofItems = [
     </div>
   </div>
 </section>
+
+{isB2B && (
+  <section class="section section--soft">
+    <div class="container">
+      <div class="download-panel">
+        <div>
+          <p class="section__eyebrow">Коммерческое предложение</p>
+          <h2>Общие условия для юрлиц и автопарков</h2>
+          <p>
+            PDF с профилем компании, услугами, порядком работы, контактами и реквизитами
+            для первичного согласования сотрудничества.
+          </p>
+        </div>
+        <Button href={site.commercialOfferPath} variant="quiet" dataEvent="commercial_offer_download">
+          Скачать КП
+        </Button>
+      </div>
+    </div>
+  </section>
+)}
 
 <section class="section">
   <div class="container grid feature-grid">
@@ -150,7 +174,7 @@ const proofItems = [
       {related.map((item) => (
         <a class="card price-card" href={item.url}>
           <h3>{item.title}</h3>
-          <p>от {item.priceFrom} {item.unit}</p>
+          <p><Currency value={item.priceFrom} suffix={item.unit} /></p>
         </a>
       ))}
     </div>

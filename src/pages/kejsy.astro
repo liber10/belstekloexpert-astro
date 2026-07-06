@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import Currency from '@/components/common/Currency.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
 
@@ -8,6 +9,7 @@ const rendered = await Promise.all(
   cases.map(async (item) => ({
     item,
     Content: (await render(item)).Content,
+    priceMatch: item.data.price.match(/^от\s+(\d+)\s+бел\.\s*руб\.$/i),
   })),
 );
 ---
@@ -29,10 +31,13 @@ const rendered = await Promise.all(
   </section>
   <section class="section">
     <div class="container grid case-grid">
-      {rendered.map(({ item, Content }) => (
+      {rendered.map(({ item, Content, priceMatch }) => (
         <article class="card case-card">
           <h3>{item.data.title}</h3>
-          <p>{item.data.service} · {item.data.duration} · {item.data.price}</p>
+          <p>
+            {item.data.service} · {item.data.duration} ·{' '}
+            {priceMatch ? <Currency value={Number(priceMatch[1])} /> : item.data.price}
+          </p>
           <Content />
         </article>
       ))}

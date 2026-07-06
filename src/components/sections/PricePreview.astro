@@ -1,5 +1,6 @@
 ---
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import SectionTitle from '@/components/common/SectionTitle.astro';
 import { prices, priceNote, pricePackages } from '@/data/prices';
 ---
@@ -15,7 +16,7 @@ import { prices, priceNote, pricePackages } from '@/data/prices';
       {pricePackages.map((item) => (
         <a class="card package-card" href="/kalkulyator/" data-event={item.eventName}>
           <p class="package-card__label">{item.title}</p>
-          <h3>от {item.priceFrom} {item.unit}</h3>
+          <h3><Currency value={item.priceFrom} suffix={item.unit} /></h3>
           <p>{item.text}</p>
         </a>
       ))}
@@ -24,7 +25,7 @@ import { prices, priceNote, pricePackages } from '@/data/prices';
       {prices.map((item) => (
         <a class="card price-card" href={item.url}>
           <h3>{item.title}</h3>
-          <p>от {item.priceFrom} {item.unit}</p>
+          <p><Currency value={item.priceFrom} suffix={item.unit} /></p>
         </a>
       ))}
     </div>

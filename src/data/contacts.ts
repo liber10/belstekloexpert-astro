@@ -3,7 +3,7 @@ export const contacts = {
   phoneHref: 'tel:+375336828135',
   telegram: 'https://t.me/belstekloexpert',
   viber: 'viber://chat?number=%2B375336828135',
-  whatsapp: 'https://wa.me/375336828135',
+  instagram: 'https://www.instagram.com/belstekloexpert/',
   yandexMaps: 'https://yandex.by/maps/?ll=27.547441%2C53.954319&z=17&pt=27.547441%2C53.954319%2Cpm2rdm',
   googleMaps: 'https://maps.google.com/?q=53.954319,27.547441',
   twoGisSearch: 'https://2gis.by/minsk/search/BelStekloExpert',

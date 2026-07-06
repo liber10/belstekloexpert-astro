@@ -41,6 +41,7 @@ const schemas = Array.isArray(schema) ? [...baseSchema, ...schema] : schema ? [.
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="yandex-verification" content="9978e4ac98b1f076" />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
     <meta property="og:type" content="website" />
@@ -51,8 +52,9 @@ const schemas = Array.isArray(schema) ? [...baseSchema, ...schema] : schema ? [.
     <meta property="og:image" content={absoluteImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#0d5f56" />
-    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="alternate icon" href="/favicon.ico?v=2" />
+    <link rel="icon" href="/favicon.png?v=3" type="image/png" />
+    <link rel="alternate icon" href="/favicon.ico?v=3" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM summary" />
 
     {gtmId && (

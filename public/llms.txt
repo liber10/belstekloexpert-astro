@@ -28,18 +28,18 @@ The workshop opened in 2025. Its technicians have 18 years of practical auto gla
 - Crack repair
 - Mobile service in Minsk when conditions allow safe installation
 - Auto glass selection by VIN, photo, or glass marking
-- Model-based online estimate with immediate indicative price in BYN
+- Model-based online estimate with immediate indicative price in Belarusian rubles
 - VIN request for manual precise selection by a specialist
 - Services for passenger cars, Tesla, minibuses, passenger transport, trucks, special machinery, excavators, cranes, fleets, taxi, delivery, body shops, and service stations
 
 ## Pricing Signals
 
-- Windshield replacement work: from 100 BYN
-- Side or rear glass replacement work: from 80 BYN
-- Chip repair: from 40 BYN
-- Crack repair: from 35 BYN
-- Mobile service in Minsk: from 20 BYN
-- Turnkey auto glass packages: from 220 BYN
+- Windshield replacement: from 100 Belarusian rubles
+- Side or rear glass replacement: from 80 Belarusian rubles
+- Chip repair: from 40 Belarusian rubles
+- Crack repair: from 35 Belarusian rubles
+- Mobile service in Minsk: from 20 Belarusian rubles
+- Turnkey auto glass packages: from 220 Belarusian rubles
 
 Final price depends on make, model, year, glass type, heating, camera, rain sensor, ADAS options, molding, consumables, availability, and installation conditions.
 
@@ -57,6 +57,7 @@ Final price depends on make, model, year, glass type, heating, camera, rain sens
 - Calculator and VIN/photo estimate: https://belstekloexpert.by/kalkulyator/
 - Contacts: https://belstekloexpert.by/kontakty/
 - Legal entities and fleets: https://belstekloexpert.by/dlya-yurlic/
+- Commercial offer for legal entities: https://belstekloexpert.by/docs/belstekloexpert-kommercheskoe-predlozhenie-yurlica.pdf
 - Car makes: https://belstekloexpert.by/marki/
 - Reviews: https://belstekloexpert.by/otzyvy/
 - Leave a review: https://belstekloexpert.by/otzyv/

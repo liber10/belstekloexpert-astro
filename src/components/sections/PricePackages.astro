@@ -1,5 +1,6 @@
 ---
 import Button from '@/components/common/Button.astro';
+import Currency from '@/components/common/Currency.astro';
 import SectionTitle from '@/components/common/SectionTitle.astro';
 import { popularPriceExamples, priceFactors, pricePackages } from '@/data/prices';
 
@@ -24,7 +25,7 @@ const { soft = false, showExamples = true } = Astro.props;
         <article class="card package-card">
           <div>
             <p class="package-card__label">{item.title}</p>
-            <h3>от {item.priceFrom} {item.unit}</h3>
+            <h3><Currency value={item.priceFrom} suffix={item.unit} /></h3>
             <p>{item.text}</p>
           </div>
           <ul class="check-list">
@@ -51,7 +52,13 @@ const { soft = false, showExamples = true } = Astro.props;
             <div class="price-table__row" role="row">
               <strong role="cell">{item.car}</strong>
               <span role="cell">{item.glass}</span>
-              <b role="cell">{item.range}</b>
+              <b role="cell">
+                {item.priceFrom ? (
+                  <Currency value={item.priceFrom} suffix={item.priceSuffix} />
+                ) : (
+                  item.rangeLabel
+                )}
+              </b>
               <small role="cell">{item.note}</small>
             </div>
           ))}
