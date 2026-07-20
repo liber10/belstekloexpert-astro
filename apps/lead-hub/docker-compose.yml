@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: lead_hub
+      POSTGRES_USER: lead_hub
+      POSTGRES_PASSWORD: lead_hub
+    ports:
+      - "54329:5432"
+    volumes:
+      - lead-hub-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lead_hub -d lead_hub"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  lead-hub:
+    build:
+      context: ../..
+      dockerfile: apps/lead-hub/Dockerfile
+    init: true
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://lead_hub:lead_hub@postgres:5432/lead_hub
+      LEAD_HUB_HOST: 0.0.0.0
+      LEAD_HUB_PORT: 8787
+      LEAD_HUB_ALLOWED_ORIGINS: http://localhost:4321
+      TELEGRAM_ENABLED: ${TELEGRAM_ENABLED:-false}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
+      WEB_INGEST_API_KEY: ${WEB_INGEST_API_KEY:-}
+    command: >-
+      sh -c "node apps/lead-hub/dist/db/migrate.js &&
+      node apps/lead-hub/dist/index.js"
+    ports:
+      - "8787:8787"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8787/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  lead-hub-postgres:

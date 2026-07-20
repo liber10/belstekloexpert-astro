@@ -1,0 +1,11 @@
+.git
+.astro
+.netlify
+.private
+dist
+node_modules
+tmp
+*.log
+.env
+.env.*
+!.env.example

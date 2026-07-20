@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "apps/lead-hub"
+  ],
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
     "check": "astro check",
     "preview": "astro preview",
-    "prices:update": "node scripts/update-glass-prices.mjs"
+    "prices:update": "node scripts/update-glass-prices.mjs",
+    "lead-hub:dev": "npm run dev --workspace @belstekloexpert/lead-hub",
+    "lead-hub:build": "npm run build --workspace @belstekloexpert/lead-hub",
+    "lead-hub:test": "npm run test --workspace @belstekloexpert/lead-hub",
+    "lead-hub:check": "npm run check --workspace @belstekloexpert/lead-hub"
   },
   "dependencies": {
     "@astrojs/netlify": "^7.0.13",
