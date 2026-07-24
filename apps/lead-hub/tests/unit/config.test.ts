@@ -26,4 +26,23 @@ describe('loadConfig', () => {
       }),
     ).toThrow('WEB_INGEST_API_KEY');
   });
+
+  it('uses the platform port when LEAD_HUB_PORT is not set', () => {
+    const config = loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      PORT: '10000',
+    });
+
+    expect(config.port).toBe(10000);
+  });
+
+  it('prefers an explicit LEAD_HUB_PORT over the platform port', () => {
+    const config = loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      LEAD_HUB_PORT: '8787',
+      PORT: '10000',
+    });
+
+    expect(config.port).toBe(8787);
+  });
 });

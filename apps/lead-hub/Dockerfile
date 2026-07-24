@@ -23,4 +23,4 @@ ENV NODE_ENV=production
 EXPOSE 8787
 USER node
 
-CMD ["node", "apps/lead-hub/dist/index.js"]
+CMD ["sh", "-c", "node apps/lead-hub/dist/db/migrate.js && exec node apps/lead-hub/dist/index.js"]

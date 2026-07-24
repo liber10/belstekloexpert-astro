@@ -31,9 +31,6 @@ services:
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
       WEB_INGEST_API_KEY: ${WEB_INGEST_API_KEY:-}
-    command: >-
-      sh -c "node apps/lead-hub/dist/db/migrate.js &&
-      node apps/lead-hub/dist/index.js"
     ports:
       - "8787:8787"
     depends_on:

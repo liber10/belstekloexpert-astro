@@ -7,12 +7,17 @@ const booleanFromString = z.preprocess((value) => {
 }, z.boolean());
 
 const optionalSecret = z.string().trim().min(16).optional().or(z.literal('').transform(() => undefined));
+const optionalPort = z.preprocess(
+  (value) => (value === '' || value === undefined ? undefined : value),
+  z.coerce.number().int().min(1).max(65_535).optional(),
+);
 
 const configSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     LEAD_HUB_HOST: z.string().trim().min(1).default('0.0.0.0'),
-    LEAD_HUB_PORT: z.coerce.number().int().min(1).max(65_535).default(8787),
+    LEAD_HUB_PORT: optionalPort,
+    PORT: optionalPort,
     LEAD_HUB_PUBLIC_URL: z.string().url().optional().or(z.literal('').transform(() => undefined)),
     LEAD_HUB_ALLOWED_ORIGINS: z.string().default('http://localhost:4321'),
     LEAD_HUB_RATE_LIMIT_MAX: z.coerce.number().int().min(1).max(10_000).default(20),
@@ -69,7 +74,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
   return {
     nodeEnv: parsed.data.NODE_ENV,
     host: parsed.data.LEAD_HUB_HOST,
-    port: parsed.data.LEAD_HUB_PORT,
+    port: parsed.data.LEAD_HUB_PORT ?? parsed.data.PORT ?? 8787,
     publicUrl: parsed.data.LEAD_HUB_PUBLIC_URL,
     allowedOrigins: parsed.data.LEAD_HUB_ALLOWED_ORIGINS.split(',')
       .map((origin) => origin.trim())
