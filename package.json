@@ -21,10 +21,12 @@
   "dependencies": {
     "@astrojs/netlify": "^7.0.13",
     "@astrojs/node": "^10.1.4",
-    "astro": "^6.4.6"
+    "astro": "^6.4.6",
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@types/pg": "^8.20.0",
     "typescript": "^5.8.3"
   }
 }
