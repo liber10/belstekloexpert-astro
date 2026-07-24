@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
+    "build:render": "astro check && astro build --config astro.config.render.mjs",
     "check": "astro check",
     "preview": "astro preview",
     "prices:update": "node scripts/update-glass-prices.mjs",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@astrojs/netlify": "^7.0.13",
+    "@astrojs/node": "^10.1.4",
     "astro": "^6.4.6"
   },
   "devDependencies": {
