@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import {
+  classifyDeliveryFailure,
   getLeadRuntimeEnv,
+  LeadHubRequestError,
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
   sendLeadToHub,
@@ -76,6 +78,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const submissionId = normalizeSubmissionId(fields.submission_id) || createLeadId();
   const env = getLeadRuntimeEnv();
   const deliveryMode = resolveLeadDeliveryMode(env);
+  let deliveryStage: 'hub' | 'telegram_bridge' = 'hub';
 
   try {
     if (deliveryMode === 'legacy') {
@@ -100,6 +103,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     });
 
     if (deliveryMode === 'hub-with-legacy-telegram') {
+      deliveryStage = 'telegram_bridge';
       const claimed = await updateLegacyTelegramDelivery({
         leadId: hubLead.leadId,
         action: 'claim',
@@ -145,10 +149,18 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return wantsJson
       ? json({ ok: true, leadId: hubLead.publicId, deduplicated: hubLead.deduplicated })
       : redirect(`/spasibo/?leadId=${encodeURIComponent(hubLead.publicId)}`, 303);
-  } catch {
+  } catch (error) {
+    const diagnosticCode = classifyDeliveryFailure(deliveryStage, error);
+    console.error('Lead delivery failed.', {
+      stage: deliveryStage,
+      code: diagnosticCode,
+      upstreamStatus: error instanceof LeadHubRequestError ? error.status : undefined,
+    });
     return deliveryError(
       wantsJson,
       'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.',
+      502,
+      diagnosticCode,
     );
   }
 };
@@ -181,9 +193,14 @@ function json(payload: Record<string, unknown>, status = 200) {
   });
 }
 
-function deliveryError(wantsJson: boolean, message: string, status = 502) {
+function deliveryError(
+  wantsJson: boolean,
+  message: string,
+  status = 502,
+  code?: string,
+) {
   return wantsJson
-    ? json({ ok: false, error: 'delivery_failed', message }, status)
+    ? json({ ok: false, error: 'delivery_failed', ...(code ? { code } : {}), message }, status)
     : new Response(message, {
         status,
         headers: { 'content-type': 'text/plain; charset=utf-8' },

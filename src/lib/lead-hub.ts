@@ -51,6 +51,28 @@ export class LeadHubRequestError extends Error {
   }
 }
 
+export function classifyDeliveryFailure(
+  stage: 'hub' | 'telegram_bridge',
+  error: unknown,
+) {
+  if (stage === 'telegram_bridge') {
+    if (
+      error instanceof LeadHubRequestError &&
+      (error.status === 401 || error.status === 403)
+    ) {
+      return 'telegram_bridge_authentication_failed';
+    }
+    return 'telegram_bridge_unavailable';
+  }
+
+  if (!(error instanceof LeadHubRequestError)) return 'hub_unavailable';
+  if (error.code === 'configuration_error') return 'hub_configuration_invalid';
+  if (error.status === 401 || error.status === 403) return 'hub_authentication_failed';
+  if (error.status === 404) return 'hub_endpoint_unavailable';
+  if (error.code === 'invalid_response') return 'hub_response_invalid';
+  return 'hub_unavailable';
+}
+
 export function getLeadRuntimeEnv(): RuntimeEnv {
   const runtime = typeof process === 'undefined' ? {} : process.env;
   return {

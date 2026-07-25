@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildWebLeadPayload,
+  classifyDeliveryFailure,
   getLeadRuntimeEnv,
+  LeadHubRequestError,
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
 } from '../src/lib/lead-hub';
@@ -93,5 +95,26 @@ describe('site Lead Hub client', () => {
         process.env.WEB_INGEST_API_KEY = previous;
       }
     }
+  });
+
+  it('returns safe diagnostic codes without exception details', () => {
+    expect(
+      classifyDeliveryFailure(
+        'hub',
+        new LeadHubRequestError('request_failed', 401),
+      ),
+    ).toBe('hub_authentication_failed');
+    expect(
+      classifyDeliveryFailure(
+        'hub',
+        new LeadHubRequestError('request_failed', 404),
+      ),
+    ).toBe('hub_endpoint_unavailable');
+    expect(
+      classifyDeliveryFailure(
+        'telegram_bridge',
+        new Error('private upstream details'),
+      ),
+    ).toBe('telegram_bridge_unavailable');
   });
 });
