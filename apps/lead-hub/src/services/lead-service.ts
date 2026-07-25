@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { and, count, eq, gte, lte, sql } from 'drizzle-orm';
+import { and, count, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 import type { WebLeadBody } from '../contracts/web-lead.js';
 import type { LeadHubDatabase } from '../db/client.js';
 import { integrationOutbox, leadEvents, leads, type Lead } from '../db/schema.js';
@@ -65,6 +65,66 @@ export class LeadService {
         idempotencyKey,
       },
     );
+  }
+
+  async claimLegacyTelegramDelivery(leadId: string) {
+    const now = new Date();
+    const claimed = await this.db
+      .update(integrationOutbox)
+      .set({
+        status: 'processing',
+        updatedAt: now,
+      })
+      .where(
+        and(
+          eq(integrationOutbox.leadId, leadId),
+          eq(integrationOutbox.destination, 'telegram'),
+          eq(integrationOutbox.eventType, 'lead.created'),
+          inArray(integrationOutbox.status, ['pending', 'retry']),
+        ),
+      )
+      .returning({ id: integrationOutbox.id });
+
+    return claimed.length > 0;
+  }
+
+  async completeLegacyTelegramDelivery(leadId: string) {
+    const now = new Date();
+    await this.db
+      .update(integrationOutbox)
+      .set({
+        status: 'sent',
+        processedAt: now,
+        lastError: null,
+        updatedAt: now,
+      })
+      .where(
+        and(
+          eq(integrationOutbox.leadId, leadId),
+          eq(integrationOutbox.destination, 'telegram'),
+          eq(integrationOutbox.eventType, 'lead.created'),
+          eq(integrationOutbox.status, 'processing'),
+        ),
+      );
+  }
+
+  async releaseLegacyTelegramDelivery(leadId: string) {
+    const now = new Date();
+    await this.db
+      .update(integrationOutbox)
+      .set({
+        status: 'retry',
+        nextAttemptAt: now,
+        updatedAt: now,
+      })
+      .where(
+        and(
+          eq(integrationOutbox.leadId, leadId),
+          eq(integrationOutbox.destination, 'telegram'),
+          eq(integrationOutbox.eventType, 'lead.created'),
+          eq(integrationOutbox.status, 'processing'),
+        ),
+      );
   }
 
   async changeStatus(leadId: string, status: LeadStatus, options: ChangeStatusOptions) {

@@ -12,6 +12,14 @@ interface WebLeadHeaders {
   authorization?: string;
 }
 
+interface LeadParams {
+  leadId: string;
+}
+
+interface LegacyTelegramDeliveryBody {
+  action: 'claim' | 'complete' | 'release';
+}
+
 const HeadersSchema = Type.Object(
   {
     'idempotency-key': Type.String({ minLength: 8, maxLength: 160 }),
@@ -91,6 +99,52 @@ export function registerLeadRoutes(
         }
         throw error;
       }
+    },
+  );
+
+  app.post<{
+    Params: LeadParams;
+    Headers: { authorization?: string };
+    Body: LegacyTelegramDeliveryBody;
+  }>(
+    '/api/v1/leads/:leadId/legacy-telegram-delivery',
+    {
+      schema: {
+        params: Type.Object({
+          leadId: Type.String({ format: 'uuid' }),
+        }),
+        body: Type.Object(
+          {
+            action: Type.Union([
+              Type.Literal('claim'),
+              Type.Literal('complete'),
+              Type.Literal('release'),
+            ]),
+          },
+          { additionalProperties: false },
+        ),
+      },
+      preHandler: async (request, reply) => {
+        if (!config.webIngestApiKey) return;
+        const provided = bearerToken(request.headers.authorization);
+        if (!matchesSecret(provided, config.webIngestApiKey)) {
+          return reply.code(401).send({ ok: false, error: 'unauthorized' });
+        }
+      },
+    },
+    async (request, reply) => {
+      if (request.body.action === 'claim') {
+        const claimed = await leadService.claimLegacyTelegramDelivery(request.params.leadId);
+        return reply.send({ ok: true, claimed });
+      }
+
+      if (request.body.action === 'complete') {
+        await leadService.completeLegacyTelegramDelivery(request.params.leadId);
+      } else {
+        await leadService.releaseLegacyTelegramDelivery(request.params.leadId);
+      }
+
+      return reply.send({ ok: true });
     },
   );
 }

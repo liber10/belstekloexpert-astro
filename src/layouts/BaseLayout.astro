@@ -108,7 +108,18 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
 
     <script is:inline define:vars={{ yandexMetrikaId: ymId }}>
       (() => {
-        const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+        const attributionKeys = [
+          'utm_source',
+          'utm_medium',
+          'utm_campaign',
+          'utm_content',
+          'utm_term',
+          'gclid',
+          'gbraid',
+          'wbraid',
+          'yclid',
+          'fbclid',
+        ];
         const storageKey = 'belstekloexpert_utm';
         const params = new URLSearchParams(window.location.search);
         const ymCounterId = Number(yandexMetrikaId);
@@ -136,10 +147,12 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
         }
 
         const next = { ...saved };
-        utmKeys.forEach((key) => {
+        attributionKeys.forEach((key) => {
           const value = params.get(key);
           if (value) next[key] = value;
         });
+        if (!next.landing_url) next.landing_url = window.location.href;
+        if (!next.referrer && document.referrer) next.referrer = document.referrer;
 
         try {
           window.localStorage.setItem(storageKey, JSON.stringify(next));
@@ -147,7 +160,7 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
           // Form submission still works without localStorage.
         }
 
-        document.querySelectorAll('[data-utm-field]').forEach((field) => {
+        document.querySelectorAll('[data-attribution-field], [data-utm-field]').forEach((field) => {
           const input = field;
           const key = input.getAttribute('name');
           if (key && next[key]) input.value = next[key];
@@ -155,6 +168,10 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
 
         document.querySelectorAll('[data-page-url]').forEach((field) => {
           field.value = window.location.href;
+        });
+
+        document.querySelectorAll('[data-submission-id]').forEach((field) => {
+          if (!field.value) field.value = createSubmissionId();
         });
 
         document.addEventListener('click', (event) => {
@@ -188,6 +205,9 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
               : null;
           if (!form) return;
 
+          const submissionId = form.querySelector('[data-submission-id]');
+          if (submissionId && !submissionId.value) submissionId.value = createSubmissionId();
+
           const honeypot = form.querySelector('[name="company"]');
           const phone = form.querySelector('[name="phone"]');
           const status = form.querySelector('[data-form-status]');
@@ -210,6 +230,14 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
             form_service: form.querySelector('[name="service"]')?.value || 'unknown',
           });
         });
+
+        function createSubmissionId() {
+          if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+            return window.crypto.randomUUID();
+          }
+
+          return `web_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 12)}`;
+        }
       })();
     </script>
   </body>

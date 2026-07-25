@@ -112,6 +112,52 @@ integration('Lead Hub database pipeline', () => {
     expect(conflict.json()).toMatchObject({ error: 'idempotency_conflict' });
   });
 
+  it('claims transitional Telegram delivery once and completes it', async () => {
+    const created = await runtime.leadService.createWebLead(
+      { phone: '+375291111111', serviceType: 'Legacy Telegram bridge' },
+      'form-submission-legacy-telegram',
+    );
+
+    const unauthorized = await runtime.app.inject({
+      method: 'POST',
+      url: `/api/v1/leads/${created.lead.id}/legacy-telegram-delivery`,
+      payload: { action: 'claim' },
+    });
+    expect(unauthorized.statusCode).toBe(401);
+
+    const firstClaim = await runtime.app.inject({
+      method: 'POST',
+      url: `/api/v1/leads/${created.lead.id}/legacy-telegram-delivery`,
+      headers: { authorization: 'Bearer integration-test-secret' },
+      payload: { action: 'claim' },
+    });
+    expect(firstClaim.statusCode).toBe(200);
+    expect(firstClaim.json()).toMatchObject({ ok: true, claimed: true });
+
+    const duplicateClaim = await runtime.app.inject({
+      method: 'POST',
+      url: `/api/v1/leads/${created.lead.id}/legacy-telegram-delivery`,
+      headers: { authorization: 'Bearer integration-test-secret' },
+      payload: { action: 'claim' },
+    });
+    expect(duplicateClaim.json()).toMatchObject({ ok: true, claimed: false });
+
+    const completed = await runtime.app.inject({
+      method: 'POST',
+      url: `/api/v1/leads/${created.lead.id}/legacy-telegram-delivery`,
+      headers: { authorization: 'Bearer integration-test-secret' },
+      payload: { action: 'complete' },
+    });
+    expect(completed.statusCode).toBe(200);
+
+    const [job] = await database.db
+      .select()
+      .from(integrationOutbox)
+      .where(eq(integrationOutbox.leadId, created.lead.id));
+    expect(job?.status).toBe('sent');
+    expect(job?.processedAt).toBeInstanceOf(Date);
+  });
+
   it('rejects unauthenticated and unknown request fields before creating a lead', async () => {
     const unauthorized = await runtime.app.inject({
       method: 'POST',

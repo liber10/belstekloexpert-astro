@@ -1,4 +1,6 @@
 ---
+import AttributionFields from '@/components/forms/AttributionFields.astro';
+
 interface Props {
   title?: string;
   service?: string;
@@ -25,12 +27,7 @@ const {
   <form class="lead-form" action="/api/lead/" method="post" data-lead-form data-submit-event={eventName}>
     <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
     <input type="hidden" name="service" value={service} />
-    <input type="hidden" name="page_url" data-page-url />
-    <input type="hidden" name="utm_source" data-utm-field />
-    <input type="hidden" name="utm_medium" data-utm-field />
-    <input type="hidden" name="utm_campaign" data-utm-field />
-    <input type="hidden" name="utm_content" data-utm-field />
-    <input type="hidden" name="utm_term" data-utm-field />
+    <AttributionFields />
 
     <div class="lead-form__row">
       <label class="field">

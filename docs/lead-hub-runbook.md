@@ -4,7 +4,7 @@
 
 `apps/lead-hub` — отдельный сервис на Fastify/TypeScript с PostgreSQL. Он принимает лиды сайта, сохраняет лид и события, ставит доставку в Telegram в outbox и обрабатывает статусы из inline-кнопок.
 
-В этой версии реализован только CODEX-1. Формы Astro-сайта ещё не переключены на новый API, production webhook Telegram не менялся, DNS и Netlify не затрагивались.
+Формы Astro-сайта подключены к Lead Hub через серверный endpoint Netlify `/api/lead/`. Секрет ingest API не попадает в браузер. Production webhook Telegram пока не переключён на Render: текущая доставка и фото продолжают работать через контролируемый переходный мост.
 
 ## Поток данных
 
@@ -12,8 +12,8 @@
 POST /api/v1/leads/web
   -> validation / auth / rate limit / idempotency
   -> PostgreSQL: leads + lead_events + integration_outbox
-  -> outbox worker
-  -> Telegram card
+  -> transitional mode: Netlify claims outbox job -> legacy Telegram + photos -> completes job
+  -> target mode: Lead Hub outbox worker -> Telegram card
   -> status callback
   -> lead status + lead_event + Telegram card update
 ```
@@ -40,6 +40,30 @@ POST /api/v1/leads/web
 | `LOG_LEVEL` | Уровень структурированных логов |
 
 Полный безопасный шаблон находится в `.env.example`.
+
+Для server-side функции сайта в Netlify используются:
+
+| Переменная | Назначение |
+| --- | --- |
+| `WEB_INGEST_API_KEY` | Тот же bearer-ключ, что установлен в Lead Hub |
+| `LEAD_HUB_URL` | Публичный URL Lead Hub; по умолчанию используется текущий Render-сервис |
+| `LEAD_HUB_TIMEOUT_MS` | Таймаут server-to-server запроса от 5 до 30 секунд |
+| `LEAD_DELIVERY_MODE` | `legacy`, `hub` или `hub-with-legacy-telegram` |
+| `TELEGRAM_BOT_TOKEN` | Нужен Netlify только в переходном режиме |
+| `TELEGRAM_CHAT_ID` | Нужен Netlify только в переходном режиме |
+
+Если `LEAD_DELIVERY_MODE` не задан, функция выбирает безопасный режим автоматически: без ingest-ключа остаётся `legacy`; с ingest-ключом и Telegram-настройками используется `hub-with-legacy-telegram`; только с ingest-ключом — `hub`.
+
+## Подключение форм сайта
+
+- Все формы отправляются на совместимый URL `/api/lead/`.
+- Один `submission_id` создаётся в браузере и проходит до PostgreSQL как `Idempotency-Key`.
+- Повтор с тем же телом возвращает существующий публичный номер заявки.
+- Сохраняются UTM, `gclid`, `gbraid`, `wbraid`, `yclid`, `fbclid`, первая посадочная страница и referrer.
+- В режиме `hub-with-legacy-telegram` Lead Hub атомарно выдаёт право на одну Telegram-отправку. После успеха outbox-задача помечается выполненной.
+- Фото по-прежнему сжимаются в браузере и доставляются существующим Telegram-мостом. Режим `hub` отклоняет заявку с фото, пока не подключено постоянное object storage.
+
+Нельзя одновременно включать outbox worker Render и оставлять Netlify в режиме `hub-with-legacy-telegram`: сначала нужно переключить Netlify на `hub`, затем включать `TELEGRAM_ENABLED=true` в Lead Hub. До появления object storage фото остаются отдельным ограничением этого переключения.
 
 ## Локальный запуск
 
@@ -149,7 +173,9 @@ Telegram отправляется асинхронно из `integration_outbox`
 
 ```powershell
 npm run lead-hub:check
+npm run test:site
 npm run build
+npm run build:render
 ```
 
 Integration tests используют отдельную БД:
@@ -178,4 +204,4 @@ npm run test:integration --workspace @belstekloexpert/lead-hub
 
 ## Оставшиеся этапы
 
-CODEX-2 подключит формы и калькулятор Astro-сайта к этому API, добавит атрибуцию UTM/click IDs и безопасную загрузку фото. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются отдельными последующими этапами.
+Формы, калькулятор, идемпотентность и web attribution подключены. Следующий обязательный этап перед полным отказом от переходного Telegram-моста — S3-совместимое object storage с подписанной загрузкой и постоянными `photo_refs`. После этого можно переключить Telegram webhook и outbox worker на Render. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются отдельными последующими этапами.

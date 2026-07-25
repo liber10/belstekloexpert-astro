@@ -11,6 +11,7 @@
     "build": "astro check && astro build",
     "build:render": "astro check && astro build --config astro.config.render.mjs",
     "check": "astro check",
+    "test:site": "vitest run tests/site-lead-client.test.ts",
     "preview": "astro preview",
     "prices:update": "node scripts/update-glass-prices.mjs",
     "lead-hub:dev": "npm run dev --workspace @belstekloexpert/lead-hub",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@types/pg": "^8.20.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.10"
   }
 }

@@ -1,4 +1,5 @@
 ---
+import AttributionFields from '@/components/forms/AttributionFields.astro';
 import prices from '../data/glass-prices.json';
 
 const calculatorPrices = prices.map((item) => ({
@@ -138,15 +139,16 @@ const dataJson = JSON.stringify(calculatorPrices);
 
         <form
           class="glass-calculator__vin-form"
-          name="glass-vin-request"
+          action="/api/lead/"
           method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
+          data-lead-form
+          data-submit-event="vin_submit"
           data-vin-form
         >
-          <input type="hidden" name="form-name" value="glass-vin-request" />
+          <input type="hidden" name="service" value="Калькулятор: подбор по VIN" />
+          <AttributionFields />
           <p class="glass-calculator__bot-field">
-            <label>Не заполняйте это поле: <input name="bot-field" /></label>
+            <label>Не заполняйте это поле: <input name="company" tabindex="-1" autocomplete="off" /></label>
           </p>
           <input type="hidden" name="decoded_vehicle" data-vin-decoded />
 
@@ -193,6 +195,7 @@ const dataJson = JSON.stringify(calculatorPrices);
             Отправить VIN на подбор
           </button>
 
+          <p class="glass-calculator__form-note" data-form-status aria-live="polite"></p>
           <p class="glass-calculator__form-note">
             После проверки сообщим точную стоимость стекла и установки. Для мгновенной ориентировочной цены используйте расчёт по модели.
           </p>
