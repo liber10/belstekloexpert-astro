@@ -288,6 +288,7 @@ export async function getLeadPhotoUrls(options: {
         authorization: `Bearer ${config.apiKey}`,
         'content-type': 'application/json',
       },
+      body: '{}',
     },
     Math.min(config.timeoutMs, 10_000),
     options.fetchImpl,

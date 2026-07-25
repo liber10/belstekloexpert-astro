@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   buildWebLeadPayload,
   classifyDeliveryFailure,
+  getLeadPhotoUrls,
   getLeadRuntimeEnv,
   LeadHubRequestError,
   normalizeSubmissionId,
@@ -100,6 +101,38 @@ describe('site Lead Hub client', () => {
       files: [{ contentType: 'image/jpeg', size: 1_024, sha256: 'a'.repeat(64) }],
     });
     expect(result.uploads[0]?.ref).toContain('b2://bucket-name/');
+  });
+
+  it('sends an explicit JSON body when requesting private photo URLs', async () => {
+    let requestedUrl = '';
+    let requestedInit: RequestInit | undefined;
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      requestedUrl = String(input);
+      requestedInit = init;
+      return new Response(
+        JSON.stringify({ photoUrls: ['https://signed.example/photo.jpg'] }),
+        { status: 200, headers: { 'content-type': 'application/json' } },
+      );
+    }) as unknown as typeof fetch;
+
+    const photoUrls = await getLeadPhotoUrls({
+      leadId: '7f5a15b8-00ce-40c5-86dc-abd21dbd3d94',
+      env: {
+        LEAD_HUB_URL: 'https://hub.example',
+        WEB_INGEST_API_KEY: 'test-api-key',
+      },
+      fetchImpl,
+    });
+
+    expect(requestedUrl).toBe(
+      'https://hub.example/api/v1/leads/7f5a15b8-00ce-40c5-86dc-abd21dbd3d94/photo-downloads',
+    );
+    expect(requestedInit?.method).toBe('POST');
+    expect(requestedInit?.headers).toMatchObject({
+      'content-type': 'application/json',
+    });
+    expect(requestedInit?.body).toBe('{}');
+    expect(photoUrls).toEqual(['https://signed.example/photo.jpg']);
   });
   it('keeps an invalid partial VIN in the message instead of the VIN field', () => {
     const payload = buildWebLeadPayload(
