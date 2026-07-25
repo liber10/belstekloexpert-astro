@@ -154,7 +154,16 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 };
 
 export const GET: APIRoute = async () => {
-  return json({ ok: false, error: 'method_not_allowed' }, 405);
+  const deliveryMode = resolveLeadDeliveryMode(getLeadRuntimeEnv());
+  return json(
+    {
+      ok: false,
+      error: 'method_not_allowed',
+      version: 'lead-hub-v1',
+      pipeline: deliveryMode === 'legacy' ? 'legacy' : 'hub',
+    },
+    405,
+  );
 };
 
 function createLeadId() {
