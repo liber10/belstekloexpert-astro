@@ -102,6 +102,11 @@ export function registerUploadRoutes(
       schema: {
         params: Type.Object({ leadId: Type.String({ format: 'uuid' }) }),
       },
+      onRequest: (request, _reply, done) => {
+        // This route has no body. Legacy clients sent JSON headers without JSON.
+        delete request.headers['content-type'];
+        done();
+      },
       preHandler: authorize,
     },
     async (request, reply) => {
