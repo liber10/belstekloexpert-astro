@@ -51,6 +51,23 @@ export class LeadHubRequestError extends Error {
   }
 }
 
+export function getLeadRuntimeEnv(): RuntimeEnv {
+  const runtime = typeof process === 'undefined' ? {} : process.env;
+  return {
+    LEAD_DELIVERY_MODE:
+      runtime.LEAD_DELIVERY_MODE || import.meta.env.LEAD_DELIVERY_MODE,
+    LEAD_HUB_URL: runtime.LEAD_HUB_URL || import.meta.env.LEAD_HUB_URL,
+    LEAD_HUB_TIMEOUT_MS:
+      runtime.LEAD_HUB_TIMEOUT_MS || import.meta.env.LEAD_HUB_TIMEOUT_MS,
+    WEB_INGEST_API_KEY:
+      runtime.WEB_INGEST_API_KEY || import.meta.env.WEB_INGEST_API_KEY,
+    TELEGRAM_BOT_TOKEN:
+      runtime.TELEGRAM_BOT_TOKEN || import.meta.env.TELEGRAM_BOT_TOKEN,
+    TELEGRAM_CHAT_ID:
+      runtime.TELEGRAM_CHAT_ID || import.meta.env.TELEGRAM_CHAT_ID,
+  };
+}
+
 export function resolveLeadDeliveryMode(env: RuntimeEnv): LeadDeliveryMode {
   const configured = cleanText(env.LEAD_DELIVERY_MODE).toLowerCase();
   if (
@@ -126,7 +143,7 @@ export async function sendLeadToHub(options: {
   env?: RuntimeEnv;
   fetchImpl?: typeof fetch;
 }): Promise<LeadHubResult> {
-  const env = options.env ?? (import.meta.env as RuntimeEnv);
+  const env = options.env ?? getLeadRuntimeEnv();
   const config = getLeadHubConfig(env);
   const payload = buildWebLeadPayload(
     options.fields,
@@ -175,7 +192,7 @@ export async function updateLegacyTelegramDelivery(options: {
   env?: RuntimeEnv;
   fetchImpl?: typeof fetch;
 }) {
-  const env = options.env ?? (import.meta.env as RuntimeEnv);
+  const env = options.env ?? getLeadRuntimeEnv();
   const config = getLeadHubConfig(env);
   const response = await request(
     `${config.baseUrl}/api/v1/leads/${encodeURIComponent(options.leadId)}/legacy-telegram-delivery`,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildWebLeadPayload,
+  getLeadRuntimeEnv,
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
 } from '../src/lib/lead-hub';
@@ -77,5 +78,20 @@ describe('site Lead Hub client', () => {
     expect(normalizeSubmissionId('submission_123')).toBe('submission_123');
     expect(normalizeSubmissionId('short')).toBe('');
     expect(normalizeSubmissionId('bad key with spaces')).toBe('');
+  });
+
+  it('reads private server settings from the runtime environment', () => {
+    const previous = process.env.WEB_INGEST_API_KEY;
+    process.env.WEB_INGEST_API_KEY = 'runtime-test-key';
+
+    try {
+      expect(getLeadRuntimeEnv().WEB_INGEST_API_KEY).toBe('runtime-test-key');
+    } finally {
+      if (previous === undefined) {
+        delete process.env.WEB_INGEST_API_KEY;
+      } else {
+        process.env.WEB_INGEST_API_KEY = previous;
+      }
+    }
   });
 });

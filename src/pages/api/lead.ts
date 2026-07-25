@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import {
+  getLeadRuntimeEnv,
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
   sendLeadToHub,
@@ -73,7 +74,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     leadFieldKeys.map((key) => [key, getFormString(formData, key)]),
   );
   const submissionId = normalizeSubmissionId(fields.submission_id) || createLeadId();
-  const env = import.meta.env as Record<string, string | undefined>;
+  const env = getLeadRuntimeEnv();
   const deliveryMode = resolveLeadDeliveryMode(env);
 
   try {
