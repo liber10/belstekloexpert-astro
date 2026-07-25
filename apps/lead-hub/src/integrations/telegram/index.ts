@@ -18,6 +18,7 @@ export interface TelegramIntegration extends TelegramDelivery {
 interface TelegramOptions {
   botToken: string;
   chatId: string;
+  photoUrlResolver?: (references: string[]) => Promise<string[]>;
 }
 
 export function createTelegramIntegration(
@@ -106,9 +107,26 @@ export function createTelegramIntegration(
 
   return {
     async sendLeadCard(lead) {
+      const photoUrls = lead.photoRefs.length && options.photoUrlResolver
+        ? await options.photoUrlResolver(lead.photoRefs)
+        : [];
       const message = await bot.api.sendMessage(options.chatId, buildLeadCard(lead), {
         reply_markup: buildLeadKeyboard(lead.id),
       });
+
+      for (const [index, photoUrl] of photoUrls.entries()) {
+        try {
+          await bot.api.sendPhoto(options.chatId, photoUrl, {
+            caption: `#${lead.publicId} (${index + 1}/${photoUrls.length})`,
+          });
+        } catch {
+          console.error('Telegram photo delivery failed.', {
+            leadId: lead.publicId,
+            photoIndex: index,
+          });
+        }
+      }
+
       return { chatId: String(message.chat.id), messageId: message.message_id };
     },
 

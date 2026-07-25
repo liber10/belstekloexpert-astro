@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import {
   classifyDeliveryFailure,
   getLeadRuntimeEnv,
+  getLeadPhotoUrls,
   LeadHubRequestError,
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
@@ -11,9 +12,12 @@ import {
 import { sendLeadToTelegram } from '@/lib/telegram';
 import {
   getFormString,
+  getPhotoRefs,
+  maxPhotoCount,
   getUploadedPhotos,
   isValidPhone,
   validatePhotos,
+  validatePhotoRefs,
 } from '@/lib/validation';
 
 export const prerender = false;
@@ -71,6 +75,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   if (photoError) {
     return json({ ok: false, error: 'invalid_photo', message: photoError }, 400);
   }
+  const photoRefs = getPhotoRefs(formData);
+  const photoRefError = validatePhotoRefs(photoRefs);
+  if (photoRefError || (photos.length && photoRefs.length) || photos.length + photoRefs.length > maxPhotoCount) {
+    return json({ ok: false, error: 'invalid_photo' }, 400);
+  }
 
   const fields = Object.fromEntries(
     leadFieldKeys.map((key) => [key, getFormString(formData, key)]),
@@ -83,6 +92,13 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   try {
     if (deliveryMode === 'legacy') {
       const leadId = createLeadId();
+      if (photoRefs.length) {
+        return deliveryError(
+          wantsJson,
+          'Photo storage is temporarily unavailable.',
+          503,
+        );
+      }
       await sendLeadToTelegram({ leadId, fields, photos });
       return wantsJson ? json({ ok: true, leadId }) : redirect(`/spasibo/?leadId=${leadId}`, 303);
     }
@@ -98,7 +114,8 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const hubLead = await sendLeadToHub({
       fields,
       idempotencyKey: submissionId,
-      photoCount: photos.length,
+      photoCount: photos.length + photoRefs.length,
+      photoRefs,
       env,
     });
 
@@ -112,10 +129,14 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
       if (claimed) {
         try {
+          const photoUrls = photoRefs.length
+            ? await getLeadPhotoUrls({ leadId: hubLead.leadId, env })
+            : [];
           await sendLeadToTelegram({
             leadId: hubLead.publicId,
             fields,
             photos,
+            photoUrls,
           });
         } catch {
           try {

@@ -24,6 +24,24 @@ export function getUploadedPhotos(formData: FormData) {
     .getAll('photos')
     .filter((value): value is File => value instanceof File && value.size > 0);
 }
+export function getPhotoRefs(formData: FormData) {
+  return formData
+    .getAll('photo_refs')
+    .filter((value): value is string => typeof value === 'string')
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+export function validatePhotoRefs(references: string[]) {
+  if (references.length > maxPhotoCount) return 'Too many photo references.';
+  if (new Set(references).size !== references.length) return 'Duplicate photo reference.';
+  if (references.some((reference) => (
+    reference.length > 2_048 || !/^b2:\/\/[a-z0-9][a-z0-9.-]+\/[A-Za-z0-9/_-]+\.[A-Za-z0-9]+$/.test(reference)
+  ))) {
+    return 'Invalid photo reference.';
+  }
+  return null;
+}
 
 export function validatePhotos(photos: File[]) {
   if (photos.length > maxPhotoCount) {

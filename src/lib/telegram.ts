@@ -4,6 +4,7 @@ export interface TelegramLead {
   leadId: string;
   fields: LeadFields;
   photos: File[];
+  photoUrls?: string[];
 }
 
 const labels: Record<string, string> = {
@@ -27,7 +28,8 @@ const labels: Record<string, string> = {
 
 const imagePhotoTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
-export function buildTelegramMessage({ leadId, fields, photos }: TelegramLead) {
+export function buildTelegramMessage({ leadId, fields, photos: uploadedPhotos, photoUrls = [] }: TelegramLead) {
+  const photos = [...uploadedPhotos, ...photoUrls];
   const lines = [
     '🚗 Новая заявка BelStekloExpert',
     '',
@@ -54,6 +56,7 @@ export async function sendLeadToTelegram(lead: TelegramLead) {
 
   const apiUrl = `https://api.telegram.org/bot${token}`;
   const text = buildTelegramMessage(lead);
+  const totalPhotoCount = lead.photos.length + (lead.photoUrls?.length || 0);
 
   await postTelegramJson(`${apiUrl}/sendMessage`, {
     chat_id: chatId,
@@ -70,6 +73,14 @@ export async function sendLeadToTelegram(lead: TelegramLead) {
     formData.set(method === 'sendPhoto' ? 'photo' : 'document', photo, safeFileName(photo.name, index));
 
     await postTelegramForm(`${apiUrl}/${method}`, formData);
+  }
+
+  for (const [index, photoUrl] of (lead.photoUrls || []).entries()) {
+    await postTelegramJson(`${apiUrl}/sendPhoto`, {
+      chat_id: chatId,
+      photo: photoUrl,
+      caption: `#${lead.leadId} (${lead.photos.length + index + 1}/${totalPhotoCount})`,
+    });
   }
 }
 

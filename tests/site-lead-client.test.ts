@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   buildWebLeadPayload,
   classifyDeliveryFailure,
@@ -6,6 +6,7 @@ import {
   LeadHubRequestError,
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
+  preparePhotoUploads,
 } from '../src/lib/lead-hub';
 
 describe('site Lead Hub client', () => {
@@ -48,6 +49,58 @@ describe('site Lead Hub client', () => {
     });
   });
 
+  it('includes private photo references in the ingest payload', () => {
+    const reference = 'b2://bucket-name/leads/2026/07/hash/1-photo.jpg';
+    const payload = buildWebLeadPayload(
+      { phone: '+375291111111' },
+      'submission_test_003',
+      1,
+      [reference],
+    );
+
+    expect(payload.photoRefs).toEqual([reference]);
+    expect(payload.message).toContain('\u0424\u043e\u0442\u043e \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u043e: 1');
+  });
+
+  it('requests and validates signed upload slots', async () => {
+    let requestedUrl = '';
+    let requestedInit: RequestInit | undefined;
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      requestedUrl = String(input);
+      requestedInit = init;
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          uploads: [
+            {
+              ref: 'b2://bucket-name/leads/2026/07/hash/1-photo.jpg',
+              uploadUrl: 'https://signed.example/upload',
+              headers: { 'content-type': 'image/jpeg' },
+            },
+          ],
+        }),
+        { status: 200, headers: { 'content-type': 'application/json' } },
+      );
+    }) as unknown as typeof fetch;
+
+    const result = await preparePhotoUploads({
+      submissionId: 'submission_test_004',
+      files: [{ contentType: 'image/jpeg', size: 1_024, sha256: 'a'.repeat(64) }],
+      env: {
+        LEAD_HUB_URL: 'https://hub.example',
+        WEB_INGEST_API_KEY: 'test-api-key',
+      },
+      fetchImpl,
+    });
+
+    expect(requestedUrl).toBe('https://hub.example/api/v1/uploads/presign');
+    expect(requestedInit?.method).toBe('POST');
+    expect(JSON.parse(String(requestedInit?.body))).toEqual({
+      submissionId: 'submission_test_004',
+      files: [{ contentType: 'image/jpeg', size: 1_024, sha256: 'a'.repeat(64) }],
+    });
+    expect(result.uploads[0]?.ref).toContain('b2://bucket-name/');
+  });
   it('keeps an invalid partial VIN in the message instead of the VIN field', () => {
     const payload = buildWebLeadPayload(
       { phone: '+375291111111', vin: 'abc123', comment: 'Проверьте VIN' },

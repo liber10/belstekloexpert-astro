@@ -182,11 +182,21 @@ const { title = 'Отправить VIN или фото повреждения',
         try {
           const formData = new FormData(form);
           formData.delete('photos');
+          const preparedFiles = [];
 
           for (const [index, file] of files.entries()) {
             setStatus(status, `Готовим фото ${index + 1} из ${files.length}...`, 'info');
             const preparedFile = await preparePhoto(file);
-            formData.append('photos', preparedFile, preparedFile.name || file.name);
+            preparedFiles.push(preparedFile);
+          }
+
+          const photoRefs = await uploadPreparedPhotos(preparedFiles, formData, status);
+          if (photoRefs) {
+            for (const photoRef of photoRefs) formData.append('photo_refs', photoRef);
+          } else {
+            for (const preparedFile of preparedFiles) {
+              formData.append('photos', preparedFile, preparedFile.name || 'photo');
+            }
           }
 
           setStatus(status, 'Отправляем заявку...', 'info');
@@ -224,6 +234,102 @@ const { title = 'Отправить VIN или фото повреждения',
       return Array.from(input.files || []).filter((file) => file.size > 0);
     }
 
+    async function uploadPreparedPhotos(files, formData, status) {
+      if (!window.crypto?.subtle || typeof File.prototype.arrayBuffer !== 'function') return null;
+
+      const submissionId = ensureSubmissionId(formData);
+      const descriptors = [];
+      for (const [index, file] of files.entries()) {
+        setStatus(status, `\u041f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0444\u043e\u0442\u043e ${index + 1} \u0438\u0437 ${files.length}...`, 'info');
+        descriptors.push({
+          contentType: file.type,
+          size: file.size,
+          sha256: await sha256File(file),
+        });
+      }
+
+      let response;
+      try {
+        response = await fetch('/api/uploads/prepare/', {
+          method: 'POST',
+          credentials: 'same-origin',
+          cache: 'no-store',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ submissionId, files: descriptors }),
+        });
+      } catch {
+        return null;
+      }
+
+      const payload = await response.json().catch(() => ({}));
+      if (response.status === 503 && payload.error === 'storage_unavailable') return null;
+      if (!response.ok || payload.ok === false || !Array.isArray(payload.uploads)) {
+        throw new Error('\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u0438\u0442\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0443 \u0444\u043e\u0442\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0451 \u0440\u0430\u0437.');
+      }
+      if (payload.uploads.length !== files.length) {
+        throw new Error('\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u0438\u0442\u044c \u0432\u0441\u0435 \u0444\u043e\u0442\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0451 \u0440\u0430\u0437.');
+      }
+
+      const references = [];
+      for (const [index, file] of files.entries()) {
+        const upload = parsePreparedUpload(payload.uploads[index], file.type);
+        if (!upload) throw new Error('\u041f\u043e\u043b\u0443\u0447\u0435\u043d \u043d\u0435\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441 \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438 \u0444\u043e\u0442\u043e.');
+
+        setStatus(status, `\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0435\u043c \u0444\u043e\u0442\u043e ${index + 1} \u0438\u0437 ${files.length}...`, 'info');
+        let uploadResponse;
+        try {
+          uploadResponse = await fetch(upload.uploadUrl, {
+            method: 'PUT',
+            credentials: 'omit',
+            cache: 'no-store',
+            headers: upload.headers,
+            body: file,
+          });
+        } catch {
+          throw new Error('\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0444\u043e\u0442\u043e. \u041f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u0435 \u0438 \u043f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0451 \u0440\u0430\u0437.');
+        }
+        if (!uploadResponse.ok) {
+          throw new Error('\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0444\u043e\u0442\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0451 \u0440\u0430\u0437.');
+        }
+        references.push(upload.ref);
+      }
+
+      return references;
+    }
+
+    function ensureSubmissionId(formData) {
+      const current = formData.get('submission_id');
+      if (typeof current === 'string' && /^[A-Za-z0-9_-]{8,160}$/.test(current)) return current;
+      const random = window.crypto?.randomUUID?.().replaceAll('-', '') || Math.random().toString(36).slice(2);
+      const submissionId = `lead_${Date.now().toString(36)}_${random}`;
+      formData.set('submission_id', submissionId);
+      return submissionId;
+    }
+
+    function parsePreparedUpload(value, expectedContentType) {
+      if (!value || typeof value !== 'object') return null;
+      if (typeof value.ref !== 'string' || !value.ref.startsWith('b2://')) return null;
+      if (typeof value.uploadUrl !== 'string') return null;
+      try {
+        if (new URL(value.uploadUrl).protocol !== 'https:') return null;
+      } catch {
+        return null;
+      }
+      if (!value.headers || typeof value.headers !== 'object') return null;
+      const headers = Object.fromEntries(
+        Object.entries(value.headers).filter(([, header]) => typeof header === 'string'),
+      );
+      if (headers['content-type'] !== expectedContentType) return null;
+      return { ref: value.ref, uploadUrl: value.uploadUrl, headers };
+    }
+
+    async function sha256File(file) {
+      const digest = await window.crypto.subtle.digest('SHA-256', await file.arrayBuffer());
+      return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
     async function preparePhoto(file) {
       if (!compressibleTypes.has(file.type)) {
         if (file.size > maxServerBytes) {

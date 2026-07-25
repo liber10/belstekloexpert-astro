@@ -9,6 +9,34 @@ describe('loadConfig', () => {
     expect(config.allowedOrigins).toEqual(['http://localhost:4321']);
   });
 
+  it('keeps object storage disabled when no B2 settings are present', () => {
+    const config = loadConfig({ DATABASE_URL: 'postgres://localhost/lead_hub' });
+    expect(config.objectStorage).toBeNull();
+  });
+
+  it('rejects a partial object storage configuration', () => {
+    expect(() =>
+      loadConfig({
+        DATABASE_URL: 'postgres://localhost/lead_hub',
+        OBJECT_STORAGE_ENDPOINT: 'https://s3.example.test',
+      }),
+    ).toThrow('OBJECT_STORAGE_REGION');
+  });
+
+  it('loads a complete private object storage configuration', () => {
+    const config = loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      OBJECT_STORAGE_ENDPOINT: 'https://s3.example.test',
+      OBJECT_STORAGE_REGION: 'region-1',
+      OBJECT_STORAGE_BUCKET: 'private-photo-bucket',
+      OBJECT_STORAGE_ACCESS_KEY_ID: 'test-access-key',
+      OBJECT_STORAGE_SECRET_ACCESS_KEY: 'test-secret-key-value',
+    });
+
+    expect(config.objectStorage?.bucket).toBe('private-photo-bucket');
+    expect(config.objectStorage?.prefix).toBe('leads/');
+  });
+
   it('requires all Telegram settings when enabled', () => {
     expect(() =>
       loadConfig({

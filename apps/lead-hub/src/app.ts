@@ -8,15 +8,21 @@ import {
   createTelegramIntegration,
   type TelegramIntegration,
 } from './integrations/telegram/index.js';
+import {
+  createObjectStorage,
+  type ObjectStorage,
+} from './integrations/object-storage.js';
 import { registerHealthRoutes } from './routes/health.js';
 import { registerLeadRoutes } from './routes/leads.js';
 import { registerTelegramRoutes } from './routes/telegram.js';
+import { registerUploadRoutes } from './routes/uploads.js';
 import { LeadService } from './services/lead-service.js';
 import { OutboxProcessor } from './worker/outbox-processor.js';
 
 interface BuildRuntimeOptions {
   database?: DatabaseClient;
   telegram?: TelegramIntegration | null;
+  objectStorage?: ObjectStorage | null;
   startWorker?: boolean;
 }
 
@@ -55,13 +61,21 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     hook: 'preHandler',
   });
 
-  const leadService = new LeadService(database.db);
+  const objectStorage = options.objectStorage === undefined
+    ? config.objectStorage
+      ? createObjectStorage(config.objectStorage)
+      : null
+    : options.objectStorage;
+  const leadService = new LeadService(database.db, objectStorage
+    ? (reference, submissionId) => objectStorage.isReferenceForSubmission(reference, submissionId)
+    : undefined);
   const telegram = options.telegram === undefined
-    ? createConfiguredTelegram(config, leadService)
+    ? createConfiguredTelegram(config, leadService, objectStorage)
     : options.telegram;
 
   registerHealthRoutes(app, database.pool);
   registerLeadRoutes(app, config, leadService);
+  registerUploadRoutes(app, config, objectStorage, leadService);
   registerTelegramRoutes(app, config, telegram);
 
   const outbox = telegram
@@ -97,6 +111,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   return {
     app,
     database,
+    objectStorage,
     leadService,
     telegram,
     outbox,
@@ -117,7 +132,11 @@ function isValidationError(error: unknown): error is {
   );
 }
 
-function createConfiguredTelegram(config: AppConfig, leadService: LeadService) {
+function createConfiguredTelegram(
+  config: AppConfig,
+  leadService: LeadService,
+  objectStorage: ObjectStorage | null,
+) {
   if (!config.telegram.enabled) return null;
   if (!config.telegram.botToken || !config.telegram.chatId || !config.telegram.webhookSecret) {
     throw new Error('Telegram is enabled but its required configuration is missing.');
@@ -127,6 +146,9 @@ function createConfiguredTelegram(config: AppConfig, leadService: LeadService) {
     {
       botToken: config.telegram.botToken,
       chatId: config.telegram.chatId,
+      ...(objectStorage
+        ? { photoUrlResolver: (references: string[]) => objectStorage.createDownloadUrls(references) }
+        : {}),
     },
     leadService,
   );

@@ -32,6 +32,7 @@ export interface WebLeadPayload {
   vin?: string;
   serviceType?: string;
   message?: string;
+  photoRefs?: string[];
   attribution?: LeadAttribution;
 }
 
@@ -39,6 +40,22 @@ export interface LeadHubResult {
   leadId: string;
   publicId: string;
   deduplicated: boolean;
+}
+
+export interface PhotoUploadDescriptor {
+  contentType: string;
+  size: number;
+  sha256: string;
+}
+
+export interface PreparedPhotoUpload {
+  ref: string;
+  uploadUrl: string;
+  headers: Record<string, string>;
+}
+
+export interface PreparePhotoUploadsResult {
+  uploads: PreparedPhotoUpload[];
 }
 
 export class LeadHubRequestError extends Error {
@@ -115,6 +132,7 @@ export function buildWebLeadPayload(
   fields: LeadFields,
   submissionId: string,
   photoCount = 0,
+  photoRefs: string[] = [],
 ): WebLeadPayload {
   const service = limit(fields.service, 160);
   const rawVin = cleanText(fields.vin).toUpperCase().replace(/\s+/g, '');
@@ -154,6 +172,7 @@ export function buildWebLeadPayload(
     vin: validVin || undefined,
     serviceType: service || undefined,
     message: limit(messageParts.join('\n'), 4_000) || undefined,
+    photoRefs: photoRefs.length ? photoRefs : undefined,
     attribution: Object.keys(attribution).length ? attribution : undefined,
   };
 }
@@ -162,6 +181,7 @@ export async function sendLeadToHub(options: {
   fields: LeadFields;
   idempotencyKey: string;
   photoCount?: number;
+  photoRefs?: string[];
   env?: RuntimeEnv;
   fetchImpl?: typeof fetch;
 }): Promise<LeadHubResult> {
@@ -170,7 +190,8 @@ export async function sendLeadToHub(options: {
   const payload = buildWebLeadPayload(
     options.fields,
     options.idempotencyKey,
-    options.photoCount,
+    options.photoCount ?? options.photoRefs?.length ?? 0,
+    options.photoRefs,
   );
   const response = await request(
     `${config.baseUrl}/api/v1/leads/web`,
@@ -208,6 +229,84 @@ export async function sendLeadToHub(options: {
   };
 }
 
+export async function preparePhotoUploads(options: {
+  submissionId: string;
+  files: PhotoUploadDescriptor[];
+  env?: RuntimeEnv;
+  fetchImpl?: typeof fetch;
+}): Promise<PreparePhotoUploadsResult> {
+  const env = options.env ?? getLeadRuntimeEnv();
+  const config = getLeadHubConfig(env);
+  const submissionId = normalizeSubmissionId(options.submissionId);
+  if (!submissionId) throw new LeadHubRequestError('configuration_error');
+
+  const response = await request(
+    `${config.baseUrl}/api/v1/uploads/presign`,
+    {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${config.apiKey}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ submissionId, files: options.files }),
+    },
+    config.timeoutMs,
+    options.fetchImpl,
+  );
+
+  if (!response.ok) {
+    throw new LeadHubRequestError('request_failed', response.status);
+  }
+
+  const body = (await response.json().catch(() => null)) as {
+    uploads?: unknown;
+  } | null;
+  if (!body || !Array.isArray(body.uploads) || body.uploads.length !== options.files.length) {
+    throw new LeadHubRequestError('invalid_response');
+  }
+
+  const uploads = body.uploads.map(parsePreparedPhotoUpload);
+  if (uploads.some((upload) => !upload)) {
+    throw new LeadHubRequestError('invalid_response');
+  }
+
+  return { uploads: uploads as PreparedPhotoUpload[] };
+}
+
+export async function getLeadPhotoUrls(options: {
+  leadId: string;
+  env?: RuntimeEnv;
+  fetchImpl?: typeof fetch;
+}) {
+  const env = options.env ?? getLeadRuntimeEnv();
+  const config = getLeadHubConfig(env);
+  const response = await request(
+    `${config.baseUrl}/api/v1/leads/${encodeURIComponent(options.leadId)}/photo-downloads`,
+    {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${config.apiKey}`,
+        'content-type': 'application/json',
+      },
+    },
+    Math.min(config.timeoutMs, 10_000),
+    options.fetchImpl,
+  );
+
+  if (!response.ok) {
+    throw new LeadHubRequestError('request_failed', response.status);
+  }
+
+  const body = (await response.json().catch(() => null)) as {
+    photoUrls?: unknown;
+  } | null;
+  if (!body || !Array.isArray(body.photoUrls) || !body.photoUrls.every(isHttpsUrl)) {
+    throw new LeadHubRequestError('invalid_response');
+  }
+
+  return body.photoUrls as string[];
+}
+
 export async function updateLegacyTelegramDelivery(options: {
   leadId: string;
   action: 'claim' | 'complete' | 'release';
@@ -242,6 +341,34 @@ export async function updateLegacyTelegramDelivery(options: {
   }
 
   return body.claimed;
+}
+
+function parsePreparedPhotoUpload(value: unknown): PreparedPhotoUpload | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const entry = value as Record<string, unknown>;
+  if (typeof entry.ref !== 'string' || !entry.ref.startsWith('b2://') || entry.ref.length > 2_048) {
+    return null;
+  }
+  if (!isHttpsUrl(entry.uploadUrl)) return null;
+  if (!entry.headers || typeof entry.headers !== 'object' || Array.isArray(entry.headers)) return null;
+
+  const headerEntries = Object.entries(entry.headers);
+  if (!headerEntries.length || !headerEntries.every(([, header]) => typeof header === 'string')) {
+    return null;
+  }
+  const headers = Object.fromEntries(headerEntries) as Record<string, string>;
+  if (!headers['content-type']) return null;
+
+  return { ref: entry.ref, uploadUrl: entry.uploadUrl, headers };
+}
+
+function isHttpsUrl(value: unknown): value is string {
+  if (typeof value !== 'string' || value.length > 16_384) return false;
+  try {
+    return new URL(value).protocol === 'https:';
+  } catch {
+    return false;
+  }
 }
 
 function getLeadHubConfig(env: RuntimeEnv) {

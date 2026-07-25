@@ -7,6 +7,7 @@ const booleanFromString = z.preprocess((value) => {
 }, z.boolean());
 
 const optionalSecret = z.string().trim().min(16).optional().or(z.literal('').transform(() => undefined));
+const optionalText = z.string().trim().min(1).optional().or(z.literal('').transform(() => undefined));
 const optionalPort = z.preprocess(
   (value) => (value === '' || value === undefined ? undefined : value),
   z.coerce.number().int().min(1).max(65_535).optional(),
@@ -27,6 +28,14 @@ const configSchema = z
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_CHAT_ID: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_WEBHOOK_SECRET: optionalSecret,
+    OBJECT_STORAGE_ENDPOINT: z.string().url().optional().or(z.literal('').transform(() => undefined)),
+    OBJECT_STORAGE_REGION: optionalText,
+    OBJECT_STORAGE_BUCKET: optionalText,
+    OBJECT_STORAGE_ACCESS_KEY_ID: optionalText,
+    OBJECT_STORAGE_SECRET_ACCESS_KEY: optionalSecret,
+    OBJECT_STORAGE_PREFIX: z.string().trim().min(1).default('leads/'),
+    OBJECT_STORAGE_UPLOAD_TTL_SECONDS: z.coerce.number().int().min(60).max(3_600).default(900),
+    OBJECT_STORAGE_DOWNLOAD_TTL_SECONDS: z.coerce.number().int().min(60).max(3_600).default(900),
     OUTBOX_POLL_INTERVAL_MS: z.coerce.number().int().min(250).max(60_000).default(2_000),
     OUTBOX_BATCH_SIZE: z.coerce.number().int().min(1).max(100).default(10),
     OUTBOX_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(50).default(8),
@@ -41,6 +50,42 @@ const configSchema = z
       });
     }
 
+    const objectStorage = [
+      ['OBJECT_STORAGE_ENDPOINT', config.OBJECT_STORAGE_ENDPOINT],
+      ['OBJECT_STORAGE_REGION', config.OBJECT_STORAGE_REGION],
+      ['OBJECT_STORAGE_BUCKET', config.OBJECT_STORAGE_BUCKET],
+      ['OBJECT_STORAGE_ACCESS_KEY_ID', config.OBJECT_STORAGE_ACCESS_KEY_ID],
+      ['OBJECT_STORAGE_SECRET_ACCESS_KEY', config.OBJECT_STORAGE_SECRET_ACCESS_KEY],
+    ] as const;
+    const objectStorageEnabled = objectStorage.some(([, value]) => Boolean(value));
+
+    if (objectStorageEnabled) {
+      for (const [name, value] of objectStorage) {
+        if (!value) {
+          context.addIssue({
+            code: 'custom',
+            message: `${name} is required when object storage is configured`,
+            path: [name],
+          });
+        }
+      }
+
+      if (!/^[a-z0-9][a-z0-9.-]{4,61}[a-z0-9]$/.test(config.OBJECT_STORAGE_BUCKET || '')) {
+        context.addIssue({
+          code: 'custom',
+          message: 'OBJECT_STORAGE_BUCKET must be a valid S3 bucket name',
+          path: ['OBJECT_STORAGE_BUCKET'],
+        });
+      }
+
+      if (!/^[A-Za-z0-9][A-Za-z0-9/_-]*\/$/.test(config.OBJECT_STORAGE_PREFIX)) {
+        context.addIssue({
+          code: 'custom',
+          message: 'OBJECT_STORAGE_PREFIX must be a relative prefix ending with /',
+          path: ['OBJECT_STORAGE_PREFIX'],
+        });
+      }
+    }
     if (!config.TELEGRAM_ENABLED) return;
 
     const required = [
@@ -71,6 +116,19 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
     throw new Error(`Invalid Lead Hub environment: ${details}`);
   }
 
+  const objectStorage = parsed.data.OBJECT_STORAGE_ENDPOINT
+    ? {
+        endpoint: parsed.data.OBJECT_STORAGE_ENDPOINT,
+        region: parsed.data.OBJECT_STORAGE_REGION!,
+        bucket: parsed.data.OBJECT_STORAGE_BUCKET!,
+        accessKeyId: parsed.data.OBJECT_STORAGE_ACCESS_KEY_ID!,
+        secretAccessKey: parsed.data.OBJECT_STORAGE_SECRET_ACCESS_KEY!,
+        prefix: parsed.data.OBJECT_STORAGE_PREFIX,
+        uploadTtlSeconds: parsed.data.OBJECT_STORAGE_UPLOAD_TTL_SECONDS,
+        downloadTtlSeconds: parsed.data.OBJECT_STORAGE_DOWNLOAD_TTL_SECONDS,
+      }
+    : null;
+
   return {
     nodeEnv: parsed.data.NODE_ENV,
     host: parsed.data.LEAD_HUB_HOST,
@@ -88,6 +146,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       chatId: parsed.data.TELEGRAM_CHAT_ID,
       webhookSecret: parsed.data.TELEGRAM_WEBHOOK_SECRET,
     },
+    objectStorage,
     outbox: {
       pollIntervalMs: parsed.data.OUTBOX_POLL_INTERVAL_MS,
       batchSize: parsed.data.OUTBOX_BATCH_SIZE,

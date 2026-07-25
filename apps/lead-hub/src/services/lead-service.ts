@@ -38,13 +38,32 @@ interface ChangeStatusOptions {
   externalEventId?: string;
   actorId?: string;
 }
+type PhotoReferenceValidator = (reference: string, submissionId: string) => boolean;
+
 
 export class LeadService {
-  constructor(private readonly db: LeadHubDatabase) {}
+  constructor(
+    private readonly db: LeadHubDatabase,
+    private readonly photoReferenceValidator?: PhotoReferenceValidator,
+  ) {}
 
   async createWebLead(body: WebLeadBody, idempotencyKey: string) {
     const sourceDetail = cleanText(body.sourceDetail);
     const externalLeadId = cleanText(body.externalLeadId);
+    const photoRefs = normalizePhotoReferences(body.photoRefs);
+
+    if (photoRefs.length) {
+      if (!externalLeadId || !this.photoReferenceValidator) {
+        throw new LeadValidationError('Photo storage is unavailable.');
+      }
+      if (new Set(photoRefs).size !== photoRefs.length) {
+        throw new LeadValidationError('Photo references must be unique.');
+      }
+      if (!photoRefs.every((reference) => this.photoReferenceValidator!(reference, externalLeadId))) {
+        throw new LeadValidationError('Invalid photo reference.');
+      }
+    }
+    body = { ...body, ...(photoRefs.length ? { photoRefs } : {}) };
     return this.createLead(body, {
       source: 'web',
       idempotencyKey,
@@ -313,6 +332,12 @@ export class LeadService {
 
     return byExternalId ? { lead: byExternalId, deduplicated: true } : null;
   }
+}
+
+function normalizePhotoReferences(references: string[] | undefined) {
+  return references
+    ?.map((reference) => reference.trim())
+    .filter(Boolean) || [];
 }
 
 function normalizeBody(body: WebLeadBody, phoneNormalized: string) {
