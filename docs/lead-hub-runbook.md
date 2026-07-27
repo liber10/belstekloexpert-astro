@@ -1,10 +1,14 @@
 # Lead Hub: запуск и эксплуатация
 
+Актуализировано: 27 июля 2026 года.
+
 ## Текущий объём
 
 `apps/lead-hub` — отдельный сервис на Fastify/TypeScript с PostgreSQL. Он принимает лиды сайта, сохраняет лид и события, ставит доставку в Telegram в outbox и обрабатывает статусы из inline-кнопок.
 
-Формы Astro-сайта подключены к Lead Hub через серверный endpoint Netlify `/api/lead/`. Секрет ingest API не попадает в браузер. Production webhook Telegram пока не переключён на Render: текущая доставка и фото продолжают работать через контролируемый переходный мост.
+Формы Astro-сайта подключены к Lead Hub через серверный endpoint Netlify `/api/lead/`. Секрет ingest API не попадает в браузер. Production webhook Telegram пока не переключён на Render: текущая доставка продолжает работать через контролируемый переходный мост.
+
+Фотографии сжимаются в браузере и напрямую загружаются в закрытый Backblaze B2 по короткоживущему signed URL. Lead Hub хранит только приватные `photo_refs`, а переходный мост получает временные download URL для отправки фото в Telegram.
 
 ## Поток данных
 
@@ -38,8 +42,17 @@ POST /api/v1/leads/web
 | `OUTBOX_BATCH_SIZE` | Число задач, забираемых за один цикл |
 | `OUTBOX_MAX_ATTEMPTS` | Число попыток до состояния `dead` |
 | `LOG_LEVEL` | Уровень структурированных логов |
+| `OBJECT_STORAGE_ENDPOINT` | S3-compatible endpoint приватного хранилища |
+| `OBJECT_STORAGE_REGION` | Регион S3-compatible API |
+| `OBJECT_STORAGE_BUCKET` | Имя закрытого bucket |
+| `OBJECT_STORAGE_ACCESS_KEY_ID` | Bucket-scoped access key |
+| `OBJECT_STORAGE_SECRET_ACCESS_KEY` | Bucket-scoped secret key |
+| `OBJECT_STORAGE_PREFIX` | Префикс объектов, по умолчанию `leads/` |
+| `OBJECT_STORAGE_UPLOAD_TTL_SECONDS` | Срок действия signed PUT, по умолчанию 900 секунд |
+| `OBJECT_STORAGE_DOWNLOAD_TTL_SECONDS` | Срок действия signed GET, по умолчанию 900 секунд |
 
-Полный безопасный шаблон находится в `.env.example`.
+В Git и документацию добавляются только имена переменных. Значения хранятся в
+environment settings платформы.
 
 Для server-side функции сайта в Netlify используются:
 
@@ -61,9 +74,10 @@ POST /api/v1/leads/web
 - Повтор с тем же телом возвращает существующий публичный номер заявки.
 - Сохраняются UTM, `gclid`, `gbraid`, `wbraid`, `yclid`, `fbclid`, первая посадочная страница и referrer.
 - В режиме `hub-with-legacy-telegram` Lead Hub атомарно выдаёт право на одну Telegram-отправку. После успеха outbox-задача помечается выполненной.
-- Фото по-прежнему сжимаются в браузере и доставляются существующим Telegram-мостом. Режим `hub` отклоняет заявку с фото, пока не подключено постоянное object storage.
+- Фото сжимаются в браузере, загружаются через signed PUT и передаются в заявке как `photo_refs`.
+- Bucket остаётся закрытым; CORS разрешает только согласованные origins сайта.
 
-Нельзя одновременно включать outbox worker Render и оставлять Netlify в режиме `hub-with-legacy-telegram`: сначала нужно переключить Netlify на `hub`, затем включать `TELEGRAM_ENABLED=true` в Lead Hub. До появления object storage фото остаются отдельным ограничением этого переключения.
+Нельзя одновременно включать outbox worker Render и оставлять Netlify в режиме `hub-with-legacy-telegram`: сначала нужно переключить Netlify на `hub`, затем включать `TELEGRAM_ENABLED=true` в Lead Hub.
 
 ## Локальный запуск
 
@@ -193,9 +207,11 @@ npm run test:integration --workspace @belstekloexpert/lead-hub
 - Сгенерированы сильные `WEB_INGEST_API_KEY` и `TELEGRAM_WEBHOOK_SECRET`.
 - Секреты добавлены в хранилище платформы, не в `.env` репозитория.
 - CORS ограничен доменами сайта.
+- Bucket object storage закрыт, а ключ ограничен нужным bucket и операциями.
 - Сервис доступен только по HTTPS.
 - `/health/ready` возвращает `200`.
 - Тестовый запрос создаёт ровно один лид при повторной отправке.
+- Большое фото проходит сжатие, signed PUT, сохранение `photo_ref` и Telegram delivery.
 - Карточка появляется в тестовом Telegram-чате.
 - Кнопка статуса обновляет карточку и создаёт одно событие.
 - Проверены `/today`, `/sla`, `/funnel` и ручной `/new`.
@@ -204,4 +220,6 @@ npm run test:integration --workspace @belstekloexpert/lead-hub
 
 ## Оставшиеся этапы
 
-Формы, калькулятор, идемпотентность и web attribution подключены. Следующий обязательный этап перед полным отказом от переходного Telegram-моста — S3-совместимое object storage с подписанной загрузкой и постоянными `photo_refs`. После этого можно переключить Telegram webhook и outbox worker на Render. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются отдельными последующими этапами.
+Формы, калькулятор, идемпотентность, web attribution и приватное object storage подключены. Следующий обязательный этап перед полным отказом от переходного моста — переключить Telegram webhook и outbox worker на Render с контролируемым rollback.
+
+Отдельный инфраструктурный этап — оценка переноса frontend с Netlify на Cloudflare Pages/Workers и возможной миграции B2 в R2. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются последующими этапами.

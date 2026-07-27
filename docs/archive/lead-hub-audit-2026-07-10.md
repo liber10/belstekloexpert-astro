@@ -1,5 +1,10 @@
 # Аудит текущего контура заявок BelStekloExpert
 
+> Исторический документ. Он фиксирует состояние на 10 июля 2026 года, до создания
+> `apps/lead-hub`, PostgreSQL и приватного object storage. Для текущего состояния
+> используйте [`PROJECT_STATUS.md`](../../PROJECT_STATUS.md) и
+> [`docs/architecture.md`](../architecture.md).
+
 Дата аудита: 10 июля 2026 года
 Этап: `CODEX-0`
 Репозиторий: `https://github.com/liber10/belstekloexpert-astro.git`
