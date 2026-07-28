@@ -95,6 +95,10 @@ Invoke-RestMethod http://127.0.0.1:8787/health/live
 Invoke-RestMethod http://127.0.0.1:8787/health/ready
 ```
 
+Публичный endpoint Astro-сайта `/api/health/` делегирует проверку готовности
+`/health/ready` Lead Hub. Он не подключается к PostgreSQL напрямую и возвращает
+только обобщённый статус без URL, имени сервера или деталей ошибки.
+
 Остановка без удаления данных PostgreSQL:
 
 ```powershell

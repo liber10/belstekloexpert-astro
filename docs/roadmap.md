@@ -1,6 +1,6 @@
 # Roadmap BelStekloExpert
 
-Последняя актуализация: 27 июля 2026 года.
+Последняя актуализация: 28 июля 2026 года.
 
 ## Обозначения
 
@@ -16,6 +16,7 @@
 | ID | Область | Задача | Приоритет | Статус |
 | --- | --- | --- | --- | --- |
 | `DOCS-001` | Проект | Единый README, status, architecture, roadmap и AGENTS | P1 | done |
+| `OPS-004` | Health | Перевести site health с прямого PostgreSQL на readiness Lead Hub | P1 | in-progress |
 | `OPS-001` | CI | Автоматизировать проверки сайта и Lead Hub в GitHub Actions | P2 | backlog |
 | `LEGAL-001` | Данные | Утвердить privacy policy, consent и retention | P1 | blocked |
 | `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | planned |

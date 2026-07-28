@@ -229,6 +229,34 @@ export async function sendLeadToHub(options: {
   };
 }
 
+export async function checkLeadHubReady(options: {
+  env?: RuntimeEnv;
+  fetchImpl?: typeof fetch;
+} = {}) {
+  const env = options.env ?? getLeadRuntimeEnv();
+  const config = getLeadHubEndpointConfig(env);
+  const response = await request(
+    `${config.baseUrl}/health/ready`,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+    },
+    config.timeoutMs,
+    options.fetchImpl,
+  );
+
+  if (!response.ok) return false;
+
+  const body = (await response.json().catch(() => null)) as {
+    ok?: unknown;
+    database?: unknown;
+  } | null;
+
+  return body?.ok === true && body.database === 'ready';
+}
+
 export async function preparePhotoUploads(options: {
   submissionId: string;
   files: PhotoUploadDescriptor[];
@@ -376,6 +404,13 @@ function getLeadHubConfig(env: RuntimeEnv) {
   const apiKey = cleanText(env.WEB_INGEST_API_KEY);
   if (!apiKey) throw new LeadHubRequestError('configuration_error');
 
+  return {
+    apiKey,
+    ...getLeadHubEndpointConfig(env),
+  };
+}
+
+function getLeadHubEndpointConfig(env: RuntimeEnv) {
   const rawBaseUrl = cleanText(env.LEAD_HUB_URL) || defaultLeadHubUrl;
   let baseUrl: string;
   try {
@@ -393,7 +428,7 @@ function getLeadHubConfig(env: RuntimeEnv) {
     ? Math.min(30_000, Math.max(5_000, Math.round(parsedTimeout)))
     : defaultTimeoutMs;
 
-  return { apiKey, baseUrl, timeoutMs };
+  return { baseUrl, timeoutMs };
 }
 
 async function request(

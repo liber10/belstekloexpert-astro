@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   buildWebLeadPayload,
+  checkLeadHubReady,
   classifyDeliveryFailure,
   getLeadPhotoUrls,
   getLeadRuntimeEnv,
@@ -101,6 +102,53 @@ describe('site Lead Hub client', () => {
       files: [{ contentType: 'image/jpeg', size: 1_024, sha256: 'a'.repeat(64) }],
     });
     expect(result.uploads[0]?.ref).toContain('b2://bucket-name/');
+  });
+
+  it('checks database readiness through the Lead Hub boundary', async () => {
+    let requestedUrl = '';
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      requestedUrl = String(input);
+      return new Response(JSON.stringify({ ok: true, database: 'ready' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    await expect(
+      checkLeadHubReady({
+        env: { LEAD_HUB_URL: 'https://hub.example' },
+        fetchImpl,
+      }),
+    ).resolves.toBe(true);
+    expect(requestedUrl).toBe('https://hub.example/health/ready');
+  });
+
+  it('rejects an unhealthy or malformed Lead Hub readiness response', async () => {
+    const unavailableFetch = vi.fn(async () =>
+      new Response(JSON.stringify({ ok: false, database: 'unavailable' }), {
+        status: 503,
+        headers: { 'content-type': 'application/json' },
+      }),
+    ) as unknown as typeof fetch;
+    const malformedFetch = vi.fn(async () =>
+      new Response(JSON.stringify({ ok: true }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }),
+    ) as unknown as typeof fetch;
+
+    await expect(
+      checkLeadHubReady({
+        env: { LEAD_HUB_URL: 'https://hub.example' },
+        fetchImpl: unavailableFetch,
+      }),
+    ).resolves.toBe(false);
+    await expect(
+      checkLeadHubReady({
+        env: { LEAD_HUB_URL: 'https://hub.example' },
+        fetchImpl: malformedFetch,
+      }),
+    ).resolves.toBe(false);
   });
 
   it('sends an explicit JSON body when requesting private photo URLs', async () => {
