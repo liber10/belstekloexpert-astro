@@ -12,6 +12,7 @@ export interface TelegramDelivery {
 }
 
 export interface TelegramIntegration extends TelegramDelivery {
+  registerWebhook(url: string, secret: string): Promise<void>;
   handleUpdate(update: Update): Promise<void>;
 }
 
@@ -106,6 +107,13 @@ export function createTelegramIntegration(
   });
 
   return {
+    async registerWebhook(url, secret) {
+      await bot.api.setWebhook(url, {
+        secret_token: secret,
+        allowed_updates: ['message', 'callback_query'],
+      });
+    },
+
     async sendLeadCard(lead) {
       const photoUrls = lead.photoRefs.length && options.photoUrlResolver
         ? await options.photoUrlResolver(lead.photoRefs)

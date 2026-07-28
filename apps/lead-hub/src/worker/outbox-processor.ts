@@ -9,6 +9,7 @@ interface OutboxOptions {
   pollIntervalMs: number;
   batchSize: number;
   maxAttempts: number;
+  processingTimeoutMs: number;
 }
 
 export class OutboxProcessor {
@@ -42,6 +43,7 @@ export class OutboxProcessor {
     this.running = true;
 
     try {
+      await this.releaseStaleJobs();
       const candidates = await this.db
         .select()
         .from(integrationOutbox)
@@ -71,6 +73,28 @@ export class OutboxProcessor {
     void this.processOnce().catch((error: unknown) => {
       this.logger.error({ err: error }, 'Outbox polling failed.');
     });
+  }
+
+  private async releaseStaleJobs() {
+    const staleBefore = new Date(Date.now() - this.options.processingTimeoutMs);
+    const released = await this.db
+      .update(integrationOutbox)
+      .set({
+        status: 'retry',
+        nextAttemptAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(integrationOutbox.status, 'processing'),
+          lte(integrationOutbox.updatedAt, staleBefore),
+        ),
+      )
+      .returning({ id: integrationOutbox.id });
+
+    if (released.length) {
+      this.logger.warn({ count: released.length }, 'Stale outbox jobs released for retry.');
+    }
   }
 
   private async claim(jobId: string) {

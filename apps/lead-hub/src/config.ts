@@ -39,6 +39,12 @@ const configSchema = z
     OUTBOX_POLL_INTERVAL_MS: z.coerce.number().int().min(250).max(60_000).default(2_000),
     OUTBOX_BATCH_SIZE: z.coerce.number().int().min(1).max(100).default(10),
     OUTBOX_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(50).default(8),
+    OUTBOX_PROCESSING_TIMEOUT_MS: z.coerce
+      .number()
+      .int()
+      .min(30_000)
+      .max(3_600_000)
+      .default(300_000),
     LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   })
   .superRefine((config, context) => {
@@ -103,6 +109,23 @@ const configSchema = z
         });
       }
     }
+
+    if (!config.LEAD_HUB_PUBLIC_URL) {
+      context.addIssue({
+        code: 'custom',
+        message: 'LEAD_HUB_PUBLIC_URL is required when TELEGRAM_ENABLED=true',
+        path: ['LEAD_HUB_PUBLIC_URL'],
+      });
+    } else if (
+      config.NODE_ENV === 'production' &&
+      new URL(config.LEAD_HUB_PUBLIC_URL).protocol !== 'https:'
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'LEAD_HUB_PUBLIC_URL must use HTTPS in production',
+        path: ['LEAD_HUB_PUBLIC_URL'],
+      });
+    }
   });
 
 export type AppConfig = ReturnType<typeof loadConfig>;
@@ -151,6 +174,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       pollIntervalMs: parsed.data.OUTBOX_POLL_INTERVAL_MS,
       batchSize: parsed.data.OUTBOX_BATCH_SIZE,
       maxAttempts: parsed.data.OUTBOX_MAX_ATTEMPTS,
+      processingTimeoutMs: parsed.data.OUTBOX_PROCESSING_TIMEOUT_MS,
     },
     logLevel: parsed.data.LOG_LEVEL,
   };

@@ -25,6 +25,7 @@ services:
       DATABASE_URL: postgres://lead_hub:lead_hub@postgres:5432/lead_hub
       LEAD_HUB_HOST: 0.0.0.0
       LEAD_HUB_PORT: 8787
+      LEAD_HUB_PUBLIC_URL: ${LEAD_HUB_PUBLIC_URL:-http://localhost:8787}
       LEAD_HUB_ALLOWED_ORIGINS: http://localhost:4321
       TELEGRAM_ENABLED: ${TELEGRAM_ENABLED:-false}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}

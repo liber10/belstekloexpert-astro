@@ -46,6 +46,33 @@ describe('loadConfig', () => {
     ).toThrow('TELEGRAM_BOT_TOKEN');
   });
 
+  it('requires a public URL when Telegram is enabled', () => {
+    expect(() =>
+      loadConfig({
+        DATABASE_URL: 'postgres://localhost/lead_hub',
+        TELEGRAM_ENABLED: 'true',
+        TELEGRAM_BOT_TOKEN: 'test-bot-token',
+        TELEGRAM_CHAT_ID: '-100123456789',
+        TELEGRAM_WEBHOOK_SECRET: 'test-webhook-secret',
+      }),
+    ).toThrow('LEAD_HUB_PUBLIC_URL');
+  });
+
+  it('requires HTTPS for the production Telegram webhook', () => {
+    expect(() =>
+      loadConfig({
+        NODE_ENV: 'production',
+        DATABASE_URL: 'postgres://localhost/lead_hub',
+        WEB_INGEST_API_KEY: 'test-web-ingest-secret',
+        TELEGRAM_ENABLED: 'true',
+        TELEGRAM_BOT_TOKEN: 'test-bot-token',
+        TELEGRAM_CHAT_ID: '-100123456789',
+        TELEGRAM_WEBHOOK_SECRET: 'test-webhook-secret',
+        LEAD_HUB_PUBLIC_URL: 'http://lead-hub.example.test',
+      }),
+    ).toThrow('must use HTTPS');
+  });
+
   it('requires a web ingest key in production', () => {
     expect(() =>
       loadConfig({

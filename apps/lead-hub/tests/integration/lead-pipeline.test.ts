@@ -19,6 +19,7 @@ integration('Lead Hub database pipeline', () => {
   const editLeadCard = vi.fn(() => Promise.resolve());
   const handleUpdate = vi.fn(() => Promise.resolve());
   const telegram: TelegramIntegration = {
+    registerWebhook: vi.fn(() => Promise.resolve()),
     sendLeadCard,
     editLeadCard,
     handleUpdate,
@@ -210,5 +211,29 @@ integration('Lead Hub database pipeline', () => {
     expect(lead?.status).toBe('qualified');
     expect(lead?.telegramMessageId).toBe(42);
     expect(events.map((event) => event.eventType)).toEqual(['lead_received', 'status_changed']);
+  });
+
+  it('releases a stale processing job and delivers it', async () => {
+    const created = await runtime.leadService.createWebLead(
+      { phone: '+375291111111', serviceType: 'Worker recovery test' },
+      'form-submission-worker-recovery',
+    );
+
+    await database.db
+      .update(integrationOutbox)
+      .set({
+        status: 'processing',
+        updatedAt: new Date(Date.now() - 10 * 60_000),
+      })
+      .where(eq(integrationOutbox.leadId, created.lead.id));
+
+    await runtime.outbox?.processOnce();
+
+    expect(sendLeadCard).toHaveBeenCalledTimes(1);
+    const [job] = await database.db
+      .select()
+      .from(integrationOutbox)
+      .where(eq(integrationOutbox.leadId, created.lead.id));
+    expect(job?.status).toBe('sent');
   });
 });
