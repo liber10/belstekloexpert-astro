@@ -9,12 +9,12 @@ production-архитектуры, провайдера, режима доста
 
 | Область | Текущее решение | Статус | Примечание |
 | --- | --- | --- | --- |
-| Основной сайт | Netlify, Astro SSR | Работает | Production `c0816b5`, включая `/api/health/`, проверен 28 июля 2026 года |
+| Основной сайт | Netlify, Astro SSR | Работает | Production `dcf01d8`, режим доставки `hub`, включая `/api/health/`, проверен 28 июля 2026 года |
 | Репозиторий | GitHub `main` | Работает | `liber10/belstekloexpert-astro` |
-| Lead Hub | Render Free Web Service | Работает | Production `324663d`; оба health endpoint проверены 28 июля 2026 года |
+| Lead Hub | Render Free Web Service | Работает | Production `dcf01d8`; readiness и приём тестовой заявки проверены 28 июля 2026 года |
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
-| Telegram | Переходный мост Netlify → Render | Работает | Идемпотентная доставка текста и фото |
+| Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Webhook регистрируется при старте; production smoke test доставки выполнен 28 июля 2026 года |
 | Резервное object storage | Cloudflare R2 | Доступ получен | Пока не используется в production |
 | Основной домен | `belstekloexpert.by` | Работает | Canonical, sitemap и формы используют домен |
 
@@ -36,10 +36,10 @@ production-архитектуры, провайдера, режима доста
 ## Известные ограничения
 
 1. Netlify ранее останавливал production-деплои из-за build-кредитов. Публикация
-   `c0816b5` 28 июля прошла успешно, но расход кредитов нужно продолжать
+   `dcf01d8` 28 июля прошла успешно, но расход кредитов нужно продолжать
    контролировать; Cloudflare остаётся планом снижения этой зависимости.
-2. Telegram пока использует контролируемый переходный мост. Полный webhook и worker
-   Lead Hub ещё не являются единственным production-контуром.
+2. Lead Hub работает на Render Free Web Service. После простоя возможен холодный
+   запуск с задержкой; нужен мониторинг времени ответа форм и задач outbox.
 3. Исторический аудит от 10 июля описывает состояние до создания Lead Hub и хранится
    только как архив.
 4. Локальное рабочее дерево может содержать пользовательские изменения. Их нельзя
@@ -51,7 +51,7 @@ production-архитектуры, провайдера, режима доста
 | --- | --- | --- | --- |
 | `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | Запланировано |
 | `STORAGE-001` | Сравнить рабочий B2 с Cloudflare R2 и подготовить план миграции | P1 | Запланировано |
-| `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Запланировано |
+| `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Выполнено |
 | `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Требует решения владельца |
 | `OPS-001` | Добавить CI для проверок сайта и Lead Hub | P2 | Backlog |
 | `ADS-001` | Подключать рекламные конверсии только после consent и стабильного Lead Hub | P2 | Заблокировано `LEGAL-001` |

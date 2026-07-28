@@ -1,14 +1,14 @@
 # Lead Hub: запуск и эксплуатация
 
-Актуализировано: 27 июля 2026 года.
+Актуализировано: 28 июля 2026 года.
 
 ## Текущий объём
 
 `apps/lead-hub` — отдельный сервис на Fastify/TypeScript с PostgreSQL. Он принимает лиды сайта, сохраняет лид и события, ставит доставку в Telegram в outbox и обрабатывает статусы из inline-кнопок.
 
-Формы Astro-сайта подключены к Lead Hub через серверный endpoint Netlify `/api/lead/`. Секрет ingest API не попадает в браузер. Production webhook Telegram пока не переключён на Render: текущая доставка продолжает работать через контролируемый переходный мост.
+Формы Astro-сайта подключены к Lead Hub через серверный endpoint Netlify `/api/lead/`. Секрет ingest API не попадает в браузер. В production Netlify работает в режиме `LEAD_DELIVERY_MODE=hub`, а Telegram webhook и outbox worker выполняются Lead Hub на Render.
 
-Фотографии сжимаются в браузере и напрямую загружаются в закрытый Backblaze B2 по короткоживущему signed URL. Lead Hub хранит только приватные `photo_refs`, а переходный мост получает временные download URL для отправки фото в Telegram.
+Фотографии сжимаются в браузере и напрямую загружаются в закрытый Backblaze B2 по короткоживущему signed URL. Lead Hub хранит только приватные `photo_refs` и создаёт временные download URL для отправки фото в Telegram.
 
 ## Поток данных
 
@@ -16,8 +16,8 @@
 POST /api/v1/leads/web
   -> validation / auth / rate limit / idempotency
   -> PostgreSQL: leads + lead_events + integration_outbox
-  -> transitional mode: Netlify claims outbox job -> legacy Telegram + photos -> completes job
-  -> target mode: Lead Hub outbox worker -> Telegram card
+  -> success response to the site
+  -> Lead Hub outbox worker -> Telegram card and photos
   -> status callback
   -> lead status + lead_event + Telegram card update
 ```
@@ -41,6 +41,7 @@ POST /api/v1/leads/web
 | `OUTBOX_POLL_INTERVAL_MS` | Пауза между циклами worker |
 | `OUTBOX_BATCH_SIZE` | Число задач, забираемых за один цикл |
 | `OUTBOX_MAX_ATTEMPTS` | Число попыток до состояния `dead` |
+| `OUTBOX_PROCESSING_TIMEOUT_MS` | Срок до возврата зависшей `processing`-задачи в `retry`; по умолчанию 300000 мс |
 | `LOG_LEVEL` | Уровень структурированных логов |
 | `OBJECT_STORAGE_ENDPOINT` | S3-compatible endpoint приватного хранилища |
 | `OBJECT_STORAGE_REGION` | Регион S3-compatible API |
@@ -62,10 +63,10 @@ environment settings платформы.
 | `LEAD_HUB_URL` | Публичный URL Lead Hub; по умолчанию используется текущий Render-сервис |
 | `LEAD_HUB_TIMEOUT_MS` | Таймаут server-to-server запроса от 5 до 30 секунд |
 | `LEAD_DELIVERY_MODE` | `legacy`, `hub` или `hub-with-legacy-telegram` |
-| `TELEGRAM_BOT_TOKEN` | Нужен Netlify только в переходном режиме |
-| `TELEGRAM_CHAT_ID` | Нужен Netlify только в переходном режиме |
+| `TELEGRAM_BOT_TOKEN` | Не используется при `hub`; временно может храниться только для rollback |
+| `TELEGRAM_CHAT_ID` | Не используется при `hub`; временно может храниться только для rollback |
 
-Если `LEAD_DELIVERY_MODE` не задан, функция выбирает безопасный режим автоматически: без ingest-ключа остаётся `legacy`; с ingest-ключом и Telegram-настройками используется `hub-with-legacy-telegram`; только с ingest-ключом — `hub`.
+В production режим должен быть задан явно как `hub`. Если `LEAD_DELIVERY_MODE` не задан, функция выбирает безопасный режим автоматически: без ingest-ключа остаётся `legacy`; с ingest-ключом и Telegram-настройками используется `hub-with-legacy-telegram`; только с ingest-ключом — `hub`.
 
 ## Подключение форм сайта
 
@@ -73,7 +74,7 @@ environment settings платформы.
 - Один `submission_id` создаётся в браузере и проходит до PostgreSQL как `Idempotency-Key`.
 - Повтор с тем же телом возвращает существующий публичный номер заявки.
 - Сохраняются UTM, `gclid`, `gbraid`, `wbraid`, `yclid`, `fbclid`, первая посадочная страница и referrer.
-- В режиме `hub-with-legacy-telegram` Lead Hub атомарно выдаёт право на одну Telegram-отправку. После успеха outbox-задача помечается выполненной.
+- Режим `hub-with-legacy-telegram` сохранён только для контролируемого rollback. В нём Lead Hub атомарно выдаёт право на одну Telegram-отправку.
 - Фото сжимаются в браузере, загружаются через signed PUT и передаются в заявке как `photo_refs`.
 - Bucket остаётся закрытым; CORS разрешает только согласованные origins сайта.
 
@@ -148,7 +149,7 @@ Invoke-RestMethod `
 
 ## Telegram
 
-Для первого прогона использовать отдельный тестовый чат. Значения токена, chat ID и webhook secret задаются вне Git.
+Значения токена, chat ID и webhook secret задаются вне Git. При старте с `TELEGRAM_ENABLED=true` Lead Hub сначала регистрирует webhook через Telegram Bot API и только после успешной регистрации запускает outbox worker.
 
 Webhook должен вести на:
 
@@ -156,7 +157,7 @@ Webhook должен вести на:
 https://<lead-hub-host>/api/v1/webhooks/telegram
 ```
 
-Настройка через официальный Telegram Bot API:
+Ручная настройка через официальный Telegram Bot API используется только для диагностики или восстановления:
 
 ```powershell
 $token = '<TELEGRAM_BOT_TOKEN>'
@@ -170,7 +171,7 @@ Invoke-RestMethod `
   -Body (@{ url = $url; secret_token = $secret } | ConvertTo-Json)
 ```
 
-До переключения существующего бота проверить, что у него нет другого активного webhook или polling-процесса. В production переключать webhook только после согласования окна перехода.
+У одного бота не должно быть другого активного webhook или polling-процесса.
 
 Поддерживаемые команды:
 
@@ -183,9 +184,26 @@ Invoke-RestMethod `
 
 ## Outbox и ошибки
 
-Telegram отправляется асинхронно из `integration_outbox`. При ошибке задача получает следующую попытку с задержкой. После `OUTBOX_MAX_ATTEMPTS` она переходит в `dead` и требует разбора причины и ручного повторного запуска после устранения сбоя.
+Telegram отправляется асинхронно из `integration_outbox`. При ошибке задача получает следующую попытку с задержкой. После `OUTBOX_MAX_ATTEMPTS` она переходит в `dead` и требует разбора причины и ручного повторного запуска после устранения сбоя. Задача, оставшаяся в `processing` дольше `OUTBOX_PROCESSING_TIMEOUT_MS`, автоматически возвращается в `retry`.
 
 Логи структурированы. Полный телефон, VIN, bot token, API key и webhook secret логировать запрещено.
+
+Render Free Web Service может переходить в сон. После холодного запуска первая
+заявка может ждать дольше обычного, поэтому нужно контролировать время ответа
+`/health/ready`, ошибки формы и накопление `pending`, `retry` и `dead` в outbox.
+
+## Rollback Telegram
+
+Откат выполняется только в таком порядке:
+
+1. установить `TELEGRAM_ENABLED=false` на Render и дождаться успешного деплоя;
+2. убедиться, что worker остановлен и новый webhook больше не обрабатывает команды;
+3. установить `LEAD_DELIVERY_MODE=hub-with-legacy-telegram` в Netlify;
+4. пересобрать и опубликовать Netlify;
+5. отправить одну явно тестовую заявку и проверить единственную карточку Telegram.
+
+Нельзя сначала включать переходный мост Netlify: одновременная работа двух
+доставщиков создаёт риск повторных уведомлений.
 
 ## Проверки разработчика
 
@@ -220,10 +238,10 @@ npm run test:integration --workspace @belstekloexpert/lead-hub
 - Кнопка статуса обновляет карточку и создаёт одно событие.
 - Проверены `/today`, `/sla`, `/funnel` и ручной `/new`.
 - Проверены retry и мониторинг задач `dead`.
-- Только после этого согласовано переключение production webhook.
+- Production webhook зарегистрирован Lead Hub на Render.
 
 ## Оставшиеся этапы
 
-Формы, калькулятор, идемпотентность, web attribution и приватное object storage подключены. Следующий обязательный этап перед полным отказом от переходного моста — переключить Telegram webhook и outbox worker на Render с контролируемым rollback.
+Формы, калькулятор, идемпотентность, web attribution, приватное object storage, Telegram webhook и outbox worker подключены к production-контуру Lead Hub.
 
-Отдельный инфраструктурный этап — оценка переноса frontend с Netlify на Cloudflare Pages/Workers и возможной миграции B2 в R2. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются последующими этапами.
+Следующий инфраструктурный этап — оценка переноса frontend с Netlify на Cloudflare Pages/Workers и возможной миграции B2 в R2. Параллельно нужно добавить мониторинг `dead`-задач и утвердить privacy/consent. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются последующими этапами.

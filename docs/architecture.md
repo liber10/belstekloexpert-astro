@@ -21,8 +21,10 @@ flowchart LR
     SITE -->|"prepare signed upload"| HUB
     USER -->|"signed PUT"| B2
     HUB --> DB
-    SITE -->|"переходный Telegram-мост"| TG
-    HUB -->|"signed photo URL"| SITE
+    HUB -->|"outbox: card and photo URL"| TG
+    TG -->|"webhook: commands and statuses"| HUB
+    HUB -->|"create signed GET"| B2
+    TG -->|"signed GET photo"| B2
     TG --> CHAT
 ```
 
@@ -46,8 +48,9 @@ Browser form
   -> server validation
   -> Lead Hub POST /api/v1/leads/web
   -> PostgreSQL transaction
-  -> transitional Telegram delivery
   -> success response and /spasibo/
+  -> Lead Hub outbox worker
+  -> Telegram card
 ```
 
 Один `submission_id` проходит через весь поток как idempotency key. Повтор того же
@@ -63,8 +66,8 @@ Browser
   -> Browser uploads directly to private object storage
   -> Browser submits form with photo_refs
   -> Lead Hub stores refs with the lead
-  -> compatibility bridge requests signed download URLs
-  -> Telegram receives the photo
+  -> Lead Hub outbox worker creates signed download URLs
+  -> Telegram receives the card and photo
 ```
 
 Ни bucket credentials, ни постоянный публичный URL не попадают в браузер. Signed URL
@@ -119,4 +122,5 @@ Astro-сайт не открывает собственное соединени
 4. Фото и PII не становятся публичными.
 5. Внешний провайдер скрывается за S3-compatible storage adapter.
 6. Миграции инфраструктуры выполняются с rollback-планом.
-7. Старые формы сохраняют совместимый URL до завершения контролируемого перехода.
+7. Формы сохраняют совместимый URL `/api/lead/`, а delivery provider остаётся
+   скрыт за серверным контуром.

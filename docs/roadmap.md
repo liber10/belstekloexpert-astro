@@ -19,7 +19,7 @@
 | `OPS-004` | Health | Перевести site health с прямого PostgreSQL на readiness Lead Hub | P1 | done |
 | `OPS-001` | CI | Автоматизировать проверки сайта и Lead Hub в GitHub Actions | P2 | backlog |
 | `LEGAL-001` | Данные | Утвердить privacy policy, consent и retention | P1 | blocked |
-| `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | planned |
+| `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | done |
 
 ## Инфраструктура
 
@@ -64,6 +64,7 @@ Netlify уже останавливал production-деплои из-за build-
 - Backblaze B2, CORS и signed uploads;
 - автоматическое сжатие больших фото;
 - production smoke test сайта, B2, Render и Telegram;
+- production webhook Telegram и outbox worker на Render;
 - документационный слой проекта.
 
 ## Как добавлять задачи
