@@ -10,9 +10,16 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "build:render": "astro check && astro build --config astro.config.render.mjs",
+    "build:cloudflare": "astro check && astro build --config astro.config.cloudflare.mjs",
     "check": "astro check",
     "test:site": "vitest run tests/site-lead-client.test.ts",
     "preview": "astro preview",
+    "preview:cloudflare": "npm run build:cloudflare && astro preview --config astro.config.cloudflare.mjs",
+    "deploy:cloudflare": "npm run build:cloudflare && wrangler deploy --config dist/server/wrangler.json",
+    "deploy:cloudflare:dry": "npm run build:cloudflare && wrangler deploy --dry-run --config dist/server/wrangler.json",
+    "cloudflare:login": "wrangler login --browser=false --scopes account:read user:read workers:write workers_kv:write workers_scripts:write",
+    "cloudflare:whoami": "wrangler whoami",
+    "cf:typegen": "wrangler types --config wrangler.cloudflare.jsonc",
     "prices:update": "node scripts/update-glass-prices.mjs",
     "lead-hub:dev": "npm run dev --workspace @belstekloexpert/lead-hub",
     "lead-hub:build": "npm run build --workspace @belstekloexpert/lead-hub",
@@ -20,6 +27,7 @@
     "lead-hub:check": "npm run check --workspace @belstekloexpert/lead-hub"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/netlify": "^7.0.13",
     "@astrojs/node": "^10.1.4",
     "astro": "^6.4.6"
@@ -27,6 +35,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "typescript": "^5.8.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.83.0"
   }
 }

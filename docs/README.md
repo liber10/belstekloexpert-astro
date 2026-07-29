@@ -10,10 +10,11 @@
 | [Архитектура](architecture.md) | Architecture | Актуальный |
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
+| [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный |
 | [Обновление прайса](price-update.md) | Operations | Актуальный |
 | [ADR-0001: границы монорепозитория](decisions/0001-monorepo-boundaries.md) | Decision | Принят |
 | [ADR-0002: два Astro runtime](decisions/0002-dual-astro-runtime.md) | Decision | Принят |
-| [ADR-0003: Cloudflare как следующий этап](decisions/0003-cloudflare-migration-candidate.md) | Decision | Предложен |
+| [ADR-0003: Cloudflare Worker preview](decisions/0003-cloudflare-migration-candidate.md) | Decision | Принят для preview |
 
 ## Исторические документы
 

@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "belstekloexpert-preview",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-07-28",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist",
+    "run_worker_first": true
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "DEPLOY_ENV": "preview",
+    "LEAD_DELIVERY_MODE": "hub",
+    "LEAD_HUB_URL": "https://belstekloexpert-astro.onrender.com",
+    "LEAD_HUB_TIMEOUT_MS": "25000"
+  }
+}

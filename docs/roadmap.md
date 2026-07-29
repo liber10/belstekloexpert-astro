@@ -1,6 +1,6 @@
 # Roadmap BelStekloExpert
 
-Последняя актуализация: 28 июля 2026 года.
+Последняя актуализация: 29 июля 2026 года.
 
 ## Обозначения
 
@@ -25,7 +25,7 @@
 
 | ID | Задача | Приоритет | Статус | Условие готовности |
 | --- | --- | --- | --- | --- |
-| `INFRA-001` | Перенести frontend с Netlify на Cloudflare Pages/Workers | P1 | planned | Preview, SSR/API, домен и rollback проверены |
+| `INFRA-001` | Перенести frontend с Netlify на Cloudflare Workers | P1 | in-progress | Preview, SSR/API, формы с фото, домен и rollback проверены |
 | `STORAGE-001` | Оценить миграцию B2 → Cloudflare R2 | P1 | planned | Старые refs совместимы или объекты перенесены |
 | `OPS-002` | Добавить мониторинг health и outbox dead jobs | P2 | backlog | Есть уведомление о сбое |
 | `OPS-003` | Зафиксировать backup/restore Neon | P2 | backlog | Выполнен тест восстановления |
@@ -33,6 +33,12 @@
 Переход на Cloudflare нужно напомнить при следующем инфраструктурном этапе. Причина:
 Netlify уже останавливал production-деплои из-за build-кредитов, а владелец проекта
 зарегистрировал Cloudflare и получил доступ к R2.
+
+Для `INFRA-001` опубликован изолированный Worker preview
+`belstekloexpert-preview.belstekloexpert.workers.dev`. Страницы, `noindex`,
+`/api/health/` и доступность `/api/lead/` проверены 29 июля 2026 года. До полного
+smoke test остаются секрет web-ingest, CORS B2 для preview-origin и отправка формы
+с фото. Netlify и production DNS не изменялись.
 
 ## Сайт и продукт
 
