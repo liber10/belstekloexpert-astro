@@ -57,6 +57,9 @@ https://belstekloexpert-preview.belstekloexpert.workers.dev
 Bucket не переводится в public. Загрузка и чтение продолжают использовать
 короткоживущие signed URL.
 
+Для preview используется отдельное правило `bse-cloudflare-preview-put` только с
+операцией `s3_put`. Production CORS-правило и его origins сохраняются.
+
 ## Smoke test
 
 1. Главная страница отвечает HTTP 200.
@@ -69,6 +72,13 @@ Bucket не переводится в public. Загрузка и чтение �
 
 На Render Free первый health-запрос после простоя может завершиться по timeout во
 время холодного запуска. Повторная проверка выполняется после пробуждения сервиса.
+
+29 июля 2026 года smoke test пройден с исходным JPG размером 15,5 МБ:
+
+- браузер выполнил автоматическое сжатие;
+- B2 принял signed PUT из Cloudflare preview-origin;
+- Lead Hub создал синтетический тестовый лид;
+- outbox доставил лид и фото в Telegram без ошибки.
 
 ## Rollback
 

@@ -36,9 +36,10 @@ Netlify уже останавливал production-деплои из-за build-
 
 Для `INFRA-001` опубликован изолированный Worker preview
 `belstekloexpert-preview.belstekloexpert.workers.dev`. Страницы, `noindex`,
-`/api/health/` и доступность `/api/lead/` проверены 29 июля 2026 года. До полного
-smoke test остаются секрет web-ingest, CORS B2 для preview-origin и отправка формы
-с фото. Netlify и production DNS не изменялись.
+`/api/health/`, форма без фото и форма с фото 15,5 МБ проверены 29 июля 2026 года.
+Подтверждены автоматическое сжатие, signed upload в закрытый B2 и доставка outbox
+в Telegram. До завершения задачи остаются custom domain, фактический DNS rollback
+и оценка лимитов. Netlify и production DNS не изменялись.
 
 ## Сайт и продукт
 

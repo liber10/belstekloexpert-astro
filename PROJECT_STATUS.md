@@ -10,7 +10,7 @@ production-архитектуры, провайдера, режима доста
 | Область | Текущее решение | Статус | Примечание |
 | --- | --- | --- | --- |
 | Основной сайт | Netlify, Astro SSR | Работает | Runtime cutover `dcf01d8`, режим доставки `hub`, включая `/api/health/`, проверен 28 июля 2026 года |
-| Preview сайта | Cloudflare Workers, Astro SSR | Работает | `belstekloexpert-preview.belstekloexpert.workers.dev`; HTTP 200, `noindex` и Lead Hub health проверены 29 июля 2026 года. Production DNS и Netlify не изменены |
+| Preview сайта | Cloudflare Workers, Astro SSR | Работает | `belstekloexpert-preview.belstekloexpert.workers.dev`; HTTP 200, `noindex`, Lead Hub health, форма, фото и Telegram проверены 29 июля 2026 года. Production DNS и Netlify не изменены |
 | Репозиторий | GitHub `main` | Работает | `liber10/belstekloexpert-astro` |
 | Lead Hub | Render Free Web Service | Работает | Production `dcf01d8`; readiness и приём тестовой заявки проверены 28 июля 2026 года |
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
@@ -42,9 +42,9 @@ production-архитектуры, провайдера, режима доста
    зависимости.
 2. Lead Hub работает на Render Free Web Service. После простоя возможен холодный
    запуск с задержкой; нужен мониторинг времени ответа форм и задач outbox.
-3. Cloudflare preview пока не имеет `WEB_INGEST_API_KEY`, поэтому отправка формы
-   не считается проверенной. Для фото также нужно разрешить точный preview-origin
-   в CORS Backblaze B2. До этих проверок production-переключение запрещено.
+3. Cloudflare preview прошёл функциональный smoke test, но ещё не привязан к
+   production-домену. Перед cutover нужно отдельно проверить custom domain,
+   фактический DNS rollback и лимиты бесплатного плана.
 4. Исторический аудит от 10 июля описывает состояние до создания Lead Hub и хранится
    только как архив.
 5. Локальное рабочее дерево может содержать пользовательские изменения. Их нельзя
@@ -54,7 +54,7 @@ production-архитектуры, провайдера, режима доста
 
 | ID | Решение | Приоритет | Состояние |
 | --- | --- | --- | --- |
-| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: Worker preview опубликован, read-only smoke пройден |
+| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: Worker preview и форма с фото проверены; остаются домен и rollback |
 | `STORAGE-001` | Сравнить рабочий B2 с Cloudflare R2 и подготовить план миграции | P1 | Запланировано |
 | `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Выполнено |
 | `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Требует решения владельца |

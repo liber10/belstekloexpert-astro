@@ -46,14 +46,17 @@ Cloudflare R2 остаётся отдельным кандидатом для п
 - HTTP 200 главной страницы;
 - `X-Robots-Tag: noindex, nofollow`;
 - `/api/health/` и соединение Lead Hub с PostgreSQL;
-- ожидаемый HTTP 405 для GET `/api/lead/` с pipeline `hub`.
+- ожидаемый HTTP 405 для GET `/api/lead/` с pipeline `hub`;
+- `WEB_INGEST_API_KEY` подключён как Cloudflare secret;
+- отдельное CORS-правило B2 разрешает только точный preview-origin для `PUT`;
+- форма без фото создаёт лид через Lead Hub;
+- исходное фото 15,5 МБ сжимается, загружается signed PUT и доставляется в
+  Telegram через outbox.
 
 До production cutover остаются:
 
-- добавить `WEB_INGEST_API_KEY` как Cloudflare secret;
-- разрешить preview-origin в CORS Backblaze B2;
-- выполнить smoke test формы, сжатия фото, signed upload и Telegram;
-- проверить custom domain и документированный rollback.
+- проверить custom domain и фактический DNS rollback;
+- зафиксировать реальные бесплатные лимиты и прогноз объёма.
 
 Netlify остаётся production-хостингом, DNS не изменён. Backblaze B2 остаётся
 production-хранилищем. Задачи отслеживаются как `INFRA-001` и `STORAGE-001`.
