@@ -1,6 +1,6 @@
 # Состояние проекта BelStekloExpert
 
-Последняя актуализация: 29 июля 2026 года.
+Последняя актуализация: 30 июля 2026 года.
 
 Этот файл является короткой панелью проекта. Его нужно обновлять после изменения
 production-архитектуры, провайдера, режима доставки заявок или значимого ограничения.
@@ -17,7 +17,7 @@ production-архитектуры, провайдера, режима доста
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
 | Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Webhook регистрируется при старте; production smoke test доставки выполнен 28 июля 2026 года |
 | Резервное object storage | Cloudflare R2 | Доступ получен | Пока не используется в production |
-| Основной домен | `belstekloexpert.by` | Работает | Canonical, sitemap и формы используют домен |
+| Основной домен | `belstekloexpert.by` | Частично | Apex работает на Netlify; `www` не разрешается из-за ошибочного CNAME у текущего DNS-провайдера |
 
 ## Что уже реализовано
 
@@ -43,18 +43,22 @@ production-архитектуры, провайдера, режима доста
 2. Lead Hub работает на Render Free Web Service. После простоя возможен холодный
    запуск с задержкой; нужен мониторинг времени ответа форм и задач outbox.
 3. Cloudflare preview прошёл функциональный smoke test, но ещё не привязан к
-   production-домену. Перед cutover нужно отдельно проверить custom domain,
-   фактический DNS rollback и лимиты бесплатного плана.
+   production-домену. Free bundle limit пройден, но перед cutover нужно проверить
+   CPU metrics, custom domain и фактический DNS rollback.
 4. Исторический аудит от 10 июля описывает состояние до создания Lead Hub и хранится
    только как архив.
 5. Локальное рабочее дерево может содержать пользовательские изменения. Их нельзя
    автоматически восстанавливать, удалять или включать в чужой коммит.
+6. Authoritative DNS остаётся на Hoster.by. Apex работает, но
+   `www.belstekloexpert.by` не разрешается; перед переносом зоны нужен полный экспорт
+   записей и отдельная проверка почтовых MX/SPF/DKIM/DMARC.
 
 ## Ближайшие решения
 
 | ID | Решение | Приоритет | Состояние |
 | --- | --- | --- | --- |
-| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: Worker preview и форма с фото проверены; остаются домен и rollback |
+| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: preview, production config и Free limits проверены; остаются DNS, CPU metrics и rollback |
+| `DNS-001` | Исправить `www` и перенести authoritative DNS в Cloudflare без смены origin | P1 | Запланировано |
 | `STORAGE-001` | Сравнить рабочий B2 с Cloudflare R2 и подготовить план миграции | P1 | Запланировано |
 | `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Выполнено |
 | `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Требует решения владельца |

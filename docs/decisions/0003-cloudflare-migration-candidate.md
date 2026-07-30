@@ -53,10 +53,25 @@ Cloudflare R2 остаётся отдельным кандидатом для п
 - исходное фото 15,5 МБ сжимается, загружается signed PUT и доставляется в
   Telegram через outbox.
 
+30 июля подготовлены отдельная production-конфигурация Worker и read-only smoke
+script. Static assets исключены из безусловного запуска Worker. Dry run показал
+bundle около 1,5 MiB и 168 assets, что укладывается в Cloudflare Free.
+
+Зафиксированные Free limits: 100 000 Worker requests в сутки, 10 ms CPU на
+HTTP-вызов, bundle до 3 MB. SSR остаётся риском до проверки CPU Time P50/P90/P99 в
+Cloudflare Metrics.
+
+Публичный DNS-аудит выявил: зона всё ещё на Hoster.by, apex корректно ведёт на
+Netlify, а `www` не разрешается из-за ошибочного CNAME. Nameserver migration нужно
+выполнить отдельным этапом, сохранив Netlify origin, и только затем подключать
+Worker Custom Domain.
+
 До production cutover остаются:
 
-- проверить custom domain и фактический DNS rollback;
-- зафиксировать реальные бесплатные лимиты и прогноз объёма.
+- исправить `www` и получить полный экспорт DNS-зоны;
+- перенести authoritative DNS в Cloudflare, сохранив Netlify origin;
+- проверить CPU metrics и фактический объём Worker requests;
+- проверить custom domain и быстрый rollback origin.
 
 Netlify остаётся production-хостингом, DNS не изменён. Backblaze B2 остаётся
 production-хранилищем. Задачи отслеживаются как `INFRA-001` и `STORAGE-001`.

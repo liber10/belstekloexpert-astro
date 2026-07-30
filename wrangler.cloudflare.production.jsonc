@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "belstekloexpert-preview",
+  "name": "belstekloexpert-production",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-07-28",
   "compatibility_flags": [
@@ -28,7 +28,7 @@
     "enabled": true
   },
   "vars": {
-    "DEPLOY_ENV": "preview",
+    "DEPLOY_ENV": "production",
     "LEAD_DELIVERY_MODE": "hub",
     "LEAD_HUB_URL": "https://belstekloexpert-astro.onrender.com",
     "LEAD_HUB_TIMEOUT_MS": "25000"

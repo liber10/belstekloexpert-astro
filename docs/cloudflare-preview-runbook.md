@@ -18,12 +18,17 @@ Workers. Production-сайт продолжает работать на Netlify,
 Preview получает `X-Robots-Tag: noindex, nofollow`. Локальный `.env` отключён как
 источник Cloudflare build variables и не должен попадать в `dist`.
 
+HTML-страницы и API проходят через Worker, чтобы preview стабильно получал
+`noindex`. CSS, изображения, PDF и другие явно исключённые assets обслуживаются
+напрямую и не расходуют Worker requests.
+
 ## Сборка и публикация
 
 ```powershell
 npm run build:cloudflare
 npm run deploy:cloudflare:dry
 npm run deploy:cloudflare
+npm run check:cloudflare:preview
 ```
 
 Wrangler публикует конфигурацию, сгенерированную Astro в
@@ -88,3 +93,6 @@ preview перестают использовать, а Netlify продолжа
 После будущего custom-domain cutover rollback должен включать возврат DNS на
 предыдущий Netlify target, проверку `/api/health/` и контрольную заявку без фото.
 Сам cutover требует отдельного решения владельца проекта.
+
+Полная последовательность DNS migration, production Worker и rollback описана в
+[Cloudflare production cutover](cloudflare-cutover-runbook.md).

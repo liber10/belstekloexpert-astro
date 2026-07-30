@@ -1,6 +1,6 @@
 # Roadmap BelStekloExpert
 
-Последняя актуализация: 29 июля 2026 года.
+Последняя актуализация: 30 июля 2026 года.
 
 ## Обозначения
 
@@ -26,6 +26,7 @@
 | ID | Задача | Приоритет | Статус | Условие готовности |
 | --- | --- | --- | --- | --- |
 | `INFRA-001` | Перенести frontend с Netlify на Cloudflare Workers | P1 | in-progress | Preview, SSR/API, формы с фото, домен и rollback проверены |
+| `DNS-001` | Исправить `www` и перенести authoritative DNS в Cloudflare без смены origin | P1 | planned | Apex, `www` и почтовые записи проверены, сайт остаётся на Netlify |
 | `STORAGE-001` | Оценить миграцию B2 → Cloudflare R2 | P1 | planned | Старые refs совместимы или объекты перенесены |
 | `OPS-002` | Добавить мониторинг health и outbox dead jobs | P2 | backlog | Есть уведомление о сбое |
 | `OPS-003` | Зафиксировать backup/restore Neon | P2 | backlog | Выполнен тест восстановления |
@@ -38,8 +39,10 @@ Netlify уже останавливал production-деплои из-за build-
 `belstekloexpert-preview.belstekloexpert.workers.dev`. Страницы, `noindex`,
 `/api/health/`, форма без фото и форма с фото 15,5 МБ проверены 29 июля 2026 года.
 Подтверждены автоматическое сжатие, signed upload в закрытый B2 и доставка outbox
-в Telegram. До завершения задачи остаются custom domain, фактический DNS rollback
-и оценка лимитов. Netlify и production DNS не изменялись.
+в Telegram. 30 июля добавлены отдельная production-конфигурация, read-only smoke и
+оптимизированная раздача static assets. Free bundle limit пройден; до завершения
+остаются DNS migration, проверка CPU metrics, custom domain и фактический rollback.
+Netlify и production DNS не изменялись.
 
 ## Сайт и продукт
 

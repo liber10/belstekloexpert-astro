@@ -11,6 +11,7 @@
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
 | [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный |
+| [Cloudflare production cutover](cloudflare-cutover-runbook.md) | Operations | Подготовлен, cutover не утверждён |
 | [Обновление прайса](price-update.md) | Operations | Актуальный |
 | [ADR-0001: границы монорепозитория](decisions/0001-monorepo-boundaries.md) | Decision | Принят |
 | [ADR-0002: два Astro runtime](decisions/0002-dual-astro-runtime.md) | Decision | Принят |
