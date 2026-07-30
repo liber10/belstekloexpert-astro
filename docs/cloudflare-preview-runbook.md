@@ -94,6 +94,25 @@ Bucket не переводится в public. Загрузка и чтение �
 проверка `belstekloexpert.by` подтвердила, что Netlify production остаётся
 indexable и работоспособным.
 
+## Worker metrics
+
+30 июля 2026 года метрики отфильтрованы по активной версии `c4e67557`. После
+read-only серии запросов Cloudflare зафиксировал:
+
+- 36 Worker invocations;
+- CPU Time P50/P90/P99: 0,90/3,06/4,58 ms;
+- median CPU активного deployment: 0,90 ms;
+- errors, exceeded CPU и exceeded memory: 0;
+- memory P50/P90/P99: 16,02/16,16/25,43 MB;
+- 26 static asset requests с cache hit rate 96,15%.
+
+Статические страницы обходят Worker, поэтому эти значения относятся к SSR/API.
+Preview укладывается в CPU и memory limits Free plan. Wall Time P90/P99 достигал
+3/15 секунд из-за внешнего Render subrequest и не является Worker CPU. В серии из
+15 health-запросов один вернул временный HTTP 503; следующие 14 и отдельная серия
+5/5 вернули HTTP 200. Перед production cutover риск холодного старта Render нужно
+учесть в мониторинге и пользовательском поведении формы.
+
 ## Rollback
 
 Пока Worker не привязан к production-домену, rollback не требует изменения DNS:

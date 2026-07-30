@@ -10,7 +10,7 @@ production-архитектуры, провайдера, режима доста
 | Область | Текущее решение | Статус | Примечание |
 | --- | --- | --- | --- |
 | Основной сайт | Netlify, Astro SSR | Работает | Runtime cutover `dcf01d8`, режим доставки `hub`, включая `/api/health/`, проверен 28 июля 2026 года |
-| Preview сайта | Cloudflare Workers, Astro SSR | Работает | Commit `669fd95`, Worker version `c4e67557-1072-49a6-a8f9-a1eeb23ea357`; static HTML и SSR защищены `noindex`, read-only smoke пройден 30 июля. Форма, фото и Telegram проверены 29 июля. Production DNS и Netlify не изменены |
+| Preview сайта | Cloudflare Workers, Astro SSR | Работает | Commit `669fd95`, Worker version `c4e67557-1072-49a6-a8f9-a1eeb23ea357`; static HTML и SSR защищены `noindex`, read-only smoke пройден 30 июля. На 36 вызовах активной версии CPU P50/P90/P99 составил 0,90/3,06/4,58 ms, resource errors — 0. Форма, фото и Telegram проверены 29 июля. Production DNS и Netlify не изменены |
 | Репозиторий | GitHub `main` | Работает | `liber10/belstekloexpert-astro`; Cloudflare preview fix `669fd95` отправлен 30 июля 2026 года |
 | Lead Hub | Render Free Web Service | Работает | Production `dcf01d8`; readiness и приём тестовой заявки проверены 28 июля 2026 года |
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
@@ -40,12 +40,15 @@ production-архитектуры, провайдера, режима доста
    `dcf01d8` и последующий документационный деплой 28 июля прошли успешно, но расход
    кредитов нужно продолжать контролировать; Cloudflare остаётся планом снижения этой
    зависимости.
-2. Lead Hub работает на Render Free Web Service. После простоя возможен холодный
-   запуск с задержкой; нужен мониторинг времени ответа форм и задач outbox.
+2. Lead Hub работает на Render Free Web Service. В проверке 30 июля один из 15
+   health-запросов вернул временный HTTP 503, следующие 14 и дополнительная серия
+   5/5 ответили HTTP 200. Холодный запуск после простоя остаётся риском; нужен
+   мониторинг времени ответа форм и задач outbox.
 3. Cloudflare preview прошёл функциональный smoke test; prerendered HTML
    обслуживается как static assets и получает host-specific `noindex`, SSR и API
-   проходят через Worker. Free bundle limit пройден, но перед cutover нужно
-   проверить CPU metrics, custom domain и фактический DNS rollback.
+   проходят через Worker. Free bundle и CPU limits пройдены: на 36 вызовах активной
+   версии CPU P99 составил 4,58 ms, ошибок и превышений лимитов не было. Перед
+   cutover остаётся проверить custom domain и фактический DNS rollback.
 4. Исторический аудит от 10 июля описывает состояние до создания Lead Hub и хранится
    только как архив.
 5. Локальное рабочее дерево может содержать пользовательские изменения. Их нельзя
@@ -58,7 +61,7 @@ production-архитектуры, провайдера, режима доста
 
 | ID | Решение | Приоритет | Состояние |
 | --- | --- | --- | --- |
-| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: preview `669fd95`, production config, static routing и Free limits проверены; остаются DNS, CPU metrics и rollback |
+| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: preview `669fd95`, production config, static routing, bundle и CPU limits проверены; остаются DNS, custom domain и rollback |
 | `DNS-001` | Исправить `www` и перенести authoritative DNS в Cloudflare без смены origin | P1 | Запланировано |
 | `STORAGE-001` | Сравнить рабочий B2 с Cloudflare R2 и подготовить план миграции | P1 | Запланировано |
 | `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Выполнено |

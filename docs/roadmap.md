@@ -44,8 +44,11 @@ Netlify уже останавливал production-деплои из-за build-
 preview: static HTML и SSR получают `noindex`, health и lead endpoint прошли
 проверку; действующий Netlify production остался indexable и также прошёл
 read-only smoke. Free bundle limit пройден; до завершения остаются DNS migration,
-проверка CPU metrics, custom domain и фактический rollback. Production DNS не
-изменялся.
+custom domain и фактический rollback. На 36 вызовах активной версии Worker CPU
+P50/P90/P99 составил 0,90/3,06/4,58 ms, ошибок и превышений resource limits не
+было. Один из 15 health-запросов получил временный HTTP 503 во время обращения к
+Render; следующие 14 и дополнительная серия 5/5 завершились HTTP 200. Production
+DNS не изменялся.
 
 ## Сайт и продукт
 
