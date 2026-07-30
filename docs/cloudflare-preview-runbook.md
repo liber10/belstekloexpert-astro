@@ -18,9 +18,11 @@ Workers. Production-сайт продолжает работать на Netlify,
 Preview получает `X-Robots-Tag: noindex, nofollow`. Локальный `.env` отключён как
 источник Cloudflare build variables и не должен попадать в `dist`.
 
-HTML-страницы и API проходят через Worker, чтобы preview стабильно получал
-`noindex`. CSS, изображения, PDF и другие явно исключённые assets обслуживаются
-напрямую и не расходуют Worker requests.
+Prerendered HTML, CSS, изображения и PDF обслуживаются как static assets без
+запуска Worker. После Cloudflare-сборки скрипт создаёт в `dist/client/_headers`
+host-specific правило `noindex` только для `*.workers.dev`. SSR и API проходят
+через Worker, где тот же заголовок добавляет middleware. Production-домен это
+правило не затрагивает.
 
 ## Сборка и публикация
 
@@ -68,7 +70,8 @@ Bucket не переводится в public. Загрузка и чтение �
 ## Smoke test
 
 1. Главная страница отвечает HTTP 200.
-2. Ответ содержит `X-Robots-Tag: noindex, nofollow`.
+2. Главная и prerendered content page содержат
+   `X-Robots-Tag: noindex, nofollow`.
 3. `/api/health/` отвечает HTTP 200 и сообщает только `database: connected`.
 4. Тестовая форма создаёт один лид в Lead Hub.
 5. Большое тестовое фото сжимается в браузере и загружается signed PUT.

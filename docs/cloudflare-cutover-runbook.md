@@ -36,9 +36,11 @@ DMARC нужно проверить отдельно, даже если почт
 Секрет `WEB_INGEST_API_KEY` задаётся отдельно для каждого Worker и не хранится в
 Git.
 
-HTML-страницы и `/api/*` проходят через Worker. Статические CSS, изображения, PDF
-и другие явно исключённые assets обслуживаются до Worker script. Это сохраняет
-`noindex` на всех preview HTML и уменьшает расход Worker requests.
+Prerendered HTML, CSS, изображения и PDF обслуживаются как static assets без
+запуска Worker. Cloudflare-сборка создаёт host-specific `_headers`-правило,
+которое добавляет `noindex` на `*.workers.dev`. SSR и `/api/*` проходят через
+Worker, где `noindex` добавляет middleware. Custom domain остаётся indexable, а
+static traffic не расходует Worker requests.
 
 ## Лимиты Cloudflare Free
 
@@ -70,6 +72,7 @@ Cloudflare Dashboard нужно проверить Worker Metrics:
 - [Workers limits](https://developers.cloudflare.com/workers/platform/limits/);
 - [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/);
 - [Static assets billing](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/);
+- [Static asset headers](https://developers.cloudflare.com/workers/static-assets/headers/);
 - [Worker metrics](https://developers.cloudflare.com/workers/observability/metrics-and-analytics/);
 - [Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/).
 
@@ -117,7 +120,9 @@ npm run deploy:cloudflare:production
 4. проверить CPU metrics и отсутствие resource errors;
 5. записать проверенный commit и Worker version.
 
-URL `*.workers.dev` всегда получает `noindex`, даже для production-конфигурации.
+URL `*.workers.dev` получает `noindex` на static assets через сгенерированный
+`_headers`, а на SSR-ответах через middleware, в том числе для
+production-конфигурации.
 
 ## Этап C: переключить origin
 
@@ -126,10 +131,10 @@ Custom Domain требует активную Cloudflare zone. Cloudflare соз
 
 1. Зафиксировать работающий Netlify target для rollback.
 2. Убедиться, что production Worker и его secret проверены.
-3. Добавить к production Worker custom domains:
-   `belstekloexpert.by` и `www.belstekloexpert.by`.
-4. Проверить автоматический TLS certificate.
-5. Проверить `308` redirect с `www` на apex.
+3. Добавить к production Worker только Custom Domain `belstekloexpert.by`.
+4. Для `www` создать proxied `A` на зарезервированный placeholder
+   `192.0.2.0` и Cloudflare Redirect Rule `www` → apex с HTTP 308.
+5. Проверить автоматический TLS certificate и redirect с `www` на apex.
 6. Выполнить read-only smoke, затем одну синтетическую заявку без фото.
 7. Проверить Lead Hub, PostgreSQL и Telegram.
 8. Через сутки проверить ошибки, CPU и количество Worker requests.
@@ -138,12 +143,13 @@ Custom Domain требует активную Cloudflare zone. Cloudflare соз
 
 Cloudflare остаётся authoritative DNS. Nameserver не меняется.
 
-1. Удалить оба Custom Domain у production Worker.
-2. Восстановить apex `A 75.2.60.5`.
-3. Восстановить `www` CNAME на Netlify site hostname.
-4. Проверить TLS, главную, `/api/health/` и `/api/lead/`.
-5. Отправить одну синтетическую заявку без фото.
-6. Зафиксировать причину rollback в `PROJECT_STATUS.md`.
+1. Удалить Custom Domain `belstekloexpert.by` у production Worker.
+2. Отключить Redirect Rule `www` → apex.
+3. Восстановить apex `A 75.2.60.5`.
+4. Восстановить `www` CNAME на Netlify site hostname.
+5. Проверить TLS, главную, `/api/health/` и `/api/lead/`.
+6. Отправить одну синтетическую заявку без фото.
+7. Зафиксировать причину rollback в `PROJECT_STATUS.md`.
 
 Переключение origin и rollback нельзя совмещать с миграцией B2 → R2. Хранилище
 фото меняется отдельной задачей `STORAGE-001`.

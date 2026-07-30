@@ -10,19 +10,7 @@
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist",
-    "run_worker_first": [
-      "/*",
-      "!/_astro/*",
-      "!/images/*",
-      "!/docs/*",
-      "!/favicon.*",
-      "!/apple-touch-icon.png",
-      "!/byn-ico.svg",
-      "!/robots.txt",
-      "!/llms.txt",
-      "!/yandex_*.html",
-      "!/sitemap.xml"
-    ]
+    "run_worker_first": false
   },
   "observability": {
     "enabled": true

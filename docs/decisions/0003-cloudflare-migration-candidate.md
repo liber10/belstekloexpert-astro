@@ -54,8 +54,10 @@ Cloudflare R2 остаётся отдельным кандидатом для п
   Telegram через outbox.
 
 30 июля подготовлены отдельная production-конфигурация Worker и read-only smoke
-script. Static assets исключены из безусловного запуска Worker. Dry run показал
-bundle около 1,5 MiB и 168 assets, что укладывается в Cloudflare Free.
+script. Prerendered HTML и остальные static assets обслуживаются без запуска
+Worker. Их `noindex` на `*.workers.dev` задаётся сгенерированным `_headers`, а
+SSR-ответов — middleware. Dry run показал bundle около 1,5 MiB и 168 assets, что
+укладывается в Cloudflare Free.
 
 Зафиксированные Free limits: 100 000 Worker requests в сутки, 10 ms CPU на
 HTTP-вызов, bundle до 3 MB. SSR остаётся риском до проверки CPU Time P50/P90/P99 в
