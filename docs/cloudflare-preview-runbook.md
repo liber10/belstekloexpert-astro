@@ -88,6 +88,12 @@ Bucket не переводится в public. Загрузка и чтение �
 - Lead Hub создал синтетический тестовый лид;
 - outbox доставил лид и фото в Telegram без ошибки.
 
+30 июля 2026 года commit `669fd95` опубликован как Worker version
+`c4e67557-1072-49a6-a8f9-a1eeb23ea357`. Read-only smoke подтвердил `noindex` на
+главной и prerendered content page, рабочие health и lead endpoints. Параллельная
+проверка `belstekloexpert.by` подтвердила, что Netlify production остаётся
+indexable и работоспособным.
+
 ## Rollback
 
 Пока Worker не привязан к production-домену, rollback не требует изменения DNS:

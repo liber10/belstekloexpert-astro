@@ -40,9 +40,12 @@ Netlify уже останавливал production-деплои из-за build-
 `/api/health/`, форма без фото и форма с фото 15,5 МБ проверены 29 июля 2026 года.
 Подтверждены автоматическое сжатие, signed upload в закрытый B2 и доставка outbox
 в Telegram. 30 июля добавлены отдельная production-конфигурация, read-only smoke и
-оптимизированная раздача static assets. Free bundle limit пройден; до завершения
-остаются DNS migration, проверка CPU metrics, custom domain и фактический rollback.
-Netlify и production DNS не изменялись.
+оптимизированная раздача static assets. Commit `669fd95` повторно опубликован в
+preview: static HTML и SSR получают `noindex`, health и lead endpoint прошли
+проверку; действующий Netlify production остался indexable и также прошёл
+read-only smoke. Free bundle limit пройден; до завершения остаются DNS migration,
+проверка CPU metrics, custom domain и фактический rollback. Production DNS не
+изменялся.
 
 ## Сайт и продукт
 
