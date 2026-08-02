@@ -252,7 +252,7 @@ const dataJson = JSON.stringify(calculatorPrices);
       return `
         <span class="glass-calculator__currency" aria-label="${label}">
           <span>${formatBynNumber(value)}</span>
-          <img class="glass-calculator__currency-icon" src="/byn-ico.svg" alt="" aria-hidden="true" />
+          <span class="glass-calculator__currency-icon" aria-hidden="true"></span>
         </span>
       `;
     };
@@ -803,10 +803,13 @@ const dataJson = JSON.stringify(calculatorPrices);
   }
 
   :global(.glass-calculator__currency-icon) {
-    display: block;
+    display: inline-block;
     width: 0.58em;
     height: 0.72em;
-    object-fit: contain;
+    flex: 0 0 auto;
+    background-color: currentColor;
+    -webkit-mask: url('/byn-ico.svg') center / contain no-repeat;
+    mask: url('/byn-ico.svg') center / contain no-repeat;
   }
 
   :global(.glass-calculator__range-dash) {

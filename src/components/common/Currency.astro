@@ -20,6 +20,6 @@ const ariaLabel = `${prefix}${label} белорусских рублей${suffix
 <span class:list={['currency-inline', className]} aria-label={ariaLabel}>
   {prefix && <span>{prefix}</span>}
   <span>{label}</span>
-  <img src="/byn-ico.svg" alt="" aria-hidden="true" loading="lazy" />
+  <span class="currency-inline__symbol" aria-hidden="true"></span>
   {suffix && <span>{suffix}</span>}
 </span>

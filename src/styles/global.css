@@ -52,10 +52,15 @@ a {
   white-space: nowrap;
 }
 
-.currency-inline img {
-  width: 0.76em;
-  height: 0.96em;
-  transform: translateY(0.1em);
+.currency-inline__symbol {
+  display: inline-block;
+  width: 0.68em;
+  height: 0.84em;
+  flex: 0 0 auto;
+  background-color: currentColor;
+  -webkit-mask: url('/byn-ico.svg') center / contain no-repeat;
+  mask: url('/byn-ico.svg') center / contain no-repeat;
+  transform: translateY(0.08em);
 }
 
 button,
@@ -282,7 +287,7 @@ textarea {
   font-weight: 800;
 }
 
-.hero__trust span {
+.hero__trust > span {
   border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 999px;
   padding: 7px 12px;
@@ -1145,7 +1150,7 @@ textarea {
     gap: 7px;
   }
 
-  .hero__trust span {
+  .hero__trust > span {
     padding: 5px 9px;
     font-size: 0.84rem;
   }
