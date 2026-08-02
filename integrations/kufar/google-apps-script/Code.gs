@@ -57,7 +57,7 @@ function processKufarMail() {
 function buildKufarEvent(message) {
   const html = String(message.getBody() || '');
   const plain = String(message.getPlainBody() || '');
-  const conversationUrl = extractConversationUrl(html);
+  const conversationUrl = extractConversationUrl(html, plain);
   const customerMessage = extractCustomerMessage(plain, html);
   const metadata = extractSubjectMetadata(message.getSubject());
   const event = {
@@ -91,7 +91,7 @@ function sendToLeadHub(event) {
   return { accepted: result.accepted === true, deduplicated: result.deduplicated === true };
 }
 
-function extractConversationUrl(html) {
+function extractConversationUrl(html, plain) {
   const anchorRegex = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
   let match;
   let fallback = '';
@@ -101,6 +101,11 @@ function extractConversationUrl(html) {
     if (!validateKufarUrl(href)) continue;
     if (/ответить|открыть диалог/i.test(text)) return href;
     if (!fallback) fallback = href;
+  }
+  const plainMatches = String(plain || '').match(/https:\/\/(?:www\.)?kufar\.by\/account\/messaging\/[A-Za-z0-9-]+[^\s<>]*/gi) || [];
+  for (let index = 0; index < plainMatches.length; index += 1) {
+    const candidate = plainMatches[index].replace(/[),.;]+$/, '');
+    if (validateKufarUrl(candidate)) return candidate;
   }
   return fallback;
 }
@@ -117,7 +122,20 @@ function validateKufarUrl(value) {
 }
 
 function extractCustomerMessage(plain, html) {
-  let text = String(plain || '');
+  const raw = String(plain || '').replace(/\r\n?/g, '\n');
+  const replyMarker = raw.search(/^\s*Ответить\s*$/mi);
+  if (replyMarker >= 0) {
+    const beforeReply = raw.slice(0, replyMarker).trim();
+    const paragraphs = beforeReply.split(/\n\s*\n/)
+      .map(function (value) { return normalizeKufarText(value); })
+      .filter(function (value) {
+        return value && !/^<?https?:\/\//i.test(value) &&
+          !/у вас новое сообщение о товаре/i.test(value);
+      });
+    if (paragraphs.length) return paragraphs[paragraphs.length - 1].slice(0, MAX_CUSTOMER_MESSAGE);
+  }
+
+  let text = raw;
   text = text.replace(/Нажмите, чтобы открыть диалог на Куфаре/gi, '');
   const footer = text.search(/Это автоматическое уведомление/i);
   if (footer >= 0) text = text.slice(0, footer);
