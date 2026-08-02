@@ -168,8 +168,54 @@ export const integrationInbox = pgTable(
   ],
 );
 
+export const telegramPublicSessions = pgTable(
+  'telegram_public_sessions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    telegramUserId: varchar('telegram_user_id', { length: 40 }).notNull(),
+    telegramChatId: varchar('telegram_chat_id', { length: 40 }).notNull(),
+    telegramUsername: varchar('telegram_username', { length: 64 }),
+    stage: varchar('stage', { length: 32 }).notNull().default('service'),
+    payload: jsonb('payload').$type<Record<string, unknown>>().notNull().default(sql`'{}'::jsonb`),
+    acquisitionCode: varchar('acquisition_code', { length: 64 }),
+    lastUpdateId: varchar('last_update_id', { length: 40 }),
+    submittedLeadId: uuid('submitted_lead_id').references(() => leads.id, { onDelete: 'set null' }),
+    expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('telegram_public_sessions_chat_uq').on(table.telegramChatId),
+    index('telegram_public_sessions_expiry_idx').on(table.stage, table.expiresAt),
+  ],
+);
+
+export const telegramPublicOutbox = pgTable(
+  'telegram_public_outbox',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    sessionId: uuid('session_id').references(() => telegramPublicSessions.id, { onDelete: 'cascade' }),
+    chatId: varchar('chat_id', { length: 40 }).notNull(),
+    payload: jsonb('payload').$type<Record<string, unknown>>().notNull(),
+    idempotencyKey: varchar('idempotency_key', { length: 255 }).notNull(),
+    status: varchar('status', { length: 32 }).notNull().default('pending'),
+    attemptCount: integer('attempt_count').notNull().default(0),
+    nextAttemptAt: timestamp('next_attempt_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    lastError: text('last_error'),
+    processedAt: timestamp('processed_at', { withTimezone: true, mode: 'date' }),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('telegram_public_outbox_idempotency_uq').on(table.idempotencyKey),
+    index('telegram_public_outbox_pending_idx').on(table.status, table.nextAttemptAt, table.createdAt),
+  ],
+);
+
 export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
 export type LeadEvent = typeof leadEvents.$inferSelect;
 export type OutboxJob = typeof integrationOutbox.$inferSelect;
 export type InboxEvent = typeof integrationInbox.$inferSelect;
+export type TelegramPublicSession = typeof telegramPublicSessions.$inferSelect;
+export type TelegramPublicOutboxJob = typeof telegramPublicOutbox.$inferSelect;

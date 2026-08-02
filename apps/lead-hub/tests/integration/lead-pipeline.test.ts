@@ -5,8 +5,16 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import { buildRuntime } from '../../src/app.js';
 import { loadConfig } from '../../src/config.js';
 import { createDatabaseClient, type DatabaseClient } from '../../src/db/client.js';
-import { integrationInbox, integrationOutbox, leadEvents, leads } from '../../src/db/schema.js';
+import {
+  integrationInbox,
+  integrationOutbox,
+  leadEvents,
+  leads,
+  telegramPublicOutbox,
+  telegramPublicSessions,
+} from '../../src/db/schema.js';
 import type { TelegramIntegration } from '../../src/integrations/telegram/index.js';
+import type { TelegramPublicIntegration } from '../../src/integrations/telegram-public.js';
 import type { LeadResponse } from '../../src/contracts/web-lead.js';
 
 const databaseUrl = process.env.TEST_DATABASE_URL;
@@ -15,6 +23,7 @@ const integration = describe.runIf(Boolean(databaseUrl));
 integration('Lead Hub database pipeline', () => {
   let database: DatabaseClient;
   let runtime: Awaited<ReturnType<typeof buildRuntime>>;
+  let publicRuntime: Awaited<ReturnType<typeof buildRuntime>>;
   const sendLeadCard = vi.fn(() => Promise.resolve({ chatId: '-100123', messageId: 42 }));
   const editLeadCard = vi.fn(() => Promise.resolve());
   const handleUpdate = vi.fn(() => Promise.resolve());
@@ -23,6 +32,11 @@ integration('Lead Hub database pipeline', () => {
     sendLeadCard,
     editLeadCard,
     handleUpdate,
+  };
+  const sendPublicMessage = vi.fn(() => Promise.resolve());
+  const telegramPublic: TelegramPublicIntegration = {
+    registerWebhook: vi.fn(() => Promise.resolve()),
+    sendMessage: sendPublicMessage,
   };
 
   beforeAll(async () => {
@@ -41,17 +55,31 @@ integration('Lead Hub database pipeline', () => {
     });
     runtime = await buildRuntime(config, { database, telegram, startWorker: false });
     await runtime.app.ready();
+    const publicConfig = loadConfig({
+      NODE_ENV: 'test',
+      DATABASE_URL: databaseUrl,
+      TELEGRAM_PUBLIC_ENABLED: 'true',
+      TELEGRAM_PUBLIC_BOT_TOKEN: 'integration-public-token',
+      TELEGRAM_PUBLIC_BOT_USERNAME: 'BelStekloExpertHelpBot',
+      TELEGRAM_PUBLIC_WEBHOOK_SECRET: 'integration-public-webhook-secret',
+      TELEGRAM_PUBLIC_PRIVACY_VERSION: 'integration-v1',
+      LEAD_HUB_PUBLIC_URL: 'https://lead-hub.example.test',
+      LOG_LEVEL: 'silent',
+    });
+    publicRuntime = await buildRuntime(publicConfig, { database, telegram: null, telegramPublic, startWorker: false });
+    await publicRuntime.app.ready();
   });
 
   beforeEach(async () => {
     await database.db.execute(
-      sql`truncate table integration_inbox, integration_outbox, lead_events, leads restart identity cascade`,
+      sql`truncate table telegram_public_outbox, telegram_public_sessions, integration_inbox, integration_outbox, lead_events, leads restart identity cascade`,
     );
     vi.clearAllMocks();
   });
 
   afterAll(async () => {
     if (runtime) await runtime.app.close();
+    if (publicRuntime) await publicRuntime.app.close();
     if (database) await database.pool.end();
   });
 
@@ -276,5 +304,33 @@ integration('Lead Hub database pipeline', () => {
       payload: { serviceType: 'Замена стекла' },
     });
     expect(response.statusCode).toBe(400);
+  });
+
+  it('durably completes the public Telegram FSM and creates one attributed lead', async () => {
+    const updates = [
+      { update_id: 101, message: { message_id: 1, chat: { id: 7001, type: 'private' }, from: { id: 7001, first_name: 'Test' }, text: '/start qr_test' } },
+      { update_id: 102, message: { message_id: 2, chat: { id: 7001, type: 'private' }, from: { id: 7001, first_name: 'Test' }, text: 'Замена стекла' } },
+      { update_id: 103, message: { message_id: 3, chat: { id: 7001, type: 'private' }, from: { id: 7001, first_name: 'Test' }, text: 'Тестовая заявка' } },
+      { update_id: 104, message: { message_id: 4, chat: { id: 7001, type: 'private' }, from: { id: 7001, first_name: 'Test' }, contact: { phone_number: '+375291111111', user_id: 7001 } } },
+      { update_id: 105, message: { message_id: 5, chat: { id: 7001, type: 'private' }, from: { id: 7001, first_name: 'Test' }, text: 'Подтвердить и согласиться' } },
+    ];
+
+    for (const payload of updates) {
+      const response = await publicRuntime.app.inject({
+        method: 'POST', url: '/api/v1/webhooks/telegram-public',
+        headers: { 'x-telegram-bot-api-secret-token': 'integration-public-webhook-secret' }, payload,
+      });
+      expect(response.statusCode).toBe(200);
+      expect(await publicRuntime.inbox?.processOnce()).toBe(1);
+      expect(await publicRuntime.telegramPublicOutbox?.processOnce()).toBe(1);
+    }
+
+    const [lead] = await database.db.select().from(leads);
+    const [session] = await database.db.select().from(telegramPublicSessions);
+    const replies = await database.db.select().from(telegramPublicOutbox);
+    expect(lead).toMatchObject({ source: 'telegram', sourceDetail: 'public_bot', acquisitionCode: 'qr_test' });
+    expect(session).toMatchObject({ stage: 'submitted', submittedLeadId: lead?.id });
+    expect(replies).toHaveLength(5);
+    expect(sendPublicMessage).toHaveBeenCalledTimes(5);
   });
 });

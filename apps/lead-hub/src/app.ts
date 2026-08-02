@@ -12,19 +12,27 @@ import {
   createObjectStorage,
   type ObjectStorage,
 } from './integrations/object-storage.js';
+import {
+  createTelegramPublicIntegration,
+  type TelegramPublicIntegration,
+} from './integrations/telegram-public.js';
 import { registerHealthRoutes } from './routes/health.js';
 import { registerKufarRoutes } from './routes/kufar.js';
 import { registerLeadRoutes } from './routes/leads.js';
 import { registerTelegramRoutes } from './routes/telegram.js';
+import { registerTelegramPublicRoutes } from './routes/telegram-public.js';
 import { registerUploadRoutes } from './routes/uploads.js';
 import { LeadService } from './services/lead-service.js';
 import { InboxService } from './services/inbox-service.js';
+import { TelegramPublicSessionService } from './services/telegram-public-session-service.js';
 import { InboxProcessor } from './worker/inbox-processor.js';
 import { OutboxProcessor } from './worker/outbox-processor.js';
+import { TelegramPublicOutboxProcessor } from './worker/telegram-public-outbox-processor.js';
 
 interface BuildRuntimeOptions {
   database?: DatabaseClient;
   telegram?: TelegramIntegration | null;
+  telegramPublic?: TelegramPublicIntegration | null;
   objectStorage?: ObjectStorage | null;
   startWorker?: boolean;
 }
@@ -79,23 +87,39 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   const telegram = options.telegram === undefined
     ? createConfiguredTelegram(config, leadService, objectStorage)
     : options.telegram;
+  const telegramPublic = options.telegramPublic === undefined
+    ? createConfiguredTelegramPublic(config)
+    : options.telegramPublic;
+  const telegramPublicSession = telegramPublic && config.telegramPublic.botUsername && config.telegramPublic.privacyVersion
+    ? new TelegramPublicSessionService(database.db, leadService, {
+        ttlHours: config.telegramPublic.sessionTtlHours,
+        botUsername: config.telegramPublic.botUsername,
+        privacyVersion: config.telegramPublic.privacyVersion,
+      })
+    : null;
 
   registerHealthRoutes(app, database.pool);
   registerKufarRoutes(app, config, inboxService);
   registerLeadRoutes(app, config, leadService);
   registerUploadRoutes(app, config, objectStorage, leadService);
   registerTelegramRoutes(app, config, telegram);
+  registerTelegramPublicRoutes(app, config, inboxService);
 
   const outbox = telegram
     ? new OutboxProcessor(database.db, leadService, telegram, app.log, config.outbox)
     : null;
   const inbox = config.kufar.enabled
-    ? new InboxProcessor(database.db, leadService, app.log, config.inbox)
+    || config.telegramPublic.enabled
+    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, telegramPublicSession)
+    : null;
+  const telegramPublicOutbox = telegramPublic
+    ? new TelegramPublicOutboxProcessor(database.db, telegramPublic, app.log, config.outbox)
     : null;
 
   if (options.startWorker !== false) {
     outbox?.start();
     inbox?.start();
+    telegramPublicOutbox?.start();
   }
 
   app.setErrorHandler(async (error, request, reply) => {
@@ -120,6 +144,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   app.addHook('onClose', async () => {
     outbox?.stop();
     inbox?.stop();
+    telegramPublicOutbox?.stop();
     if (ownsDatabase) await database.pool.end();
   });
 
@@ -130,9 +155,20 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     leadService,
     inboxService,
     telegram,
+    telegramPublic,
+    telegramPublicSession,
     outbox,
     inbox,
+    telegramPublicOutbox,
   };
+}
+
+function createConfiguredTelegramPublic(config: AppConfig) {
+  if (!config.telegramPublic.enabled) return null;
+  if (!config.telegramPublic.botToken) {
+    throw new Error('Public Telegram is enabled but its bot token is missing.');
+  }
+  return createTelegramPublicIntegration(config.telegramPublic.botToken);
 }
 
 function isValidationError(error: unknown): error is {

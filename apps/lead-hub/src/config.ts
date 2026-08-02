@@ -30,6 +30,12 @@ const configSchema = z
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_CHAT_ID: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_WEBHOOK_SECRET: optionalSecret,
+    TELEGRAM_PUBLIC_ENABLED: booleanFromString.default(false),
+    TELEGRAM_PUBLIC_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
+    TELEGRAM_PUBLIC_BOT_USERNAME: optionalText,
+    TELEGRAM_PUBLIC_WEBHOOK_SECRET: optionalSecret,
+    TELEGRAM_PUBLIC_PRIVACY_VERSION: optionalText,
+    TELEGRAM_PUBLIC_SESSION_TTL_HOURS: z.coerce.number().int().min(1).max(168).default(24),
     OBJECT_STORAGE_ENDPOINT: z.string().url().optional().or(z.literal('').transform(() => undefined)),
     OBJECT_STORAGE_REGION: optionalText,
     OBJECT_STORAGE_BUCKET: optionalText,
@@ -133,6 +139,26 @@ const configSchema = z
         path: ['KUFAR_INGEST_API_KEY'],
       });
     }
+
+    if (config.TELEGRAM_PUBLIC_ENABLED) {
+      const required = [
+        ['TELEGRAM_PUBLIC_BOT_TOKEN', config.TELEGRAM_PUBLIC_BOT_TOKEN],
+        ['TELEGRAM_PUBLIC_BOT_USERNAME', config.TELEGRAM_PUBLIC_BOT_USERNAME],
+        ['TELEGRAM_PUBLIC_WEBHOOK_SECRET', config.TELEGRAM_PUBLIC_WEBHOOK_SECRET],
+        ['TELEGRAM_PUBLIC_PRIVACY_VERSION', config.TELEGRAM_PUBLIC_PRIVACY_VERSION],
+        ['LEAD_HUB_PUBLIC_URL', config.LEAD_HUB_PUBLIC_URL],
+      ] as const;
+      for (const [name, value] of required) {
+        if (!value) context.addIssue({ code: 'custom', message: `${name} is required when TELEGRAM_PUBLIC_ENABLED=true`, path: [name] });
+      }
+      if (config.TELEGRAM_PUBLIC_BOT_USERNAME && !/^[A-Za-z0-9_]{5,32}$/.test(config.TELEGRAM_PUBLIC_BOT_USERNAME)) {
+        context.addIssue({ code: 'custom', message: 'TELEGRAM_PUBLIC_BOT_USERNAME is invalid', path: ['TELEGRAM_PUBLIC_BOT_USERNAME'] });
+      }
+      if (config.NODE_ENV === 'production' && config.LEAD_HUB_PUBLIC_URL
+        && new URL(config.LEAD_HUB_PUBLIC_URL).protocol !== 'https:') {
+        context.addIssue({ code: 'custom', message: 'LEAD_HUB_PUBLIC_URL must use HTTPS in production', path: ['LEAD_HUB_PUBLIC_URL'] });
+      }
+    }
   });
 
 export type AppConfig = ReturnType<typeof loadConfig>;
@@ -186,6 +212,14 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       batchSize: parsed.data.OUTBOX_BATCH_SIZE,
       maxAttempts: parsed.data.OUTBOX_MAX_ATTEMPTS,
       processingTimeoutMs: parsed.data.OUTBOX_PROCESSING_TIMEOUT_MS,
+    },
+    telegramPublic: {
+      enabled: parsed.data.TELEGRAM_PUBLIC_ENABLED,
+      botToken: parsed.data.TELEGRAM_PUBLIC_BOT_TOKEN,
+      botUsername: parsed.data.TELEGRAM_PUBLIC_BOT_USERNAME,
+      webhookSecret: parsed.data.TELEGRAM_PUBLIC_WEBHOOK_SECRET,
+      privacyVersion: parsed.data.TELEGRAM_PUBLIC_PRIVACY_VERSION,
+      sessionTtlHours: parsed.data.TELEGRAM_PUBLIC_SESSION_TTL_HOURS,
     },
     inbox: {
       pollIntervalMs: parsed.data.INBOX_POLL_INTERVAL_MS,

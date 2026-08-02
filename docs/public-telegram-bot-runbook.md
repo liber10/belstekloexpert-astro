@@ -1,4 +1,4 @@
-# Публичный Telegram-бот: подготовка владельца
+# Публичный Telegram-бот: развёртывание и эксплуатация
 
 Публичный бот предназначен только для клиентов. Он не заменяет внутреннего бота
 рабочей группы и должен иметь отдельные token, webhook secret и route.
@@ -16,10 +16,11 @@
 
 ## Граница включения
 
-До реализации route и одобрения `LEGAL-001` бот остаётся без рекламы и без
-production webhook. Внутренний bot token нельзя использовать как public token.
+Route, PostgreSQL session state и отдельный outbox реализованы. До одобрения
+`LEGAL-001` бот остаётся без рекламы и без production webhook. Внутренний bot token
+нельзя использовать как public token.
 
-Планируемые имена Render environment без значений:
+Имена Render environment без значений:
 
 ```text
 TELEGRAM_PUBLIC_ENABLED=false
@@ -27,9 +28,23 @@ TELEGRAM_PUBLIC_BOT_TOKEN=
 TELEGRAM_PUBLIC_BOT_USERNAME=
 TELEGRAM_PUBLIC_WEBHOOK_SECRET=
 TELEGRAM_PUBLIC_PRIVACY_VERSION=
+TELEGRAM_PUBLIC_SESSION_TTL_HOURS=24
 ```
 
-## Планируемый MVP
+`TELEGRAM_PUBLIC_BOT_TOKEN` и `TELEGRAM_PUBLIC_WEBHOOK_SECRET` создаются независимо
+от внутреннего Telegram-бота и вводятся только напрямую в Render. Для rollback
+достаточно установить `TELEGRAM_PUBLIC_ENABLED=false` и выполнить redeploy.
+
+## Порядок безопасного включения
+
+1. Развернуть код и миграцию с `TELEGRAM_PUBLIC_ENABLED=false`.
+2. Одобрить текст согласия и версию privacy notice по `LEGAL-001`.
+3. Ввести отдельные public-bot secrets в Render и указать username без `@`.
+4. Установить одобренную версию в `TELEGRAM_PUBLIC_PRIVACY_VERSION`.
+5. Переключить `TELEGRAM_PUBLIC_ENABLED=true` и дождаться успешного redeploy.
+6. Выполнить smoke test ниже; только после него публиковать ссылку или QR.
+
+## Реализованный MVP
 
 `/start` с необязательным campaign code → услуга → короткий комментарий → телефон
 через Telegram contact или ручной ввод → подтверждение согласия → Lead Hub →
@@ -48,4 +63,3 @@ Business не входят в MVP.
 - карточка приходит во внутреннюю группу;
 - статус внутреннего бота обновляет существующий lead;
 - rollback выполняется через `TELEGRAM_PUBLIC_ENABLED=false`.
-

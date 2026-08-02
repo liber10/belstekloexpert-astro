@@ -68,7 +68,7 @@ production-архитектуры, провайдера, режима доста
 | `STORAGE-001` | Сравнить рабочий B2 с Cloudflare R2 и подготовить план миграции | P1 | Запланировано |
 | `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Выполнено |
 | `KUFAR-001` | Перевести Kufar email handler на durable Lead Hub inbox | P1 | Выполнено, production smoke test 2 августа 2026 года |
-| `TELEGRAM-LEADS-001` | Добавить отдельного публичного Telegram-бота для клиентов | P1 | Запланировано; production enable заблокирован `LEGAL-001` |
+| `TELEGRAM-LEADS-001` | Добавить отдельного публичного Telegram-бота для клиентов | P1 | Реализация и миграция подготовлены с feature flag off; production enable заблокирован `LEGAL-001` |
 | `META-001` | Подключить Meta Instant Forms к durable inbox | P1 | Запланировано; нужны Meta App и решение `LEGAL-001` |
 | `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Требует решения владельца |
 | `OPS-001` | Добавить CI для проверок сайта и Lead Hub | P2 | Backlog |

@@ -6,6 +6,7 @@ describe('loadConfig', () => {
     const config = loadConfig({ DATABASE_URL: 'postgres://localhost/lead_hub' });
     expect(config.port).toBe(8787);
     expect(config.telegram.enabled).toBe(false);
+    expect(config.telegramPublic.enabled).toBe(false);
     expect(config.allowedOrigins).toEqual(['http://localhost:4321']);
   });
 
@@ -56,6 +57,30 @@ describe('loadConfig', () => {
       DATABASE_URL: 'postgres://localhost/lead_hub',
       KUFAR_INGEST_ENABLED: 'true',
     })).toThrow('KUFAR_INGEST_API_KEY');
+  });
+
+  it('requires isolated public Telegram settings when enabled', () => {
+    expect(() => loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      TELEGRAM_PUBLIC_ENABLED: 'true',
+    })).toThrow('TELEGRAM_PUBLIC_BOT_TOKEN');
+  });
+
+  it('loads a complete public Telegram configuration', () => {
+    const config = loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      TELEGRAM_PUBLIC_ENABLED: 'true',
+      TELEGRAM_PUBLIC_BOT_TOKEN: 'test-public-token',
+      TELEGRAM_PUBLIC_BOT_USERNAME: 'BelStekloExpertHelpBot',
+      TELEGRAM_PUBLIC_WEBHOOK_SECRET: 'test-public-webhook-secret',
+      TELEGRAM_PUBLIC_PRIVACY_VERSION: 'test-v1',
+      LEAD_HUB_PUBLIC_URL: 'https://lead-hub.example.test',
+    });
+    expect(config.telegramPublic).toMatchObject({
+      enabled: true,
+      botUsername: 'BelStekloExpertHelpBot',
+      privacyVersion: 'test-v1',
+    });
   });
 
   it('requires a public URL when Telegram is enabled', () => {

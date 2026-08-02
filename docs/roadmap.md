@@ -21,7 +21,7 @@
 | `LEGAL-001` | Данные | Утвердить privacy policy, consent и retention | P1 | blocked |
 | `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | done |
 | `KUFAR-001` | Lead Hub | Перевести Kufar email handler на durable inbox и source-aware Telegram-карточки | P1 | done |
-| `TELEGRAM-LEADS-001` | Lead Hub | Добавить отдельного публичного Telegram-бота для клиентских заявок | P1 | planned |
+| `TELEGRAM-LEADS-001` | Lead Hub | Добавить отдельного публичного Telegram-бота для клиентских заявок | P1 | in progress — код и миграция готовы с feature flag off; production enable ждёт `LEGAL-001` |
 | `META-001` | Lead Hub | Подключить только Meta Instant Forms через подписанный webhook | P1 | blocked |
 
 ## Инфраструктура

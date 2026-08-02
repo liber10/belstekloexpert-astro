@@ -1,10 +1,12 @@
 import { and, asc, eq, inArray, lte } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
 import type { KufarEmailEvent } from '../contracts/kufar-email.js';
+import type { TelegramPublicUpdate } from '../contracts/telegram-public.js';
 import type { LeadHubDatabase } from '../db/client.js';
 import { integrationInbox, type InboxEvent } from '../db/schema.js';
 import { mapKufarEmailToLead } from '../integrations/kufar.js';
 import type { LeadService } from '../services/lead-service.js';
+import type { TelegramPublicSessionService } from '../services/telegram-public-session-service.js';
 
 interface InboxOptions {
   pollIntervalMs: number;
@@ -22,6 +24,7 @@ export class InboxProcessor {
     private readonly leadService: LeadService,
     private readonly logger: FastifyBaseLogger,
     private readonly options: InboxOptions,
+    private readonly telegramPublic: TelegramPublicSessionService | null = null,
   ) {}
 
   start() {
@@ -80,10 +83,13 @@ export class InboxProcessor {
 
   private async processEvent(event: InboxEvent) {
     try {
-      if (event.source !== 'kufar' || event.eventType !== 'email.received') {
+      if (event.source === 'kufar' && event.eventType === 'email.received') {
+        await this.leadService.createExternalLead(mapKufarEmailToLead(event.payload as KufarEmailEvent));
+      } else if (event.source === 'telegram_public' && event.eventType === 'update.received' && this.telegramPublic) {
+        await this.telegramPublic.handleUpdate(event.payload as TelegramPublicUpdate);
+      } else {
         throw new PermanentInboxError('Unsupported inbox event.');
       }
-      await this.leadService.createExternalLead(mapKufarEmailToLead(event.payload as KufarEmailEvent));
       await this.db.update(integrationInbox).set({
         status: 'done', attemptCount: event.attemptCount + 1, lastError: null,
         processedAt: new Date(), updatedAt: new Date(),
