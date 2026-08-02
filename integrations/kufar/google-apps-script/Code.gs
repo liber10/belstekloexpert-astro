@@ -111,14 +111,8 @@ function extractConversationUrl(html, plain) {
 }
 
 function validateKufarUrl(value) {
-  try {
-    const url = new URL(value);
-    const safeHost = url.hostname === 'kufar.by' || url.hostname === 'www.kufar.by';
-    return url.protocol === 'https:' && !url.username && !url.password && safeHost &&
-      /^\/account\/messaging\/[A-Za-z0-9-]+(?:\/.*)?$/.test(url.pathname);
-  } catch (error) {
-    return false;
-  }
+  const candidate = decodeHtml(String(value || '')).trim();
+  return /^https:\/\/(?:www\.)?kufar\.by\/account\/messaging\/[A-Za-z0-9-]+(?:[/?#][^\s<>]*)?$/i.test(candidate);
 }
 
 function extractCustomerMessage(plain, html) {
