@@ -10,6 +10,7 @@
 | [Архитектура](architecture.md) | Architecture | Актуальный |
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
+| [Публичный Telegram-бот](public-telegram-bot-runbook.md) | Operations | Подготовка; production заблокирован `LEGAL-001` |
 | [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный |
 | [Cloudflare production cutover](cloudflare-cutover-runbook.md) | Operations | Подготовлен, cutover не утверждён |
 | [Обновление прайса](price-update.md) | Operations | Актуальный |

@@ -1,6 +1,6 @@
 # Roadmap BelStekloExpert
 
-Последняя актуализация: 30 июля 2026 года.
+Последняя актуализация: 2 августа 2026 года.
 
 ## Обозначения
 
@@ -20,6 +20,9 @@
 | `OPS-001` | CI | Автоматизировать проверки сайта и Lead Hub в GitHub Actions | P2 | backlog |
 | `LEGAL-001` | Данные | Утвердить privacy policy, consent и retention | P1 | blocked |
 | `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | done |
+| `KUFAR-001` | Lead Hub | Перевести Kufar email handler на durable inbox и source-aware Telegram-карточки | P1 | done |
+| `TELEGRAM-LEADS-001` | Lead Hub | Добавить отдельного публичного Telegram-бота для клиентских заявок | P1 | planned |
+| `META-001` | Lead Hub | Подключить только Meta Instant Forms через подписанный webhook | P1 | blocked |
 
 ## Инфраструктура
 
@@ -81,6 +84,7 @@ DNS не изменялся.
 - автоматическое сжатие больших фото;
 - production smoke test сайта, B2, Render и Telegram;
 - production webhook Telegram и outbox worker на Render;
+- Kufar Gmail adapter, durable inbox, дедупликация, точная ссылка на диалог и production smoke test;
 - документационный слой проекта.
 
 ## Как добавлять задачи
