@@ -23,7 +23,8 @@ export function normalizeBelarusPhone(value: string) {
   return `+${digits}`;
 }
 
-export function maskPhone(value: string) {
+export function maskPhone(value: string | null | undefined) {
+  if (!value) return 'нет телефона';
   const digits = value.replace(/\D/g, '');
   if (digits.length < 4) return '[redacted]';
   return `+${digits.slice(0, 3)}…${digits.slice(-2)}`;

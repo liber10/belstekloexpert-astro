@@ -182,6 +182,30 @@ Invoke-RestMethod `
 
 Кнопки карточки меняют статусы `new`, `contacted`, `qualified`, `quote_sent`, `booked`, `arrived`, `won`, `lost`, `spam`, `duplicate`. Повторный callback не создаёт повторное событие.
 
+## Kufar Gmail adapter
+
+Интеграция включается только после успешного деплоя миграции и проверки
+`/health/ready`. В Render задаются без публикации значений:
+
+```text
+KUFAR_INGEST_ENABLED=true
+KUFAR_INGEST_API_KEY=<separate-random-secret>
+```
+
+В Google Apps Script с time-based trigger `processKufarMail` задаются Script
+Properties:
+
+```text
+LEAD_HUB_KUFAR_INGEST_URL=https://<lead-hub-host>/api/v1/integrations/kufar/email
+KUFAR_INGEST_API_KEY=<same-secret-as-render>
+```
+
+Актуальный адаптер находится в `integrations/kufar/google-apps-script/Code.gs`.
+Он отмечает Gmail message ID обработанным только после durable acceptance Lead Hub
+(`200` или `202` и `accepted: true`). Для rollback нужно вернуть предыдущий код
+Apps Script либо установить `KUFAR_INGEST_ENABLED=false`; прямую и новую доставку
+нельзя оставлять включёнными одновременно.
+
 ## Outbox и ошибки
 
 Telegram отправляется асинхронно из `integration_outbox`. При ошибке задача получает следующую попытку с задержкой. После `OUTBOX_MAX_ATTEMPTS` она переходит в `dead` и требует разбора причины и ручного повторного запуска после устранения сбоя. Задача, оставшаяся в `processing` дольше `OUTBOX_PROCESSING_TIMEOUT_MS`, автоматически возвращается в `retry`.

@@ -28,6 +28,9 @@ const lead: Lead = {
   visitType: null,
   preferredAt: null,
   message: 'Трещина со стороны водителя',
+  sourceActionUrl: null,
+  sourceMetadata: {},
+  acquisitionCode: null,
   photoRefs: ['photo://one'],
   utmSource: 'google',
   utmMedium: 'cpc',
@@ -73,9 +76,37 @@ describe('Telegram lead card', () => {
   });
 
   it('builds status callbacks that fit Telegram limits', () => {
-    const keyboard = buildLeadKeyboard(lead.id).inline_keyboard;
+    const keyboard = buildLeadKeyboard(lead).inline_keyboard;
     const callbacks = keyboard.flat().map((button) => ('callback_data' in button ? button.callback_data : ''));
     expect(callbacks).toContain(`status:qualified:${lead.id}`);
     expect(callbacks.every((value) => value.length <= 64)).toBe(true);
+  });
+
+  it('renders a Kufar card with only customer text and a safe first-row action', () => {
+    const kufarLead: Lead = {
+      ...lead,
+      source: 'kufar',
+      sourceDetail: 'gmail_notification',
+      phoneNormalized: null,
+      message: 'Нужна замена лобового стекла.',
+      sourceActionUrl: 'https://www.kufar.by/account/messaging/dialog-001',
+    };
+    expect(buildLeadCard(kufarLead)).toBe('Нужна замена лобового стекла.');
+    const keyboard = buildLeadKeyboard(kufarLead).inline_keyboard;
+    expect(keyboard[0]?.[0]).toMatchObject({ text: 'Ответить на Kufar' });
+    expect(keyboard[1]?.some((button) => 'callback_data' in button)).toBe(true);
+  });
+
+  it('preserves the Kufar action after a status change', () => {
+    const changed: Lead = {
+      ...lead,
+      source: 'kufar',
+      phoneNormalized: null,
+      status: 'qualified',
+      message: 'Нужна консультация.',
+      sourceActionUrl: 'https://kufar.by/account/messaging/dialog-002',
+    };
+    expect(buildLeadCard(changed)).toBe('Нужна консультация.\n\nСтатус: Квалифицирован');
+    expect(buildLeadKeyboard(changed).inline_keyboard[0]?.[0]).toMatchObject({ text: 'Ответить на Kufar' });
   });
 });

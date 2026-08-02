@@ -119,7 +119,7 @@ export function createTelegramIntegration(
         ? await options.photoUrlResolver(lead.photoRefs)
         : [];
       const message = await bot.api.sendMessage(options.chatId, buildLeadCard(lead), {
-        reply_markup: buildLeadKeyboard(lead.id),
+        reply_markup: buildLeadKeyboard(lead),
       });
 
       for (const [index, photoUrl] of photoUrls.entries()) {
@@ -144,7 +144,7 @@ export function createTelegramIntegration(
         lead.telegramChatId,
         lead.telegramMessageId,
         buildLeadCard(lead),
-        { reply_markup: buildLeadKeyboard(lead.id) },
+        { reply_markup: buildLeadKeyboard(lead) },
       );
     },
 

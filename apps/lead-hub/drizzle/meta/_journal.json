@@ -8,6 +8,13 @@
       "when": 1784218081981,
       "tag": "0000_slim_mojo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1785661200000,
+      "tag": "0001_multichannel_lead_inbox",
+      "breakpoints": true
     }
   ]
 }

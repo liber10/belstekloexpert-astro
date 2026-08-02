@@ -5,7 +5,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import { buildRuntime } from '../../src/app.js';
 import { loadConfig } from '../../src/config.js';
 import { createDatabaseClient, type DatabaseClient } from '../../src/db/client.js';
-import { integrationOutbox, leadEvents, leads } from '../../src/db/schema.js';
+import { integrationInbox, integrationOutbox, leadEvents, leads } from '../../src/db/schema.js';
 import type { TelegramIntegration } from '../../src/integrations/telegram/index.js';
 import type { LeadResponse } from '../../src/contracts/web-lead.js';
 
@@ -35,6 +35,8 @@ integration('Lead Hub database pipeline', () => {
       DATABASE_URL: databaseUrl,
       TELEGRAM_ENABLED: 'false',
       WEB_INGEST_API_KEY: 'integration-test-secret',
+      KUFAR_INGEST_ENABLED: 'true',
+      KUFAR_INGEST_API_KEY: 'integration-kufar-secret',
       LOG_LEVEL: 'silent',
     });
     runtime = await buildRuntime(config, { database, telegram, startWorker: false });
@@ -43,7 +45,7 @@ integration('Lead Hub database pipeline', () => {
 
   beforeEach(async () => {
     await database.db.execute(
-      sql`truncate table integration_outbox, lead_events, leads restart identity cascade`,
+      sql`truncate table integration_inbox, integration_outbox, lead_events, leads restart identity cascade`,
     );
     vi.clearAllMocks();
   });
@@ -235,5 +237,44 @@ integration('Lead Hub database pipeline', () => {
       .from(integrationOutbox)
       .where(eq(integrationOutbox.leadId, created.lead.id));
     expect(job?.status).toBe('sent');
+  });
+
+  it('durably accepts and deduplicates a phone-less Kufar event', async () => {
+    const request = {
+      method: 'POST' as const,
+      url: '/api/v1/integrations/kufar/email',
+      headers: { authorization: 'Bearer integration-kufar-secret' },
+      payload: {
+        externalMessageId: 'gmail-message-integration-001',
+        customerMessage: 'Нужна замена лобового стекла без телефона.',
+        conversationUrl: 'https://www.kufar.by/account/messaging/dialog-integration-001',
+      },
+    };
+    const first = await runtime.app.inject(request);
+    const duplicate = await runtime.app.inject(request);
+    expect(first.statusCode).toBe(202);
+    expect(duplicate.statusCode).toBe(200);
+    expect(duplicate.json()).toMatchObject({ accepted: true, deduplicated: true });
+
+    expect(await runtime.inbox?.processOnce()).toBe(1);
+    const [lead] = await database.db.select().from(leads);
+    const [inboxEvent] = await database.db.select().from(integrationInbox);
+    const [outboxJob] = await database.db.select().from(integrationOutbox);
+    expect(lead).toMatchObject({ source: 'kufar', phoneNormalized: null });
+    expect(inboxEvent?.status).toBe('done');
+    expect(outboxJob?.eventType).toBe('lead.created');
+  });
+
+  it('keeps the website phone requirement after the nullable migration', async () => {
+    const response = await runtime.app.inject({
+      method: 'POST',
+      url: '/api/v1/leads/web',
+      headers: {
+        authorization: 'Bearer integration-test-secret',
+        'idempotency-key': 'web-without-phone-001',
+      },
+      payload: { serviceType: 'Замена стекла' },
+    });
+    expect(response.statusCode).toBe(400);
   });
 });

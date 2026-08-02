@@ -13,6 +13,7 @@ try {
     runtime.app.log.info({ webhookUrl }, 'Telegram webhook registered.');
   }
   runtime.outbox?.start();
+  runtime.inbox?.start();
 } catch {
   runtime.app.log.error('Telegram startup failed.');
   await runtime.app.close();

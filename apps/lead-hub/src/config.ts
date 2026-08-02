@@ -24,6 +24,8 @@ const configSchema = z
     LEAD_HUB_RATE_LIMIT_MAX: z.coerce.number().int().min(1).max(10_000).default(20),
     DATABASE_URL: z.string().trim().min(1),
     WEB_INGEST_API_KEY: optionalSecret,
+    KUFAR_INGEST_ENABLED: booleanFromString.default(false),
+    KUFAR_INGEST_API_KEY: optionalSecret,
     TELEGRAM_ENABLED: booleanFromString.default(false),
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_CHAT_ID: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
@@ -45,6 +47,10 @@ const configSchema = z
       .min(30_000)
       .max(3_600_000)
       .default(300_000),
+    INBOX_POLL_INTERVAL_MS: z.coerce.number().int().min(250).max(60_000).default(2_000),
+    INBOX_BATCH_SIZE: z.coerce.number().int().min(1).max(100).default(10),
+    INBOX_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(50).default(8),
+    INBOX_PROCESSING_TIMEOUT_MS: z.coerce.number().int().min(30_000).max(3_600_000).default(300_000),
     LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   })
   .superRefine((config, context) => {
@@ -92,38 +98,39 @@ const configSchema = z
         });
       }
     }
-    if (!config.TELEGRAM_ENABLED) return;
+    if (config.TELEGRAM_ENABLED) {
+      const required = [
+        ['TELEGRAM_BOT_TOKEN', config.TELEGRAM_BOT_TOKEN],
+        ['TELEGRAM_CHAT_ID', config.TELEGRAM_CHAT_ID],
+        ['TELEGRAM_WEBHOOK_SECRET', config.TELEGRAM_WEBHOOK_SECRET],
+      ] as const;
 
-    const required = [
-      ['TELEGRAM_BOT_TOKEN', config.TELEGRAM_BOT_TOKEN],
-      ['TELEGRAM_CHAT_ID', config.TELEGRAM_CHAT_ID],
-      ['TELEGRAM_WEBHOOK_SECRET', config.TELEGRAM_WEBHOOK_SECRET],
-    ] as const;
+      for (const [name, value] of required) {
+        if (!value) {
+          context.addIssue({
+            code: 'custom',
+            message: `${name} is required when TELEGRAM_ENABLED=true`,
+            path: [name],
+          });
+        }
+      }
 
-    for (const [name, value] of required) {
-      if (!value) {
+      if (!config.LEAD_HUB_PUBLIC_URL) {
         context.addIssue({
           code: 'custom',
-          message: `${name} is required when TELEGRAM_ENABLED=true`,
-          path: [name],
+          message: 'LEAD_HUB_PUBLIC_URL is required when TELEGRAM_ENABLED=true',
+          path: ['LEAD_HUB_PUBLIC_URL'],
         });
+      } else if (config.NODE_ENV === 'production' && new URL(config.LEAD_HUB_PUBLIC_URL).protocol !== 'https:') {
+        context.addIssue({ code: 'custom', message: 'LEAD_HUB_PUBLIC_URL must use HTTPS in production', path: ['LEAD_HUB_PUBLIC_URL'] });
       }
     }
 
-    if (!config.LEAD_HUB_PUBLIC_URL) {
+    if (config.KUFAR_INGEST_ENABLED && !config.KUFAR_INGEST_API_KEY) {
       context.addIssue({
         code: 'custom',
-        message: 'LEAD_HUB_PUBLIC_URL is required when TELEGRAM_ENABLED=true',
-        path: ['LEAD_HUB_PUBLIC_URL'],
-      });
-    } else if (
-      config.NODE_ENV === 'production' &&
-      new URL(config.LEAD_HUB_PUBLIC_URL).protocol !== 'https:'
-    ) {
-      context.addIssue({
-        code: 'custom',
-        message: 'LEAD_HUB_PUBLIC_URL must use HTTPS in production',
-        path: ['LEAD_HUB_PUBLIC_URL'],
+        message: 'KUFAR_INGEST_API_KEY is required when KUFAR_INGEST_ENABLED=true',
+        path: ['KUFAR_INGEST_API_KEY'],
       });
     }
   });
@@ -163,6 +170,10 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
     rateLimitMax: parsed.data.LEAD_HUB_RATE_LIMIT_MAX,
     databaseUrl: parsed.data.DATABASE_URL,
     webIngestApiKey: parsed.data.WEB_INGEST_API_KEY,
+    kufar: {
+      enabled: parsed.data.KUFAR_INGEST_ENABLED,
+      ingestApiKey: parsed.data.KUFAR_INGEST_API_KEY,
+    },
     telegram: {
       enabled: parsed.data.TELEGRAM_ENABLED,
       botToken: parsed.data.TELEGRAM_BOT_TOKEN,
@@ -175,6 +186,12 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       batchSize: parsed.data.OUTBOX_BATCH_SIZE,
       maxAttempts: parsed.data.OUTBOX_MAX_ATTEMPTS,
       processingTimeoutMs: parsed.data.OUTBOX_PROCESSING_TIMEOUT_MS,
+    },
+    inbox: {
+      pollIntervalMs: parsed.data.INBOX_POLL_INTERVAL_MS,
+      batchSize: parsed.data.INBOX_BATCH_SIZE,
+      maxAttempts: parsed.data.INBOX_MAX_ATTEMPTS,
+      processingTimeoutMs: parsed.data.INBOX_PROCESSING_TIMEOUT_MS,
     },
     logLevel: parsed.data.LOG_LEVEL,
   };

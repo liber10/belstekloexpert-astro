@@ -24,7 +24,7 @@ export const leads = pgTable(
     requestHash: varchar('request_hash', { length: 64 }).notNull(),
     status: varchar('status', { length: 32 }).notNull().default('new'),
     name: varchar('name', { length: 120 }),
-    phoneNormalized: varchar('phone_normalized', { length: 20 }).notNull(),
+    phoneNormalized: varchar('phone_normalized', { length: 20 }),
     emailNormalized: varchar('email_normalized', { length: 254 }),
     carMake: varchar('car_make', { length: 100 }),
     carModel: varchar('car_model', { length: 160 }),
@@ -40,6 +40,9 @@ export const leads = pgTable(
     visitType: varchar('visit_type', { length: 80 }),
     preferredAt: timestamp('preferred_at', { withTimezone: true, mode: 'date' }),
     message: text('message'),
+    sourceActionUrl: text('source_action_url'),
+    sourceMetadata: jsonb('source_metadata').$type<Record<string, unknown>>().notNull().default(sql`'{}'::jsonb`),
+    acquisitionCode: varchar('acquisition_code', { length: 160 }),
     photoRefs: jsonb('photo_refs').$type<string[]>().notNull().default(sql`'[]'::jsonb`),
     utmSource: varchar('utm_source', { length: 255 }),
     utmMedium: varchar('utm_medium', { length: 255 }),
@@ -82,6 +85,11 @@ export const leads = pgTable(
       .where(sql`${table.externalLeadId} is not null`),
     index('leads_status_created_idx').on(table.status, table.createdAt),
     index('leads_phone_created_idx').on(table.phoneNormalized, table.createdAt),
+    index('leads_source_acquisition_created_idx').on(
+      table.source,
+      table.acquisitionCode,
+      table.createdAt,
+    ),
   ],
 );
 
@@ -131,7 +139,37 @@ export const integrationOutbox = pgTable(
   ],
 );
 
+export const integrationInbox = pgTable(
+  'integration_inbox',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    source: varchar('source', { length: 80 }).notNull(),
+    eventType: varchar('event_type', { length: 80 }).notNull(),
+    externalEventId: varchar('external_event_id', { length: 255 }).notNull(),
+    payload: jsonb('payload').$type<Record<string, unknown>>().notNull(),
+    status: varchar('status', { length: 32 }).notNull().default('pending'),
+    attemptCount: integer('attempt_count').notNull().default(0),
+    nextAttemptAt: timestamp('next_attempt_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    lastError: text('last_error'),
+    processedAt: timestamp('processed_at', { withTimezone: true, mode: 'date' }),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('integration_inbox_source_external_event_uq').on(
+      table.source,
+      table.externalEventId,
+    ),
+    index('integration_inbox_pending_idx').on(
+      table.status,
+      table.nextAttemptAt,
+      table.createdAt,
+    ),
+  ],
+);
+
 export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
 export type LeadEvent = typeof leadEvents.$inferSelect;
 export type OutboxJob = typeof integrationOutbox.$inferSelect;
+export type InboxEvent = typeof integrationInbox.$inferSelect;

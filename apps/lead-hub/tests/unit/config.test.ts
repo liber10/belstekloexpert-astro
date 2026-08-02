@@ -46,6 +46,18 @@ describe('loadConfig', () => {
     ).toThrow('TELEGRAM_BOT_TOKEN');
   });
 
+  it('keeps Kufar ingest disabled without secrets', () => {
+    const config = loadConfig({ DATABASE_URL: 'postgres://localhost/lead_hub' });
+    expect(config.kufar.enabled).toBe(false);
+  });
+
+  it('requires a dedicated Kufar ingest key when enabled', () => {
+    expect(() => loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      KUFAR_INGEST_ENABLED: 'true',
+    })).toThrow('KUFAR_INGEST_API_KEY');
+  });
+
   it('requires a public URL when Telegram is enabled', () => {
     expect(() =>
       loadConfig({

@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { and, count, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 import type { WebLeadBody } from '../contracts/web-lead.js';
+import type { ExternalLeadInput } from '../contracts/external-lead.js';
 import type { LeadHubDatabase } from '../db/client.js';
 import { integrationOutbox, leadEvents, leads, type Lead } from '../db/schema.js';
 import { hashPayload, IdempotencyConflictError } from '../domain/idempotency.js';
@@ -84,6 +85,34 @@ export class LeadService {
         idempotencyKey,
       },
     );
+  }
+
+  async createExternalLead(input: ExternalLeadInput): Promise<CreateLeadResult> {
+    const externalLeadId = cleanText(input.externalLeadId);
+    const externalEventId = cleanText(input.externalEventId);
+    if (!externalLeadId || !externalEventId) {
+      throw new LeadValidationError('External lead identifiers are required.');
+    }
+
+    const normalized = normalizeExternalBody(input);
+    if (
+      !normalized.phoneNormalized &&
+      !normalized.emailNormalized &&
+      !normalized.sourceActionUrl &&
+      !normalized.message &&
+      !input.telegramUserId &&
+      !input.telegramChatId
+    ) {
+      throw new LeadValidationError('External lead requires a contact signal or message.');
+    }
+
+    const sourceDetail = cleanText(input.sourceDetail);
+    return this.createNormalizedLead(normalized, {
+      source: input.source,
+      externalLeadId,
+      idempotencyKey: `${input.source}:${externalLeadId}`,
+      ...(sourceDetail ? { sourceDetail } : {}),
+    });
   }
 
   async claimLegacyTelegramDelivery(leadId: string) {
@@ -249,6 +278,13 @@ export class LeadService {
   private async createLead(body: WebLeadBody, options: CreateLeadOptions): Promise<CreateLeadResult> {
     const phoneNormalized = normalizeBelarusPhone(body.phone);
     const normalized = normalizeBody(body, phoneNormalized);
+    return this.createNormalizedLead(normalized, options);
+  }
+
+  private async createNormalizedLead(
+    normalized: ReturnType<typeof normalizeBody> | ReturnType<typeof normalizeExternalBody>,
+    options: CreateLeadOptions,
+  ): Promise<CreateLeadResult> {
     const requestHash = hashPayload({ source: options.source, ...normalized });
 
     const duplicate = await this.findDuplicate(options, requestHash);
@@ -363,6 +399,9 @@ function normalizeBody(body: WebLeadBody, phoneNormalized: string) {
     visitType: cleanText(body.visitType),
     preferredAt,
     message: cleanText(body.message),
+    sourceActionUrl: undefined,
+    sourceMetadata: {},
+    acquisitionCode: undefined,
     photoRefs: body.photoRefs?.map((reference) => reference.trim()).filter(Boolean) || [],
     utmSource: cleanText(attribution?.utmSource),
     utmMedium: cleanText(attribution?.utmMedium),
@@ -378,6 +417,62 @@ function normalizeBody(body: WebLeadBody, phoneNormalized: string) {
     gaClientId: cleanText(attribution?.gaClientId),
     landingUrl: cleanText(attribution?.landingUrl),
     referrer: cleanText(attribution?.referrer),
+    consentAt,
+    privacyVersion: cleanText(body.privacyVersion),
+  };
+}
+
+function normalizeExternalBody(body: ExternalLeadInput) {
+  const preferredAt = parseOptionalDate(body.preferredAt, 'preferredAt');
+  const consentAt = parseOptionalDate(body.consentAt, 'consentAt');
+  const sourceActionUrl = cleanText(body.sourceActionUrl);
+  if (sourceActionUrl) {
+    try {
+      if (new URL(sourceActionUrl).protocol !== 'https:') {
+        throw new LeadValidationError('sourceActionUrl must use HTTPS.');
+      }
+    } catch (error) {
+      if (error instanceof LeadValidationError) throw error;
+      throw new LeadValidationError('sourceActionUrl must be a valid URL.');
+    }
+  }
+
+  return {
+    name: cleanText(body.name),
+    phoneNormalized: body.phone ? normalizeBelarusPhone(body.phone) : undefined,
+    emailNormalized: cleanText(body.email)?.toLowerCase(),
+    carMake: cleanText(body.carMake),
+    carModel: cleanText(body.carModel),
+    carYear: body.carYear,
+    vin: cleanText(body.vin)?.toUpperCase(),
+    vehicleType: cleanText(body.vehicleType),
+    serviceType: cleanText(body.serviceType),
+    damageType: cleanText(body.damageType),
+    sensors: cleanText(body.sensors),
+    heating: cleanText(body.heating),
+    adas: cleanText(body.adas),
+    district: cleanText(body.district),
+    visitType: cleanText(body.visitType),
+    preferredAt,
+    message: cleanText(body.message),
+    sourceActionUrl,
+    sourceMetadata: body.sourceMetadata || {},
+    acquisitionCode: cleanText(body.acquisitionCode),
+    photoRefs: [] as string[],
+    utmSource: undefined,
+    utmMedium: undefined,
+    utmCampaign: undefined,
+    utmContent: undefined,
+    utmTerm: undefined,
+    gclid: undefined,
+    gbraid: undefined,
+    wbraid: undefined,
+    yclid: undefined,
+    fbclid: undefined,
+    ymClientId: undefined,
+    gaClientId: undefined,
+    landingUrl: undefined,
+    referrer: undefined,
     consentAt,
     privacyVersion: cleanText(body.privacyVersion),
   };

@@ -13,10 +13,13 @@ import {
   type ObjectStorage,
 } from './integrations/object-storage.js';
 import { registerHealthRoutes } from './routes/health.js';
+import { registerKufarRoutes } from './routes/kufar.js';
 import { registerLeadRoutes } from './routes/leads.js';
 import { registerTelegramRoutes } from './routes/telegram.js';
 import { registerUploadRoutes } from './routes/uploads.js';
 import { LeadService } from './services/lead-service.js';
+import { InboxService } from './services/inbox-service.js';
+import { InboxProcessor } from './worker/inbox-processor.js';
 import { OutboxProcessor } from './worker/outbox-processor.js';
 
 interface BuildRuntimeOptions {
@@ -43,8 +46,11 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
         paths: [
           'req.headers.authorization',
           'req.headers.x-telegram-bot-api-secret-token',
+          'req.headers.x-hub-signature-256',
           'req.body.phone',
           'req.body.vin',
+          'req.body.email',
+          'req.body.contact',
         ],
         censor: '[redacted]',
       },
@@ -69,11 +75,13 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   const leadService = new LeadService(database.db, objectStorage
     ? (reference, submissionId) => objectStorage.isReferenceForSubmission(reference, submissionId)
     : undefined);
+  const inboxService = new InboxService(database.db);
   const telegram = options.telegram === undefined
     ? createConfiguredTelegram(config, leadService, objectStorage)
     : options.telegram;
 
   registerHealthRoutes(app, database.pool);
+  registerKufarRoutes(app, config, inboxService);
   registerLeadRoutes(app, config, leadService);
   registerUploadRoutes(app, config, objectStorage, leadService);
   registerTelegramRoutes(app, config, telegram);
@@ -81,8 +89,14 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   const outbox = telegram
     ? new OutboxProcessor(database.db, leadService, telegram, app.log, config.outbox)
     : null;
+  const inbox = config.kufar.enabled
+    ? new InboxProcessor(database.db, leadService, app.log, config.inbox)
+    : null;
 
-  if (outbox && options.startWorker !== false) outbox.start();
+  if (options.startWorker !== false) {
+    outbox?.start();
+    inbox?.start();
+  }
 
   app.setErrorHandler(async (error, request, reply) => {
     if (isValidationError(error)) {
@@ -105,6 +119,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
 
   app.addHook('onClose', async () => {
     outbox?.stop();
+    inbox?.stop();
     if (ownsDatabase) await database.pool.end();
   });
 
@@ -113,8 +128,10 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     database,
     objectStorage,
     leadService,
+    inboxService,
     telegram,
     outbox,
+    inbox,
   };
 }
 
