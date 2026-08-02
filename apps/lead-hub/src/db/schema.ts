@@ -60,6 +60,8 @@ export const leads = pgTable(
     referrer: text('referrer'),
     consentAt: timestamp('consent_at', { withTimezone: true, mode: 'date' }),
     privacyVersion: varchar('privacy_version', { length: 80 }),
+    consentVersion: varchar('consent_version', { length: 80 }),
+    consentTextHash: varchar('consent_text_hash', { length: 64 }),
     assignedTo: varchar('assigned_to', { length: 120 }),
     firstResponseAt: timestamp('first_response_at', { withTimezone: true, mode: 'date' }),
     qualifiedAt: timestamp('qualified_at', { withTimezone: true, mode: 'date' }),

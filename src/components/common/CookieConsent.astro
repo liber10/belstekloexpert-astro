@@ -1,0 +1,78 @@
+---
+const { gtmId, ga4Id, ymId } = Astro.props;
+const analyticsConfig = JSON.stringify({ gtmId, ga4Id, ymId });
+---
+
+<aside class="cookie-consent" data-cookie-consent hidden aria-labelledby="cookie-consent-title">
+  <div>
+    <strong id="cookie-consent-title">Настройки аналитики</strong>
+    <p>
+      Технические данные нужны для работы сайта. Google Analytics, Google Tag Manager и
+      Яндекс Метрика загружаются только с вашего согласия.
+      <a href="/privacy/#cookies">Подробнее</a>
+    </p>
+  </div>
+  <div class="cookie-consent__actions">
+    <button type="button" class="button button--primary" data-cookie-accept>Принять аналитику</button>
+    <button type="button" class="button button--quiet" data-cookie-reject>Отклонить</button>
+  </div>
+</aside>
+
+<script is:inline type="application/json" id="analytics-config" set:html={analyticsConfig}></script>
+<script is:inline>
+  (() => {
+    const storageKey = 'bse_cookie_consent_v1';
+    const banner = document.querySelector('[data-cookie-consent]');
+    const configNode = document.getElementById('analytics-config');
+    const config = JSON.parse(configNode?.textContent || '{}');
+
+    const loadScript = (src) => {
+      if (!src || document.querySelector(`script[src="${src}"]`)) return;
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = src;
+      document.head.appendChild(script);
+    };
+
+    const enableAnalytics = () => {
+      window.bseAnalyticsAllowed = true;
+      if (config.gtmId) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+        loadScript(`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(config.gtmId)}`);
+      }
+      if (config.ga4Id) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', config.ga4Id);
+        loadScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(config.ga4Id)}`);
+      }
+      if (config.ymId) {
+        window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
+        window.ym.l = Date.now();
+        window.ym(Number(config.ymId), 'init', {
+          clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true,
+        });
+        loadScript('https://mc.yandex.ru/metrika/tag.js');
+      }
+    };
+
+    const save = (analytics) => {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify({ analytics, version: 1, decidedAt: new Date().toISOString() }));
+      } catch {}
+      banner.hidden = true;
+      if (analytics) enableAnalytics();
+    };
+
+    let choice = null;
+    try { choice = JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch {}
+    if (choice?.analytics === true) enableAnalytics();
+    else if (choice?.analytics !== false) banner.hidden = false;
+
+    banner.querySelector('[data-cookie-accept]')?.addEventListener('click', () => save(true));
+    banner.querySelector('[data-cookie-reject]')?.addEventListener('click', () => save(false));
+    window.addEventListener('bse:cookie-settings', () => { banner.hidden = false; });
+  })();
+</script>

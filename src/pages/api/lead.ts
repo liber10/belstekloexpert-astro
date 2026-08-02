@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro';
+import { createHash } from 'node:crypto';
+import { legal } from '@/config/legal';
 import {
   classifyDeliveryFailure,
   getLeadRuntimeEnv,
@@ -49,6 +51,11 @@ const leadFieldKeys = [
   'wbraid',
   'yclid',
   'fbclid',
+  'privacy_consent',
+  'privacy_version',
+  'consent_version',
+  'consent_text_hash',
+  'consent_at',
 ];
 
 export const POST: APIRoute = async ({ request, redirect }) => {
@@ -70,6 +77,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return json({ ok: false, error: 'invalid_phone' }, 400);
   }
 
+  if (getFormString(formData, 'privacy_consent') !== 'accepted') {
+    return json({ ok: false, error: 'privacy_consent_required' }, 400);
+  }
+
   const photos = getUploadedPhotos(formData);
   const photoError = validatePhotos(photos);
   if (photoError) {
@@ -84,6 +95,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const fields = Object.fromEntries(
     leadFieldKeys.map((key) => [key, getFormString(formData, key)]),
   );
+  fields.privacy_version = legal.policyVersion;
+  fields.consent_version = legal.consentVersion;
+  fields.consent_text_hash = createHash('sha256').update(legal.consentText, 'utf8').digest('hex');
+  fields.consent_at = new Date().toISOString();
   const submissionId = normalizeSubmissionId(fields.submission_id) || createLeadId();
   const env = getLeadRuntimeEnv();
   const deliveryMode = resolveLeadDeliveryMode(env);

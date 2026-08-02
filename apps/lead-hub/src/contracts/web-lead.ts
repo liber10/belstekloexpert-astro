@@ -53,6 +53,8 @@ export const WebLeadBodySchema = Type.Object(
     attribution: AttributionSchema,
     consentAt: OptionalText(64),
     privacyVersion: OptionalText(80),
+    consentVersion: OptionalText(80),
+    consentTextHash: Type.Optional(Type.String({ minLength: 64, maxLength: 64, pattern: '^[a-f0-9]{64}$' })),
   },
   { additionalProperties: false },
 );

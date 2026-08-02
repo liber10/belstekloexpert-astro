@@ -48,6 +48,8 @@ const lead: Lead = {
   referrer: null,
   consentAt: null,
   privacyVersion: null,
+  consentVersion: null,
+  consentTextHash: null,
   assignedTo: null,
   firstResponseAt: null,
   qualifiedAt: null,

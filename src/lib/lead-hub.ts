@@ -34,6 +34,10 @@ export interface WebLeadPayload {
   message?: string;
   photoRefs?: string[];
   attribution?: LeadAttribution;
+  consentAt?: string;
+  privacyVersion?: string;
+  consentVersion?: string;
+  consentTextHash?: string;
 }
 
 export interface LeadHubResult {
@@ -160,6 +164,12 @@ export function buildWebLeadPayload(
     landingUrl: limit(fields.landing_url || fields.page_url, 2_048),
     referrer: limit(fields.referrer, 2_048),
   });
+  const consentAt = normalizeConsentTimestamp(fields.consent_at);
+  const privacyVersion = limit(fields.privacy_version, 80);
+  const consentVersion = limit(fields.consent_version, 80);
+  const consentTextHash = /^[a-f0-9]{64}$/.test(cleanText(fields.consent_text_hash))
+    ? cleanText(fields.consent_text_hash)
+    : '';
 
   return {
     sourceDetail: limit(fields.form_source || service || 'site_form', 160) || undefined,
@@ -174,6 +184,10 @@ export function buildWebLeadPayload(
     message: limit(messageParts.join('\n'), 4_000) || undefined,
     photoRefs: photoRefs.length ? photoRefs : undefined,
     attribution: Object.keys(attribution).length ? attribution : undefined,
+    ...(consentAt ? { consentAt } : {}),
+    ...(privacyVersion ? { privacyVersion } : {}),
+    ...(consentVersion ? { consentVersion } : {}),
+    ...(consentTextHash ? { consentTextHash } : {}),
   };
 }
 
@@ -450,6 +464,13 @@ async function request(
 function parseYear(value: string) {
   const year = Number.parseInt(value, 10);
   return Number.isInteger(year) && year >= 1886 && year <= 2100 ? year : undefined;
+}
+
+function normalizeConsentTimestamp(value: string | undefined) {
+  const cleaned = cleanText(value);
+  if (!cleaned) return undefined;
+  const parsed = new Date(cleaned);
+  return Number.isNaN(parsed.valueOf()) ? undefined : parsed.toISOString();
 }
 
 function cleanText(value: string | undefined) {

@@ -22,6 +22,13 @@
       "when": 1785688200000,
       "tag": "0002_telegram_public_bot",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1785699000000,
+      "tag": "0003_consent_evidence",
+      "breakpoints": true
     }
   ]
 }

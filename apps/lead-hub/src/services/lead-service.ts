@@ -419,6 +419,8 @@ function normalizeBody(body: WebLeadBody, phoneNormalized: string) {
     referrer: cleanText(attribution?.referrer),
     consentAt,
     privacyVersion: cleanText(body.privacyVersion),
+    consentVersion: cleanText(body.consentVersion),
+    consentTextHash: cleanText(body.consentTextHash),
   };
 }
 
@@ -475,6 +477,8 @@ function normalizeExternalBody(body: ExternalLeadInput) {
     referrer: undefined,
     consentAt,
     privacyVersion: cleanText(body.privacyVersion),
+    consentVersion: cleanText(body.consentVersion),
+    consentTextHash: cleanText(body.consentTextHash),
   };
 }
 

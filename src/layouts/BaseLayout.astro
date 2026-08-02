@@ -2,6 +2,7 @@
 import Footer from '@/components/common/Footer.astro';
 import Header from '@/components/common/Header.astro';
 import StickyCallBar from '@/components/common/StickyCallBar.astro';
+import CookieConsent from '@/components/common/CookieConsent.astro';
 import { autoRepairSchema, organizationSchema } from '@/lib/schema';
 import { site } from '@/data/site';
 import '@/styles/global.css';
@@ -57,54 +58,16 @@ const schemas = Array.isArray(schema) ? [...baseSchema, ...schema] : schema ? [.
     <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM summary" />
 
-    {gtmId && (
-      <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${gtmId}');`} />
-    )}
-
-    {ga4Id && (
-      <>
-        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
-        <script is:inline set:html={`window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());
-gtag('config','${ga4Id}');`} />
-      </>
-    )}
-
-    {ymId && (
-      <script is:inline set:html={`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-m[i].l=1*new Date();
-for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
-k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');
-ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});`} />
-    )}
-
     <script is:inline type="application/ld+json" set:html={JSON.stringify(schemas)} />
   </head>
   <body>
-    {gtmId && (
-      <noscript>
-        <iframe
-          src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-          height="0"
-          width="0"
-          style="display:none;visibility:hidden"
-        >
-        </iframe>
-      </noscript>
-    )}
-
     <Header />
     <main>
       <slot />
     </main>
     <Footer />
     <StickyCallBar />
+    <CookieConsent gtmId={gtmId} ga4Id={ga4Id} ymId={ymId} />
 
     <script is:inline define:vars={{ yandexMetrikaId: ymId }}>
       (() => {
@@ -126,7 +89,7 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
         let saved = {};
 
         window.bseTrack = (eventName, eventParams = {}) => {
-          if (!eventName) return;
+          if (!eventName || window.bseAnalyticsAllowed !== true) return;
 
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({ event: eventName, ...eventParams });
@@ -207,6 +170,8 @@ ym(${ymId},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvis
 
           const submissionId = form.querySelector('[data-submission-id]');
           if (submissionId && !submissionId.value) submissionId.value = createSubmissionId();
+          const consentAt = form.querySelector('[data-consent-at]');
+          if (consentAt) consentAt.value = new Date().toISOString();
 
           const honeypot = form.querySelector('[name="company"]');
           const phone = form.querySelector('[name="phone"]');

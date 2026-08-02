@@ -51,6 +51,12 @@ import { site } from '@/data/site';
         <h3>Для отзывов</h3>
         <p><a href="/otzyv/">Ссылки на карты и площадки</a></p>
       </article>
+      <article class="card contact-card">
+        <h3>Юридическая информация</h3>
+        <p>{site.legalName}, УНП {site.unp}</p>
+        <p>{site.legalAddress}</p>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      </article>
     </div>
   </section>
 

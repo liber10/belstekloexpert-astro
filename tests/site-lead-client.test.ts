@@ -64,6 +64,24 @@ describe('site Lead Hub client', () => {
     expect(payload.message).toContain('\u0424\u043e\u0442\u043e \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u043e: 1');
   });
 
+  it('maps consent evidence without collecting an IP address', () => {
+    const payload = buildWebLeadPayload({
+      phone: '+375291111111',
+      consent_at: '2026-08-02T12:00:00.000Z',
+      privacy_version: 'policy-v1',
+      consent_version: 'consent-v1',
+      consent_text_hash: 'a'.repeat(64),
+    }, 'submission_consent_001');
+
+    expect(payload).toMatchObject({
+      consentAt: '2026-08-02T12:00:00.000Z',
+      privacyVersion: 'policy-v1',
+      consentVersion: 'consent-v1',
+      consentTextHash: 'a'.repeat(64),
+    });
+    expect(payload).not.toHaveProperty('ip');
+  });
+
   it('requests and validates signed upload slots', async () => {
     let requestedUrl = '';
     let requestedInit: RequestInit | undefined;

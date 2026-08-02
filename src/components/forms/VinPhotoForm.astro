@@ -1,5 +1,6 @@
 ---
 import AttributionFields from '@/components/forms/AttributionFields.astro';
+import ConsentNotice from '@/components/forms/ConsentNotice.astro';
 
 interface Props {
   title?: string;
@@ -96,6 +97,8 @@ const { title = 'Отправить VIN или фото повреждения',
       <textarea name="comment" placeholder="Опишите повреждение или удобное время"></textarea>
     </label>
 
+    <ConsentNotice />
+
     <p class="form-status" data-form-status aria-live="polite"></p>
     <button class="button button--primary" type="submit">Отправить на расчёт</button>
   </form>
@@ -159,6 +162,9 @@ const { title = 'Отправить VIN или фото повреждения',
         }
 
         event.preventDefault();
+
+        const consentAt = form.querySelector('[data-consent-at]');
+        if (consentAt instanceof HTMLInputElement) consentAt.value = new Date().toISOString();
 
         const honeypot = form.querySelector('[name="company"]');
         if (honeypot instanceof HTMLInputElement && honeypot.value) return;

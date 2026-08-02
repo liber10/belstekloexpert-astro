@@ -11,6 +11,11 @@
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
 | [Публичный Telegram-бот](public-telegram-bot-runbook.md) | Operations | Подготовка; production заблокирован `LEGAL-001` |
+| [Аудит персональных данных](personal-data-audit.md) | Legal/operations | Проект `LEGAL-001` |
+| [Обязательные legal-входы](legal-required-inputs.md) | Checklist | Блокирует publication |
+| [Карта информационных ресурсов](personal-data-resources-map.md) | Registry | Требует проверки владельцем |
+| [Meta Lead Ads: legal copy](meta-lead-ads-legal-copy.md) | Advertising | Проект, legal review required |
+| [Чек-лист рекламы](advertising-compliance-checklist.md) | Advertising | Проект |
 | [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный |
 | [Cloudflare production cutover](cloudflare-cutover-runbook.md) | Operations | Подготовлен, cutover не утверждён |
 | [Обновление прайса](price-update.md) | Operations | Актуальный |

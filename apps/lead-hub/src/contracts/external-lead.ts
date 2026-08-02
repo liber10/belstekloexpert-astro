@@ -30,5 +30,7 @@ export interface ExternalLeadInput {
   telegramUsername?: string;
   consentAt?: string;
   privacyVersion?: string;
+  consentVersion?: string;
+  consentTextHash?: string;
   receivedAt?: string;
 }

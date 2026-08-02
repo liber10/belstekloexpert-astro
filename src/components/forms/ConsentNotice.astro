@@ -1,0 +1,22 @@
+---
+import { createHash } from 'node:crypto';
+import { legal } from '@/config/legal';
+
+const consentTextHash = createHash('sha256').update(legal.consentText, 'utf8').digest('hex');
+---
+
+<fieldset class="consent-field">
+  <legend class="sr-only">Согласие на обработку персональных данных</legend>
+  <label class="consent-field__label">
+    <input type="checkbox" name="privacy_consent" value="accepted" required />
+    <span>
+      {legal.consentText}
+      <a href="/privacy/" target="_blank" rel="noopener">Открыть политику</a>.
+    </span>
+  </label>
+  <input type="hidden" name="privacy_version" value={legal.policyVersion} />
+  <input type="hidden" name="consent_version" value={legal.consentVersion} />
+  <input type="hidden" name="consent_text_hash" value={consentTextHash} />
+  <input type="hidden" name="consent_at" value="" data-consent-at />
+</fieldset>
+

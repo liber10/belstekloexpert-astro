@@ -38,6 +38,7 @@ const year = new Date().getFullYear();
           <li><a href={site.commercialOfferPath} data-event="commercial_offer_download">Коммерческое предложение</a></li>
           <li><a href="/faq/">FAQ</a></li>
           <li><a href="/privacy/">Политика обработки данных</a></li>
+          <li><button class="site-footer__link-button" type="button" data-cookie-settings>Настройки cookie</button></li>
         </ul>
       </div>
 
@@ -55,7 +56,13 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="site-footer__bottom">
-      © {year} {site.legalName}. Все права защищены.
+      © {year} {site.legalName}, УНП {site.unp}. Все права защищены.
     </div>
   </div>
 </footer>
+
+<script is:inline>
+  document.querySelector('[data-cookie-settings]')?.addEventListener('click', () => {
+    window.dispatchEvent(new Event('bse:cookie-settings'));
+  });
+</script>

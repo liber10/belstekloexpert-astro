@@ -1,5 +1,6 @@
 ---
 import AttributionFields from '@/components/forms/AttributionFields.astro';
+import ConsentNotice from '@/components/forms/ConsentNotice.astro';
 
 interface Props {
   title?: string;
@@ -44,6 +45,8 @@ const {
       <span>Комментарий</span>
       <textarea name="comment" placeholder="Марка, модель, год, что случилось со стеклом"></textarea>
     </label>
+
+    <ConsentNotice />
 
     <p class="form-status" data-form-status aria-live="polite"></p>
     <button class="button button--primary" type="submit">Получить расчёт</button>
