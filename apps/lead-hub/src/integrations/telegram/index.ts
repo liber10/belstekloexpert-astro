@@ -108,6 +108,7 @@ export function createTelegramIntegration(
 
   return {
     async registerWebhook(url, secret) {
+      await bot.init();
       await bot.api.setWebhook(url, {
         secret_token: secret,
         allowed_updates: ['message', 'callback_query'],
