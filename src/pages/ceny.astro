@@ -19,18 +19,18 @@ import { site } from '@/data/site';
       <h1 class="section__title">Цены на автостёкла без сюрпризов на месте</h1>
       <p class="section__lead">
         Показываем стартовые ориентиры и варианты “под ключ”. Финальную цену
-        подтверждаем по VIN, фото маркировки или комплектации автомобиля. {priceNote}
+        подтверждаем после оценки марки, модели, года и фото стекла. {priceNote}
       </p>
       <div class="grid price-grid">
         {prices.map((item) => (
           <a class="card price-card" href={item.url}>
             <h3>{item.title}</h3>
-            <p><Currency value={item.priceFrom} suffix={item.unit} /></p>
+            <p>{item.priceFrom > 0 ? <Currency value={item.priceFrom} suffix={item.unit} /> : 'по оценке фото'}</p>
           </a>
         ))}
       </div>
       <div class="cta-row">
-        <Button href="/#calculator">Уточнить по VIN</Button>
+        <Button href="/#calculator">Оценить по фото</Button>
       </div>
     </div>
   </section>

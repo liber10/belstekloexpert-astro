@@ -1,0 +1,122 @@
+---
+import Button from '@/components/common/Button.astro';
+---
+
+<section class="section chip-guide" aria-labelledby="chip-guide-title">
+  <div class="container">
+    <p class="section__eyebrow">Предварительная диагностика</p>
+    <h2 class="section__title" id="chip-guide-title">Что мастер оценивает по фотографии скола</h2>
+    <p class="section__lead">
+      Фото помогает быстро выбрать следующий шаг, но окончательное решение принимается
+      после осмотра стекла в боксе.
+    </p>
+
+    <div class="chip-guide__grid">
+      <article>
+        <span>01</span>
+        <h3>Форма и размер</h3>
+        <p>Смотрим центр повреждения, количество лучей и наличие расходящейся трещины.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h3>Расположение</h3>
+        <p>Важно, где находится скол: в зоне обзора, рядом с краем или вне рабочей области.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h3>Состояние</h3>
+        <p>Грязь и влага внутри повреждения могут повлиять на результат и заметность следа.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container chip-guide__split">
+    <div>
+      <p class="section__eyebrow">До визита</p>
+      <h2 class="section__title">Как сохранить скол чистым</h2>
+      <ul class="check-list chip-guide__list">
+        <li>закройте сухое повреждение прозрачной плёнкой или скотчем без сильного нажима;</li>
+        <li>не направляйте на стекло резкий поток горячего или холодного воздуха;</li>
+        <li>сделайте общий кадр стекла и крупный план при хорошем освещении;</li>
+        <li>пришлите марку, модель и год автомобиля вместе с фотографиями.</li>
+      </ul>
+    </div>
+    <div class="chip-guide__expectation">
+      <p class="section__eyebrow">Честное ожидание</p>
+      <h2>Главная цель — стабилизировать повреждение</h2>
+      <p>
+        После ремонта визуальный след может остаться. Насколько он будет заметен,
+        зависит от типа, глубины, загрязнения и возраста скола. Это обсуждаем до работы.
+      </p>
+      <Button href="#photo-form" dataEvent="chip_guide_photo_cta">Показать скол мастеру</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .chip-guide__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 38px;
+    border-top: 1px solid var(--line);
+  }
+
+  .chip-guide__grid article {
+    padding-top: 24px;
+  }
+
+  .chip-guide__grid span {
+    color: var(--green);
+    font-weight: 900;
+  }
+
+  .chip-guide__grid h3 {
+    margin: 12px 0 8px;
+    font-size: 1.3rem;
+  }
+
+  .chip-guide__grid p,
+  .chip-guide__expectation p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .chip-guide__split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  .chip-guide__list {
+    margin-top: 24px;
+  }
+
+  .chip-guide__expectation {
+    border-left: 4px solid var(--amber);
+    padding: 4px 0 4px 26px;
+  }
+
+  .chip-guide__expectation h2 {
+    margin: 0 0 14px;
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+  }
+
+  .chip-guide__expectation .button {
+    margin-top: 24px;
+  }
+
+  @media (max-width: 820px) {
+    .chip-guide__grid,
+    .chip-guide__split {
+      grid-template-columns: 1fr;
+    }
+
+    .chip-guide__split {
+      gap: 38px;
+    }
+  }
+</style>

@@ -5,6 +5,7 @@ import Currency from '@/components/common/Currency.astro';
 import B2BForm from '@/components/forms/B2BForm.astro';
 import LeadForm from '@/components/forms/LeadForm.astro';
 import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
+import ChipRepairGuide from '@/components/sections/ChipRepairGuide.astro';
 import { prices, priceNote } from '@/data/prices';
 import { site } from '@/data/site';
 
@@ -28,11 +29,22 @@ interface Props {
 const { service } = Astro.props;
 const related = prices.filter((item) => !item.url.includes(service.pageSlug)).slice(0, 3);
 const isB2B = service.serviceType === 'b2b';
-const proofItems = [
+const isChipRepair = service.pageSlug === 'remont-skolov';
+const isWindshieldService = isChipRepair || service.pageSlug === 'zamena-lobovogo-stekla';
+const installationProofItems = [
   'защищаем салон и торпедо перед демонтажем',
   'сверяем датчики, камеру, обогрев и крепления',
   'проговариваем цену, срок и ограничения до начала работ',
 ];
+const chipRepairProofItems = [
+  'оцениваем форму, глубину и расположение повреждения',
+  'заранее объясняем, какой визуальный след может остаться',
+  'не начинаем ремонт, если замена стекла безопаснее',
+];
+const proofItems = isChipRepair ? chipRepairProofItems : installationProofItems;
+const servicePriceNote = isChipRepair
+  ? 'Стоимость подтвердим после оценки формы, размера и состояния повреждения.'
+  : priceNote;
 ---
 
 <section class="service-hero">
@@ -51,8 +63,8 @@ const proofItems = [
         <h1 class="section__title">{service.h1}</h1>
         <div class="section__lead"><slot /></div>
         <div class="cta-row">
-          <Button href="#service-form">{service.cta}</Button>
-          <Button href="#photo-form" variant="quiet">Отправить фото</Button>
+          <Button href={isChipRepair ? '#photo-form' : '#service-form'}>{service.cta}</Button>
+          {!isChipRepair && <Button href="#photo-form" variant="quiet">Отправить фото</Button>}
         </div>
       </div>
 
@@ -67,11 +79,13 @@ const proofItems = [
           <span>Срок</span>
           <strong>{service.duration}</strong>
         </div>
-        <p>{priceNote}</p>
+        <p>{servicePriceNote}</p>
       </aside>
     </div>
   </div>
 </section>
+
+{isChipRepair && <ChipRepairGuide />}
 
 {isB2B && (
   <section class="section section--soft">
@@ -98,7 +112,11 @@ const proofItems = [
     {service.benefits.map((benefit) => (
       <article class="card feature-card">
         <h3>{benefit}</h3>
-        <p>Согласуем детали до начала работ и заранее объясним, что влияет на итоговую стоимость.</p>
+        <p>
+          {isChipRepair
+            ? 'Сначала оцениваем состояние повреждения и объясняем ожидаемый результат.'
+            : 'Согласуем детали до начала работ и заранее объясним, что влияет на итоговую стоимость.'}
+        </p>
       </article>
     ))}
   </div>
@@ -111,7 +129,11 @@ const proofItems = [
       {service.includes.map((item) => (
         <article class="card service-card">
           <h3>{item}</h3>
-          <p>Проверяем совместимость, аккуратно выполняем работу и передаём рекомендации после установки.</p>
+          <p>
+            {isChipRepair
+              ? 'Работаем по состоянию конкретного повреждения и проверяем результат перед выдачей.'
+              : 'Проверяем совместимость, аккуратно выполняем работу и передаём рекомендации после установки.'}
+          </p>
         </article>
       ))}
     </div>
@@ -126,26 +148,36 @@ const proofItems = [
       {proofItems.map((item) => (
         <article class="card feature-card">
           <h3>{item}</h3>
-          <p>Это снижает риск ошибок, грязного салона и неожиданных доплат на месте.</p>
+          <p>
+            {isChipRepair
+              ? 'Так ожидания от ремонта совпадают с фактическим состоянием стекла.'
+              : 'Это снижает риск ошибок, грязного салона и неожиданных доплат на месте.'}
+          </p>
         </article>
       ))}
     </div>
   </div>
 </section>
 
-<section class="section" id="service-form">
-  <div class="container">
-    {isB2B ? (
-      <B2BForm />
-    ) : (
-      <LeadForm title="Получить точный расчёт" service={service.title} eventName="service_lead_submit" />
-    )}
-  </div>
-</section>
+{!isChipRepair && (
+  <section class="section" id="service-form">
+    <div class="container">
+      {isB2B ? (
+        <B2BForm />
+      ) : (
+        <LeadForm title="Получить точный расчёт" service={service.title} eventName="service_lead_submit" />
+      )}
+    </div>
+  </section>
+)}
 
 <section class="section section--soft" id="photo-form">
   <div class="container">
-    <VinPhotoForm title="Оценить по VIN или фото" service={service.title} />
+    <VinPhotoForm
+      title={isChipRepair ? 'Показать скол мастеру' : 'Оценить стекло по фото'}
+      service={service.title}
+      windshieldOnly={isWindshieldService}
+    />
   </div>
 </section>
 
@@ -174,7 +206,7 @@ const proofItems = [
       {related.map((item) => (
         <a class="card price-card" href={item.url}>
           <h3>{item.title}</h3>
-          <p><Currency value={item.priceFrom} suffix={item.unit} /></p>
+          <p>{item.priceFrom > 0 ? <Currency value={item.priceFrom} suffix={item.unit} /> : 'по оценке фото'}</p>
         </a>
       ))}
     </div>

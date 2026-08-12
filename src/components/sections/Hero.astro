@@ -10,18 +10,18 @@ import { contacts } from '@/data/contacts';
       <p class="hero__kicker">Минск · мастерская 2025 года · 18 лет практики у мастеров</p>
       <h1>Замена и ремонт автостёкол в Минске</h1>
       <p class="hero__lead">
-        Рассчитайте ориентировочную стоимость по марке и модели или отправьте VIN
-        для точного подбора специалистом. Работаем с легковыми авто, Tesla,
-        пассажирским, грузовым и специальным транспортом.
+        Отправьте марку, модель, год и фото лобового стекла. Мастер сам определит
+        важные особенности и предложит подходящий вариант без долгой переписки.
+        Прайс-калькулятор остаётся для предварительного ориентира.
       </p>
       <div class="hero__actions">
-        <Button href="#calculator">Рассчитать по модели</Button>
-        <Button href="#calculator" variant="secondary">Подбор по VIN</Button>
+        <Button href="#calculator">Оценить по фото</Button>
+        <Button href="/remont-skolov/" variant="secondary">Ремонт скола</Button>
         <Button href={contacts.phoneHref} variant="secondary" dataEvent="phone_click">Позвонить</Button>
       </div>
       <div class="hero__trust" aria-label="Стартовые цены">
         <span>Под ключ <Currency value={220} /></span>
-        <span>Ремонт скола <Currency value={40} /></span>
+        <span>Ремонт скола — оценка по фото</span>
         <span>Легковые, грузовые, спецтехника</span>
       </div>
     </div>

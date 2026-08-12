@@ -2,7 +2,7 @@
 
 | Ресурс | Владелец/роль | Данные | Доступ и защита | Статус Реестра |
 | --- | --- | --- | --- | --- |
-| `belstekloexpert.by` | ООО «БелСтеклоЭксперт», сбор заявок | формы, attribution | HTTPS, server-side API | проверить |
+| `belstekloexpert.by` / Cloudflare Worker | ООО «БелСтеклоЭксперт», сбор заявок | формы, attribution | HTTPS, server-side API, secrets platform-side | проверить |
 | Lead Hub Render | обработка лидов | заявка, статусы, consent evidence | bearer auth, webhook secrets, redacted logs | проверить |
 | Neon PostgreSQL | источник истины | лиды, события, сессии | закрытая строка подключения, роли БД | проверить |
 | Backblaze B2 | фото | приватные изображения | private bucket, signed URL | проверить |

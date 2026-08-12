@@ -1,6 +1,6 @@
 # Roadmap BelStekloExpert
 
-Последняя актуализация: 2 августа 2026 года.
+Последняя актуализация: 12 августа 2026 года.
 
 ## Обозначения
 
@@ -28,36 +28,33 @@
 
 | ID | Задача | Приоритет | Статус | Условие готовности |
 | --- | --- | --- | --- | --- |
-| `INFRA-001` | Перенести frontend с Netlify на Cloudflare Workers | P1 | in-progress | Preview, SSR/API, формы с фото, домен и rollback проверены |
-| `DNS-001` | Исправить `www` и перенести authoritative DNS в Cloudflare без смены origin | P1 | planned | Apex, `www` и почтовые записи проверены, сайт остаётся на Netlify |
+| `INFRA-001` | Перенести frontend с Netlify на Cloudflare Workers | P1 | done | Production Worker, custom domain, SSR/API, static assets и rollback-путь проверены |
+| `DNS-001` | Исправить `www` и перенести authoritative DNS в Cloudflare | P1 | done | Cloudflare authoritative DNS; apex и `www` резолвятся |
 | `STORAGE-001` | Оценить миграцию B2 → Cloudflare R2 | P1 | planned | Старые refs совместимы или объекты перенесены |
 | `OPS-002` | Добавить мониторинг health и outbox dead jobs | P2 | backlog | Есть уведомление о сбое |
 | `OPS-003` | Зафиксировать backup/restore Neon | P2 | backlog | Выполнен тест восстановления |
 
-Переход на Cloudflare нужно напомнить при следующем инфраструктурном этапе. Причина:
-Netlify уже останавливал production-деплои из-за build-кредитов, а владелец проекта
-зарегистрировал Cloudflare и получил доступ к R2.
-
-Для `INFRA-001` опубликован изолированный Worker preview
+Для `INFRA-001` сначала был опубликован изолированный Worker preview
 `belstekloexpert-preview.belstekloexpert.workers.dev`. Страницы, `noindex`,
 `/api/health/`, форма без фото и форма с фото 15,5 МБ проверены 29 июля 2026 года.
 Подтверждены автоматическое сжатие, signed upload в закрытый B2 и доставка outbox
 в Telegram. 30 июля добавлены отдельная production-конфигурация, read-only smoke и
 оптимизированная раздача static assets. Commit `669fd95` повторно опубликован в
 preview: static HTML и SSR получают `noindex`, health и lead endpoint прошли
-проверку; действующий Netlify production остался indexable и также прошёл
-read-only smoke. Free bundle limit пройден; до завершения остаются DNS migration,
-custom domain и фактический rollback. На 36 вызовах активной версии Worker CPU
+проверку. Затем authoritative DNS, apex и `www` были перенесены в Cloudflare, а
+`belstekloexpert-production` стал production frontend. Free bundle limit пройден.
+На 36 вызовах preview Worker CPU
 P50/P90/P99 составил 0,90/3,06/4,58 ms, ошибок и превышений resource limits не
 было. Один из 15 health-запросов получил временный HTTP 503 во время обращения к
 Render; следующие 14 и дополнительная серия 5/5 завершились HTTP 200. Production
-DNS не изменялся.
+релизы теперь проходят Cloudflare build, Wrangler dry-run, deploy и read-only smoke.
 
 ## Сайт и продукт
 
 | ID | Задача | Приоритет | Статус |
 | --- | --- | --- | --- |
 | `WEB-001` | Проверить ключевые страницы на mobile и desktop после следующих UI-изменений | P1 | planned |
+| `WEB-002` | Перевести быструю оценку на марку, модель, год и фото; усилить ремонт сколов | P1 | in-progress — код готов, ожидает production smoke |
 | `CALC-001` | Формализовать версию прайса и дату актуальности в pipeline | P2 | backlog |
 | `CALC-002` | Добавить безопасный preview отчёта перед публикацией нового прайса | P2 | backlog |
 | `B2B-001` | Расширить форму юрлиц компанией, УНП, размером парка и email | P2 | backlog |

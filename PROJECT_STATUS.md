@@ -1,6 +1,6 @@
 # Состояние проекта BelStekloExpert
 
-Последняя актуализация: 2 августа 2026 года.
+Последняя актуализация: 12 августа 2026 года.
 
 Этот файл является короткой панелью проекта. Его нужно обновлять после изменения
 production-архитектуры, провайдера, режима доставки заявок или значимого ограничения.
@@ -9,9 +9,9 @@ production-архитектуры, провайдера, режима доста
 
 | Область | Текущее решение | Статус | Примечание |
 | --- | --- | --- | --- |
-| Основной сайт | Netlify, Astro SSR | Работает | Runtime cutover `dcf01d8`, режим доставки `hub`, включая `/api/health/`, проверен 28 июля 2026 года |
-| Preview сайта | Cloudflare Workers, Astro SSR | Работает | Commit `669fd95`, Worker version `c4e67557-1072-49a6-a8f9-a1eeb23ea357`; static HTML и SSR защищены `noindex`, read-only smoke пройден 30 июля. На 36 вызовах активной версии CPU P50/P90/P99 составил 0,90/3,06/4,58 ms, resource errors — 0. Форма, фото и Telegram проверены 29 июля. Production DNS и Netlify не изменены |
-| Репозиторий | GitHub `main` | Работает | `liber10/belstekloexpert-astro`; Cloudflare preview fix `669fd95` отправлен 30 июля 2026 года |
+| Основной сайт | Cloudflare Workers, Astro SSR | Работает | Worker `belstekloexpert-production`, custom domain `belstekloexpert.by`, режим доставки `hub`; активная до текущего релиза версия `8e6ae33b-c95f-48dc-8329-58f5a1b2803a` |
+| Preview сайта | Cloudflare Workers, Astro SSR | Работает | Отдельный Worker `belstekloexpert-preview`; static HTML и SSR защищены `noindex`, форма с фото и Telegram проверены |
+| Репозиторий | GitHub `main` | Работает | `liber10/belstekloexpert-astro`; Cloudflare production публикуется явно через Wrangler после проверок |
 | Lead Hub | Render Free Web Service | Работает | Production `cae7eef`; readiness и миграция public Telegram session/outbox проверены 2 августа 2026 года |
 | Kufar | Gmail Apps Script → durable inbox Lead Hub | Работает | Production smoke test прошёл 2 августа: письмо принято один раз, текст очищен, точный диалог открывается, статусы сохраняются |
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
@@ -19,12 +19,14 @@ production-архитектуры, провайдера, режима доста
 | Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Webhook регистрируется при старте; production smoke test доставки выполнен 28 июля 2026 года |
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Резервное object storage | Cloudflare R2 | Доступ получен | Пока не используется в production |
-| Основной домен | `belstekloexpert.by` | Частично | Apex работает на Netlify; `www` не разрешается из-за ошибочного CNAME у текущего DNS-провайдера |
+| Основной домен | `belstekloexpert.by` | Работает | Authoritative DNS: Cloudflare; apex и `www` резолвятся через Cloudflare |
 
 ## Что уже реализовано
 
 - адаптивный Astro-сайт с услугами, марками, моделями, блогом и страницей для юрлиц;
 - калькулятор по прайсу с поиском марки и модели, диапазоном годов и еврокодом;
+- основной сценарий оценки по марке, модели, году и фотографии лобового стекла;
+- расширенная SEO-страница ремонта сколов и инструкция по фотографированию повреждения;
 - импорт обновлённого XLSX-прайса без публикации внутренней стоимости работ;
 - белорусские цены с новым обозначением рубля;
 - единый поток форм через `/api/lead/`;
@@ -40,33 +42,30 @@ production-архитектуры, провайдера, режима доста
 
 ## Известные ограничения
 
-1. Netlify ранее останавливал production-деплои из-за build-кредитов. Runtime cutover
-   `dcf01d8` и последующий документационный деплой 28 июля прошли успешно, но расход
-   кредитов нужно продолжать контролировать; Cloudflare остаётся планом снижения этой
-   зависимости.
+1. Frontend перенесён на Cloudflare Workers. Netlify-конфигурация сохранена только
+   как legacy fallback и не считается текущим production origin. После значимых
+   релизов нужно контролировать Worker errors, CPU и число запросов.
 2. Lead Hub работает на Render Free Web Service. В проверке 30 июля один из 15
    health-запросов вернул временный HTTP 503, следующие 14 и дополнительная серия
    5/5 ответили HTTP 200. Холодный запуск после простоя остаётся риском; нужен
    мониторинг времени ответа форм и задач outbox.
-3. Cloudflare preview прошёл функциональный smoke test; prerendered HTML
-   обслуживается как static assets и получает host-specific `noindex`, SSR и API
-   проходят через Worker. Free bundle и CPU limits пройдены: на 36 вызовах активной
-   версии CPU P99 составил 4,58 ms, ошибок и превышений лимитов не было. Перед
-   cutover остаётся проверить custom domain и фактический DNS rollback.
+3. Production и preview используют отдельные Workers. Preview получает `noindex`,
+   production custom domain остаётся indexable. Быстрый rollback выполняется на
+   предыдущую Worker version; возврат DNS на legacy origin является аварийным
+   сценарием и не совмещается с изменением object storage.
 4. Исторический аудит от 10 июля описывает состояние до создания Lead Hub и хранится
    только как архив.
 5. Локальное рабочее дерево может содержать пользовательские изменения. Их нельзя
    автоматически восстанавливать, удалять или включать в чужой коммит.
-6. Authoritative DNS остаётся на Hoster.by. Apex работает, но
-   `www.belstekloexpert.by` не разрешается; перед переносом зоны нужен полный экспорт
-   записей и отдельная проверка почтовых MX/SPF/DKIM/DMARC.
+6. Authoritative DNS перенесён в Cloudflare. Почтовые MX/SPF/DKIM/DMARC нельзя
+   изменять вместе с релизом Worker; их состояние проверяется отдельной задачей.
 
 ## Ближайшие решения
 
 | ID | Решение | Приоритет | Состояние |
 | --- | --- | --- | --- |
-| `INFRA-001` | Оценить перенос сайта с Netlify на Cloudflare Pages/Workers | P1 | В работе: preview `669fd95`, production config, static routing, bundle и CPU limits проверены; остаются DNS, custom domain и rollback |
-| `DNS-001` | Исправить `www` и перенести authoritative DNS в Cloudflare без смены origin | P1 | Запланировано |
+| `INFRA-001` | Перенести сайт с Netlify на Cloudflare Workers | P1 | Выполнено: production Worker, custom domain, static assets и server API работают |
+| `DNS-001` | Перенести authoritative DNS и восстановить `www` | P1 | Выполнено: зона Cloudflare, apex и `www` резолвятся |
 | `STORAGE-001` | Сравнить рабочий B2 с Cloudflare R2 и подготовить план миграции | P1 | Запланировано |
 | `LEADS-001` | Переключить Telegram webhook и outbox worker полностью на Lead Hub | P1 | Выполнено |
 | `KUFAR-001` | Перевести Kufar email handler на durable Lead Hub inbox | P1 | Выполнено, production smoke test 2 августа 2026 года |

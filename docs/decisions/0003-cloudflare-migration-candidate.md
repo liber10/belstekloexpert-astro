@@ -1,6 +1,6 @@
 # ADR-0003: Cloudflare Workers и R2 как кандидат миграции
 
-Статус: принят для preview; production cutover не утверждён.
+Статус: выполнен как этап preview; production-решение продолжено в ADR-0005.
 
 Дата: 29 июля 2026 года.
 
@@ -75,5 +75,9 @@ Worker Custom Domain.
 - проверить CPU metrics и фактический объём Worker requests;
 - проверить custom domain и быстрый rollback origin.
 
-Netlify остаётся production-хостингом, DNS не изменён. Backblaze B2 остаётся
-production-хранилищем. Задачи отслеживаются как `INFRA-001` и `STORAGE-001`.
+## Последующее состояние
+
+2 августа 2026 года production Worker был опубликован, а к 12 августа authoritative
+DNS, apex и `www` уже обслуживались Cloudflare. Текущее production-решение описано
+в ADR-0005. Backblaze B2 остаётся production-хранилищем; `STORAGE-001` не входит в
+миграцию frontend.

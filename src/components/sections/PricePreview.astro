@@ -25,13 +25,13 @@ import { prices, priceNote, pricePackages } from '@/data/prices';
       {prices.map((item) => (
         <a class="card price-card" href={item.url}>
           <h3>{item.title}</h3>
-          <p><Currency value={item.priceFrom} suffix={item.unit} /></p>
+          <p>{item.priceFrom > 0 ? <Currency value={item.priceFrom} suffix={item.unit} /> : 'по оценке фото'}</p>
         </a>
       ))}
     </div>
     <div class="cta-row">
       <Button href="/ceny/">Смотреть цены</Button>
-      <Button href="/#calculator" variant="quiet">Уточнить по VIN</Button>
+      <Button href="/#calculator" variant="quiet">Оценить по фото</Button>
     </div>
   </div>
 </section>

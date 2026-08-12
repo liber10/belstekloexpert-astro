@@ -1,6 +1,5 @@
 ---
-import AttributionFields from '@/components/forms/AttributionFields.astro';
-import ConsentNotice from '@/components/forms/ConsentNotice.astro';
+import VinPhotoForm from '@/components/forms/VinPhotoForm.astro';
 import prices from '../data/glass-prices.json';
 
 const calculatorPrices = prices.map((item) => ({
@@ -26,19 +25,22 @@ const dataJson = JSON.stringify(calculatorPrices);
 ---
 
 <section class="section section--soft glass-calculator" id="calculator" aria-labelledby="glass-calculator-title">
-  <span class="anchor-offset" id="vin-form" aria-hidden="true"></span>
   <div class="container glass-calculator__inner">
     <div class="glass-calculator__copy">
-      <p class="glass-calculator__eyebrow">Онлайн-расчёт</p>
-      <h2 id="glass-calculator-title">Калькулятор стоимости установки автостекла</h2>
+      <p class="glass-calculator__eyebrow">Быстрая оценка</p>
+      <h2 id="glass-calculator-title">Покажите лобовое стекло мастеру</h2>
       <p>
-        Выберите тип стекла, марку, модель, год и еврокод из актуального прайса.
-        Так диапазон получается точнее, а VIN остаётся для ручной проверки комплектации.
+        Для первой оценки достаточно марки, модели, года автомобиля и фотографии
+        лобового стекла. Специалист сам заметит датчики, камеру, обогрев и другие
+        особенности, которые клиенту сложно определить по списку.
       </p>
       <p class="glass-calculator__note">
-        Расчёт предварительный: итог зависит от наличия стекла, датчика дождя/света,
-        камеры, обогрева, молдингов, цвета полосы и состояния кузова.
+        Сфотографируйте стекло целиком снаружи. Если есть скол или трещина, добавьте
+        второй снимок крупным планом — мастер сразу оценит шанс на ремонт.
       </p>
+      <a class="glass-calculator__chip-link" href="/remont-skolov/">
+        Есть скол? Не откладывайте оценку
+      </a>
     </div>
 
     <div class="glass-calculator__panel" data-calculator>
@@ -48,22 +50,38 @@ const dataJson = JSON.stringify(calculatorPrices);
           type="button"
           role="tab"
           aria-selected="true"
-          data-mode-button="model"
+          data-mode-button="photo"
         >
-          Расчёт по модели
+          Оценка по фото
         </button>
         <button
           class="glass-calculator__tab"
           type="button"
           role="tab"
           aria-selected="false"
-          data-mode-button="vin"
+          data-mode-button="catalog"
         >
-          Подбор по VIN
+          Прайс-калькулятор
         </button>
       </div>
 
-      <div class="glass-calculator__mode" data-mode-panel="model">
+      <div class="glass-calculator__mode" data-mode-panel="photo">
+        <VinPhotoForm
+          title="Марка, модель, год и фото"
+          service="Калькулятор: оценка лобового стекла по фото"
+          embedded
+          windshieldOnly
+        />
+      </div>
+
+      <div class="glass-calculator__mode" data-mode-panel="catalog" hidden>
+        <div class="glass-calculator__catalog-intro">
+          <h3>Ориентир по прайсу поставщика</h3>
+          <p>
+            Выберите стекло и автомобиль, чтобы увидеть предварительный диапазон.
+            Каталог продолжим расширять прайсами и API других поставщиков.
+          </p>
+        </div>
         <div class="glass-calculator__fields">
           <div class="glass-calculator__field">
             <label class="glass-calculator__label" for="glass-type">Тип стекла</label>
@@ -128,82 +146,6 @@ const dataJson = JSON.stringify(calculatorPrices);
           <small data-range-meta></small>
         </div>
       </div>
-
-      <div class="glass-calculator__mode" data-mode-panel="vin" hidden>
-        <div class="glass-calculator__vin-intro">
-          <h3>Точный подбор по VIN</h3>
-          <p>
-            VIN не рассчитывает цену автоматически по этому прайсу. Он помогает специалисту проверить
-            комплектацию и подобрать правильное стекло: датчики, камеру, обогрев, молдинги и OEM-совместимость.
-          </p>
-        </div>
-
-        <form
-          class="glass-calculator__vin-form"
-          action="/api/lead/"
-          method="POST"
-          data-lead-form
-          data-submit-event="vin_submit"
-          data-vin-form
-        >
-          <input type="hidden" name="service" value="Калькулятор: подбор по VIN" />
-          <AttributionFields />
-          <p class="glass-calculator__bot-field">
-            <label>Не заполняйте это поле: <input name="company" tabindex="-1" autocomplete="off" /></label>
-          </p>
-          <input type="hidden" name="decoded_vehicle" data-vin-decoded />
-
-          <label class="glass-calculator__label" for="glass-vin">VIN автомобиля</label>
-          <input
-            id="glass-vin"
-            class="glass-calculator__input"
-            type="text"
-            name="vin"
-            inputmode="text"
-            maxlength="17"
-            pattern="[A-HJ-NPR-Z0-9]{17}"
-            placeholder="Например: YV1LW570221342651"
-            autocomplete="off"
-            required
-            data-vin-input
-          />
-
-          <div class="glass-calculator__helper" data-vin-helper>
-            Введите 17 символов VIN. Буквы I, O и Q в VIN не используются.
-          </div>
-
-          <label class="glass-calculator__label" for="glass-phone">Телефон для связи</label>
-          <input
-            id="glass-phone"
-            class="glass-calculator__input"
-            type="tel"
-            name="phone"
-            placeholder="+375 / Telegram / Viber"
-            autocomplete="tel"
-            required
-          />
-
-          <label class="glass-calculator__label" for="glass-comment">Комментарий, если есть</label>
-          <textarea
-            id="glass-comment"
-            class="glass-calculator__textarea"
-            name="comment"
-            rows="4"
-            placeholder="Например: есть датчик дождя, камера, трещина со стороны водителя"
-          ></textarea>
-
-          <ConsentNotice />
-
-          <button class="glass-calculator__cta glass-calculator__submit" type="submit">
-            Отправить VIN на подбор
-          </button>
-
-          <p class="glass-calculator__form-note" data-form-status aria-live="polite"></p>
-          <p class="glass-calculator__form-note">
-            После проверки сообщим точную стоимость стекла и установки. Для мгновенной ориентировочной цены используйте расчёт по модели.
-          </p>
-        </form>
-      </div>
     </div>
   </div>
 </section>
@@ -233,11 +175,6 @@ const dataJson = JSON.stringify(calculatorPrices);
     const rangePrice = root.querySelector('[data-range-price]');
     const rangeMeta = root.querySelector('[data-range-meta]');
 
-    const vinForm = root.querySelector('[data-vin-form]');
-    const vinInput = root.querySelector('[data-vin-input]');
-    const vinHelper = root.querySelector('[data-vin-helper]');
-    const vinDecoded = root.querySelector('[data-vin-decoded]');
-
     const normalize = (value) => String(value || '')
       .toLowerCase()
       .replaceAll('ё', 'е')
@@ -255,34 +192,6 @@ const dataJson = JSON.stringify(calculatorPrices);
           <span class="glass-calculator__currency-icon" aria-hidden="true"></span>
         </span>
       `;
-    };
-
-    const cleanVin = (value) => String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-
-    const VIN_YEAR_CODES = {
-      A: 2010, B: 2011, C: 2012, D: 2013, E: 2014, F: 2015, G: 2016, H: 2017, J: 2018,
-      K: 2019, L: 2020, M: 2021, N: 2022, P: 2023, R: 2024, S: 2025, T: 2026,
-      V: 2027, W: 2028, X: 2029, Y: 2000,
-      1: 2001, 2: 2002, 3: 2003, 4: 2004, 5: 2005, 6: 2006, 7: 2007, 8: 2008, 9: 2009,
-    };
-
-    const VIN_WMI_BRANDS = {
-      YV1: 'VOLVO', YV4: 'VOLVO',
-      WAU: 'AUDI', WUA: 'AUDI', TRU: 'AUDI',
-      WBA: 'BMW', WBS: 'BMW',
-      WDB: 'MERCEDES', WDD: 'MERCEDES', WDC: 'MERCEDES',
-      WVW: 'VOLKSWAGEN', WVG: 'VOLKSWAGEN', WV1: 'VOLKSWAGEN', WV2: 'VOLKSWAGEN',
-      VF3: 'PEUGEOT', VF7: 'CITROEN', VF1: 'RENAULT',
-      W0L: 'OPEL', WF0: 'FORD',
-      JT1: 'TOYOTA', JT2: 'TOYOTA', JTD: 'TOYOTA',
-      JN1: 'NISSAN', JM1: 'MAZDA', JHM: 'HONDA', KMH: 'HYUNDAI', KNA: 'KIA',
-    };
-
-    const VIN_MODEL_HINTS = {
-      YV1LW: { model: 'V70', note: 'платформа Volvo 850/S70/V70/C70' },
-      YV1LS: { model: 'S70', note: 'платформа Volvo 850/S70/V70/C70' },
-      YV1SW: { model: 'V70', note: 'Volvo V70 второго поколения' },
-      YV1TS: { model: 'S80', note: 'Volvo S80 первого поколения' },
     };
 
     const brands = [...prices.reduce((map, item) => {
@@ -481,7 +390,7 @@ const dataJson = JSON.stringify(calculatorPrices);
       const rows = getFilteredRows();
       if (!rows.length) {
         rangeSummary.hidden = true;
-        helper.textContent = 'По выбранным параметрам в прайсе ничего не найдено. Отправьте VIN на ручной подбор.';
+        helper.textContent = 'По выбранным параметрам в этом прайсе ничего не найдено. Переключитесь на оценку по фото.';
         return;
       }
 
@@ -494,8 +403,8 @@ const dataJson = JSON.stringify(calculatorPrices);
         ? formatBynHtml(min)
         : `${formatBynHtml(min)} <span class="glass-calculator__range-dash">–</span> ${formatBynHtml(max)}`;
       rangePrice.setAttribute('aria-label', min === max ? formatBynLabel(min) : `${formatBynLabel(min)} – ${formatBynLabel(max)}`);
-      rangeMeta.textContent = `Диапазон рассчитан по ${codeText}. Для точного подтверждения комплектации можно отправить VIN.`;
-      helper.textContent = 'Диапазон показан с установкой. Если не уверены в комплектации стекла, отправьте VIN.';
+      rangeMeta.textContent = `Диапазон рассчитан по ${codeText}. Для подтверждения варианта отправьте фото лобового стекла.`;
+      helper.textContent = 'Диапазон показан с установкой. Точный вариант мастер подтвердит по фото.';
       rangeSummary.hidden = false;
     };
 
@@ -510,25 +419,6 @@ const dataJson = JSON.stringify(calculatorPrices);
       renderRange();
     };
 
-    const decodeVin = (value) => {
-      const vin = cleanVin(value);
-      if (!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)) return null;
-
-      const wmi = vin.slice(0, 3);
-      const modelKey = vin.slice(0, 5);
-      const make = VIN_WMI_BRANDS[wmi] || '';
-      const year = VIN_YEAR_CODES[vin[9]] || null;
-      const modelHint = VIN_MODEL_HINTS[modelKey] || null;
-
-      return {
-        vin,
-        make,
-        year,
-        model: modelHint?.model || '',
-        note: modelHint?.note || '',
-      };
-    };
-
     const setMode = (mode) => {
       modeButtons.forEach((button) => {
         const isActive = button.dataset.modeButton === mode;
@@ -540,39 +430,8 @@ const dataJson = JSON.stringify(calculatorPrices);
         panel.hidden = panel.dataset.modePanel !== mode;
       });
 
-      if (mode === 'model') brandInput?.focus();
-      if (mode === 'vin') vinInput?.focus();
-    };
-
-    const updateVinState = () => {
-      const cleaned = cleanVin(vinInput.value);
-      if (cleaned !== vinInput.value) vinInput.value = cleaned;
-
-      if (!cleaned) {
-        vinHelper.textContent = 'Введите 17 символов VIN. Буквы I, O и Q в VIN не используются.';
-        vinDecoded.value = '';
-        return;
-      }
-
-      if (cleaned.length < 17) {
-        vinHelper.textContent = `Осталось символов: ${17 - cleaned.length}. После отправки специалист подберёт стекло вручную.`;
-        vinDecoded.value = '';
-        return;
-      }
-
-      const vinInfo = decodeVin(cleaned);
-      if (!vinInfo) {
-        vinHelper.textContent = 'VIN должен состоять из 17 символов без букв I, O и Q.';
-        vinDecoded.value = '';
-        return;
-      }
-
-      const vehicle = [vinInfo.make, vinInfo.model, vinInfo.year].filter(Boolean).join(' ');
-      const note = vinInfo.note ? ` ${vinInfo.note}.` : '';
-      const label = vehicle || 'марка/модель не определены локальным справочником';
-
-      vinDecoded.value = `${label}${note}`.trim();
-      vinHelper.textContent = `VIN принят: ${label}.${note} Цена не рассчитывается автоматически — заявка отправляется специалисту на точный подбор.`;
+      if (mode === 'catalog') brandInput?.focus();
+      if (mode === 'photo') root.querySelector('[data-quick-make]')?.focus();
     };
 
     modeButtons.forEach((button) => {
@@ -584,15 +443,6 @@ const dataJson = JSON.stringify(calculatorPrices);
     modelInput.addEventListener('input', () => updateCalculator({ resetYear: true, resetCode: true }));
     yearSelect.addEventListener('change', () => updateCalculator({ resetCode: true }));
     codeSelect.addEventListener('change', () => renderRange());
-
-    vinInput.addEventListener('input', updateVinState);
-    vinForm.addEventListener('submit', (event) => {
-      updateVinState();
-      if (!decodeVin(vinInput.value)) {
-        event.preventDefault();
-        vinInput.focus();
-      }
-    });
 
     populateBrandOptions();
     updateCalculator();
@@ -641,7 +491,7 @@ const dataJson = JSON.stringify(calculatorPrices);
   }
 
   .glass-calculator__copy p,
-  .glass-calculator__vin-intro p,
+  .glass-calculator__catalog-intro p,
   .glass-calculator__form-note {
     margin: 0 0 16px;
     font-size: 17px;
@@ -655,6 +505,17 @@ const dataJson = JSON.stringify(calculatorPrices);
     border-radius: 8px;
     background: var(--white);
     box-shadow: var(--shadow);
+  }
+
+  .glass-calculator__chip-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 4px;
+    color: var(--green-dark);
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .glass-calculator__panel {
@@ -674,6 +535,26 @@ const dataJson = JSON.stringify(calculatorPrices);
     border: 1px solid var(--line);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.76);
+  }
+
+  .glass-calculator__catalog-intro {
+    margin-bottom: 20px;
+  }
+
+  .glass-calculator__panel :global(.form-panel--embedded) {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .glass-calculator__panel :global(.form-panel--embedded h2) {
+    font-size: 1.55rem;
+  }
+
+  .glass-calculator__panel :global(.photo-estimate-steps) {
+    margin-top: 18px;
   }
 
   .glass-calculator__tab {

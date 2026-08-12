@@ -1,6 +1,6 @@
 export const mainNavigation = [
   { label: 'Услуги', href: '/#services' },
-  { label: 'Калькулятор', href: '/#calculator' },
+  { label: 'Оценка по фото', href: '/#calculator' },
   { label: 'О нас', href: '/#about' },
   { label: 'Цены', href: '/ceny/' },
   { label: 'Марки', href: '/marki/' },

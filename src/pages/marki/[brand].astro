@@ -37,7 +37,7 @@ const schema = [
 
 <BaseLayout
   title={`Замена автостекла ${brand.name} в Минске — BelStekloExpert`}
-  description={`${brand.lead} Расчёт по VIN, фото или маркировке стекла.`}
+  description={`${brand.lead} Быстрая оценка по марке, модели, году и фото стекла.`}
   canonical={canonical}
   schema={schema}
 >
@@ -48,7 +48,7 @@ const schema = [
         <h1 class="section__title">Замена автостекла {brand.name} в Минске</h1>
         <p class="section__lead">{brand.lead}</p>
         <div class="cta-row">
-          <Button href="#brand-form">Рассчитать по VIN</Button>
+          <Button href="#brand-form">Оценить по фото</Button>
           <Button href="/marki/" variant="quiet">Все марки</Button>
         </div>
       </div>
@@ -110,7 +110,7 @@ const schema = [
 
   <section class="section section--soft" id="brand-form">
     <div class="container">
-      <VinPhotoForm title={`Рассчитать стекло ${brand.name}`} service={`Марка ${brand.name}`} />
+      <VinPhotoForm title={`Оценить стекло ${brand.name} по фото`} service={`Марка ${brand.name}: оценка по фото`} />
     </div>
   </section>
 </BaseLayout>

@@ -1,8 +1,8 @@
 # Cloudflare Worker preview
 
 Документ описывает изолированный preview сайта BelStekloExpert на Cloudflare
-Workers. Production-сайт продолжает работать на Netlify, а DNS
-`belstekloexpert.by` не переключён.
+Workers. Production работает в отдельном Worker `belstekloexpert-production`, а
+preview не имеет production custom domain и всегда закрыт от индексации.
 
 ## Контур
 
@@ -34,8 +34,8 @@ npm run check:cloudflare:preview
 ```
 
 Wrangler публикует конфигурацию, сгенерированную Astro в
-`dist/server/wrangler.json`. Основной `astro.config.mjs` и Netlify adapter при этом
-не меняются.
+`dist/server/wrangler.json`. Production-конфигурация Cloudflare и legacy fallback
+при этом не меняются.
 
 ## Переменные
 
@@ -91,8 +91,8 @@ Bucket не переводится в public. Загрузка и чтение �
 30 июля 2026 года commit `669fd95` опубликован как Worker version
 `c4e67557-1072-49a6-a8f9-a1eeb23ea357`. Read-only smoke подтвердил `noindex` на
 главной и prerendered content page, рабочие health и lead endpoints. Параллельная
-проверка `belstekloexpert.by` подтвердила, что Netlify production остаётся
-indexable и работоспособным.
+проверка на тот момент подтвердила работоспособность прежнего origin. После
+завершённого cutover актуальным production является Cloudflare Worker.
 
 ## Worker metrics
 
@@ -110,17 +110,14 @@ read-only серии запросов Cloudflare зафиксировал:
 Preview укладывается в CPU и memory limits Free plan. Wall Time P90/P99 достигал
 3/15 секунд из-за внешнего Render subrequest и не является Worker CPU. В серии из
 15 health-запросов один вернул временный HTTP 503; следующие 14 и отдельная серия
-5/5 вернули HTTP 200. Перед production cutover риск холодного старта Render нужно
-учесть в мониторинге и пользовательском поведении формы.
+5/5 вернули HTTP 200. Риск холодного старта Render остаётся предметом production-
+мониторинга и должен учитываться в пользовательском поведении формы.
 
 ## Rollback
 
-Пока Worker не привязан к production-домену, rollback не требует изменения DNS:
-preview перестают использовать, а Netlify продолжает обслуживать production.
+Preview никогда не принимает production-трафик, поэтому его rollback — перестать
+использовать preview URL или откатить только `belstekloexpert-preview`. Production
+Worker и DNS при этом не меняются. Откат production описан в профильном runbook.
 
-После будущего custom-domain cutover rollback должен включать возврат DNS на
-предыдущий Netlify target, проверку `/api/health/` и контрольную заявку без фото.
-Сам cutover требует отдельного решения владельца проекта.
-
-Полная последовательность DNS migration, production Worker и rollback описана в
-[Cloudflare production cutover](cloudflare-cutover-runbook.md).
+Текущая последовательность production-публикации и rollback описана в
+[Cloudflare production runbook](cloudflare-cutover-runbook.md).

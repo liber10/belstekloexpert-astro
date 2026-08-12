@@ -17,7 +17,7 @@ const { soft = false, showExamples = true } = Astro.props;
     <SectionTitle
       eyebrow="Под ключ"
       title="Три уровня цены вместо тумана"
-      lead="Итоговая сумма складывается из стекла, работы и опций автомобиля. Поэтому показываем ориентиры пакетами, а точную цену считаем по VIN или фото маркировки."
+      lead="Итоговая сумма складывается из стекла, работы и опций автомобиля. Показываем ориентиры пакетами, а подходящий вариант мастер подтверждает по автомобилю и фото стекла."
     />
 
     <div class="grid package-grid">
@@ -44,7 +44,7 @@ const { soft = false, showExamples = true } = Astro.props;
           <h3>Примеры ориентиров</h3>
           <p>
             Это не публичная “фиксированная цена”, а быстрый коридор для популярных машин.
-            Окончательно сверяем стекло по VIN, году и опциям.
+            Для первой оценки достаточно марки, модели, года и фото. VIN может понадобиться позже для финальной сверки.
           </p>
         </div>
         <div class="price-table" role="table" aria-label="Примеры цен на автостёкла">
@@ -71,7 +71,7 @@ const { soft = false, showExamples = true } = Astro.props;
     </div>
 
     <div class="cta-row">
-      <Button href="/kalkulyator/" dataEvent="calculator_click">Рассчитать по VIN</Button>
+      <Button href="/kalkulyator/" dataEvent="calculator_click">Оценить по фото</Button>
       <Button href="/ceny/" variant="quiet">Все стартовые цены</Button>
     </div>
   </div>

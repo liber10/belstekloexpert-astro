@@ -1,12 +1,15 @@
 # Lead Hub: запуск и эксплуатация
 
-Актуализировано: 28 июля 2026 года.
+Актуализировано: 12 августа 2026 года.
 
 ## Текущий объём
 
 `apps/lead-hub` — отдельный сервис на Fastify/TypeScript с PostgreSQL. Он принимает лиды сайта, сохраняет лид и события, ставит доставку в Telegram в outbox и обрабатывает статусы из inline-кнопок.
 
-Формы Astro-сайта подключены к Lead Hub через серверный endpoint Netlify `/api/lead/`. Секрет ingest API не попадает в браузер. В production Netlify работает в режиме `LEAD_DELIVERY_MODE=hub`, а Telegram webhook и outbox worker выполняются Lead Hub на Render.
+Формы Astro-сайта подключены к Lead Hub через server-side endpoint Cloudflare
+Worker `/api/lead/`. Секрет ingest API не попадает в браузер. Production Worker
+работает в режиме `LEAD_DELIVERY_MODE=hub`, а Telegram webhook и outbox worker
+выполняются Lead Hub на Render.
 
 Фотографии сжимаются в браузере и напрямую загружаются в закрытый Backblaze B2 по короткоживущему signed URL. Lead Hub хранит только приватные `photo_refs` и создаёт временные download URL для отправки фото в Telegram.
 
@@ -55,7 +58,7 @@ POST /api/v1/leads/web
 В Git и документацию добавляются только имена переменных. Значения хранятся в
 environment settings платформы.
 
-Для server-side функции сайта в Netlify используются:
+Для server-side API production Worker используются:
 
 | Переменная | Назначение |
 | --- | --- |
@@ -78,7 +81,9 @@ environment settings платформы.
 - Фото сжимаются в браузере, загружаются через signed PUT и передаются в заявке как `photo_refs`.
 - Bucket остаётся закрытым; CORS разрешает только согласованные origins сайта.
 
-Нельзя одновременно включать outbox worker Render и оставлять Netlify в режиме `hub-with-legacy-telegram`: сначала нужно переключить Netlify на `hub`, затем включать `TELEGRAM_ENABLED=true` в Lead Hub.
+Нельзя одновременно включать outbox worker Render и оставлять production Worker в
+режиме `hub-with-legacy-telegram`: сначала нужно переключить Worker на `hub`, затем
+включать `TELEGRAM_ENABLED=true` в Lead Hub.
 
 ## Локальный запуск
 
@@ -222,11 +227,12 @@ Render Free Web Service может переходить в сон. После х
 
 1. установить `TELEGRAM_ENABLED=false` на Render и дождаться успешного деплоя;
 2. убедиться, что worker остановлен и новый webhook больше не обрабатывает команды;
-3. установить `LEAD_DELIVERY_MODE=hub-with-legacy-telegram` в Netlify;
-4. пересобрать и опубликовать Netlify;
+3. установить `LEAD_DELIVERY_MODE=hub-with-legacy-telegram` в конфигурации
+   production Worker;
+4. пересобрать и опубликовать `belstekloexpert-production`;
 5. отправить одну явно тестовую заявку и проверить единственную карточку Telegram.
 
-Нельзя сначала включать переходный мост Netlify: одновременная работа двух
+Нельзя сначала включать переходный мост Cloudflare Worker: одновременная работа двух
 доставщиков создаёт риск повторных уведомлений.
 
 ## Проверки разработчика
@@ -234,8 +240,8 @@ Render Free Web Service может переходить в сон. После х
 ```powershell
 npm run lead-hub:check
 npm run test:site
-npm run build
-npm run build:render
+npm run build:cloudflare:production
+npm run deploy:cloudflare:production:dry
 ```
 
 Integration tests используют отдельную БД:
@@ -268,4 +274,8 @@ npm run test:integration --workspace @belstekloexpert/lead-hub
 
 Формы, калькулятор, идемпотентность, web attribution, приватное object storage, Telegram webhook и outbox worker подключены к production-контуру Lead Hub.
 
-Следующий инфраструктурный этап — оценка переноса frontend с Netlify на Cloudflare Pages/Workers и возможной миграции B2 в R2. Параллельно нужно добавить мониторинг `dead`-задач и утвердить privacy/consent. Meta, рекламные конверсии, телефония и почтовые адаптеры Kufar/Onliner остаются последующими этапами.
+Frontend уже работает на Cloudflare Workers. Следующий независимый
+инфраструктурный этап — оценка миграции B2 в R2 без изменения контракта
+`photo_refs`. Параллельно нужно добавить мониторинг `dead`-задач и утвердить сроки
+хранения данных. Meta, рекламные конверсии и телефония остаются последующими
+этапами.

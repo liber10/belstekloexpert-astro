@@ -64,6 +64,37 @@ describe('site Lead Hub client', () => {
     expect(payload.message).toContain('\u0424\u043e\u0442\u043e \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u043e: 1');
   });
 
+  it('maps the photo-first estimate without requiring VIN', () => {
+    const reference = 'b2://bucket-name/leads/2026/08/hash/windshield.jpg';
+    const payload = buildWebLeadPayload(
+      {
+        service: 'Калькулятор: оценка лобового стекла по фото',
+        phone: '+375291111111',
+        contact_method: 'Telegram',
+        make: 'Volkswagen',
+        model: 'Passat',
+        year: '2018',
+        glass_type: 'Лобовое',
+      },
+      'submission_photo_001',
+      1,
+      [reference],
+    );
+
+    expect(payload).toMatchObject({
+      sourceDetail: 'Калькулятор: оценка лобового стекла по фото',
+      carMake: 'Volkswagen',
+      carModel: 'Passat',
+      carYear: 2018,
+      photoRefs: [reference],
+    });
+    expect(payload.vin).toBeUndefined();
+    expect(JSON.parse(JSON.stringify(payload))).not.toHaveProperty('vin');
+    expect(payload.message).toContain('Предпочтительный способ связи: Telegram');
+    expect(payload.message).toContain('Тип стекла: Лобовое');
+    expect(payload.message).toContain('Фото приложено: 1');
+  });
+
   it('maps consent evidence without collecting an IP address', () => {
     const payload = buildWebLeadPayload({
       phone: '+375291111111',

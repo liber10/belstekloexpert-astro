@@ -55,14 +55,18 @@ export function autoRepairSchema() {
             name: item.title,
             url: `${site.domain}${item.url}`,
           },
-          priceCurrency: 'BYN',
-          price: item.priceFrom,
-          priceSpecification: {
-            '@type': 'PriceSpecification',
-            priceCurrency: 'BYN',
-            price: item.priceFrom,
-            description: item.unit,
-          },
+          ...(item.priceFrom > 0
+            ? {
+                priceCurrency: 'BYN',
+                price: item.priceFrom,
+                priceSpecification: {
+                  '@type': 'PriceSpecification',
+                  priceCurrency: 'BYN',
+                  price: item.priceFrom,
+                  description: item.unit,
+                },
+              }
+            : {}),
         })),
         ...pricePackages.map((item) => ({
           '@type': 'Offer',

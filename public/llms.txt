@@ -27,16 +27,16 @@ The workshop opened in 2025. Its technicians have 18 years of practical auto gla
 - Chip repair
 - Crack repair
 - Mobile service in Minsk when conditions allow safe installation
-- Auto glass selection by VIN, photo, or glass marking
-- Model-based online estimate with immediate indicative price in Belarusian rubles
-- VIN request for manual precise selection by a specialist
+- Fast specialist estimate from car make, model, year, and a windshield photo
+- Model-based supplier price calculator with an indicative range in Belarusian rubles
+- VIN may be requested later when a complex configuration needs final verification
 - Services for passenger cars, Tesla, minibuses, passenger transport, trucks, special machinery, excavators, cranes, fleets, taxi, delivery, body shops, and service stations
 
 ## Pricing Signals
 
 - Windshield replacement: from 100 Belarusian rubles
 - Side or rear glass replacement: from 80 Belarusian rubles
-- Chip repair: from 40 Belarusian rubles
+- Chip repair: price confirmed after photo and damage assessment
 - Crack repair: from 35 Belarusian rubles
 - Mobile service in Minsk: from 20 Belarusian rubles
 - Turnkey auto glass packages: from 220 Belarusian rubles
@@ -45,8 +45,9 @@ Final price depends on make, model, year, glass type, heating, camera, rain sens
 
 ## Best User Actions
 
-- For immediate indicative price, use the model calculator.
-- For precise manual selection, send VIN and photos of the damage or glass marking.
+- For the fastest useful estimate, send make, model, year, and a photo of the windshield.
+- For a chip, send one full-windshield photo and one close-up of the damage.
+- Use the supplier price calculator for an immediate indicative range.
 - For urgent cases, call +375 33 682-81-35.
 - For route planning, use coordinates 53.954319, 27.547441 or the address Minsk, Dolginovskiy trakt, 150.
 
@@ -54,7 +55,8 @@ Final price depends on make, model, year, glass type, heating, camera, rain sens
 
 - Home: https://belstekloexpert.by/
 - Prices: https://belstekloexpert.by/ceny/
-- Calculator and VIN/photo estimate: https://belstekloexpert.by/kalkulyator/
+- Windshield photo estimate and supplier price calculator: https://belstekloexpert.by/kalkulyator/
+- Windshield chip repair: https://belstekloexpert.by/remont-skolov/
 - Contacts: https://belstekloexpert.by/kontakty/
 - Legal entities and fleets: https://belstekloexpert.by/dlya-yurlic/
 - Commercial offer for legal entities: https://belstekloexpert.by/docs/belstekloexpert-kommercheskoe-predlozhenie-yurlica.pdf
@@ -64,5 +66,5 @@ Final price depends on make, model, year, glass type, heating, camera, rain sens
 
 ## Positioning
 
-BelStekloExpert focuses on careful auto glass selection and installation: VIN-based matching, clear pricing before booking, clean interior protection, work with sensors/camera/heating, and warranty for seam tightness.
+BelStekloExpert focuses on a specialist-led estimate: the customer sends make, model, year, and a windshield photo; the technician identifies relevant glass options and requests VIN only when final verification requires it.
 The positioning is calm and practical: precise selection first, then careful installation.

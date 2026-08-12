@@ -2,7 +2,7 @@
 
 Сайт и контур обработки заявок сервиса автостёкол в Минске.
 
-Проект состоит из двух приложений в одном репозитории:
+Проект состоит из двух production-приложений в одном репозитории:
 
 - Astro-сайт с калькулятором, контентом и серверными формами;
 - Lead Hub на Fastify с PostgreSQL, Telegram-интеграцией и приватным хранением фото.
@@ -23,11 +23,12 @@
 
 | Часть | Платформа | Назначение |
 | --- | --- | --- |
-| Сайт | Netlify | `https://belstekloexpert.by` |
+| Сайт | Cloudflare Workers | Astro SSR, static assets и server-side API на `https://belstekloexpert.by` |
+| DNS | Cloudflare | Authoritative DNS для apex и `www` |
 | Lead Hub | Render | API заявок, health endpoints и Telegram-контур |
 | База | Neon PostgreSQL | Лиды, события и outbox |
 | Фото | Backblaze B2 | Закрытый bucket и короткоживущие signed URL |
-| Резервный вариант | Cloudflare R2 | Кандидат для следующего инфраструктурного этапа |
+| Резервное хранилище | Cloudflare R2 | Доступ получен, но production-фото пока остаются в B2 |
 | Репозиторий | GitHub | `liber10/belstekloexpert-astro` |
 
 Актуальное состояние и известные ограничения всегда фиксируются в
@@ -54,7 +55,7 @@
 ```
 
 Astro-сайт намеренно остаётся в корне. Перемещать его в `apps/site` сейчас не нужно:
-это создаст риск для существующих конфигураций Netlify и Render без практической
+это создаст риск для существующих конфигураций Cloudflare, Render и rollback без практической
 пользы.
 
 ## Локальный запуск
@@ -82,10 +83,14 @@ npm run lead-hub:dev
 Минимальный набор перед публикацией изменений сайта:
 
 ```powershell
+npm run check
 npm run test:site
-npm run build
-npm run build:render
+npm run build:cloudflare:production
+npm run deploy:cloudflare:production:dry
 ```
+
+`npm run build` и `npm run build:render` сохраняются как проверки legacy Netlify
+и standalone Node fallback, но не являются production-деплоем сайта.
 
 Для изменений Lead Hub:
 

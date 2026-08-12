@@ -16,12 +16,14 @@
 | [Карта информационных ресурсов](personal-data-resources-map.md) | Registry | Требует проверки владельцем |
 | [Meta Lead Ads: legal copy](meta-lead-ads-legal-copy.md) | Advertising | Проект, legal review required |
 | [Чек-лист рекламы](advertising-compliance-checklist.md) | Advertising | Проект |
-| [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный |
-| [Cloudflare production cutover](cloudflare-cutover-runbook.md) | Operations | Подготовлен, cutover не утверждён |
+| [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный, отдельный `noindex` Worker |
+| [Cloudflare production runbook](cloudflare-cutover-runbook.md) | Operations | Актуальный, cutover выполнен |
 | [Обновление прайса](price-update.md) | Operations | Актуальный |
+| [Данные по ремонту сколов](chip-repair-offer-inputs.md) | Product checklist | Ожидает подтверждения мастера |
 | [ADR-0001: границы монорепозитория](decisions/0001-monorepo-boundaries.md) | Decision | Принят |
 | [ADR-0002: два Astro runtime](decisions/0002-dual-astro-runtime.md) | Decision | Принят |
-| [ADR-0003: Cloudflare Worker preview](decisions/0003-cloudflare-migration-candidate.md) | Decision | Принят для preview |
+| [ADR-0003: Cloudflare Worker preview](decisions/0003-cloudflare-migration-candidate.md) | Decision | Выполнен; историческая база миграции |
+| [ADR-0005: Cloudflare production frontend](decisions/0005-cloudflare-production.md) | Decision | Принят и введён в эксплуатацию |
 
 ## Исторические документы
 

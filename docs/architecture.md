@@ -1,13 +1,14 @@
 # Архитектура BelStekloExpert
 
-Последняя актуализация: 28 июля 2026 года.
+Последняя актуализация: 12 августа 2026 года.
 
 ## Системный контекст
 
 ```mermaid
 flowchart LR
     USER["Посетитель сайта"]
-    SITE["Astro SSR<br/>Netlify"]
+    DNS["Cloudflare DNS"]
+    SITE["Astro SSR + assets<br/>Cloudflare Workers"]
     CALC["Калькулятор<br/>glass-prices.json"]
     HUB["Lead Hub API<br/>Render / Fastify"]
     DB[("Neon PostgreSQL")]
@@ -15,7 +16,7 @@ flowchart LR
     TG["Telegram Bot API"]
     CHAT["Рабочий Telegram-чат"]
 
-    USER --> SITE
+    USER --> DNS --> SITE
     SITE --> CALC
     SITE -->|"server-to-server lead"| HUB
     SITE -->|"prepare signed upload"| HUB
@@ -33,6 +34,7 @@ flowchart LR
 | Компонент | Код | Ответственность |
 | --- | --- | --- |
 | Astro-сайт | `src/` | Страницы, SEO, калькулятор, формы и совместимые API routes |
+| Cloudflare Worker | `astro.config.cloudflare.production.mjs` | Production SSR, static assets и server-side API сайта |
 | Данные сайта | `src/data/` | Контакты, часы, цены, бренды и данные калькулятора |
 | Lead Hub | `apps/lead-hub/` | Приём лидов, idempotency, статусы, outbox и интеграции |
 | PostgreSQL | Neon | Лиды, события и задачи интеграций |
@@ -91,12 +93,15 @@ Private XLSX
 
 | Target | Конфигурация | Проверка |
 | --- | --- | --- |
-| Netlify Astro | `astro.config.mjs` | `npm run build` |
-| Node Astro fallback | `astro.config.render.mjs` | `npm run build:render` |
+| Cloudflare production | `astro.config.cloudflare.production.mjs` | `npm run build:cloudflare:production`, production dry-run |
+| Cloudflare preview | `astro.config.cloudflare.mjs` | `npm run build:cloudflare`, preview smoke |
+| Legacy Netlify fallback | `astro.config.mjs` | `npm run build` при изменении общей runtime-логики |
+| Node Astro fallback | `astro.config.render.mjs` | `npm run build:render` при изменении общей runtime-логики |
 | Render Lead Hub | `apps/lead-hub/` | `npm run lead-hub:check` |
 
-Основной Netlify adapter и отдельный Node adapter должны сосуществовать. Подготовка
-альтернативного deployment не должна заменять рабочую конфигурацию.
+Cloudflare production и preview являются отдельными Workers. Legacy Netlify и Node
+конфигурации сохраняются для rollback/совместимости, но не определяют текущий
+production-путь.
 
 ## Владение данными
 

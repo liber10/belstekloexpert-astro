@@ -12,10 +12,13 @@ BelStekloExpert состоит из Astro-сайта в корне репози�
 
 ## Архитектурные границы
 
-- Основной `astro.config.mjs` использует `@astrojs/netlify`. Не заменяйте адаптер и
-  не меняйте эту конфигурацию ради Render.
-- `astro.config.render.mjs` является отдельной Node-конфигурацией. Обе конфигурации
-  должны продолжать собираться.
+- Production-сайт собирается через `astro.config.cloudflare.production.mjs` и
+  `wrangler.cloudflare.production.jsonc` в Worker `belstekloexpert-production`.
+- `astro.config.cloudflare.mjs` и `wrangler.cloudflare.jsonc` принадлежат отдельному
+  preview Worker и не заменяют production-конфигурацию.
+- `astro.config.mjs` с `@astrojs/netlify` и `astro.config.render.mjs` с Node adapter
+  сохраняются только как legacy/rollback и standalone fallback. Не подменяйте ими
+  Cloudflare production.
 - Astro-сайт остаётся в корне. Не переносите его в `apps/` без отдельного
   архитектурного решения.
 - Lead Hub находится только в `apps/lead-hub` и владеет PostgreSQL, статусами,
@@ -54,8 +57,8 @@ BelStekloExpert состоит из Astro-сайта в корне репози�
 ```powershell
 npm run check
 npm run test:site
-npm run build
-npm run build:render
+npm run build:cloudflare:production
+npm run deploy:cloudflare:production:dry
 ```
 
 Lead Hub:
@@ -74,9 +77,9 @@ npm run prices:update -- --source .private/imports/latest.xlsx
 
 | Область изменения | Обязательные проверки |
 | --- | --- |
-| Контент, стили, компоненты | `npm run check`, `npm run build` |
-| Формы и API сайта | `npm run test:site`, `npm run build` |
-| Astro config или зависимости | `npm run build`, `npm run build:render` |
+| Контент, стили, компоненты | `npm run check`, `npm run build:cloudflare:production` |
+| Формы и API сайта | `npm run test:site`, `npm run build:cloudflare:production`, production dry-run |
+| Astro config или зависимости | Cloudflare production build и dry-run; fallback-сборки при изменении общих runtime-зависимостей |
 | Lead Hub | `npm run lead-hub:check` |
 | Прайс | импорт, `npm run build`, ручная проверка калькулятора |
 | Фото | prepare, signed PUT, lead submission, Telegram smoke test |
@@ -87,9 +90,10 @@ npm run prices:update -- --source .private/imports/latest.xlsx
 
 - Не считайте локальную сборку опубликованной.
 - Проверяйте фактический commit и статус платформы после каждого production-деплоя.
-- Netlify и Render могут публиковаться независимо.
-- Не ломайте работающий Netlify-контур при подготовке альтернативного Render или
-  Cloudflare deployment.
+- Cloudflare Worker и Render Lead Hub публикуются независимо.
+- Не меняйте custom domain, DNS, production Worker и object storage одним релизом.
+- Netlify-конфигурация остаётся только аварийным fallback и не считается текущим
+  production-контуром.
 - Переключение object storage требует совместимости старых `photo_refs` или
   контролируемой миграции объектов.
 - После production smoke test обновляйте `PROJECT_STATUS.md`.

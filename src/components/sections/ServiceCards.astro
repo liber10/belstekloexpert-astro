@@ -9,16 +9,22 @@ import { prices } from '@/data/prices';
     <SectionTitle
       eyebrow="Услуги"
       title="Закрываем срочные задачи со стеклом без лишних кругов"
-      lead="От скола после трассы до полной замены стекла с датчиками и камерой. Сначала уточняем комплектацию, потом называем стоимость."
+      lead="От скола после трассы до полной замены стекла. Для быстрой оценки пришлите автомобиль и фото — технические особенности проверит мастер."
     />
     <div class="grid service-grid">
       {prices.map((item) => (
         <a class="card service-card" href={item.url}>
           <div>
             <h3>{item.title}</h3>
-            <p>Подбор, согласование цены, запись на удобное время и рекомендации после работы.</p>
+            <p>
+              {item.url === '/remont-skolov/'
+                ? 'Предварительная оценка по фото, запись в бокс и честный ответ о ремонтопригодности.'
+                : 'Подбор, согласование цены, запись на удобное время и рекомендации после работы.'}
+            </p>
           </div>
-          <div class="price-line"><Currency value={item.priceFrom} suffix={item.unit} /></div>
+          <div class="price-line">
+            {item.priceFrom > 0 ? <Currency value={item.priceFrom} suffix={item.unit} /> : 'по оценке фото'}
+          </div>
         </a>
       ))}
     </div>

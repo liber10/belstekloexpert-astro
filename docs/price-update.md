@@ -31,7 +31,12 @@ npm run prices:update -- --source .private/imports/latest.xlsx
 5. Проверить сайт:
 
 ```bash
-npm run build
+npm run test:site
+npm run build:cloudflare:production
+npm run deploy:cloudflare:production:dry
 ```
 
-После коммита и пуша Netlify пересоберёт сайт, и калькулятор автоматически покажет новый диапазон в белорусских рублях.
+После review, коммита и push сайт публикуется явной командой
+`npm run deploy:cloudflare:production`. Затем выполняется
+`npm run check:production:readonly` и ручная проверка диапазона. Git push сам по
+себе не считается production-деплоем.

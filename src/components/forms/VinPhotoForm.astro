@@ -1,23 +1,69 @@
 ---
 import AttributionFields from '@/components/forms/AttributionFields.astro';
 import ConsentNotice from '@/components/forms/ConsentNotice.astro';
+import prices from '@/data/glass-prices.json';
 
 interface Props {
   title?: string;
   service?: string;
+  embedded?: boolean;
+  windshieldOnly?: boolean;
 }
 
-const { title = 'Отправить VIN или фото повреждения', service = 'VIN/фото' } = Astro.props;
+const {
+  title = 'Получить быструю оценку по фото',
+  service = 'Оценка по фото',
+  embedded = false,
+  windshieldOnly = false,
+} = Astro.props;
+const photoLabel = windshieldOnly ? 'Фото лобового стекла' : 'Фото стекла или повреждения';
+const photoInstruction = windshieldOnly
+  ? 'Обязательное фото — лобовое стекло целиком снаружи. Для скола или трещины добавьте крупный план.'
+  : 'Сфотографируйте нужное стекло целиком. Если есть повреждение, добавьте крупный план.';
+
+const vehicleCatalog = [...prices.reduce((catalog, item) => {
+  const current = catalog.get(item.brandKey) ?? {
+    key: item.brandKey,
+    label: item.brand,
+    aliases: new Set<string>(),
+    models: new Set<string>(),
+  };
+
+  current.aliases.add(item.brand);
+  for (const alias of item.brandAliases ?? []) current.aliases.add(alias);
+  current.models.add(item.model);
+  catalog.set(item.brandKey, current);
+  return catalog;
+}, new Map<string, {
+  key: string;
+  label: string;
+  aliases: Set<string>;
+  models: Set<string>;
+}>()).values()]
+  .map((item) => ({
+    key: item.key,
+    label: item.label,
+    aliases: [...item.aliases],
+    models: [...item.models].sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })),
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
+
+const vehicleCatalogJson = JSON.stringify(vehicleCatalog);
 ---
 
-<div class="form-panel" id="vin-form">
+<div class:list={['form-panel', { 'form-panel--embedded': embedded }]} id="photo-estimate-form" data-photo-estimate-form>
   <div>
-    <p class="section__eyebrow">VIN / фото</p>
+    <p class="section__eyebrow">Оценка мастером</p>
     <h2>{title}</h2>
     <p>
-      По VIN быстрее подобрать стекло, а по фото проще понять ремонтопригодность
-      скола или трещины.
+      Укажите марку, модель и год, затем приложите {windshieldOnly ? 'фото лобового стекла' : 'фото нужного стекла'}. Мастер сам
+      увидит важные особенности и предложит подходящий вариант без анкеты про датчики.
     </p>
+    <ol class="photo-estimate-steps" aria-label="Что нужно для оценки">
+      <li><strong>Автомобиль</strong><span>Марка, модель и год выпуска</span></li>
+      <li><strong>Фото стекла</strong><span>Целиком снаружи; повреждение — ещё и крупным планом</span></li>
+      <li><strong>Ответ мастера</strong><span>Подходящий вариант, стоимость и время</span></li>
+    </ol>
   </div>
 
   <form
@@ -27,7 +73,8 @@ const { title = 'Отправить VIN или фото повреждения',
     enctype="multipart/form-data"
     data-lead-form
     data-photo-compress-form
-    data-submit-event="vin_submit"
+    data-vehicle-photo-form
+    data-submit-event="photo_estimate_submit"
   >
     <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
     <input type="hidden" name="service" value={service} />
@@ -35,11 +82,82 @@ const { title = 'Отправить VIN или фото повреждения',
 
     <div class="lead-form__row">
       <label class="field">
+        <span>Марка</span>
+        <input
+          name="make"
+          list="quick-make-options"
+          placeholder="Например: Volkswagen или Фольксваген"
+          autocomplete="off"
+          required
+          data-quick-make
+        />
+        <datalist id="quick-make-options" data-quick-make-options></datalist>
+      </label>
+      <label class="field">
+        <span>Модель</span>
+        <input
+          name="model"
+          list="quick-model-options"
+          placeholder="Сначала укажите марку"
+          autocomplete="off"
+          required
+          data-quick-model
+        />
+        <datalist id="quick-model-options" data-quick-model-options></datalist>
+      </label>
+    </div>
+
+    <div class="lead-form__row">
+      <label class:list={['field', { 'field--wide': windshieldOnly }]}>
+        <span>Год выпуска</span>
+        <input
+          name="year"
+          type="number"
+          inputmode="numeric"
+          min="1950"
+          max="2030"
+          placeholder="Например: 2018"
+          required
+        />
+      </label>
+      {windshieldOnly ? (
+        <input type="hidden" name="glass_type" value="Лобовое" />
+      ) : (
+        <label class="field">
+          <span>Что нужно сделать</span>
+          <select name="glass_type">
+            <option>Лобовое стекло</option>
+            <option>Ремонт скола</option>
+            <option>Ремонт трещины</option>
+            <option>Боковое стекло</option>
+            <option>Заднее стекло</option>
+            <option>Не знаю — нужна оценка</option>
+          </select>
+        </label>
+      )}
+    </div>
+
+    <label class="field field--file">
+      <span>{photoLabel}</span>
+      <input
+        name="photos"
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+        multiple
+        required
+      />
+      <small>
+        {photoInstruction} До 5 фото; большие JPG, PNG и WebP сожмутся автоматически.
+      </small>
+    </label>
+
+    <div class="lead-form__row">
+      <label class="field">
         <span>Телефон</span>
         <input name="phone" inputmode="tel" autocomplete="tel" placeholder="+375 ..." required />
       </label>
       <label class="field">
-        <span>Способ связи</span>
+        <span>Как ответить</span>
         <select name="contact_method">
           <option>Звонок</option>
           <option>Telegram</option>
@@ -48,61 +166,96 @@ const { title = 'Отправить VIN или фото повреждения',
       </label>
     </div>
 
-    <div class="lead-form__row">
-      <label class="field">
-        <span>Марка</span>
-        <input name="make" placeholder="Volkswagen" />
-      </label>
-      <label class="field">
-        <span>Модель</span>
-        <input name="model" placeholder="Passat" />
-      </label>
-    </div>
-
-    <div class="lead-form__row">
-      <label class="field">
-        <span>Год</span>
-        <input name="year" inputmode="numeric" placeholder="2018" />
-      </label>
-      <label class="field">
-        <span>Тип стекла</span>
-        <select name="glass_type">
-          <option>Лобовое</option>
-          <option>Боковое</option>
-          <option>Заднее</option>
-          <option>Скол или трещина</option>
-          <option>Не знаю</option>
-        </select>
-      </label>
-    </div>
-
     <label class="field">
-      <span>VIN</span>
-      <input name="vin" autocomplete="off" placeholder="Можно оставить пустым" />
-    </label>
-
-    <label class="field field--file">
-      <span>Фото повреждения</span>
-      <input
-        name="photos"
-        type="file"
-        accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-        multiple
-      />
-      <small>До 5 фото. Большие JPG, PNG и WebP сожмутся перед отправкой.</small>
-    </label>
-
-    <label class="field">
-      <span>Комментарий</span>
-      <textarea name="comment" placeholder="Опишите повреждение или удобное время"></textarea>
+      <span>Комментарий <small>(необязательно)</small></span>
+      <textarea name="comment" placeholder="Например: нужен ремонт скола или замена стекла"></textarea>
     </label>
 
     <ConsentNotice />
 
     <p class="form-status" data-form-status aria-live="polite"></p>
-    <button class="button button--primary" type="submit">Отправить на расчёт</button>
+    <button class="button button--primary" type="submit">Получить оценку по фото</button>
   </form>
 </div>
+
+<script is:inline type="application/json" data-quick-vehicle-catalog set:html={vehicleCatalogJson}></script>
+
+<script is:inline>
+  (() => {
+    const normalize = (value) => String(value || '')
+      .toLowerCase()
+      .replaceAll('ё', 'е')
+      .replace(/[^a-zа-я0-9]+/gi, ' ')
+      .trim()
+      .replace(/\s+/g, ' ');
+
+    const escapeAttribute = (value) => String(value || '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('"', '&quot;')
+      .replaceAll('<', '&lt;');
+
+    document.querySelectorAll('form[data-vehicle-photo-form]').forEach((form) => {
+      if (!(form instanceof HTMLFormElement) || form.dataset.vehicleCatalogReady === 'true') return;
+
+      const source = form.parentElement?.nextElementSibling;
+      const makeInput = form.querySelector('[data-quick-make]');
+      const modelInput = form.querySelector('[data-quick-model]');
+      const makeOptions = form.querySelector('[data-quick-make-options]');
+      const modelOptions = form.querySelector('[data-quick-model-options]');
+      if (
+        !(source instanceof HTMLScriptElement) ||
+        !(makeInput instanceof HTMLInputElement) ||
+        !(modelInput instanceof HTMLInputElement) ||
+        !(makeOptions instanceof HTMLDataListElement) ||
+        !(modelOptions instanceof HTMLDataListElement)
+      ) return;
+
+      const catalog = JSON.parse(source.textContent || '[]');
+      form.dataset.vehicleCatalogReady = 'true';
+
+      const lookup = catalog.flatMap((brand) => (
+        brand.aliases.map((alias) => ({ brand, value: normalize(alias) }))
+      ));
+
+      makeOptions.innerHTML = catalog.flatMap((brand) => {
+        const aliases = brand.aliases.filter((alias) => /^[а-я]/i.test(alias));
+        return [brand.label, ...aliases].map((alias) => (
+          `<option value="${escapeAttribute(alias)}" label="${escapeAttribute(brand.label)}"></option>`
+        ));
+      }).join('');
+
+      const findBrand = (value) => {
+        const query = normalize(value);
+        if (!query) return null;
+        const exact = lookup.find((entry) => entry.value === query);
+        if (exact) return exact.brand;
+        if (query.length < 2) return null;
+        const matches = lookup.filter((entry) => entry.value.startsWith(query));
+        const keys = [...new Set(matches.map((entry) => entry.brand.key))];
+        return keys.length === 1 ? matches.find((entry) => entry.brand.key === keys[0])?.brand : null;
+      };
+
+      const updateModels = () => {
+        const brand = findBrand(makeInput.value);
+        const models = brand?.models || [];
+        modelOptions.innerHTML = models
+          .map((model) => `<option value="${escapeAttribute(model)}"></option>`)
+          .join('');
+        modelInput.placeholder = brand
+          ? `Например: ${models[0] || 'модель автомобиля'}`
+          : makeInput.value.trim()
+            ? 'Введите модель вручную'
+            : 'Сначала укажите марку';
+      };
+
+      makeInput.addEventListener('input', () => {
+        modelInput.value = '';
+        updateModels();
+      });
+      updateModels();
+    });
+  })();
+</script>
 
 <script is:inline>
   (() => {
@@ -219,7 +372,7 @@ const { title = 'Отправить VIN или фото повреждения',
 
           if (typeof window.bseTrack === 'function') {
             window.bseTrack('lead_success', {
-              form_service: form.querySelector('[name="service"]')?.value || 'VIN/фото',
+              form_service: form.querySelector('[name="service"]')?.value || 'Оценка по фото',
               photo_count: files.length,
             });
           }

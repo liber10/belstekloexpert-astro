@@ -14,6 +14,7 @@ import ServiceSummaryBlock from '@/components/sections/ServiceSummaryBlock.astro
 import ServiceCards from '@/components/sections/ServiceCards.astro';
 import TrustBlock from '@/components/sections/TrustBlock.astro';
 import CasesGrid from '@/components/sections/CasesGrid.astro';
+import ChipRepairSpotlight from '@/components/sections/ChipRepairSpotlight.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
 ---
@@ -21,6 +22,7 @@ import { site } from '@/data/site';
 <BaseLayout title={site.defaultTitle} description={site.defaultDescription} canonical={`${site.domain}/`}>
   <Hero />
   <ServiceCards />
+  <ChipRepairSpotlight />
   <GlassCalculator />
   <TrustBlock />
   <AboutSection />

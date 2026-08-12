@@ -18,8 +18,8 @@ const facts = [
   { label: 'Координаты', value: `${contacts.coordinates.latitude}, ${contacts.coordinates.longitude}` },
   { label: 'Телефон', value: contacts.phone },
   { label: 'График', value: `${businessHours.short}; ${businessHours.note}` },
-  { label: 'Расчёт', value: 'по модели сразу, по VIN — ручной точный подбор' },
-  { label: 'Цена', value: 'ориентир по модели сразу, точное подтверждение по VIN' },
+  { label: 'Быстрая оценка', value: 'марка, модель, год и фото стекла' },
+  { label: 'Цена', value: 'ориентир по прайсу, подтверждение мастером по фото' },
   { label: 'Для кого', value: 'легковые авто, Tesla, пассажирский, грузовой и специальный транспорт' },
   { label: 'Гарантия', value: 'герметичность шва после замены' },
 ];
@@ -59,7 +59,7 @@ const services = [
       </div>
 
       <div class="cta-row">
-        <Button href="/#calculator">Рассчитать по модели</Button>
+        <Button href="/#calculator">Оценить по фото</Button>
         <Button href={contacts.phoneHref} variant="quiet" dataEvent="phone_click">Позвонить</Button>
         <Button href={contacts.yandexMaps} variant="quiet" dataEvent="route_click">Маршрут</Button>
       </div>

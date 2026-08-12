@@ -7,7 +7,7 @@ export const prices = [
   },
   {
     title: 'Ремонт скола',
-    priceFrom: 40,
+    priceFrom: 0,
     unit: '',
     url: '/remont-skolov/',
   },
@@ -53,8 +53,8 @@ export const pricePackages = [
     title: 'Оптимум',
     priceFrom: 320,
     unit: 'под ключ',
-    text: 'Баланс цены и ресурса: подбор по VIN, аккуратная посадка, сохранение датчиков и чистый салон.',
-    includes: ['подбор по VIN', 'работа', 'учёт датчика дождя и обогрева', 'рекомендации после выдачи'],
+    text: 'Баланс цены и ресурса: точный подбор, аккуратная посадка, сохранение датчиков и чистый салон.',
+    includes: ['проверка комплектации', 'работа', 'учёт датчика дождя и обогрева', 'рекомендации после выдачи'],
     eventName: 'price_package_optimum_click',
   },
   {
@@ -92,7 +92,7 @@ export const popularPriceExamples = [
   {
     car: 'Geely Coolray',
     glass: 'лобовое стекло',
-    rangeLabel: 'по VIN',
+    rangeLabel: 'по оценке',
     note: 'важны камера, датчики и комплектация',
   },
   {
@@ -105,7 +105,7 @@ export const popularPriceExamples = [
   {
     car: 'BMW X5',
     glass: 'лобовое стекло',
-    rangeLabel: 'по VIN',
+    rangeLabel: 'по оценке',
     note: 'часто нужны точные опции: камера, ассистенты, обогрев',
   },
 ];

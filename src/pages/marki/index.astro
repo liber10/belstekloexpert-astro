@@ -24,8 +24,8 @@ const schema = breadcrumbSchema([
       <p class="section__eyebrow">Марки авто</p>
       <h1 class="section__title">Подбор и замена автостёкол по маркам</h1>
       <p class="section__lead">
-        Выберите марку, чтобы увидеть частые модели и быстро отправить VIN или
-        фото маркировки стекла. Если модели нет в списке, всё равно рассчитаем вручную.
+        Выберите марку, чтобы увидеть частые модели. Для быстрой оценки достаточно
+        марки, модели, года и фото стекла; если модели нет в списке, введите её вручную.
       </p>
     </div>
   </section>
@@ -42,14 +42,14 @@ const schema = breadcrumbSchema([
         ))}
       </div>
       <div class="cta-row">
-        <Button href="/#calculator">Рассчитать другую марку</Button>
+        <Button href="/#calculator">Оценить другую марку по фото</Button>
       </div>
     </div>
   </section>
 
   <section class="section section--soft">
     <div class="container">
-      <VinPhotoForm title="Не нашли марку или модель?" service="Марки авто" />
+      <VinPhotoForm title="Не нашли марку или модель?" service="Марки авто: оценка по фото" />
     </div>
   </section>
 </BaseLayout>

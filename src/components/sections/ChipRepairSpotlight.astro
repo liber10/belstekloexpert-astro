@@ -1,0 +1,99 @@
+---
+import Button from '@/components/common/Button.astro';
+---
+
+<section class="section chip-spotlight" aria-labelledby="chip-spotlight-title">
+  <div class="container chip-spotlight__inner">
+    <div>
+      <p class="section__eyebrow">Ремонт сколов в Минске</p>
+      <h2 id="chip-spotlight-title">Скол лучше показать мастеру до появления длинной трещины</h2>
+      <p class="section__lead">
+        Пришлите общий снимок лобового стекла и крупный план повреждения. Мастер
+        предварительно оценит, можно ли сохранить стекло ремонтом, и согласует
+        стоимость до записи.
+      </p>
+      <div class="cta-row">
+        <Button href="/remont-skolov/#photo-form" dataEvent="chip_photo_cta">
+          Оценить скол по фото
+        </Button>
+        <Button href="/blog/kak-sfotografirovat-skol/" variant="quiet">
+          Как сделать фото
+        </Button>
+      </div>
+    </div>
+
+    <div class="chip-spotlight__facts" aria-label="Что важно для оценки скола">
+      <div>
+        <strong>2 фото</strong>
+        <span>Стекло целиком и повреждение крупным планом</span>
+      </div>
+      <div>
+        <strong>30–60 минут</strong>
+        <span>Обычный ориентир по времени для ремонтопригодного скола</span>
+      </div>
+      <div>
+        <strong>Честная оценка</strong>
+        <span>Если ремонт небезопасен или нецелесообразен, предложим замену</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .chip-spotlight {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--green-dark);
+    color: var(--white);
+  }
+
+  .chip-spotlight__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: 54px;
+    align-items: center;
+  }
+
+  .chip-spotlight .section__eyebrow {
+    color: #bce4df;
+  }
+
+  .chip-spotlight h2 {
+    max-width: 760px;
+    margin: 0;
+    font-size: clamp(1.9rem, 4vw, 3.25rem);
+    line-height: 1.06;
+  }
+
+  .chip-spotlight .section__lead {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .chip-spotlight__facts {
+    display: grid;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+  }
+
+  .chip-spotlight__facts div {
+    display: grid;
+    gap: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 18px 0;
+  }
+
+  .chip-spotlight__facts strong {
+    color: var(--amber);
+    font-size: 1.15rem;
+  }
+
+  .chip-spotlight__facts span {
+    color: rgba(255, 255, 255, 0.76);
+  }
+
+  @media (max-width: 820px) {
+    .chip-spotlight__inner {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+  }
+</style>

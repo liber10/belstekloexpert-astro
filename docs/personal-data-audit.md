@@ -6,8 +6,8 @@
 
 | Источник | Данные | Цель | Хранение и получатели | Срок/удаление | Риск |
 | --- | --- | --- | --- | --- | --- |
-| Формы сайта | имя, телефон, автомобиль, VIN, комментарий, фото, UTM и click IDs, URL/referrer | подбор, расчёт, обратная связь, запись | Netlify → Render Lead Hub → Neon PostgreSQL; фото — закрытый Backblaze B2; карточка — Telegram | срок не утверждён; удаление требует процедуры в Lead Hub, БД, B2 и Telegram | блокирующий |
-| Калькулятор/VIN | телефон, VIN, комментарий, источник заявки | точный подбор | тот же Lead Hub | срок не утверждён | блокирующий |
+| Формы сайта | имя, телефон, автомобиль, VIN при необходимости, комментарий, фото, UTM и click IDs, URL/referrer | подбор, расчёт, обратная связь, запись | Cloudflare Worker → Render Lead Hub → Neon PostgreSQL; фото — закрытый Backblaze B2; карточка — Telegram | срок не утверждён; удаление требует процедуры в Lead Hub, БД, B2 и Telegram | блокирующий |
+| Оценка по фото/калькулятор | телефон, марка, модель, год, фото, комментарий, источник заявки; VIN только при последующей необходимости | быстрая оценка и подбор | тот же Lead Hub | срок не утверждён | блокирующий |
 | Kufar/Gmail Apps Script | имя/псевдоним, текст, URL диалога и объявления | обработка обращения | Google/Gmail → Render/Neon → Telegram | срок не утверждён; копия остаётся в Gmail | высокий |
 | Публичный Telegram-бот | Telegram user/chat ID, username, телефон, услуга, сообщение, campaign code, consent version | заявка клиента | Telegram → Render/Neon → внутренний Telegram | feature flag выключен; срок сессии 24 часа, срок лида не утверждён | блокирующий до `LEGAL-001` |
 | Аналитика | UTM, click IDs, landing URL/referrer, события форм; возможны client identifiers | оценка рекламы | localStorage; при согласии — GTM/GA4/Яндекс Метрика | сроки поставщиков и локального выбора требуют утверждения | до изменения скрипты загружались без выбора |
@@ -15,8 +15,8 @@
 
 ## Обнаруженные системы
 
-- production-сайт: Netlify;
-- preview: Cloudflare Workers, без production DNS;
+- production-сайт и authoritative DNS: Cloudflare Workers/Cloudflare DNS;
+- preview: отдельный Cloudflare Worker с `noindex`;
 - backend: Render;
 - база: Neon PostgreSQL;
 - фотографии: закрытый Backblaze B2;
