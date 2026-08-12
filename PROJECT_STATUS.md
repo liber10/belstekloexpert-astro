@@ -9,7 +9,7 @@ production-архитектуры, провайдера, режима доста
 
 | Область | Текущее решение | Статус | Примечание |
 | --- | --- | --- | --- |
-| Основной сайт | Cloudflare Workers, Astro SSR | Работает | Worker `belstekloexpert-production`, custom domain `belstekloexpert.by`, режим доставки `hub`; активная до текущего релиза версия `8e6ae33b-c95f-48dc-8329-58f5a1b2803a` |
+| Основной сайт | Cloudflare Workers, Astro SSR | Работает | Worker `belstekloexpert-production`, custom domain `belstekloexpert.by`, режим доставки `hub`; активная версия `7727d9ed-41f1-414a-8024-c64093312d76`, commit `49f449a` |
 | Preview сайта | Cloudflare Workers, Astro SSR | Работает | Отдельный Worker `belstekloexpert-preview`; static HTML и SSR защищены `noindex`, форма с фото и Telegram проверены |
 | Репозиторий | GitHub `main` | Работает | `liber10/belstekloexpert-astro`; Cloudflare production публикуется явно через Wrangler после проверок |
 | Lead Hub | Render Free Web Service | Работает | Production `cae7eef`; readiness и миграция public Telegram session/outbox проверены 2 августа 2026 года |
@@ -48,7 +48,8 @@ production-архитектуры, провайдера, режима доста
 2. Lead Hub работает на Render Free Web Service. В проверке 30 июля один из 15
    health-запросов вернул временный HTTP 503, следующие 14 и дополнительная серия
    5/5 ответили HTTP 200. Холодный запуск после простоя остаётся риском; нужен
-   мониторинг времени ответа форм и задач outbox.
+   мониторинг времени ответа форм и задач outbox. Frontend повторяет один временно
+   неуспешный запрос подготовки фото или создания лида с теми же идентификаторами.
 3. Production и preview используют отдельные Workers. Preview получает `noindex`,
    production custom domain остаётся indexable. Быстрый rollback выполняется на
    предыдущую Worker version; возврат DNS на legacy origin является аварийным
@@ -59,6 +60,13 @@ production-архитектуры, провайдера, режима доста
    автоматически восстанавливать, удалять или включать в чужой коммит.
 6. Authoritative DNS перенесён в Cloudflare. Почтовые MX/SPF/DKIM/DMARC нельзя
    изменять вместе с релизом Worker; их состояние проверяется отдельной задачей.
+7. 12 августа 2026 года production-релиз `604e78e` перевёл быстрый сценарий на
+   марку, модель, год и фото, сохранил прайс-калькулятор вторичным режимом и усилил
+   страницу ремонта сколов. Read-only smoke, signed upload в закрытый B2 и приём
+   тестового лида Lead Hub прошли; идемпотентный повтор не создал дубль. Доставка
+   этой конкретной заявки в Telegram отдельно не подтверждалась. Follow-up
+   `49f449a` добавил одноразовый повтор после временного сбоя Render и опубликован
+   как Worker `7727d9ed-41f1-414a-8024-c64093312d76`.
 
 ## Ближайшие решения
 
