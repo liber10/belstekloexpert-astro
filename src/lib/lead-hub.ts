@@ -1,5 +1,6 @@
 const defaultLeadHubUrl = 'https://belstekloexpert-astro.onrender.com';
 const defaultTimeoutMs = 25_000;
+const transientRetryDelayMs = 750;
 
 export type LeadDeliveryMode = 'legacy' | 'hub' | 'hub-with-legacy-telegram';
 
@@ -207,7 +208,7 @@ export async function sendLeadToHub(options: {
     options.photoCount ?? options.photoRefs?.length ?? 0,
     options.photoRefs,
   );
-  const response = await request(
+  const response = await requestWithTransientRetry(
     `${config.baseUrl}/api/v1/leads/web`,
     {
       method: 'POST',
@@ -282,7 +283,7 @@ export async function preparePhotoUploads(options: {
   const submissionId = normalizeSubmissionId(options.submissionId);
   if (!submissionId) throw new LeadHubRequestError('configuration_error');
 
-  const response = await request(
+  const response = await requestWithTransientRetry(
     `${config.baseUrl}/api/v1/uploads/presign`,
     {
       method: 'POST',
@@ -459,6 +460,29 @@ async function request(
   } catch {
     throw new LeadHubRequestError('request_failed');
   }
+}
+
+async function requestWithTransientRetry(
+  url: string,
+  init: RequestInit,
+  timeoutMs: number,
+  fetchImpl = fetch,
+) {
+  try {
+    const response = await request(url, init, timeoutMs, fetchImpl);
+    if (!isTransientStatus(response.status)) return response;
+  } catch (error) {
+    if (!(error instanceof LeadHubRequestError) || error.code !== 'request_failed') {
+      throw error;
+    }
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, transientRetryDelayMs));
+  return request(url, init, timeoutMs, fetchImpl);
+}
+
+function isTransientStatus(status: number) {
+  return status === 408 || status === 425 || status === 429 || status >= 500;
 }
 
 function parseYear(value: string) {

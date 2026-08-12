@@ -9,6 +9,7 @@ import {
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
   preparePhotoUploads,
+  sendLeadToHub,
 } from '../src/lib/lead-hub';
 
 describe('site Lead Hub client', () => {
@@ -151,6 +152,78 @@ describe('site Lead Hub client', () => {
       files: [{ contentType: 'image/jpeg', size: 1_024, sha256: 'a'.repeat(64) }],
     });
     expect(result.uploads[0]?.ref).toContain('b2://bucket-name/');
+  });
+
+  it('retries transient photo presign with the same request body', async () => {
+    const requestBodies: string[] = [];
+    const fetchImpl = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      requestBodies.push(String(init?.body));
+      if (requestBodies.length === 1) throw new Error('cold start timeout');
+      return Response.json({
+        uploads: [
+          {
+            ref: 'b2://private-bucket/test/photo.png',
+            uploadUrl: 'https://storage.example/upload',
+            headers: { 'content-type': 'image/png' },
+          },
+        ],
+      });
+    }) as unknown as typeof fetch;
+
+    const result = await preparePhotoUploads({
+      submissionId: 'retry_photo_submission',
+      files: [
+        {
+          contentType: 'image/png',
+          size: 128,
+          sha256: 'a'.repeat(64),
+        },
+      ],
+      env: {
+        LEAD_HUB_URL: 'https://lead-hub.example',
+        WEB_INGEST_API_KEY: 'test-api-key',
+      },
+      fetchImpl,
+    });
+
+    expect(result.uploads).toHaveLength(1);
+    expect(requestBodies).toHaveLength(2);
+    expect(requestBodies[1]).toBe(requestBodies[0]);
+  });
+
+  it('retries one transient lead failure with the same idempotency key', async () => {
+    const idempotencyKeys: Array<string | null> = [];
+    const fetchImpl = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      idempotencyKeys.push(new Headers(init?.headers).get('idempotency-key'));
+      if (idempotencyKeys.length === 1) return new Response(null, { status: 503 });
+      return Response.json({
+        leadId: 'internal-lead-id',
+        publicId: 'BSE-TEST-RETRY',
+        deduplicated: false,
+      });
+    }) as unknown as typeof fetch;
+
+    const result = await sendLeadToHub({
+      fields: {
+        service: 'Оценка по фото',
+        phone: '+375291111111',
+        make: 'Volkswagen',
+        model: 'Passat',
+        year: '2018',
+      },
+      idempotencyKey: 'retry_test_submission',
+      env: {
+        LEAD_HUB_URL: 'https://lead-hub.example',
+        WEB_INGEST_API_KEY: 'test-api-key',
+      },
+      fetchImpl,
+    });
+
+    expect(result.publicId).toBe('BSE-TEST-RETRY');
+    expect(idempotencyKeys).toEqual([
+      'retry_test_submission',
+      'retry_test_submission',
+    ]);
   });
 
   it('checks database readiness through the Lead Hub boundary', async () => {
