@@ -17,8 +17,8 @@
 | --- | --- | --- | --- | --- |
 | `DOCS-001` | Проект | Единый README, status, architecture, roadmap и AGENTS | P1 | done |
 | `OPS-004` | Health | Перевести site health с прямого PostgreSQL на readiness Lead Hub | P1 | done |
-| `OPS-001` | CI | Автоматизировать проверки сайта и Lead Hub в GitHub Actions | P2 | backlog |
-| `LEGAL-001` | Данные | Утвердить privacy policy, consent и retention | P1 | in-progress — упрощённая политика, consent и cookie controls утверждены владельцем; ожидают публикации и smoke test |
+| `OPS-001` | CI | Автоматизировать проверки сайта и Lead Hub в GitHub Actions | P2 | done — два параллельных job без секретов и автодеплоя |
+| `LEGAL-001` | Данные | Утвердить privacy policy, consent и retention | P1 | in-progress — политика, consent evidence и cookie controls live; остаются регламент удаления во всех копиях и проверка Реестра операторов |
 | `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | done |
 | `KUFAR-001` | Lead Hub | Перевести Kufar email handler на durable inbox и source-aware Telegram-карточки | P1 | done |
 | `TELEGRAM-LEADS-001` | Lead Hub | Добавить отдельного публичного Telegram-бота для клиентских заявок | P1 | in progress — код и миграция готовы с feature flag off; production enable ждёт `LEGAL-001` |
@@ -53,7 +53,7 @@ Render; следующие 14 и дополнительная серия 5/5 з�
 
 | ID | Задача | Приоритет | Статус |
 | --- | --- | --- | --- |
-| `WEB-001` | Проверить ключевые страницы на mobile и desktop после следующих UI-изменений | P1 | planned |
+| `WEB-001` | Проверить ключевые страницы на mobile и desktop после следующих UI-изменений | P1 | done — 6 production-страниц при 1280 и 390 px, переполнения и запрещённых цен нет |
 | `WEB-002` | Перевести быструю оценку на марку, модель, год и фото; усилить ремонт сколов | P1 | done — релиз `604e78e`, resilience fix `49f449a`, Worker `7727d9ed`; photo-flow и идемпотентность проверены |
 | `CALC-001` | Формализовать версию прайса и дату актуальности в pipeline | P2 | backlog |
 | `CALC-002` | Добавить безопасный preview отчёта перед публикацией нового прайса | P2 | backlog |

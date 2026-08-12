@@ -39,6 +39,7 @@ production-архитектуры, провайдера, режима доста
 - отдельный контур публичного Telegram-бота с PostgreSQL-сессиями, consent gate и attribution, выключенный feature flag;
 - коммерческое предложение для юрлиц;
 - favicon, `llms.txt`, JSON-LD, sitemap, robots и подтверждение Яндекс Вебмастера.
+- GitHub Actions CI для production-сборки Cloudflare, тестов сайта и полного check Lead Hub.
 
 ## Известные ограничения
 
@@ -67,6 +68,9 @@ production-архитектуры, провайдера, режима доста
    этой конкретной заявки в Telegram отдельно не подтверждалась. Follow-up
    `49f449a` добавил одноразовый повтор после временного сбоя Render и опубликован
    как Worker `7727d9ed-41f1-414a-8024-c64093312d76`.
+8. Главная, калькулятор, ремонт сколов, цены, страница для юрлиц и контакты
+   проверены в production при ширине 1280 и 390 px: горизонтального переполнения,
+   внутренней цены `$50` и видимого текста `BYN` нет.
 
 ## Ближайшие решения
 
@@ -79,8 +83,8 @@ production-архитектуры, провайдера, режима доста
 | `KUFAR-001` | Перевести Kufar email handler на durable Lead Hub inbox | P1 | Выполнено, production smoke test 2 августа 2026 года |
 | `TELEGRAM-LEADS-001` | Добавить отдельного публичного Telegram-бота для клиентов | P1 | Код и миграция `cae7eef` развёрнуты с feature flag off; production enable заблокирован `LEGAL-001` |
 | `META-001` | Подключить Meta Instant Forms к durable inbox | P1 | Запланировано; нужны Meta App и решение `LEGAL-001` |
-| `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Требует решения владельца |
-| `OPS-001` | Добавить CI для проверок сайта и Lead Hub | P2 | Backlog |
+| `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Политика, consent evidence и cookie controls опубликованы; остаются регламент удаления во всех копиях и проверка Реестра операторов |
+| `OPS-001` | Добавить CI для проверок сайта и Lead Hub | P2 | Выполнено: GitHub Actions проверяет Cloudflare production build и Lead Hub без секретов и автодеплоя |
 | `ADS-001` | Подключать рекламные конверсии только после consent и стабильного Lead Hub | P2 | Заблокировано `LEGAL-001` |
 
 Подробный список находится в [docs/roadmap.md](docs/roadmap.md).
