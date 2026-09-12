@@ -2,6 +2,9 @@ import { InlineKeyboard } from 'grammy';
 import type { Lead } from '../../db/schema.js';
 import { statusLabels, type LeadStatus } from '../../domain/status.js';
 
+export const telegramTextLimit = 4096;
+const safeTelegramTextLimit = 4000;
+
 const buttonStatuses: Array<[LeadStatus, string]> = [
   ['contacted', 'Связались'],
   ['qualified', 'Квалифицирован'],
@@ -15,12 +18,17 @@ const buttonStatuses: Array<[LeadStatus, string]> = [
 ];
 
 export function buildLeadCard(lead: Lead) {
-  if (lead.source === 'kufar') return buildKufarLeadCard(lead);
-  if (lead.source === 'meta') return buildMetaLeadCard(lead);
+  if (lead.source === 'kufar') return guardTelegramText(buildKufarLeadCard(lead));
+  if (lead.source === 'meta') return guardTelegramText(buildMetaLeadCard(lead));
   if (lead.source === 'telegram' && lead.sourceDetail === 'public_bot') {
-    return buildTelegramPublicLeadCard(lead);
+    return guardTelegramText(buildTelegramPublicLeadCard(lead));
   }
-  return buildDefaultLeadCard(lead);
+  return guardTelegramText(buildDefaultLeadCard(lead));
+}
+
+export function guardTelegramText(value: string) {
+  if (value.length <= safeTelegramTextLimit) return value;
+  return `${value.slice(0, safeTelegramTextLimit - 24).trimEnd()}\n… [текст сокращён]`;
 }
 
 function buildDefaultLeadCard(lead: Lead) {

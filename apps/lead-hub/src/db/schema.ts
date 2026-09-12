@@ -141,6 +141,24 @@ export const integrationOutbox = pgTable(
   ],
 );
 
+export const formSubmissionAudits = pgTable(
+  'form_submission_audits',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    correlationId: varchar('correlation_id', { length: 160 }).notNull(),
+    event: varchar('event', { length: 80 }).notNull(),
+    reason: varchar('reason', { length: 80 }),
+    formType: varchar('form_type', { length: 160 }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    index('form_submission_audits_correlation_created_idx').on(
+      table.correlationId,
+      table.createdAt,
+    ),
+  ],
+);
+
 export const integrationInbox = pgTable(
   'integration_inbox',
   {
@@ -218,6 +236,7 @@ export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
 export type LeadEvent = typeof leadEvents.$inferSelect;
 export type OutboxJob = typeof integrationOutbox.$inferSelect;
+export type FormSubmissionAudit = typeof formSubmissionAudits.$inferSelect;
 export type InboxEvent = typeof integrationInbox.$inferSelect;
 export type TelegramPublicSession = typeof telegramPublicSessions.$inferSelect;
 export type TelegramPublicOutboxJob = typeof telegramPublicOutbox.$inferSelect;

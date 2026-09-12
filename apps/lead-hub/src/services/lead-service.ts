@@ -317,17 +317,33 @@ export class LeadService {
           source: options.source,
           externalEventId: options.externalLeadId,
           payload: {
+            correlationId: options.idempotencyKey,
             sourceDetail: options.sourceDetail,
             hasPhotos: lead.photoRefs.length > 0,
             hasVin: Boolean(lead.vin),
           },
         });
 
+        await transaction.insert(leadEvents).values([
+          {
+            leadId: lead.id,
+            eventType: 'persisted',
+            source: options.source,
+            payload: { correlationId: options.idempotencyKey },
+          },
+          {
+            leadId: lead.id,
+            eventType: 'dispatch_pending',
+            source: 'outbox',
+            payload: { correlationId: options.idempotencyKey, destination: 'telegram' },
+          },
+        ]);
+
         await transaction.insert(integrationOutbox).values({
           leadId: lead.id,
           destination: 'telegram',
           eventType: 'lead.created',
-          payload: {},
+          payload: { correlationId: options.idempotencyKey },
           idempotencyKey: `telegram:lead.created:${lead.id}`,
         });
 

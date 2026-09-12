@@ -22,6 +22,8 @@ const configSchema = z
     LEAD_HUB_PUBLIC_URL: z.string().url().optional().or(z.literal('').transform(() => undefined)),
     LEAD_HUB_ALLOWED_ORIGINS: z.string().default('http://localhost:4321'),
     LEAD_HUB_RATE_LIMIT_MAX: z.coerce.number().int().min(1).max(10_000).default(20),
+    BUILD_REVISION: optionalText,
+    RENDER_GIT_COMMIT: optionalText,
     DATABASE_URL: z.string().trim().min(1),
     WEB_INGEST_API_KEY: optionalSecret,
     KUFAR_INGEST_ENABLED: booleanFromString.default(false),
@@ -53,6 +55,7 @@ const configSchema = z
       .min(30_000)
       .max(3_600_000)
       .default(300_000),
+    OUTBOX_DELIVERY_TIMEOUT_MS: z.coerce.number().int().min(1_000).max(60_000).default(15_000),
     INBOX_POLL_INTERVAL_MS: z.coerce.number().int().min(250).max(60_000).default(2_000),
     INBOX_BATCH_SIZE: z.coerce.number().int().min(1).max(100).default(10),
     INBOX_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(50).default(8),
@@ -194,6 +197,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       .map((origin) => origin.trim())
       .filter(Boolean),
     rateLimitMax: parsed.data.LEAD_HUB_RATE_LIMIT_MAX,
+    buildRevision: parsed.data.BUILD_REVISION || parsed.data.RENDER_GIT_COMMIT || 'unknown',
     databaseUrl: parsed.data.DATABASE_URL,
     webIngestApiKey: parsed.data.WEB_INGEST_API_KEY,
     kufar: {
@@ -212,6 +216,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       batchSize: parsed.data.OUTBOX_BATCH_SIZE,
       maxAttempts: parsed.data.OUTBOX_MAX_ATTEMPTS,
       processingTimeoutMs: parsed.data.OUTBOX_PROCESSING_TIMEOUT_MS,
+      deliveryTimeoutMs: parsed.data.OUTBOX_DELIVERY_TIMEOUT_MS,
     },
     telegramPublic: {
       enabled: parsed.data.TELEGRAM_PUBLIC_ENABLED,

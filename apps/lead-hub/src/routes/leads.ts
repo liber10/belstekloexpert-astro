@@ -34,6 +34,7 @@ const SuccessSchema = Type.Object({
   publicId: Type.String(),
   status: Type.String(),
   deduplicated: Type.Boolean(),
+  correlationId: Type.String(),
 });
 
 export function registerLeadRoutes(
@@ -79,6 +80,7 @@ export function registerLeadRoutes(
             publicId: result.lead.publicId,
             source: result.lead.source,
             deduplicated: result.deduplicated,
+            correlationId: request.headers['idempotency-key'],
           },
           'Web lead accepted.',
         );
@@ -89,6 +91,7 @@ export function registerLeadRoutes(
           publicId: result.lead.publicId,
           status: result.lead.status,
           deduplicated: result.deduplicated,
+          correlationId: request.headers['idempotency-key'],
         });
       } catch (error) {
         if (error instanceof IdempotencyConflictError) {

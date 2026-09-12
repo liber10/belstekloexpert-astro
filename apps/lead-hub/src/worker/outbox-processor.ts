@@ -1,7 +1,7 @@
 import { and, asc, eq, inArray, lte } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
 import type { LeadHubDatabase } from '../db/client.js';
-import { integrationOutbox, leads, type OutboxJob } from '../db/schema.js';
+import { integrationOutbox, leadEvents, leads, type OutboxJob } from '../db/schema.js';
 import type { TelegramDelivery } from '../integrations/telegram/index.js';
 import type { LeadService } from '../services/lead-service.js';
 
@@ -10,6 +10,7 @@ interface OutboxOptions {
   batchSize: number;
   maxAttempts: number;
   processingTimeoutMs: number;
+  deliveryTimeoutMs: number;
 }
 
 export class OutboxProcessor {
@@ -36,6 +37,10 @@ export class OutboxProcessor {
   stop() {
     if (this.timer) clearInterval(this.timer);
     this.timer = undefined;
+  }
+
+  isActive() {
+    return Boolean(this.timer);
   }
 
   async processOnce() {
@@ -115,35 +120,44 @@ export class OutboxProcessor {
     try {
       if (job.destination !== 'telegram') throw new Error('Unsupported outbox destination.');
       const lead = await this.leadService.getLead(job.leadId);
+      const correlationId = typeof job.payload.correlationId === 'string'
+        ? job.payload.correlationId
+        : lead.idempotencyKey;
 
       if (job.eventType === 'lead.created') {
-        const message = await this.telegram.sendLeadCard(lead);
-        await this.db
-          .update(leads)
-          .set({
+        const message = lead.telegramMessageId && lead.telegramChatId
+          ? { chatId: lead.telegramChatId, messageId: lead.telegramMessageId }
+          : await withTimeout(this.telegram.sendLeadCard(lead), this.options.deliveryTimeoutMs);
+        await this.db.transaction(async (transaction) => {
+          await transaction.update(leads).set({
             telegramChatId: message.chatId,
             telegramMessageId: message.messageId,
             updatedAt: new Date(),
-          })
-          .where(eq(leads.id, lead.id));
+          }).where(eq(leads.id, lead.id));
+          await transaction.update(integrationOutbox).set({
+            status: 'sent', attemptCount: job.attemptCount + 1, lastError: null,
+            processedAt: new Date(), updatedAt: new Date(),
+          }).where(eq(integrationOutbox.id, job.id));
+          await transaction.insert(leadEvents).values({
+            leadId: lead.id,
+            eventType: 'telegram_sent',
+            source: 'outbox',
+            payload: { correlationId, outboxJobId: job.id, messageId: message.messageId },
+          });
+        });
       } else if (job.eventType === 'lead.status_changed') {
-        await this.telegram.editLeadCard(lead);
+        await withTimeout(this.telegram.editLeadCard(lead), this.options.deliveryTimeoutMs);
       } else {
         throw new Error('Unsupported Telegram outbox event.');
       }
 
-      await this.db
-        .update(integrationOutbox)
-        .set({
-          status: 'sent',
-          attemptCount: job.attemptCount + 1,
-          lastError: null,
-          processedAt: new Date(),
-          updatedAt: new Date(),
-        })
-        .where(eq(integrationOutbox.id, job.id));
+      if (job.eventType !== 'lead.created') {
+        await this.db.update(integrationOutbox).set({ status: 'sent', attemptCount: job.attemptCount + 1,
+          lastError: null, processedAt: new Date(), updatedAt: new Date() })
+          .where(eq(integrationOutbox.id, job.id));
+      }
 
-      this.logger.info({ jobId: job.id, leadId: job.leadId }, 'Outbox job delivered.');
+      this.logger.info({ jobId: job.id, leadId: job.leadId, correlationId }, 'Outbox job delivered.');
     } catch (error) {
       const attempts = job.attemptCount + 1;
       const dead = attempts >= this.options.maxAttempts;
@@ -161,11 +175,36 @@ export class OutboxProcessor {
         })
         .where(eq(integrationOutbox.id, job.id));
 
+      await this.db.insert(leadEvents).values({
+        leadId: job.leadId,
+        eventType: dead ? 'telegram_dead' : 'telegram_retry',
+        source: 'outbox',
+        payload: {
+          correlationId: typeof job.payload.correlationId === 'string' ? job.payload.correlationId : undefined,
+          outboxJobId: job.id,
+          attempt: attempts,
+        },
+      });
+
       this.logger.warn(
         { jobId: job.id, leadId: job.leadId, attempts, dead, error: message },
         'Outbox delivery failed.',
       );
     }
+  }
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timer: NodeJS.Timeout | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Telegram delivery timed out.')), timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
   }
 }
 

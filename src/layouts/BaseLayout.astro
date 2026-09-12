@@ -173,14 +173,8 @@ const schemas = Array.isArray(schema) ? [...baseSchema, ...schema] : schema ? [.
           const consentAt = form.querySelector('[data-consent-at]');
           if (consentAt) consentAt.value = new Date().toISOString();
 
-          const honeypot = form.querySelector('[name="company"]');
           const phone = form.querySelector('[name="phone"]');
           const status = form.querySelector('[data-form-status]');
-
-          if (honeypot?.value) {
-            event.preventDefault();
-            return;
-          }
 
           const digits = phone?.value.replace(/\D/g, '') || '';
           if (digits.length < 9) {

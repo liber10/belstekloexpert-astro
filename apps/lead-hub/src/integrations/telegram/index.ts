@@ -22,6 +22,36 @@ interface TelegramOptions {
   photoUrlResolver?: (references: string[]) => Promise<string[]>;
 }
 
+interface BestEffortPhotoDeliveryOptions {
+  lead: Lead;
+  sendCard: () => Promise<{ chatId: string; messageId: number }>;
+  resolvePhotoUrls?: (references: string[]) => Promise<string[]>;
+  sendPhoto: (url: string, index: number, total: number) => Promise<void>;
+}
+
+export async function deliverLeadWithBestEffortPhotos(options: BestEffortPhotoDeliveryOptions) {
+  const message = await options.sendCard();
+  let photoUrls: string[] = [];
+  if (options.lead.photoRefs.length && options.resolvePhotoUrls) {
+    try {
+      photoUrls = await options.resolvePhotoUrls(options.lead.photoRefs);
+    } catch {
+      console.error('Telegram photo URL preparation failed after text delivery.', {
+        leadId: options.lead.publicId,
+        photoCount: options.lead.photoRefs.length,
+      });
+    }
+  }
+  for (const [index, photoUrl] of photoUrls.entries()) {
+    try {
+      await options.sendPhoto(photoUrl, index, photoUrls.length);
+    } catch {
+      console.error('Telegram photo delivery failed.', { leadId: options.lead.publicId, photoIndex: index });
+    }
+  }
+  return message;
+}
+
 export function createTelegramIntegration(
   options: TelegramOptions,
   leadService: LeadService,
@@ -116,27 +146,21 @@ export function createTelegramIntegration(
     },
 
     async sendLeadCard(lead) {
-      const photoUrls = lead.photoRefs.length && options.photoUrlResolver
-        ? await options.photoUrlResolver(lead.photoRefs)
-        : [];
-      const message = await bot.api.sendMessage(options.chatId, buildLeadCard(lead), {
-        reply_markup: buildLeadKeyboard(lead),
-      });
-
-      for (const [index, photoUrl] of photoUrls.entries()) {
-        try {
+      return deliverLeadWithBestEffortPhotos({
+        lead,
+        sendCard: async () => {
+          const message = await bot.api.sendMessage(options.chatId, buildLeadCard(lead), {
+            reply_markup: buildLeadKeyboard(lead),
+          });
+          return { chatId: String(message.chat.id), messageId: message.message_id };
+        },
+        ...(options.photoUrlResolver ? { resolvePhotoUrls: options.photoUrlResolver } : {}),
+        sendPhoto: async (photoUrl, index, total) => {
           await bot.api.sendPhoto(options.chatId, photoUrl, {
-            caption: `#${lead.publicId} (${index + 1}/${photoUrls.length})`,
+            caption: `#${lead.publicId} (${index + 1}/${total})`,
           });
-        } catch {
-          console.error('Telegram photo delivery failed.', {
-            leadId: lead.publicId,
-            photoIndex: index,
-          });
-        }
-      }
-
-      return { chatId: String(message.chat.id), messageId: message.message_id };
+        },
+      });
     },
 
     async editLeadCard(lead) {

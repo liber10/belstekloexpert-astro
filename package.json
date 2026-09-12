@@ -29,7 +29,8 @@
     "lead-hub:dev": "npm run dev --workspace @belstekloexpert/lead-hub",
     "lead-hub:build": "npm run build --workspace @belstekloexpert/lead-hub",
     "lead-hub:test": "npm run test --workspace @belstekloexpert/lead-hub",
-    "lead-hub:check": "npm run check --workspace @belstekloexpert/lead-hub"
+    "lead-hub:check": "npm run check --workspace @belstekloexpert/lead-hub",
+    "telegram:preflight:readonly": "node scripts/telegram-production-preflight.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",

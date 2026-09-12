@@ -45,6 +45,8 @@ POST /api/v1/leads/web
 | `OUTBOX_BATCH_SIZE` | Число задач, забираемых за один цикл |
 | `OUTBOX_MAX_ATTEMPTS` | Число попыток до состояния `dead` |
 | `OUTBOX_PROCESSING_TIMEOUT_MS` | Срок до возврата зависшей `processing`-задачи в `retry`; по умолчанию 300000 мс |
+| `OUTBOX_DELIVERY_TIMEOUT_MS` | Application-level timeout одного вызова Telegram; по умолчанию 15000 мс |
+| `BUILD_REVISION` | Явная безопасная метка build/deploy; на Render используется `RENDER_GIT_COMMIT` как fallback |
 | `LOG_LEVEL` | Уровень структурированных логов |
 | `OBJECT_STORAGE_ENDPOINT` | S3-compatible endpoint приватного хранилища |
 | `OBJECT_STORAGE_REGION` | Регион S3-compatible API |
@@ -153,6 +155,21 @@ Invoke-RestMethod `
 Повтор с тем же `Idempotency-Key` и тем же телом возвращает исходный лид с `deduplicated: true`. Другое тело с тем же ключом возвращает `409`.
 
 ## Telegram
+
+### Read-only production preflight
+
+Проверка использует только `getMe`, `getChat` и `getChatMember`; `sendMessage` не вызывается,
+токен и chat ID не выводятся. Запускать в локальной сессии, где production credentials уже
+доступны через environment settings:
+
+```powershell
+$env:TELEGRAM_EXPECTED_CHAT_TITLE='БелСтеклоЭксперт'
+npm run telegram:preflight:readonly
+```
+
+Успешный результат подтверждает identity бота, точное название назначения, membership и
+отсутствие явного запрета отправки сообщений. Фактическая доставка подтверждается только
+отдельным согласованным smoke test с фиктивной заявкой.
 
 Значения токена, chat ID и webhook secret задаются вне Git. При старте с `TELEGRAM_ENABLED=true` Lead Hub сначала регистрирует webhook через Telegram Bot API и только после успешной регистрации запускает outbox worker.
 

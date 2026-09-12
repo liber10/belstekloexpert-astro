@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
 import {
   buildWebLeadPayload,
   checkLeadHubReady,
@@ -9,10 +10,36 @@ import {
   normalizeSubmissionId,
   resolveLeadDeliveryMode,
   preparePhotoUploads,
+  recordSubmissionAudit,
   sendLeadToHub,
 } from '../src/lib/lead-hub';
 
 describe('site Lead Hub client', () => {
+  it('keeps honeypots server-auditable and discourages password-manager autofill', () => {
+    for (const file of ['src/components/forms/LeadForm.astro', 'src/components/forms/VinPhotoForm.astro']) {
+      const source = readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
+      expect(source).toContain('name="company"');
+      expect(source).toContain('autocomplete="new-password"');
+      expect(source).toContain('data-lpignore="true"');
+      expect(source).toContain('data-1p-ignore');
+    }
+    const layout = readFileSync(new URL('../src/layouts/BaseLayout.astro', import.meta.url), 'utf8');
+    expect(layout).not.toContain("if (honeypot?.value)");
+  });
+  it('propagates a privacy-safe correlation id to submission audit', async () => {
+    let payload: Record<string, unknown> = {};
+    const fetchImpl = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      payload = JSON.parse(String(init?.body));
+      expect(new Headers(init?.headers).get('authorization')).toBe('Bearer test-api-key');
+      return new Response(null, { status: 202 });
+    }) as unknown as typeof fetch;
+    await recordSubmissionAudit({
+      correlationId: 'submission_audit_001', event: 'honeypot_rejected', reason: 'honeypot',
+      formType: 'callback', env: { LEAD_HUB_URL: 'https://hub.example', WEB_INGEST_API_KEY: 'test-api-key' }, fetchImpl,
+    });
+    expect(payload).toEqual({ correlationId: 'submission_audit_001', event: 'honeypot_rejected', reason: 'honeypot', formType: 'callback' });
+    expect(JSON.stringify(payload)).not.toContain('company');
+  });
   it('maps form fields and attribution to the ingest contract', () => {
     expect(
       buildWebLeadPayload(

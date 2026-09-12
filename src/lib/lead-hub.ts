@@ -462,6 +462,43 @@ async function request(
   }
 }
 
+export type SubmissionAuditEvent =
+  | 'received'
+  | 'validation_rejected'
+  | 'honeypot_rejected'
+  | 'hub_request_failed';
+
+export async function recordSubmissionAudit(options: {
+  correlationId: string;
+  event: SubmissionAuditEvent;
+  reason?: string;
+  formType: string;
+  env?: RuntimeEnv;
+  fetchImpl?: typeof fetch;
+}) {
+  const env = options.env ?? getLeadRuntimeEnv();
+  const config = getLeadHubConfig(env);
+  const response = await request(
+    `${config.baseUrl}/api/v1/submissions/audit`,
+    {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${config.apiKey}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        correlationId: options.correlationId,
+        event: options.event,
+        ...(options.reason ? { reason: options.reason } : {}),
+        formType: limit(options.formType, 160) || 'site_form',
+      }),
+    },
+    Math.min(config.timeoutMs, 5_000),
+    options.fetchImpl,
+  );
+  if (!response.ok) throw new LeadHubRequestError('request_failed', response.status);
+}
+
 async function requestWithTransientRetry(
   url: string,
   init: RequestInit,

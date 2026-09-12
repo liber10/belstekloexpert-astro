@@ -8,6 +8,7 @@ import { createDatabaseClient, type DatabaseClient } from '../../src/db/client.j
 import {
   integrationInbox,
   integrationOutbox,
+  formSubmissionAudits,
   leadEvents,
   leads,
   telegramPublicOutbox,
@@ -72,7 +73,7 @@ integration('Lead Hub database pipeline', () => {
 
   beforeEach(async () => {
     await database.db.execute(
-      sql`truncate table telegram_public_outbox, telegram_public_sessions, integration_inbox, integration_outbox, lead_events, leads restart identity cascade`,
+      sql`truncate table telegram_public_outbox, telegram_public_sessions, form_submission_audits, integration_inbox, integration_outbox, lead_events, leads restart identity cascade`,
     );
     vi.clearAllMocks();
   });
@@ -118,8 +119,28 @@ integration('Lead Hub database pipeline', () => {
     const [eventCount] = await database.db.select({ total: sql<number>`count(*)::int` }).from(leadEvents);
     const [outboxCount] = await database.db.select({ total: sql<number>`count(*)::int` }).from(integrationOutbox);
     expect(leadCount?.total).toBe(1);
-    expect(eventCount?.total).toBe(1);
+    expect(eventCount?.total).toBe(3);
     expect(outboxCount?.total).toBe(1);
+  });
+
+  it('records and traces a privacy-safe honeypot outcome without a lead or Telegram job', async () => {
+    const correlationId = 'honeypot-submission-001';
+    const response = await runtime.app.inject({
+      method: 'POST', url: '/api/v1/submissions/audit',
+      headers: { authorization: 'Bearer integration-test-secret' },
+      payload: { correlationId, event: 'honeypot_rejected', reason: 'honeypot', formType: 'callback' },
+    });
+    expect(response.statusCode).toBe(202);
+    const [audit] = await database.db.select().from(formSubmissionAudits);
+    expect(audit).toMatchObject({ correlationId, event: 'honeypot_rejected', reason: 'honeypot', formType: 'callback' });
+    expect(await database.db.select().from(leads)).toHaveLength(0);
+    expect(await database.db.select().from(integrationOutbox)).toHaveLength(0);
+
+    const trace = await runtime.app.inject({
+      method: 'GET', url: `/api/v1/submissions/${correlationId}/trace`,
+      headers: { authorization: 'Bearer integration-test-secret' },
+    });
+    expect(trace.json()).toMatchObject({ ok: true, correlationId, lead: null });
   });
 
   it('rejects reuse of an idempotency key for a different payload', async () => {
@@ -240,7 +261,9 @@ integration('Lead Hub database pipeline', () => {
     const events = await database.db.select().from(leadEvents).where(eq(leadEvents.leadId, created.lead.id));
     expect(lead?.status).toBe('qualified');
     expect(lead?.telegramMessageId).toBe(42);
-    expect(events.map((event) => event.eventType)).toEqual(['lead_received', 'status_changed']);
+    expect(events.map((event) => event.eventType)).toEqual([
+      'lead_received', 'persisted', 'dispatch_pending', 'telegram_sent', 'status_changed',
+    ]);
   });
 
   it('releases a stale processing job and delivers it', async () => {
@@ -265,6 +288,37 @@ integration('Lead Hub database pipeline', () => {
       .from(integrationOutbox)
       .where(eq(integrationOutbox.leadId, created.lead.id));
     expect(job?.status).toBe('sent');
+  });
+
+  it('keeps the lead and records retry after a Telegram sender failure', async () => {
+    const created = await runtime.leadService.createWebLead(
+      { phone: '+375291111111', serviceType: 'Sender failure test' },
+      'form-submission-telegram-retry',
+    );
+    sendLeadCard.mockRejectedValueOnce(new Error('fake transport failure'));
+    await runtime.outbox?.processOnce();
+    const [lead] = await database.db.select().from(leads).where(eq(leads.id, created.lead.id));
+    const [job] = await database.db.select().from(integrationOutbox).where(eq(integrationOutbox.leadId, created.lead.id));
+    const events = await database.db.select().from(leadEvents).where(eq(leadEvents.leadId, created.lead.id));
+    expect(lead?.id).toBe(created.lead.id);
+    expect(job?.status).toBe('retry');
+    expect(events.some((event) => event.eventType === 'telegram_retry')).toBe(true);
+  });
+
+  it('moves the job to dead without rolling back the lead', async () => {
+    const created = await runtime.leadService.createWebLead(
+      { phone: '+375291111111', serviceType: 'Dead-letter test' },
+      'form-submission-telegram-dead',
+    );
+    await database.db.update(integrationOutbox).set({ attemptCount: 7 })
+      .where(eq(integrationOutbox.leadId, created.lead.id));
+    sendLeadCard.mockRejectedValueOnce(new Error('fake permanent failure'));
+    await runtime.outbox?.processOnce();
+    const [job] = await database.db.select().from(integrationOutbox).where(eq(integrationOutbox.leadId, created.lead.id));
+    expect(job?.status).toBe('dead');
+    expect(await database.db.select().from(leads).where(eq(leads.id, created.lead.id))).toHaveLength(1);
+    const events = await database.db.select().from(leadEvents).where(eq(leadEvents.leadId, created.lead.id));
+    expect(events.some((event) => event.eventType === 'telegram_dead')).toBe(true);
   });
 
   it('durably accepts and deduplicates a phone-less Kufar event', async () => {

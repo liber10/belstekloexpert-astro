@@ -22,6 +22,7 @@ import { registerLeadRoutes } from './routes/leads.js';
 import { registerTelegramRoutes } from './routes/telegram.js';
 import { registerTelegramPublicRoutes } from './routes/telegram-public.js';
 import { registerUploadRoutes } from './routes/uploads.js';
+import { registerSubmissionDiagnosticRoutes } from './routes/submission-diagnostics.js';
 import { LeadService } from './services/lead-service.js';
 import { InboxService } from './services/inbox-service.js';
 import { TelegramPublicSessionService } from './services/telegram-public-session-service.js';
@@ -98,10 +99,10 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
       })
     : null;
 
-  registerHealthRoutes(app, database.pool);
   registerKufarRoutes(app, config, inboxService);
   registerLeadRoutes(app, config, leadService);
   registerUploadRoutes(app, config, objectStorage, leadService);
+  registerSubmissionDiagnosticRoutes(app, config, database.db);
   registerTelegramRoutes(app, config, telegram);
   registerTelegramPublicRoutes(app, config, inboxService);
 
@@ -115,6 +116,12 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   const telegramPublicOutbox = telegramPublic
     ? new TelegramPublicOutboxProcessor(database.db, telegramPublic, app.log, config.outbox)
     : null;
+
+  registerHealthRoutes(app, database.pool, {
+    telegramConfigured: config.telegram.enabled,
+    telegramWorkerActive: () => outbox?.isActive() ?? false,
+    buildRevision: config.buildRevision,
+  });
 
   if (options.startWorker !== false) {
     outbox?.start();

@@ -26,7 +26,8 @@ const {
   </div>
 
   <form class="lead-form" action="/api/lead/" method="post" data-lead-form data-submit-event={eventName}>
-    <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
+    <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="new-password"
+      aria-hidden="true" data-honeypot data-lpignore="true" data-1p-ignore />
     <input type="hidden" name="service" value={service} />
     <AttributionFields />
 

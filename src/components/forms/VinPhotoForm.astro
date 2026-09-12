@@ -76,7 +76,8 @@ const vehicleCatalogJson = JSON.stringify(vehicleCatalog);
     data-vehicle-photo-form
     data-submit-event="photo_estimate_submit"
   >
-    <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="off" />
+    <input class="hp-field" type="text" name="company" tabindex="-1" autocomplete="new-password"
+      aria-hidden="true" data-honeypot data-lpignore="true" data-1p-ignore />
     <input type="hidden" name="service" value={service} />
     <AttributionFields />
 
@@ -318,9 +319,6 @@ const vehicleCatalogJson = JSON.stringify(vehicleCatalog);
 
         const consentAt = form.querySelector('[data-consent-at]');
         if (consentAt instanceof HTMLInputElement) consentAt.value = new Date().toISOString();
-
-        const honeypot = form.querySelector('[name="company"]');
-        if (honeypot instanceof HTMLInputElement && honeypot.value) return;
 
         const phone = form.querySelector('[name="phone"]');
         const digits = phone instanceof HTMLInputElement ? phone.value.replace(/\D/g, '') : '';

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Lead } from '../../src/db/schema.js';
-import { buildLeadCard, buildLeadKeyboard } from '../../src/integrations/telegram/card.js';
+import { buildLeadCard, buildLeadKeyboard, telegramTextLimit } from '../../src/integrations/telegram/card.js';
 
 const lead: Lead = {
   id: 'f83db34b-3442-4f8e-823f-c2700490a001',
@@ -69,6 +69,12 @@ const lead: Lead = {
 };
 
 describe('Telegram lead card', () => {
+  it('guards provider length while preserving the critical header', () => {
+    const card = buildLeadCard({ ...lead, message: 'очень длинный комментарий '.repeat(400) });
+    expect(card.length).toBeLessThanOrEqual(telegramTextLimit);
+    expect(card).toContain(`Новый лид #${lead.publicId}`);
+    expect(card).toContain('[текст сокращён]');
+  });
   it('contains operational lead details', () => {
     const card = buildLeadCard(lead);
     expect(card).toContain('#BSE-20260716-F83DB34B');

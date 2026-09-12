@@ -67,4 +67,5 @@ export interface LeadResponse {
   publicId: string;
   status: string;
   deduplicated: boolean;
+  correlationId: string;
 }
