@@ -52,6 +52,14 @@ export async function deliverLeadWithBestEffortPhotos(options: BestEffortPhotoDe
   return message;
 }
 
+export function isTelegramMessageNotModified(error: unknown) {
+  if (!error || typeof error !== 'object') return false;
+  const candidate = error as { description?: unknown; message?: unknown };
+  const description = typeof candidate.description === 'string' ? candidate.description : '';
+  const message = typeof candidate.message === 'string' ? candidate.message : '';
+  return `${description}\n${message}`.toLowerCase().includes('message is not modified');
+}
+
 export function createTelegramIntegration(
   options: TelegramOptions,
   leadService: LeadService,
@@ -165,12 +173,18 @@ export function createTelegramIntegration(
 
     async editLeadCard(lead) {
       if (!lead.telegramChatId || !lead.telegramMessageId) return;
-      await bot.api.editMessageText(
-        lead.telegramChatId,
-        lead.telegramMessageId,
-        buildLeadCard(lead),
-        { reply_markup: buildLeadKeyboard(lead) },
-      );
+      try {
+        await bot.api.editMessageText(
+          lead.telegramChatId,
+          lead.telegramMessageId,
+          buildLeadCard(lead),
+          { reply_markup: buildLeadKeyboard(lead) },
+        );
+      } catch (error) {
+        // Telegram returns HTTP 400 when an idempotent edit already matches the card.
+        // Treat that response as delivery success; retrying can never change the outcome.
+        if (!isTelegramMessageNotModified(error)) throw error;
+      }
     },
 
     async handleUpdate(update) {

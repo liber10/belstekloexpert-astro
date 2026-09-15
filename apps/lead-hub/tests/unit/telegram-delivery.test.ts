@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Lead } from '../../src/db/schema.js';
-import { deliverLeadWithBestEffortPhotos } from '../../src/integrations/telegram/index.js';
+import {
+  deliverLeadWithBestEffortPhotos,
+  isTelegramMessageNotModified,
+} from '../../src/integrations/telegram/index.js';
 
 describe('Telegram text-first delivery', () => {
   it('preserves a successful text receipt when photo signing fails', async () => {
@@ -16,5 +19,11 @@ describe('Telegram text-first delivery', () => {
     expect(receipt).toEqual({ chatId: 'chat', messageId: 42 });
     expect(sendCard).toHaveBeenCalledOnce();
     expect(sendPhoto).not.toHaveBeenCalled();
+  });
+
+  it('recognizes Telegram idempotent edit responses as successful no-ops', () => {
+    expect(isTelegramMessageNotModified({ description: 'Bad Request: message is not modified' })).toBe(true);
+    expect(isTelegramMessageNotModified(new Error('Call failed: message is not modified'))).toBe(true);
+    expect(isTelegramMessageNotModified({ description: 'Bad Request: message to edit not found' })).toBe(false);
   });
 });
