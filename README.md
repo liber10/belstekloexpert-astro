@@ -2,10 +2,19 @@
 
 Сайт и контур обработки заявок сервиса автостёкол в Минске.
 
-Проект состоит из двух production-приложений в одном репозитории:
+Проект состоит из двух production-приложений и локального operations-плагина в одном репозитории:
 
 - Astro-сайт с калькулятором, контентом и серверными формами;
-- Lead Hub на Fastify с PostgreSQL, Telegram-интеграцией и приватным хранением фото.
+- Lead Hub на Fastify с PostgreSQL, Telegram-интеграцией и приватным хранением фото;
+- repo-local Codex-плагин `plugins/belsteklo-meta-ads`, подключённый к одному
+  allow-listed рекламному аккаунту. Чтение структуры и Insights, отдельный
+  write-token с `ads_management` + `ads_read`, `appsecret_proof` и полный
+  `prepare -> dry-run apply -> audit` smoke проверены 15 августа 2026 года без
+  изменения объектов Meta. Репозиторий использует безопасный default
+  `META_WRITE_MODE=off`; реальная запись не разрешена. Добавлен отдельный fail-closed
+  контур exact-plan → detached
+  approval → materialize только `PAUSED` website-leads bundle; по умолчанию он
+  выключен. Activation и публикация по-прежнему не поддерживаются.
 
 ## Быстрая навигация
 
@@ -17,6 +26,8 @@
 | [docs/architecture.md](docs/architecture.md) | Архитектура, потоки данных и границы сервисов |
 | [docs/roadmap.md](docs/roadmap.md) | Приоритеты и растущий backlog |
 | [docs/lead-hub-runbook.md](docs/lead-hub-runbook.md) | Запуск и эксплуатация Lead Hub |
+| [docs/meta-marketing-operations-runbook.md](docs/meta-marketing-operations-runbook.md) | Безопасный цикл рекламы и контент-публикаций Meta |
+| [docs/meta-chip-repair-campaign-brief.md](docs/meta-chip-repair-campaign-brief.md) | Рабочий brief отдельной кампании ремонта сколов |
 | [docs/price-update.md](docs/price-update.md) | Обновление прайса калькулятора |
 
 ## Production-контур
@@ -48,6 +59,8 @@
 │   └── styles/              # Общие стили
 ├── apps/
 │   └── lead-hub/            # Fastify + PostgreSQL + Telegram + object storage
+├── plugins/
+│   └── belsteklo-meta-ads/  # Локальный Codex MCP: read, dry-run и guarded writes
 ├── public/                  # Публичные изображения, PDF, favicon и служебные файлы
 ├── scripts/                 # Прайсы, XLSX и генерация материалов
 ├── tests/                   # Тесты интеграции сайта с Lead Hub
@@ -98,6 +111,13 @@ npm run deploy:cloudflare:production:dry
 npm run lead-hub:check
 ```
 
+Для локального Meta Ads-плагина:
+
+```powershell
+npm run meta-ads:install
+npm run meta-ads:check
+```
+
 Integration-тесты с PostgreSQL запускаются только с отдельной тестовой базой.
 Production `DATABASE_URL` нельзя использовать как `TEST_DATABASE_URL`.
 
@@ -113,7 +133,7 @@ npm run prices:update -- --source .private/imports/latest.xlsx
 
 ## Секреты
 
-Значения токенов, ключей, URL базы и signed URL запрещено:
+Значения токенов, ключей, URL базы, Meta access tokens и signed URL запрещено:
 
 - добавлять в Git;
 - вставлять в документацию;

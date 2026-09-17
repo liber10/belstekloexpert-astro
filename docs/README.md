@@ -11,10 +11,14 @@
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
 | [Публичный Telegram-бот](public-telegram-bot-runbook.md) | Operations | Подготовка; production заблокирован `LEGAL-001` |
+| [Meta DM / lead-ingest](meta-messaging-runbook.md) | Operations | Signed ingest реализован локально; production webhook и автоответ выключены |
 | [Аудит персональных данных](personal-data-audit.md) | Legal/operations | Проект `LEGAL-001` |
 | [Обязательные legal-входы](legal-required-inputs.md) | Checklist | Блокирует publication |
 | [Карта информационных ресурсов](personal-data-resources-map.md) | Registry | Требует проверки владельцем |
-| [Meta Lead Ads: legal copy](meta-lead-ads-legal-copy.md) | Advertising | Проект, legal review required |
+| [Meta Lead Ads: legal copy](meta-lead-ads-legal-copy.md) | Advertising | Проект; ingestion не подключён, legal review и проверка photo-flow обязательны |
+| [Meta campaign brief: ремонт сколов](meta-chip-repair-campaign-brief.md) | Advertising | Проект; publication blocked |
+| [Рыночный ориентир ремонта скола](meta-chip-repair-pricing-evidence-2026-08-15.md) | Advertising evidence | Исторический snapshot; срок claim истёк 15 сентября 2026 года |
+| [Meta marketing operations](meta-marketing-operations-runbook.md) | Operations | Подготовка; live writes выключены |
 | [Чек-лист рекламы](advertising-compliance-checklist.md) | Advertising | Проект |
 | [Cloudflare preview runbook](cloudflare-preview-runbook.md) | Operations | Актуальный, отдельный `noindex` Worker |
 | [Cloudflare production runbook](cloudflare-cutover-runbook.md) | Operations | Актуальный, cutover выполнен |
@@ -23,13 +27,16 @@
 | [ADR-0001: границы монорепозитория](decisions/0001-monorepo-boundaries.md) | Decision | Принят |
 | [ADR-0002: два Astro runtime](decisions/0002-dual-astro-runtime.md) | Decision | Принят |
 | [ADR-0003: Cloudflare Worker preview](decisions/0003-cloudflare-migration-candidate.md) | Decision | Выполнен; историческая база миграции |
+| [ADR-0004: Meta Ads control plane](decisions/0004-meta-ads-control-plane.md) | Decision | Принят для локального этапа; production write выключен |
 | [ADR-0005: Cloudflare production frontend](decisions/0005-cloudflare-production.md) | Decision | Принят и введён в эксплуатацию |
+| [ADR-0006: Meta marketing agent](decisions/0006-meta-marketing-agent.md) | Decision | Принят для staged implementation; production publish не утверждён |
 
 ## Исторические документы
 
 | Документ | Период | Назначение |
 | --- | --- | --- |
 | [Аудит контура заявок](archive/lead-hub-audit-2026-07-10.md) | 10 июля 2026 | Состояние до создания Lead Hub |
+| [Аудит Meta Ads](archive/meta-ads-audit-2026-08-03-to-2026-08-14.md) | 3–14 августа 2026 | Read-only evidence и baseline до quality attribution |
 
 Исторические документы полезны для понимания причин изменений, но не являются
 источником текущего состояния.

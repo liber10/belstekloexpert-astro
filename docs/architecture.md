@@ -1,6 +1,6 @@
 # Архитектура BelStekloExpert
 
-Последняя актуализация: 12 августа 2026 года.
+Последняя актуализация: 17 сентября 2026 года.
 
 ## Системный контекст
 
@@ -28,6 +28,22 @@ flowchart LR
     TG -->|"signed GET photo"| B2
     TG --> CHAT
 ```
+
+## Поток входящего Meta DM (feature flag off)
+
+```text
+Instagram/Facebook webhook
+  -> raw-body HMAC verification + recipient allow-list
+  -> integration_inbox (dedupe by message.mid)
+  -> InboxProcessor retry/dead-letter
+  -> PostgreSQL lead (conversation-level idempotency)
+  -> existing Telegram outbox
+```
+
+Автоответ в Instagram/Facebook намеренно не входит в этот первый срез: для него
+нужен отдельный messaging principal, Graph permission, copy/opt-out policy и
+отдельное human-approved включение. Поэтому сохранение входящего обращения не
+зависит от ответа клиенту.
 
 ## Компоненты
 

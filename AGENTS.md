@@ -2,13 +2,19 @@
 
 ## Контекст
 
-BelStekloExpert состоит из Astro-сайта в корне репозитория и отдельного Lead Hub в
-`apps/lead-hub`. Перед изменениями прочитайте:
+BelStekloExpert состоит из Astro-сайта в корне репозитория, отдельного Lead Hub в
+`apps/lead-hub` и repo-local operations-плагина Meta Ads в
+`plugins/belsteklo-meta-ads`.
 
-1. `README.md`;
-2. `PROJECT_STATUS.md`;
-3. `docs/README.md`;
-4. профильный документ из `docs/`.
+Перед новой задачей обязательно:
+
+1. прочитать `PROJECT_STATUS.md` и `docs/architecture.md`;
+2. прочитать `README.md`, `docs/README.md` и профильный документ из `docs/`;
+3. проверить текущую ветку через `git branch --show-current` и рабочее дерево через
+   `git status --short`;
+4. найти существующую реализацию, конфигурацию, тесты и документацию по теме;
+5. не создавать параллельную подсистему без отдельного ADR или явного
+   архитектурного обоснования.
 
 ## Архитектурные границы
 
@@ -23,6 +29,9 @@ BelStekloExpert состоит из Astro-сайта в корне репози�
   архитектурного решения.
 - Lead Hub находится только в `apps/lead-hub` и владеет PostgreSQL, статусами,
   outbox, Telegram webhook и object-storage adapter.
+- Meta Ads-плагин не подключается к PostgreSQL напрямую. Он использует только
+  allow-listed Meta assets; интеграция качества лидов выполняется через отдельный
+  scoped API Lead Hub после архитектурного решения.
 - PostgreSQL является источником истины для принятых лидов.
 - Фотографии должны оставаться приватными. Для браузера и Telegram используются
   короткоживущие signed URL.
@@ -33,7 +42,7 @@ BelStekloExpert состоит из Astro-сайта в корне репози�
 ## Безопасность
 
 - Никогда не показывайте и не коммитьте значения `.env`, `DATABASE_URL`, bot token,
-  chat ID, API keys, credentials object storage и signed URL.
+  chat ID, API keys, Meta access tokens, credentials object storage и signed URL.
 - Не читайте локальный `.env` без прямой необходимости для конкретной проверки.
 - Не добавляйте production-секреты в тесты, fixtures, Markdown или сообщения Git.
 - Не логируйте полный телефон, VIN и другие персональные данные.
@@ -67,6 +76,12 @@ Lead Hub:
 npm run lead-hub:check
 ```
 
+Meta Ads-плагин:
+
+```powershell
+npm run meta-ads:check
+```
+
 Обновление прайса:
 
 ```powershell
@@ -81,10 +96,19 @@ npm run prices:update -- --source .private/imports/latest.xlsx
 | Формы и API сайта | `npm run test:site`, `npm run build:cloudflare:production`, production dry-run |
 | Astro config или зависимости | Cloudflare production build и dry-run; fallback-сборки при изменении общих runtime-зависимостей |
 | Lead Hub | `npm run lead-hub:check` |
+| Meta Ads-плагин | `npm run meta-ads:check`, plugin validator; live write smoke только на явно согласованном неактивном объекте |
 | Прайс | импорт, `npm run build`, ручная проверка калькулятора |
 | Фото | prepare, signed PUT, lead submission, Telegram smoke test |
 
 Для пользовательских изменений интерфейса дополнительно проверяйте desktop и mobile.
+
+После материальной задачи обязательно:
+
+1. выполнить профильные тесты и проверки;
+2. обновить `PROJECT_STATUS.md` только подтверждёнными кодом и тестами фактами;
+3. при необходимости обновить architecture, ADR или runbook;
+4. создать тематический commit, не смешивая unrelated изменения;
+5. оставить рабочее дерево чистым либо явно перечислить сохранённый WIP и причину.
 
 ## Деплой
 

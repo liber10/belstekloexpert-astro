@@ -1,6 +1,6 @@
 # Roadmap BelStekloExpert
 
-Последняя актуализация: 12 августа 2026 года.
+Последняя актуализация: 17 сентября 2026 года.
 
 ## Обозначения
 
@@ -22,7 +22,11 @@
 | `LEADS-001` | Lead Hub | Перевести Telegram webhook и outbox worker полностью на Render | P1 | done |
 | `KUFAR-001` | Lead Hub | Перевести Kufar email handler на durable inbox и source-aware Telegram-карточки | P1 | done |
 | `TELEGRAM-LEADS-001` | Lead Hub | Добавить отдельного публичного Telegram-бота для клиентских заявок | P1 | in progress — код и миграция готовы с feature flag off; production enable ждёт `LEGAL-001` |
-| `META-001` | Lead Hub | Подключить только Meta Instant Forms через подписанный webhook | P1 | blocked |
+| `META-001` | Lead Hub | Подключить Meta Instant Forms через подписанный webhook | P1 | blocked — `LEGAL-001`, app review и lead-access permissions |
+| `META-MESSAGING-001` | Lead Hub | Подключить Meta DM webhook к durable inbox и отдельно согласовать auto-reply | P0 | in-progress — signed ingest интегрирован локально в `493d4dd`, production feature flag off |
+| `META-PHOTO-001` | Сайт / Lead Hub | Подготовить рекламный photo-flow ремонта сколов на существующую private site/B2 форму | P1 | planned — consent-aware measurement и mobile E2E smoke |
+| `META-IDENTITY-001` | Meta | Разделить service identities для ads, publishing и lead retrieval | P1 | in-progress — Employee `ads-operator` имеет точечный доступ и отдельный token с `ads_management` + `ads_read` без `business_management`; Instagram publishing и lead-retrieval identities не созданы |
+| `CONTENT-001` | Контент | Ввести календарь, approval, Page/IG publishing, moderation и weekly learning | P1 | planned |
 
 ## Инфраструктура
 
@@ -58,7 +62,7 @@ Render; следующие 14 и дополнительная серия 5/5 з�
 | `CALC-001` | Формализовать версию прайса и дату актуальности в pipeline | P2 | backlog |
 | `CALC-002` | Добавить безопасный preview отчёта перед публикацией нового прайса | P2 | backlog |
 | `B2B-001` | Расширить форму юрлиц компанией, УНП, размером парка и email | P2 | backlog |
-| `CONTENT-001` | Вести контент-план страниц услуг и блога | P3 | backlog |
+| `CONTENT-WEB-001` | Вести контент-план страниц услуг и блога | P2 | planned |
 
 ## Аналитика и реклама
 
@@ -66,7 +70,23 @@ Render; следующие 14 и дополнительная серия 5/5 з�
 | --- | --- | --- | --- |
 | `ANALYTICS-001` | Проверить отсутствие дублей целей GA4/GTM/Метрики | P2 | backlog |
 | `ANALYTICS-002` | Добавить consent-aware события калькулятора и форм | P2 | blocked |
-| `ADS-001` | Подключить offline conversions после стабилизации статусов | P2 | blocked |
+| `ADS-001` | Подключить offline/conversion leads events после стабилизации статусов | P2 | blocked — `LEGAL-001`, `META-001` и схема quality events |
+| `ADS-CHIP-001` | Запустить отдельный эксперимент ремонта сколов | P1 | blocked — `META-PHOTO-001`, `LEGAL-001` и подтверждение `chip-repair-offer-inputs.md` |
+| `META-CONTROL-001` | Подключить repo-local Meta Ads plugin: read audit, dry-run и guarded writes | P1 | in-progress — plugin интегрирован локально в `991a76f`; observe/Insights и прошлый dry-run smoke подтверждены, default-off PAUSED campaign-bundle v1 прошёл 72/72 теста и validator; install/canary и production write не утверждены |
+| `META-AGENT-001` | Реализовать staged full-cycle ads/content agent | P1 | in-progress — ADR-0006 принят; локальный PAUSED materializer/ledger/reconciliation реализован, но production canary, activation, publishing connector и quality feedback остаются blocked |
+
+`META-CONTROL-001` не заменяет `META-001` и `ADS-001`. Автоматическое управление
+разрешается поэтапно: `observe -> plan -> guarded apply -> bounded autopilot`.
+Первый autopilot допускает только pause и уменьшение бюджета в пределах policy;
+resume, увеличение бюджета, targeting, публикация и delete требуют отдельного решения.
+
+Полный цикл разбит на независимые контуры: Ads Management, Page/Instagram
+Publishing и Lead Retrieval. Один универсальный admin-token не используется.
+Ближайший безопасный этап — установить обновлённый plugin build, повторно доказать
+нулевые POST в dry-run и провести отдельно согласованный canary на тестовом или
+неактивном контуре. После materialize владелец отдельно подтверждает первую
+публикацию и бюджет; activation не входит в v1.
+
 
 ## Выполненные этапы
 
