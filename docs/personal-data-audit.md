@@ -1,6 +1,6 @@
 # Аудит персональных данных
 
-Дата аудита: 2 августа 2026 года. Статус: проект для `LEGAL-001`, не юридическое заключение.
+Дата аудита: 2 августа 2026 года; дополнено 15 августа 2026 года. Статус: проект для `LEGAL-001`, не юридическое заключение.
 
 ## Фактические потоки
 
@@ -11,6 +11,7 @@
 | Kufar/Gmail Apps Script | имя/псевдоним, текст, URL диалога и объявления | обработка обращения | Google/Gmail → Render/Neon → Telegram | срок не утверждён; копия остаётся в Gmail | высокий |
 | Публичный Telegram-бот | Telegram user/chat ID, username, телефон, услуга, сообщение, campaign code, consent version | заявка клиента | Telegram → Render/Neon → внутренний Telegram | feature flag выключен; срок сессии 24 часа, срок лида не утверждён | блокирующий до `LEGAL-001` |
 | Аналитика | UTM, click IDs, landing URL/referrer, события форм; возможны client identifiers | оценка рекламы | localStorage; при согласии — GTM/GA4/Яндекс Метрика | сроки поставщиков и локального выбора требуют утверждения | до изменения скрипты загружались без выбора |
+| Meta Ads | агрегированные Insights доступны read-only; Meta Instant Form raw leads существуют вне Lead Hub | реклама и первичный сбор обращений | Meta; локальный плагин получает только Insights без lead PII | Meta retention/transfer и удаление требуют legal review | signed webhook, quality mapping и deletion flow не подключены |
 | Телефон/email | контакт и содержание обращения | ответ, запись, заказ | устройства и почтовая система оператора | не формализовано | средний |
 
 ## Обнаруженные системы
@@ -23,7 +24,8 @@
 - рабочие уведомления: Telegram Bot API;
 - Kufar adapter: Gmail и Google Apps Script;
 - аналитический код: Google Tag Manager/Google Analytics 4 и Яндекс Метрика, если заданы public env IDs;
-- Meta Pixel в репозитории не обнаружен; Meta Lead Ads ещё не подключены.
+- Meta Pixel в репозитории не обнаружен; Meta Ads Insights подключены read-only,
+  но Instant Form ingestion/webhook в Lead Hub и quality feedback не подключены.
 
 ## Реализованные меры
 
