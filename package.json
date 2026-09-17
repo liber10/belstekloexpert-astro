@@ -30,7 +30,9 @@
     "lead-hub:build": "npm run build --workspace @belstekloexpert/lead-hub",
     "lead-hub:test": "npm run test --workspace @belstekloexpert/lead-hub",
     "lead-hub:check": "npm run check --workspace @belstekloexpert/lead-hub",
-    "telegram:preflight:readonly": "node scripts/telegram-production-preflight.mjs"
+    "telegram:preflight:readonly": "node scripts/telegram-production-preflight.mjs",
+    "meta-ads:install": "npm install --prefix plugins/belsteklo-meta-ads",
+    "meta-ads:check": "npm run check --prefix plugins/belsteklo-meta-ads"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",

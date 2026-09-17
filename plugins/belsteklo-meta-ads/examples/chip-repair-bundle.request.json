@@ -1,0 +1,43 @@
+{
+  "spec": {
+    "targeting_template_key": "minsk_workshop_20km_broad_v1",
+    "page_key": "belsteklo_page_v1",
+    "pixel_key": "lead_dataset_v1",
+    "lifetime_budget_minor": 3500,
+    "start_time": "2026-08-31T21:05:00.000Z",
+    "end_time": "2026-09-07T21:05:00.000Z",
+    "landing_base_url": "https://belstekloexpert.by/remont-skolov/#photo-form",
+    "ads": [
+      {
+        "variant_key": "price_photo",
+        "media_key": "chip_price_4x5_v1",
+        "primary_text": "Ремонт скола на лобовом стекле — от 30 BYN. Точная цена и возможность ремонта определяются после фото и осмотра мастером. Отправьте общий снимок и крупный план через защищённую форму.",
+        "headline": "Ремонт скола от 30 BYN",
+        "description": "Предварительная оценка по фото",
+        "call_to_action": "GET_QUOTE",
+        "claim_keys": ["chip_repair_from_30_byn_2026_08"]
+      },
+      {
+        "variant_key": "repair_or_replace",
+        "media_key": "chip_decision_4x5_v1",
+        "primary_text": "Не каждый скол означает замену стекла. Возможность ремонта зависит от формы, глубины и расположения повреждения. Отправьте общий снимок и крупный план — мастер даст предварительный ответ.",
+        "headline": "Ремонт или замена?",
+        "description": "Решение зависит от повреждения",
+        "call_to_action": "GET_QUOTE",
+        "claim_keys": []
+      },
+      {
+        "variant_key": "first_steps",
+        "media_key": "chip_first_steps_4x5_v1",
+        "primary_text": "Сохраните скол сухим и чистым: закройте его прозрачной лентой без сильного нажима, избегайте резкого нагрева и пришлите фото. Мастер подскажет, что делать дальше.",
+        "headline": "Что сделать со сколом сейчас",
+        "description": "Общий кадр и крупный план",
+        "call_to_action": "GET_QUOTE",
+        "claim_keys": []
+      }
+    ]
+  },
+  "reason": "Семидневный canary направления ремонта сколов с защищённой оценкой по фото.",
+  "idempotency_key": "chip-repair-minsk-2026-09-canary-v1",
+  "acknowledge": "PREPARE_PAUSED_WEBSITE_LEADS"
+}

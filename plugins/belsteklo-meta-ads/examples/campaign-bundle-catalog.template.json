@@ -1,0 +1,79 @@
+{
+  "version": "replace-with-owner-reviewed-version",
+  "reviewed_at": "2026-08-15T12:00:00.000Z",
+  "pages": {
+    "belsteklo_page_v1": {
+      "provider_id": "REPLACE_WITH_PAGE_ID",
+      "label": "BelStekloExpert Page",
+      "verified_at": "2026-08-15T12:00:00.000Z"
+    }
+  },
+  "pixels": {
+    "lead_dataset_v1": {
+      "provider_id": "REPLACE_WITH_DATASET_OR_PIXEL_ID",
+      "label": "Website Lead dataset",
+      "verified_at": "2026-08-15T12:00:00.000Z"
+    }
+  },
+  "media": {
+    "chip_price_4x5_v1": {
+      "image_hash": "REPLACE_WITH_META_IMAGE_HASH",
+      "content_sha256": "sha256:REPLACE_WITH_64_HEX_CHARACTERS",
+      "rights_ref": "rights/chip-price/v1",
+      "verified_at": "2026-08-15T12:00:00.000Z"
+    },
+    "chip_decision_4x5_v1": {
+      "image_hash": "REPLACE_WITH_META_IMAGE_HASH",
+      "content_sha256": "sha256:REPLACE_WITH_64_HEX_CHARACTERS",
+      "rights_ref": "rights/chip-decision/v1",
+      "verified_at": "2026-08-15T12:00:00.000Z"
+    },
+    "chip_first_steps_4x5_v1": {
+      "image_hash": "REPLACE_WITH_META_IMAGE_HASH",
+      "content_sha256": "sha256:REPLACE_WITH_64_HEX_CHARACTERS",
+      "rights_ref": "rights/chip-first-steps/v1",
+      "verified_at": "2026-08-15T12:00:00.000Z"
+    }
+  },
+  "targeting_templates": {
+    "minsk_workshop_20km_broad_v1": {
+      "version": "targeting/minsk-workshop-20km/v1",
+      "summary": "Broad adults around the confirmed Minsk workshop location",
+      "reviewed_at": "2026-08-15T12:00:00.000Z",
+      "targeting": {
+        "age_min": 18,
+        "age_max": 65,
+        "geo_locations": {
+          "custom_locations": [
+            {
+              "latitude": 53.954319,
+              "longitude": 27.547441,
+              "radius": 20,
+              "distance_unit": "kilometer"
+            }
+          ],
+          "location_types": ["home", "recent"]
+        }
+      }
+    }
+  },
+  "claims": {
+    "chip_repair_from_30_byn_2026_08": {
+      "kind": "PRICE_FROM",
+      "approved_text": "от 30 BYN",
+      "currency": "BYN",
+      "amount_minor": 3000,
+      "evidence_refs": [
+        "pricing/minsk-chip-repair/nanoauto/2026-08-15",
+        "pricing/minsk-chip-repair/steklocar/2026-08-15",
+        "pricing/minsk-chip-repair/proglass/2026-08-15",
+        "pricing/minsk-chip-repair/autoglass/2026-08-15",
+        "pricing/minsk-chip-repair/art-glass/2026-08-15",
+        "pricing/minsk-chip-repair/vlobovik/2026-08-15"
+      ],
+      "offer_approval_ref": "offer-approval/REPLACE_WITH_MASTER_CONFIRMED_CHIP_PRICE",
+      "reviewed_at": "2026-08-15T12:00:00.000Z",
+      "valid_until": "2026-09-15T12:00:00.000Z"
+    }
+  }
+}

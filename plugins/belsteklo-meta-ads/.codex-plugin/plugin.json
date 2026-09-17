@@ -1,0 +1,28 @@
+{
+  "name": "belsteklo-meta-ads",
+  "version": "0.1.0+codex.20260815043214",
+  "description": "Read, audit, and safely manage BelStekloExpert Meta Ads, including externally approved PAUSED website-leads bundles, through a guarded local MCP.",
+  "author": {
+    "name": "BelStekloExpert"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "BelSteklo Meta Ads",
+    "shortDescription": "Audit Meta Ads and apply bounded, logged changes.",
+    "longDescription": "A local control plane for BelStekloExpert Meta Ads. It reads campaign and Insights data, hides raw asset identifiers by default, prepares deterministic change sets, applies only allow-listed pause, resume, or budget operations, and can prepare or separately materialize a tightly scoped website-leads bundle whose delivery objects remain PAUSED.",
+    "developerName": "BelStekloExpert",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Audit Meta Ads for the last 7 complete days",
+      "Prepare a safe budget change as a dry run",
+      "Prepare a PAUSED website-leads campaign bundle as a dry run",
+      "Show Meta Ads guardrails and recent changes"
+    ],
+    "brandColor": "#0D5F56"
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@belstekloexpert/meta-ads-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Guarded local Meta Ads MCP for BelStekloExpert",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node mcp/server.mjs",
+    "check": "node --check mcp/server.mjs && node --check mcp/src/config.mjs && node --check mcp/src/meta-client.mjs && node --check mcp/src/policy.mjs && node --check mcp/src/change-store.mjs && node --check mcp/src/references.mjs && node --check mcp/src/write-access.mjs && node --check mcp/src/write-preflight.mjs && node --check mcp/src/canonical-json.mjs && node --check mcp/src/approval-file.mjs && node --check mcp/src/approval-verifier.mjs && node --check mcp/src/campaign-bundle-config.mjs && node --check mcp/src/campaign-bundle-spec.mjs && node --check mcp/src/campaign-bundle-store.mjs && node --check mcp/src/campaign-bundle-materializer.mjs && npm run test",
+    "test": "node --test mcp/tests/config.test.mjs mcp/tests/policy.test.mjs mcp/tests/meta-client.test.mjs mcp/tests/change-store.test.mjs mcp/tests/write-access.test.mjs mcp/tests/write-preflight.test.mjs mcp/tests/canonical-json.test.mjs mcp/tests/approval-file.test.mjs mcp/tests/approval-verifier.test.mjs mcp/tests/campaign-bundle-config.test.mjs mcp/tests/campaign-bundle-spec.test.mjs mcp/tests/campaign-bundle-store.test.mjs mcp/tests/campaign-bundle-materializer.test.mjs mcp/tests/server.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "4.1.0"
+  }
+}

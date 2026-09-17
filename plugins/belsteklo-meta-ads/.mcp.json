@@ -1,0 +1,34 @@
+{
+  "mcpServers": {
+    "belsteklo-meta-ads": {
+      "command": "node",
+      "args": ["./mcp/server.mjs", "--stdio"],
+      "cwd": ".",
+      "env_vars": [
+        "META_READ_ACCESS_TOKEN",
+        "META_WRITE_ACCESS_TOKEN",
+        "META_APP_SECRET",
+        "META_AD_ACCOUNT_ID",
+        "META_ALLOWED_AD_ACCOUNT_IDS",
+        "META_GRAPH_VERSION",
+        "META_WRITE_MODE",
+        "META_MAX_BUDGET_CHANGE_PCT",
+        "META_MAX_DAILY_BUDGET_MINOR",
+        "META_CHANGE_TTL_MINUTES",
+        "META_CHANGE_COOLDOWN_HOURS",
+        "META_AUDIT_LOG_PATH",
+        "META_CAMPAIGN_BUNDLE_MODE",
+        "META_BUNDLE_CREATION_ENABLED",
+        "META_MAX_BUNDLE_LIFETIME_BUDGET_MINOR",
+        "META_BUNDLE_PROPOSAL_TTL_MINUTES",
+        "META_BUNDLE_STATE_DIR",
+        "META_BUNDLE_ASSET_CATALOG_PATH",
+        "META_BUNDLE_APPROVALS_PATH",
+        "META_BUNDLE_APPROVAL_PUBLIC_KEY_B64",
+        "META_BUNDLE_POLICY_VERSION",
+        "META_ALLOWED_LANDING_HOSTS"
+      ],
+      "tool_timeout_sec": 120
+    }
+  }
+}

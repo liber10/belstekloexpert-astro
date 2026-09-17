@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "approval_id": "00000000-0000-4000-8000-000000000000",
+  "action": "meta.campaign_bundle.materialize_paused",
+  "bundle_ref": "bundle_00000000-0000-4000-8000-000000000000",
+  "approved_plan_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "policy_version": "campaign-bundle-policy/v1",
+  "graph_version": "v25.0",
+  "account_scope": "account_scope_replace_with_safe_preview",
+  "prepared_mode": "guarded",
+  "base_write_mode": "guarded",
+  "decision": "approved",
+  "approved_by": "owner_primary",
+  "issued_at": "2026-08-15T12:00:00.000Z",
+  "expires_at": "2026-08-15T12:15:00.000Z",
+  "signature": "REPLACE_WITH_UNPADDED_BASE64URL_ED25519_SIGNATURE"
+}
