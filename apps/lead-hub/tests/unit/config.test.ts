@@ -6,6 +6,7 @@ describe('loadConfig', () => {
     const config = loadConfig({ DATABASE_URL: 'postgres://localhost/lead_hub' });
     expect(config.port).toBe(8787);
     expect(config.telegram.enabled).toBe(false);
+    expect(config.meta.enabled).toBe(false);
     expect(config.telegramPublic.enabled).toBe(false);
     expect(config.allowedOrigins).toEqual(['http://localhost:4321']);
   });
@@ -57,6 +58,27 @@ describe('loadConfig', () => {
       DATABASE_URL: 'postgres://localhost/lead_hub',
       KUFAR_INGEST_ENABLED: 'true',
     })).toThrow('KUFAR_INGEST_API_KEY');
+  });
+
+  it('requires signed Meta webhook settings when Meta ingest is enabled', () => {
+    expect(() => loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      META_INGEST_ENABLED: 'true',
+    })).toThrow('META_WEBHOOK_VERIFY_TOKEN');
+  });
+
+  it('loads an allow-listed Meta webhook configuration', () => {
+    const config = loadConfig({
+      DATABASE_URL: 'postgres://localhost/lead_hub',
+      META_INGEST_ENABLED: 'true',
+      META_WEBHOOK_VERIFY_TOKEN: 'meta-verify-token-123456',
+      META_APP_SECRET: 'meta-app-secret-123456',
+      META_ALLOWED_RECIPIENT_IDS: 'page-1, page-2',
+    });
+    expect(config.meta).toMatchObject({
+      enabled: true,
+      allowedRecipientIds: ['page-1', 'page-2'],
+    });
   });
 
   it('requires isolated public Telegram settings when enabled', () => {

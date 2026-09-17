@@ -28,6 +28,10 @@ const configSchema = z
     WEB_INGEST_API_KEY: optionalSecret,
     KUFAR_INGEST_ENABLED: booleanFromString.default(false),
     KUFAR_INGEST_API_KEY: optionalSecret,
+    META_INGEST_ENABLED: booleanFromString.default(false),
+    META_WEBHOOK_VERIFY_TOKEN: optionalSecret,
+    META_APP_SECRET: optionalSecret,
+    META_ALLOWED_RECIPIENT_IDS: z.string().default(''),
     TELEGRAM_ENABLED: booleanFromString.default(false),
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_CHAT_ID: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
@@ -143,6 +147,23 @@ const configSchema = z
       });
     }
 
+    if (config.META_INGEST_ENABLED) {
+      const required = [
+        ['META_WEBHOOK_VERIFY_TOKEN', config.META_WEBHOOK_VERIFY_TOKEN],
+        ['META_APP_SECRET', config.META_APP_SECRET],
+      ] as const;
+      for (const [name, value] of required) {
+        if (!value) context.addIssue({ code: 'custom', message: `${name} is required when META_INGEST_ENABLED=true`, path: [name] });
+      }
+      if (!config.META_ALLOWED_RECIPIENT_IDS.trim()) {
+        context.addIssue({
+          code: 'custom',
+          message: 'META_ALLOWED_RECIPIENT_IDS is required when Meta ingest is enabled',
+          path: ['META_ALLOWED_RECIPIENT_IDS'],
+        });
+      }
+    }
+
     if (config.TELEGRAM_PUBLIC_ENABLED) {
       const required = [
         ['TELEGRAM_PUBLIC_BOT_TOKEN', config.TELEGRAM_PUBLIC_BOT_TOKEN],
@@ -203,6 +224,15 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
     kufar: {
       enabled: parsed.data.KUFAR_INGEST_ENABLED,
       ingestApiKey: parsed.data.KUFAR_INGEST_API_KEY,
+    },
+    meta: {
+      enabled: parsed.data.META_INGEST_ENABLED,
+      webhookVerifyToken: parsed.data.META_WEBHOOK_VERIFY_TOKEN,
+      appSecret: parsed.data.META_APP_SECRET,
+      allowedRecipientIds: parsed.data.META_ALLOWED_RECIPIENT_IDS
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean),
     },
     telegram: {
       enabled: parsed.data.TELEGRAM_ENABLED,

@@ -41,6 +41,10 @@ POST /api/v1/leads/web
 | `LEAD_HUB_PUBLIC_URL` | Публичный HTTPS URL сервиса без завершающего `/` |
 | `LEAD_HUB_ALLOWED_ORIGINS` | Разрешённые origins через запятую |
 | `LEAD_HUB_RATE_LIMIT_MAX` | Максимум запросов за минуту на ingest endpoint |
+| `META_INGEST_ENABLED` | `true` включает подписанный Meta DM webhook; по умолчанию `false` |
+| `META_WEBHOOK_VERIFY_TOKEN` | Секрет проверки Meta webhook subscription |
+| `META_APP_SECRET` | App Secret для проверки `X-Hub-Signature-256` |
+| `META_ALLOWED_RECIPIENT_IDS` | Точные Page/Instagram recipient IDs через запятую |
 | `OUTBOX_POLL_INTERVAL_MS` | Пауза между циклами worker |
 | `OUTBOX_BATCH_SIZE` | Число задач, забираемых за один цикл |
 | `OUTBOX_MAX_ATTEMPTS` | Число попыток до состояния `dead` |

@@ -5,6 +5,7 @@ import type { TelegramPublicUpdate } from '../contracts/telegram-public.js';
 import type { LeadHubDatabase } from '../db/client.js';
 import { integrationInbox, type InboxEvent } from '../db/schema.js';
 import { mapKufarEmailToLead } from '../integrations/kufar.js';
+import { metaMessageToLeadInput, parseMetaMessageEvent } from '../integrations/meta-messaging.js';
 import type { LeadService } from '../services/lead-service.js';
 import type { TelegramPublicSessionService } from '../services/telegram-public-session-service.js';
 
@@ -85,6 +86,10 @@ export class InboxProcessor {
     try {
       if (event.source === 'kufar' && event.eventType === 'email.received') {
         await this.leadService.createExternalLead(mapKufarEmailToLead(event.payload as KufarEmailEvent));
+      } else if (event.source === 'meta' && event.eventType === 'message.received') {
+        const message = parseMetaMessageEvent(event.payload);
+        if (!message) throw new PermanentInboxError('Invalid Meta message event.');
+        await this.leadService.createExternalLead(metaMessageToLeadInput(message));
       } else if (event.source === 'telegram_public' && event.eventType === 'update.received' && this.telegramPublic) {
         await this.telegramPublic.handleUpdate(event.payload as TelegramPublicUpdate);
       } else {

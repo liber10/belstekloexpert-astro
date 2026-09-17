@@ -19,6 +19,7 @@ import {
 import { registerHealthRoutes } from './routes/health.js';
 import { registerKufarRoutes } from './routes/kufar.js';
 import { registerLeadRoutes } from './routes/leads.js';
+import { registerMetaRoutes } from './routes/meta.js';
 import { registerTelegramRoutes } from './routes/telegram.js';
 import { registerTelegramPublicRoutes } from './routes/telegram-public.js';
 import { registerUploadRoutes } from './routes/uploads.js';
@@ -29,6 +30,7 @@ import { TelegramPublicSessionService } from './services/telegram-public-session
 import { InboxProcessor } from './worker/inbox-processor.js';
 import { OutboxProcessor } from './worker/outbox-processor.js';
 import { TelegramPublicOutboxProcessor } from './worker/telegram-public-outbox-processor.js';
+import { registerRawBodyJsonParser } from './security/raw-body.js';
 
 interface BuildRuntimeOptions {
   database?: DatabaseClient;
@@ -66,6 +68,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     },
   });
 
+  registerRawBodyJsonParser(app);
+
   await app.register(helmet);
   await app.register(cors, {
     origin: config.allowedOrigins,
@@ -100,6 +104,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     : null;
 
   registerKufarRoutes(app, config, inboxService);
+  registerMetaRoutes(app, config, inboxService, database.db);
   registerLeadRoutes(app, config, leadService);
   registerUploadRoutes(app, config, objectStorage, leadService);
   registerSubmissionDiagnosticRoutes(app, config, database.db);
@@ -110,6 +115,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     ? new OutboxProcessor(database.db, leadService, telegram, app.log, config.outbox)
     : null;
   const inbox = config.kufar.enabled
+    || config.meta.enabled
     || config.telegramPublic.enabled
     ? new InboxProcessor(database.db, leadService, app.log, config.inbox, telegramPublicSession)
     : null;
