@@ -31,6 +31,7 @@ const configSchema = z
     META_INGEST_ENABLED: booleanFromString.default(false),
     META_WEBHOOK_VERIFY_TOKEN: optionalSecret,
     META_APP_SECRET: optionalSecret,
+    META_INSTAGRAM_ACCESS_TOKEN: optionalSecret,
     META_ALLOWED_RECIPIENT_IDS: z.string().default(''),
     TELEGRAM_ENABLED: booleanFromString.default(false),
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
@@ -229,6 +230,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       enabled: parsed.data.META_INGEST_ENABLED,
       webhookVerifyToken: parsed.data.META_WEBHOOK_VERIFY_TOKEN,
       appSecret: parsed.data.META_APP_SECRET,
+      instagramAccessToken: parsed.data.META_INSTAGRAM_ACCESS_TOKEN,
       allowedRecipientIds: parsed.data.META_ALLOWED_RECIPIENT_IDS
         .split(',')
         .map((value) => value.trim())

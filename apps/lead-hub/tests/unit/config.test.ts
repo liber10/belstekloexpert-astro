@@ -73,10 +73,12 @@ describe('loadConfig', () => {
       META_INGEST_ENABLED: 'true',
       META_WEBHOOK_VERIFY_TOKEN: 'meta-verify-token-123456',
       META_APP_SECRET: 'meta-app-secret-123456',
+      META_INSTAGRAM_ACCESS_TOKEN: 'IG-local-read-only-token-123456',
       META_ALLOWED_RECIPIENT_IDS: 'page-1, page-2',
     });
     expect(config.meta).toMatchObject({
       enabled: true,
+      instagramAccessToken: 'IG-local-read-only-token-123456',
       allowedRecipientIds: ['page-1', 'page-2'],
     });
   });

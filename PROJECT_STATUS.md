@@ -1,6 +1,6 @@
 # Состояние проекта BelStekloExpert
 
-Последняя актуализация: 17 сентября 2026 года.
+Последняя актуализация: 21 сентября 2026 года.
 
 Этот файл является короткой панелью проекта. Его нужно обновлять после изменения
 production-архитектуры, провайдера, режима доставки заявок или значимого ограничения.
@@ -20,7 +20,7 @@ production-архитектуры, провайдера, режима доста
 | Meta DM lead-ingest | Lead Hub signed webhook + durable inbox (feature flag off) | Локально интегрировано | Commit `493d4dd`; входящие Instagram/Facebook messages принимаются, дедуплицируются и передаются в существующий Telegram outbox; `npm run lead-hub:check` проходит, production rollout и автоответ выключены |
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Meta Ads control plane | Repo-local guarded MCP | Локально интегрирован; repository default off | Commit `991a76f`; один allow-listed активный аккаунт ранее прошёл read/dry-run smoke; campaign-bundle v1 прошёл 72/72 локальных теста и plugin validator, live Meta writes не выполнялись |
-| Meta Page / Instagram publishing | Не подключено | Подготовка | Отдельная service identity, asset assignments и publishing permissions ещё не настроены; автоматическая публикация отсутствует |
+| Meta Page / Instagram publishing | Read-only Instagram identity boundary локально подготовлен | Подготовка | `META_INSTAGRAM_ACCESS_TOKEN` отделён от Ads-токенов; publishing, auto-reply и production permissions не подключены |
 | Резервное object storage | Cloudflare R2 | Доступ получен | Пока не используется в production |
 | Основной домен | `belstekloexpert.by` | Работает | Authoritative DNS: Cloudflare; apex и `www` резолвятся через Cloudflare |
 
@@ -108,6 +108,10 @@ production-архитектуры, провайдера, режима доста
 13. Pricing evidence ремонта скола от 15 августа 2026 года истекло 15 сентября
     2026 года. Claim «от 30 BYN» нельзя переносить в новый catalog или proposal без
     повторной проверки источников и нового business-offer approval.
+14. 21 сентября 2026 года локальный Instagram Graph read-only client прошёл
+    identity smoke через `graph.instagram.com`; токен не выводится и не передаётся
+    Ads MCP. Для webhook по-прежнему отсутствуют `META_WEBHOOK_VERIFY_TOKEN` и
+    `META_ALLOWED_RECIPIENT_IDS`, а production ingest и outbound остаются off.
 
 ## Ближайшие решения
 
@@ -124,7 +128,7 @@ production-архитектуры, провайдера, режима доста
 | `META-CONTROL-001` | Ввести Meta Ads control plane | P1 | Plugin интегрирован локально в `991a76f`; 72/72 теста и validator проходят, repository default off; install/canary и production write отдельно не утверждены |
 | `META-PHOTO-001` | Подготовить рекламный photo-flow ремонта сколов на существующую private site/B2 форму | P1 | Запланировано; нужны consent-aware measurement и mobile E2E smoke |
 | `ADS-CHIP-001` | Запустить отдельный контролируемый эксперимент ремонта сколов | P1 | Заблокировано `META-PHOTO-001`, `LEGAL-001` и подтверждением оффера мастером |
-| `META-IDENTITY-001` | Создать изолированные service identities для ads, publishing и lead retrieval | P1 | В работе; Employee `ads-operator` получил точечный доступ и отдельный token с `ads_management` + `ads_read` без `business_management`; Instagram publishing и lead-retrieval identities не созданы |
+| `META-IDENTITY-001` | Создать изолированные service identities для ads, publishing и lead retrieval | P1 | Ads identity готова; локальная read-only Instagram identity boundary добавлена; publishing и lead-retrieval identities не созданы |
 | `META-AGENT-001` | Реализовать full-cycle Meta marketing agent по этапам | P1 | ADR-0006 принят; локальные strict catalog, detached approval, ledger/reconciliation и PAUSED materializer реализованы и протестированы; production canary, activation и publishing остаются заблокированы |
 | `CONTENT-001` | Ввести контент-календарь, approval, публикацию и weekly learning | P1 | Запланировано по operations runbook |
 | `LEGAL-001` | Утвердить privacy policy, consent и срок хранения PII | P1 | Политика, consent evidence и cookie controls опубликованы; остаются регламент удаления во всех копиях и проверка Реестра операторов |

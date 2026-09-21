@@ -42,8 +42,14 @@ app-secret signature или webhook delivery. Если событие есть �
 META_INGEST_ENABLED=false
 META_WEBHOOK_VERIFY_TOKEN=<random webhook verify token>
 META_APP_SECRET=<Meta app secret>
+META_INSTAGRAM_ACCESS_TOKEN=<Instagram User Access Token, local/staging only for the read-only client>
 META_ALLOWED_RECIPIENT_IDS=<Page/Instagram recipient IDs, comma separated>
 ```
+
+`META_INSTAGRAM_ACCESS_TOKEN` отделён от Ads-токенов `META_READ_ACCESS_TOKEN` и
+`META_WRITE_ACCESS_TOKEN`. Он используется только локальным read-only клиентом
+Instagram Graph; inbound webhook не зависит от него, а outbound auto-reply и
+публикация остаются выключенными.
 
 Для production `META_ALLOWED_RECIPIENT_IDS` обязателен. Значения не добавляются
 в `.env.example`, Markdown, логи или чат.

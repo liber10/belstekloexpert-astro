@@ -45,6 +45,14 @@ Instagram/Facebook webhook
 отдельное human-approved включение. Поэтому сохранение входящего обращения не
 зависит от ответа клиенту.
 
+## Локальная read-only граница Instagram Graph
+
+`META_INSTAGRAM_ACCESS_TOKEN` хранится отдельно от Ads-токенов и используется
+только `apps/lead-hub/src/integrations/instagram.ts` для проверки identity через
+фиксированный `graph.instagram.com`. Команда `instagram:check` не выводит токен,
+ID или username и не выполняет публикацию, отправку сообщений или изменение
+настроек. Production webhook и outbound-контур остаются выключенными.
+
 ## Компоненты
 
 | Компонент | Код | Ответственность |

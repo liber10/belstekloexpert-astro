@@ -30,6 +30,7 @@
 | [ADR-0004: Meta Ads control plane](decisions/0004-meta-ads-control-plane.md) | Decision | Принят для локального этапа; production write выключен |
 | [ADR-0005: Cloudflare production frontend](decisions/0005-cloudflare-production.md) | Decision | Принят и введён в эксплуатацию |
 | [ADR-0006: Meta marketing agent](decisions/0006-meta-marketing-agent.md) | Decision | Принят для staged implementation; production publish не утверждён |
+| [ADR-0007: Instagram read-only boundary](decisions/0007-instagram-read-only-boundary.md) | Decision | Принят для локальной проверки; production outbound не утверждён |
 
 ## Исторические документы
 
