@@ -5,6 +5,7 @@ type JsonRecord = Record<string, unknown>;
 export interface InstagramIdentity {
   id: string;
   username: string;
+  userId?: string;
 }
 
 export class InstagramGraphApiError extends Error {
@@ -45,8 +46,9 @@ export class InstagramGraphClient {
 
   async getIdentity(): Promise<InstagramIdentity> {
     const url = new URL(INSTAGRAM_GRAPH_URL);
-    url.searchParams.set('fields', 'id,username');
+    url.searchParams.set('fields', 'id,user_id,username');
     const response = await this.fetchImpl(url, {
+      redirect: 'error', signal: AbortSignal.timeout(15_000),
       headers: {
         accept: 'application/json',
         authorization: `Bearer ${this.accessToken}`,
@@ -68,7 +70,8 @@ export class InstagramGraphClient {
     if (!id || !username) {
       throw new InstagramGraphApiError(response.status, 'Instagram identity response is incomplete.');
     }
-    return { id, username };
+    const userId = stringValue(record?.user_id);
+    return { id, username, ...(userId ? { userId } : {}) };
   }
 }
 

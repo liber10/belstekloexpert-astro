@@ -11,7 +11,7 @@
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
 | [Публичный Telegram-бот](public-telegram-bot-runbook.md) | Operations | Подготовка; production заблокирован `LEGAL-001` |
-| [Meta DM / lead-ingest](meta-messaging-runbook.md) | Operations | Signed ingest реализован локально; production webhook и автоответ выключены |
+| [Instagram Messaging MVP](meta-messaging-runbook.md) | Operations | Ingress, durable first reply и escalation проверены локально; production rollout не выполнен |
 | [Аудит персональных данных](personal-data-audit.md) | Legal/operations | Проект `LEGAL-001` |
 | [Обязательные legal-входы](legal-required-inputs.md) | Checklist | Блокирует publication |
 | [Карта информационных ресурсов](personal-data-resources-map.md) | Registry | Требует проверки владельцем |
@@ -31,6 +31,7 @@
 | [ADR-0005: Cloudflare production frontend](decisions/0005-cloudflare-production.md) | Decision | Принят и введён в эксплуатацию |
 | [ADR-0006: Meta marketing agent](decisions/0006-meta-marketing-agent.md) | Decision | Принят для staged implementation; production publish не утверждён |
 | [ADR-0007: Instagram read-only boundary](decisions/0007-instagram-read-only-boundary.md) | Decision | Принят для локальной проверки; production outbound не утверждён |
+| [ADR-0008: Instagram Messaging MVP](decisions/0008-instagram-messaging-mvp.md) | Decision | Локально реализован; production требует отдельного approval |
 
 ## Исторические документы
 

@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray, lte } from 'drizzle-orm';
+import { and, asc, eq, inArray, lte, sql } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
 import type { LeadHubDatabase } from '../db/client.js';
 import { integrationOutbox, leadEvents, leads, type OutboxJob } from '../db/schema.js';
@@ -54,8 +54,9 @@ export class OutboxProcessor {
         .from(integrationOutbox)
         .where(
           and(
+            eq(integrationOutbox.destination, 'telegram'),
             inArray(integrationOutbox.status, ['pending', 'retry']),
-            lte(integrationOutbox.nextAttemptAt, new Date()),
+            lte(integrationOutbox.nextAttemptAt, sql`now()`),
           ),
         )
         .orderBy(asc(integrationOutbox.createdAt))
@@ -91,6 +92,7 @@ export class OutboxProcessor {
       })
       .where(
         and(
+          eq(integrationOutbox.destination, 'telegram'),
           eq(integrationOutbox.status, 'processing'),
           lte(integrationOutbox.updatedAt, staleBefore),
         ),
@@ -108,8 +110,10 @@ export class OutboxProcessor {
       .set({ status: 'processing', updatedAt: new Date() })
       .where(
         and(
+          eq(integrationOutbox.destination, 'telegram'),
           eq(integrationOutbox.id, jobId),
           inArray(integrationOutbox.status, ['pending', 'retry']),
+          lte(integrationOutbox.nextAttemptAt, sql`now()`),
         ),
       )
       .returning();
@@ -147,6 +151,10 @@ export class OutboxProcessor {
         });
       } else if (job.eventType === 'lead.status_changed') {
         await withTimeout(this.telegram.editLeadCard(lead), this.options.deliveryTimeoutMs);
+      } else if (job.eventType === 'instagram.escalation') {
+        await withTimeout(this.telegram.sendInstagramAlert(lead, job.payload.outcome === 'unknown'), this.options.deliveryTimeoutMs);
+        await this.db.insert(leadEvents).values({ leadId: lead.id, source: 'outbox',
+          eventType: 'instagram_escalation_sent', payload: { outboxJobId: job.id } });
       } else {
         throw new Error('Unsupported Telegram outbox event.');
       }
@@ -157,7 +165,8 @@ export class OutboxProcessor {
           .where(eq(integrationOutbox.id, job.id));
       }
 
-      this.logger.info({ jobId: job.id, leadId: job.leadId, correlationId }, 'Outbox job delivered.');
+      this.logger.info({ jobId: job.id, leadId: job.leadId,
+        correlationId: lead.source === 'meta' ? lead.id : correlationId }, 'Outbox job delivered.');
     } catch (error) {
       const attempts = job.attemptCount + 1;
       const dead = attempts >= this.options.maxAttempts;

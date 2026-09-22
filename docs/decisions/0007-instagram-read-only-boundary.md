@@ -4,6 +4,11 @@
 
 Дата: 21 сентября 2026 года.
 
+Дополнение 22 сентября: read-only клиент теперь также читает `user_id` для
+сверки Instagram Login account. Отдельный локальный messaging adapter и durable
+outbox описаны в [ADR-0008](0008-instagram-messaging-mvp.md); этот ADR не является
+разрешением на production отправки. Publishing по-прежнему вне реализации.
+
 ## Контекст
 
 Instagram User Access Token, полученный через Instagram API with Instagram Login,

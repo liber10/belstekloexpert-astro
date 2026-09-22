@@ -12,6 +12,15 @@ const optionalPort = z.preprocess(
   (value) => (value === '' || value === undefined ? undefined : value),
   z.coerce.number().int().min(1).max(65_535).optional(),
 );
+const replyText = z.string().trim().min(1).max(1000).optional().or(z.literal('').transform(() => undefined));
+const adScenarios = z.string().default('{}').transform((value, context) => {
+  try {
+    return z.record(z.string().regex(/^\d+$/), z.enum(['replacement', 'chip_repair'])).parse(JSON.parse(value));
+  } catch {
+    context.addIssue({ code: 'custom', message: 'Expected JSON object mapping ad IDs to replacement or chip_repair' });
+    return z.NEVER;
+  }
+});
 
 const configSchema = z
   .object({
@@ -33,6 +42,14 @@ const configSchema = z
     META_APP_SECRET: optionalSecret,
     META_INSTAGRAM_ACCESS_TOKEN: optionalSecret,
     META_ALLOWED_RECIPIENT_IDS: z.string().default(''),
+    INSTAGRAM_MESSAGING_ENABLED: booleanFromString.default(false),
+    META_INSTAGRAM_ACCOUNT_ID: z.string().regex(/^\d+$/).optional().or(z.literal('').transform(() => undefined)),
+    META_INSTAGRAM_GRAPH_VERSION: z.string().regex(/^v\d+\.0$/).default('v25.0'),
+    INSTAGRAM_REPLY_START_AT: z.iso.datetime().optional().or(z.literal('').transform(() => undefined)),
+    INSTAGRAM_REPLY_GENERAL_TEXT: replyText,
+    INSTAGRAM_REPLY_REPLACEMENT_TEXT: replyText,
+    INSTAGRAM_REPLY_CHIP_REPAIR_TEXT: replyText,
+    INSTAGRAM_AD_SCENARIOS_JSON: adScenarios,
     TELEGRAM_ENABLED: booleanFromString.default(false),
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_CHAT_ID: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
@@ -68,6 +85,19 @@ const configSchema = z
     LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   })
   .superRefine((config, context) => {
+    if (config.INSTAGRAM_MESSAGING_ENABLED) {
+      for (const name of ['META_INGEST_ENABLED', 'TELEGRAM_ENABLED', 'META_INSTAGRAM_ACCESS_TOKEN',
+        'META_INSTAGRAM_ACCOUNT_ID', 'INSTAGRAM_REPLY_START_AT', 'INSTAGRAM_REPLY_GENERAL_TEXT',
+        'INSTAGRAM_REPLY_REPLACEMENT_TEXT', 'INSTAGRAM_REPLY_CHIP_REPAIR_TEXT'] as const) {
+        if (!config[name]) context.addIssue({ code: 'custom', message: `${name} is required for Instagram messaging`, path: [name] });
+      }
+      if (!config.META_ALLOWED_RECIPIENT_IDS.split(',').map((id) => id.trim()).includes(config.META_INSTAGRAM_ACCOUNT_ID || '')) {
+        context.addIssue({ code: 'custom', message: 'Instagram account must be in the recipient allow-list', path: ['META_ALLOWED_RECIPIENT_IDS'] });
+      }
+      if (config.OUTBOX_PROCESSING_TIMEOUT_MS <= config.OUTBOX_DELIVERY_TIMEOUT_MS + 5000) {
+        context.addIssue({ code: 'custom', message: 'Must exceed delivery timeout by more than 5 seconds', path: ['OUTBOX_PROCESSING_TIMEOUT_MS'] });
+      }
+    }
     if (config.NODE_ENV === 'production' && !config.WEB_INGEST_API_KEY) {
       context.addIssue({
         code: 'custom',
@@ -249,6 +279,18 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       maxAttempts: parsed.data.OUTBOX_MAX_ATTEMPTS,
       processingTimeoutMs: parsed.data.OUTBOX_PROCESSING_TIMEOUT_MS,
       deliveryTimeoutMs: parsed.data.OUTBOX_DELIVERY_TIMEOUT_MS,
+    },
+    instagramMessaging: {
+      enabled: parsed.data.INSTAGRAM_MESSAGING_ENABLED,
+      accountId: parsed.data.META_INSTAGRAM_ACCOUNT_ID,
+      graphVersion: parsed.data.META_INSTAGRAM_GRAPH_VERSION,
+      startAt: parsed.data.INSTAGRAM_REPLY_START_AT,
+      replies: {
+        general: parsed.data.INSTAGRAM_REPLY_GENERAL_TEXT,
+        replacement: parsed.data.INSTAGRAM_REPLY_REPLACEMENT_TEXT,
+        chip_repair: parsed.data.INSTAGRAM_REPLY_CHIP_REPAIR_TEXT,
+      },
+      adScenarios: parsed.data.INSTAGRAM_AD_SCENARIOS_JSON,
     },
     telegramPublic: {
       enabled: parsed.data.TELEGRAM_PUBLIC_ENABLED,

@@ -1,6 +1,6 @@
 # Архитектура BelStekloExpert
 
-Последняя актуализация: 17 сентября 2026 года.
+Последняя актуализация: 22 сентября 2026 года.
 
 ## Системный контекст
 
@@ -29,29 +29,38 @@ flowchart LR
     TG --> CHAT
 ```
 
-## Поток входящего Meta DM (feature flag off)
+## Instagram Messaging MVP (локально, production off)
 
 ```text
-Instagram/Facebook webhook
+Existing Meta webhook: Instagram DM
   -> raw-body HMAC verification + recipient allow-list
   -> integration_inbox (dedupe by message.mid)
   -> InboxProcessor retry/dead-letter
-  -> PostgreSQL lead (conversation-level idempotency)
-  -> existing Telegram outbox
+  -> PostgreSQL lead + Telegram human-card outbox (transaction 1)
+  -> each DM + first-reply decision + Instagram outbox (transaction 2)
+  -> InstagramOutboxProcessor -> separate Instagram Login adapter
+  -> sent + audit OR retry -> dead + Telegram escalation outbox
 ```
 
-Автоответ в Instagram/Facebook намеренно не входит в этот первый срез: для него
-нужен отдельный messaging principal, Graph permission, copy/opt-out policy и
-отдельное human-approved включение. Поэтому сохранение входящего обращения не
-зависит от ответа клиенту.
+Два этапа фиксации восстанавливаются через тот же durable inbox; отправка
+Instagram начинается только после commit DM/outbox. Каждый DM сохраняется
+отдельно; первый ответ один на сохранённый диалог. Telegram-worker выбирает только
+своё destination. Лид остаётся доступным человеку независимо от auto-response.
+Неизвестный исход отправки не повторяется автоматически: dead-letter и alert
+предпочтительнее дублирования DM. Существующие таблицы и уникальные индексы
+переиспользованы, второго ingress/БД нет. Facebook outbound не добавлен.
+Решение: [ADR-0008](decisions/0008-instagram-messaging-mvp.md).
+Rollout/settings/env/rollback: [runbook](meta-messaging-runbook.md).
 
 ## Локальная read-only граница Instagram Graph
 
 `META_INSTAGRAM_ACCESS_TOKEN` хранится отдельно от Ads-токенов и используется
-только `apps/lead-hub/src/integrations/instagram.ts` для проверки identity через
+в `apps/lead-hub/src/integrations/instagram.ts` для проверки identity через
 фиксированный `graph.instagram.com`. Команда `instagram:check` не выводит токен,
 ID или username и не выполняет публикацию, отправку сообщений или изменение
-настроек. Production webhook и outbound-контур остаются выключенными.
+настроек. Отдельный `instagram-messaging.ts` использует этот Instagram Login token
+для отправки только при `INSTAGRAM_MESSAGING_ENABLED=true`. Production rollout
+не выполнен. `META_WRITE_MODE=off` и Ads MCP не изменены.
 
 ## Компоненты
 

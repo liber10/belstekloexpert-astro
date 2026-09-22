@@ -1,9 +1,9 @@
 import type { FastifyInstance } from 'fastify';
 import { Type } from '@sinclair/typebox';
-import { asc, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import type { AppConfig } from '../config.js';
 import type { LeadHubDatabase } from '../db/client.js';
-import { integrationInbox } from '../db/schema.js';
+import { integrationInbox, integrationOutbox, leadEvents } from '../db/schema.js';
 import { parseMetaMessageEvents } from '../integrations/meta-messaging.js';
 import type { RawBodyRequest } from '../security/raw-body.js';
 import { verifyMetaWebhookSignature } from '../security/meta-signature.js';
@@ -95,11 +95,18 @@ export function registerMetaRoutes(
         createdAt: integrationInbox.createdAt,
         processedAt: integrationInbox.processedAt,
       }).from(integrationInbox)
-        .where(eq(integrationInbox.externalEventId, request.params.externalEventId))
+        .where(and(eq(integrationInbox.source, 'meta'), eq(integrationInbox.externalEventId, request.params.externalEventId)))
         .orderBy(asc(integrationInbox.createdAt))
         .limit(1);
       if (!event || event.source !== 'meta') return reply.code(404).send({ ok: false, error: 'not_found' });
-      return { ok: true, event };
+      const [message] = await db.select({ leadId: leadEvents.leadId }).from(leadEvents)
+        .where(and(eq(leadEvents.source, 'instagram_inbound'), eq(leadEvents.externalEventId, request.params.externalEventId))).limit(1);
+      const deliveries = message ? await db.select({
+        destination: integrationOutbox.destination, eventType: integrationOutbox.eventType,
+        status: integrationOutbox.status, attempts: integrationOutbox.attemptCount,
+        updatedAt: integrationOutbox.updatedAt,
+      }).from(integrationOutbox).where(eq(integrationOutbox.leadId, message.leadId)) : [];
+      return { ok: true, event, messagePersisted: Boolean(message), deliveries };
     },
   );
 }

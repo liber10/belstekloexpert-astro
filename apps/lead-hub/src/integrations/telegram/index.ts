@@ -9,6 +9,7 @@ import { buildLeadCard, buildLeadKeyboard } from './card.js';
 export interface TelegramDelivery {
   sendLeadCard(lead: Lead): Promise<{ chatId: string; messageId: number }>;
   editLeadCard(lead: Lead): Promise<void>;
+  sendInstagramAlert(lead: Lead, unknownOutcome: boolean): Promise<void>;
 }
 
 export interface TelegramIntegration extends TelegramDelivery {
@@ -145,6 +146,18 @@ export function createTelegramIntegration(
   });
 
   return {
+    async sendInstagramAlert(lead, unknownOutcome) {
+      const text = [`Instagram: требуется ответ менеджера. Лид #${lead.publicId}.`,
+        unknownOutcome
+          ? 'Результат автоответа неизвестен. Сначала проверьте Direct, чтобы не отправить повторно.'
+          : 'Автоответ не отправлен. Проверьте Direct и ответьте вручную.',
+        'Лид сохранён; его статус не закрыт автоматически.'].join('\n');
+      await bot.api.sendMessage(options.chatId, text, {
+        ...(lead.telegramMessageId && lead.telegramChatId === options.chatId ? {
+          reply_parameters: { message_id: lead.telegramMessageId, allow_sending_without_reply: true },
+        } : {}),
+      });
+    },
     async registerWebhook(url, secret) {
       await bot.init();
       await bot.api.setWebhook(url, {

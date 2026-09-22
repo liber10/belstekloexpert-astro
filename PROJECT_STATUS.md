@@ -1,6 +1,6 @@
 # Состояние проекта BelStekloExpert
 
-Последняя актуализация: 21 сентября 2026 года.
+Последняя актуализация: 22 сентября 2026 года.
 
 Этот файл является короткой панелью проекта. Его нужно обновлять после изменения
 production-архитектуры, провайдера, режима доставки заявок или значимого ограничения.
@@ -17,10 +17,10 @@ production-архитектуры, провайдера, режима доста
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
 | Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Webhook регистрируется при старте; production smoke test доставки выполнен 28 июля 2026 года |
-| Meta DM lead-ingest | Lead Hub signed webhook + durable inbox (feature flag off) | Локально интегрировано | Commit `493d4dd`; входящие Instagram/Facebook messages принимаются, дедуплицируются и передаются в существующий Telegram outbox; `npm run lead-hub:check` проходит, production rollout и автоответ выключены |
+| Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Реализован и проверен локально; production не включён | 65 unit + 37 integration tests на изолированной PostgreSQL 17; `lead-hub:check` проходит. Replay/concurrency/crash-after-send проверены; scopes, callback, rollout и реальный auto-reply smoke ещё требуют подтверждения |
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Meta Ads control plane | Repo-local guarded MCP | Локально интегрирован; repository default off | Commit `991a76f`; один allow-listed активный аккаунт ранее прошёл read/dry-run smoke; campaign-bundle v1 прошёл 72/72 локальных теста и plugin validator, live Meta writes не выполнялись |
-| Meta Page / Instagram publishing | Read-only Instagram identity boundary локально подготовлен | Подготовка | `META_INSTAGRAM_ACCESS_TOKEN` отделён от Ads-токенов; publishing, auto-reply и production permissions не подключены |
+| Meta Page / Instagram publishing | Не входит в текущий Messaging MVP | Подготовка | Instagram token отделён от Ads-токенов; publishing и production permissions не подключены |
 | Резервное object storage | Cloudflare R2 | Доступ получен | Пока не используется в production |
 | Основной домен | `belstekloexpert.by` | Работает | Authoritative DNS: Cloudflare; apex и `www` резолвятся через Cloudflare |
 
@@ -112,6 +112,12 @@ production-архитектуры, провайдера, режима доста
     identity smoke через `graph.instagram.com`; токен не выводится и не передаётся
     Ads MCP. Для webhook по-прежнему отсутствуют `META_WEBHOOK_VERIFY_TOKEN` и
     `META_ALLOWED_RECIPIENT_IDS`, а production ingest и outbound остаются off.
+15. 22 сентября Instagram Messaging MVP проверен локально: отдельный Login
+    adapter, durable first reply, сохранение последующих DM, retry/dead-letter
+    и Telegram escalation. 65 unit + 37 PostgreSQL integration tests, lint,
+    typecheck и build прошли. Новых DB migrations нет. Meta settings, production
+    deploy и реальные сообщения не выполнялись; процедура запуска и тексты
+    для согласования — в `docs/meta-messaging-runbook.md`.
 
 ## Ближайшие решения
 

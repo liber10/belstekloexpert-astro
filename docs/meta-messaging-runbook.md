@@ -1,66 +1,226 @@
-# Meta DM / lead-ingest runbook
+# Instagram Messaging MVP — эксплуатация
 
-Статус: локальный P0-срез реализован; production webhook и автоответ выключены.
+Дата: 22 сентября 2026 года. Реализовано **локально**. Production deploy,
+настройки Meta и реальные отправки требуют отдельного подтверждения владельца.
+Ads, content publishing и другие outbound-каналы не входят в MVP.
 
-## Что реализовано
+## A. Что готово
 
-Lead Hub принимает только при включённом `META_INGEST_ENABLED=true`:
-
-1. `GET /api/v1/webhooks/meta` — подписка Meta с verify token;
-2. `POST /api/v1/webhooks/meta` — проверка `X-Hub-Signature-256` по исходным
-   JSON-байтам, allow-list получателя и дедупликация по `message.mid`;
-3. нормализация входящего DM без сохранения provider attachment URL;
-4. durable `integration_inbox` → retry/dead-letter через существующий worker;
-5. первый message в диалоге фиксируется как `source=meta`, после чего используется
-   существующий Lead Hub outbox для уведомления рабочего Telegram-чата;
-6. безопасная диагностика события:
-   `GET /api/v1/integrations/meta/events/<externalEventId>` с Bearer
-   `WEB_INGEST_API_KEY`.
-
-Таким образом, фиксация входящего Meta-сообщения не зависит от автоответа. Если
-внешний Meta-бот не ответил, событие всё равно должно появиться в inbox/lead и
-дать Telegram-задачу.
-
-## Отдельный трек: «снова не срабатывает бот»
-
-Скриншот показывает Instagram Direct и рекламный click-to-message сценарий. Это
-не Telegram-бот и не форма сайта. На текущем этапе код принимает и фиксирует
-входящий Meta message, но намеренно **не отправляет автоответ**: для этого нужен
-отдельный Meta messaging principal, отдельный Graph permission и отдельный
-human-approved rollout. `ads_management`/`ads_read` токен для ответов в Direct
-не подходит.
-
-Если событие не появляется в Lead Hub, причина находится до persistence:
-подписка Meta, выбранный Page/Instagram asset, allow-list ID, verify token,
-app-secret signature или webhook delivery. Если событие есть со статусом `dead`,
-проблема находится в нормализации/worker. Если событие `done`, но клиент не
-получил ответ, это отдельный outbound messaging контур, а не потеря лида.
-
-## Переменные окружения (секреты вне Git)
+Используется существующий GET/POST `/api/v1/webhooks/meta`, не второй ingress.
 
 ```text
-META_INGEST_ENABLED=false
-META_WEBHOOK_VERIFY_TOKEN=<random webhook verify token>
-META_APP_SECRET=<Meta app secret>
-META_INSTAGRAM_ACCESS_TOKEN=<Instagram User Access Token, local/staging only for the read-only client>
-META_ALLOWED_RECIPIENT_IDS=<Page/Instagram recipient IDs, comma separated>
+Instagram DM
+ -> HMAC по raw body + recipient allow-list + фильтр echo/self/deletion
+ -> integration_inbox: UNIQUE(source, external_event_id)
+ -> InboxProcessor
+ -> lead + human Telegram-card job (transaction 1)
+ -> lead_events: DM + first-reply decision + Instagram outbox (transaction 2)
+ -> InstagramOutboxProcessor -> graph.instagram.com/<version>/<account>/messages
+ -> sent + provider message ID + audit
+    OR retry -> dead + Telegram escalation job (одна транзакция)
 ```
 
-`META_INSTAGRAM_ACCESS_TOKEN` отделён от Ads-токенов `META_READ_ACCESS_TOKEN` и
-`META_WRITE_ACCESS_TOKEN`. Он используется только локальным read-only клиентом
-Instagram Graph; inbound webhook не зависит от него, а outbound auto-reply и
-публикация остаются выключенными.
+Crash между транзакциями не теряет сообщение: durable inbox повторяет обработку,
+получает тот же лид и завершает вторую транзакцию. Instagram не вызывается до
+commit сообщения/outbox. Telegram delivery не является источником истины.
 
-Для production `META_ALLOWED_RECIPIENT_IDS` обязателен. Значения не добавляются
-в `.env.example`, Markdown, логи или чат.
+Каждый DM сохраняется в `lead_events` (`source=instagram_inbound`); входящий
+envelope хранится нормализованным в `integration_inbox`. Лид — один на пару
+business account/sender. Другой текст следующего DM больше не вызывает hash
+conflict. Решение первого ответа защищено блокировкой строки лида и уникальным
+ключом события. Единственное задание: `instagram:first:<lead UUID>`.
 
-## Безопасная проверка
+`message.mid` дедуплицируется на ingress и при записи сообщения. Длинные mid не
+обрезаются: ключ хешируется, оригинал остаётся в приватном событии. Replay,
+последующие DM и параллельные workers не создают второй ответ.
 
-1. Включить route только на staging/test Lead Hub.
-2. Настроить Meta webhook на тестовый Page/Instagram asset.
-3. Отправить тестовое сообщение и сверить HTTP 202.
-4. По `message.mid` проверить trace endpoint.
-5. Проверить, что один и тот же webhook повторно возвращает `deduplicated=true`.
-6. Убедиться, что в Telegram появился только outbox-card, без Meta reply.
-7. Перед production отдельно согласовать messaging principal, copy, rate limits,
-   opt-out и автоответы. Live сообщения клиентам этим изменением не выполняются.
+Лид не переводится из `new`; человеческий `firstResponseAt` не заполняется
+автоответом. Telegram-карточка содержит номер Instagram-лида. История сообщений
+остаётся в Lead Hub и native Instagram Inbox. Типы вложений сохраняются, provider
+URL — нет. Скачивание/пересылка фото не входит в MVP; менеджер смотрит их в Direct.
+
+## B. Flow и недостающие условия для первого реального ответа
+
+Используется **Instagram API with Instagram Login**, Instagram professional
+**user access token**, фиксированный `graph.instagram.com`.
+Не Facebook Login/Page token и не Ads system-user token.
+
+Read-only проверка 21 сентября подтвердила соответствие токена
+`belstekloexpert` и наличие `user_id`; поля `id` и `user_id` различаются.
+Это не проверка messaging scopes. Запрос `/me/permissions` вернул 400:
+он не подтверждает ни выдачу, ни отсутствие messaging permission.
+
+Минимум: `instagram_business_basic` + `instagram_business_manage_messages`.
+Для этого MVP не нужны `ads_management`, `ads_read`, `business_management`,
+публикации или управление комментариями.
+Источники: [Meta: Instagram Login](https://www.postman.com/meta/instagram/folder/1z5vxzu/instagram-api-with-instagram-login),
+[Meta: Send API](https://www.postman.com/meta/instagram/folder/uxudqu0/send-api),
+[Meta: текстовый ответ](https://www.postman.com/meta/instagram/request/1rgmhuk/text-message).
+
+До production остаются: подтверждённые granted scopes и срок токена,
+соответствие account ID/recipient webhook, правильный signing app secret,
+callback и account subscription, доступность приложения для нужных пользователей,
+постоянная работа Render worker, согласование трёх текстов и rollout cutoff.
+Повторный login нужен только при недостаточных scopes/недействительном токене.
+
+## C. Точные действия в Meta Dashboard
+
+Не выполнять без отдельного подтверждения rollout.
+
+1. В существующем приложении: **Use cases → Instagram → API setup with Instagram
+   Login**, аккаунт `belstekloexpert`. Не создавать второе приложение/ingress.
+2. Permissions/features: проверить `instagram_business_basic` и
+   `instagram_business_manage_messages`, затем фактически предоставленные токену
+   scopes. При необходимости Generate token и новое согласие Instagram выполняет
+   владелец. Токен вставляется только в Render Environment — не в чат/скриншот/Git.
+3. Сверить `META_INSTAGRAM_ACCOUNT_ID` с `user_id` Instagram Login и recipient
+   реального подписанного тестового webhook. `/me.id`, IG app ID, Facebook Page
+   ID и Ads account ID не взаимозаменяемы. Не подставлять старый ID наугад.
+4. В настройках сообщений профессионального Instagram проверить разрешение
+   доступа подключённых инструментов к сообщениям, если переключатель показан.
+5. **После подтверждённого деплоя** с ingress on / outbound off: callback
+   `<LEAD_HUB_PUBLIC_URL>/api/v1/webhooks/meta`, Verify token = то же значение,
+   что `META_WEBHOOK_VERIFY_TOKEN` в Render. Затем Verify and save.
+   При `META_INGEST_ENABLED=false` route отсутствует: сначала работающий ingress,
+   затем verification, а не наоборот.
+6. Подписать Instagram/нужный аккаунт на `messages`. Проверить subscription
+   приложения и подключение аккаунта: одного callback URL недостаточно.
+   Код сам `subscribed_apps` не вызывает. Referral-поля необязательны для общего
+   ответа; отдельные referral-события без DM пока не объединяются с перепиской.
+7. Для тестового режима — принятые роли/согласия тестовых principal. Для реальных
+   клиентов проверить требования Dashboard к режиму приложения и уровню доступа.
+   Если нужны App Review/Advanced Access, тестовые роли не заменяют эту проверку.
+
+Login/2FA, согласие на scopes, бизнес-проверка/App Review и утверждение текстов —
+действия владельца. Verify token можно сгенерировать локально, ID сверить
+read-only. Заполнение Meta/Render — отдельное согласование. Новых Ads-прав не надо.
+
+## D. Render Environment
+
+Настраивается **Lead Hub service**, не Astro Worker/Ads MCP. Windows environment
+сам в Render не переносится. Значения секретов/ID не публиковать.
+
+| Переменная | Назначение / начальное значение |
+| --- | --- |
+| `META_INGEST_ENABLED` | `true` только после согласованного deploy ingress |
+| `META_WEBHOOK_VERIFY_TOKEN` | Случайная строка ≥16 символов; одинаковая в Meta/Render |
+| `META_APP_SECRET` | App Secret приложения, подписывающего webhook; не access token |
+| `META_ALLOWED_RECIPIENT_IDS` | Проверенный business Instagram recipient; при необходимости список через запятую |
+| `META_INSTAGRAM_ACCESS_TOKEN` | Instagram Login user token с basic/manage_messages |
+| `INSTAGRAM_MESSAGING_ENABLED` | **`false`** до подтверждения реальных отправок |
+| `META_INSTAGRAM_ACCOUNT_ID` | Проверенный Instagram `user_id`, обязательно в allow-list |
+| `META_INSTAGRAM_GRAPH_VERSION` | `v25.0`, закреплённая версия, не latest |
+| `INSTAGRAM_REPLY_START_AT` | Согласованное UTC-время ISO 8601: `YYYY-MM-DDTHH:mm:ss.sssZ` |
+| `INSTAGRAM_REPLY_GENERAL_TEXT` | Согласованный общий ответ, 1–1000 символов |
+| `INSTAGRAM_REPLY_REPLACEMENT_TEXT` | Согласованный ответ по замене, 1–1000 символов |
+| `INSTAGRAM_REPLY_CHIP_REPAIR_TEXT` | Согласованный ответ по сколу, 1–1000 символов |
+| `INSTAGRAM_AD_SCENARIOS_JSON` | Default `{}`: приватный JSON ad ID → `replacement` / `chip_repair` |
+| `TELEGRAM_ENABLED` | Для включённого messaging требуется `true` |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_WEBHOOK_SECRET` | Действующие настройки рабочего чата; не публичного бота |
+| `LEAD_HUB_PUBLIC_URL` | HTTPS URL существующего Lead Hub |
+| `DATABASE_URL`, `WEB_INGEST_API_KEY` | Действующие PostgreSQL и защищённая диагностика; не заменять |
+| `OUTBOX_MAX_ATTEMPTS` | Общий retry limit, default `8` |
+| `OUTBOX_DELIVERY_TIMEOUT_MS` | Default `15000` |
+| `OUTBOX_PROCESSING_TIMEOUT_MS` | Default `300000`; больше delivery timeout + 5000 |
+
+`META_WRITE_MODE=off` не меняется. Это Ads-ограничитель; у Instagram отправителя
+отдельный выключатель. Входящий webhook не зависит от access token.
+
+Предложения текстов (**не включены по умолчанию, требуют согласования**):
+
+- Общий: «Здравствуйте! Спасибо за обращение в БелСтеклоЭксперт. Подскажите,
+  пожалуйста, нужна замена стекла или ремонт скола? Если удобно, пришлите фото.»
+- Замена: «Здравствуйте! Для подбора стекла пришлите, пожалуйста, марку, модель и
+  год автомобиля, а также фото стекла. Специалист проверит варианты.»
+- Скол: «Здравствуйте! Пришлите, пожалуйста, фото повреждения стекла: крупным
+  планом и общий вид. Специалист оценит, возможен ли ремонт.»
+
+Классификация только по известному `ad_id` в `message.referral`/`referral`
+с `source=ADS`. Неизвестный ID, отдельное referral-событие без DM или инструкции
+клиента → общий ответ. Ads API не вызывается; цены/обещания не выдумываются.
+
+## E. План rollout и smoke test
+
+1. Локальные lint/typecheck/unit/build и integration tests на отдельной PostgreSQL.
+2. Согласовать ID, права, тексты, cutoff и надёжную работу Render worker. Free
+   service может засыпать: для предсказуемого polling нужен постоянно работающий
+   service. Проверить фактический тариф/поведение перед запуском; автоматически
+   тариф не менять. [Ограничения Render Free](https://render.com/docs/free).
+3. Отдельно подтвердить deploy **этой ветки/SHA**, outbound пока off. Проверить
+   существующие миграции, readiness/revision. Новые таблицы/миграции для MVP
+   не нужны. Startup сохраняет существующую регистрацию Telegram webhook.
+4. Отдельно подтвердить Meta settings. Принять помеченный тестовый DM: проверить
+   inbox, lead/message и рабочую Telegram-карточку, без автоматического ответа.
+5. Отдельно подтвердить один тестовый автоответ; установить новый startAt и
+   enabled=true. Использовать **новый тестовый диалог**: старый уже получил
+   решение disabled и не должен внезапно отвечать.
+6. Проверить один ответ, sent/provider message ID в приватной БД, лид new,
+   отсутствие повторного ответа на webhook replay. Outage воспроизводить
+   mocks/staging, не повреждать рабочий токен.
+7. После успешного smoke согласовать реальных клиентов и обновить
+   PROJECT_STATUS фактическим deployed SHA. Локальная сборка не является deploy.
+
+## Retry и диагностика
+
+До HTTP фиксируется `sending` и attempt. Известный временный Graph rejection:
+backoff с Retry-After; исчерпание attempts/окна → dead и одна Telegram escalation
+job. Постоянные ошибки прав сразу dead; бессмысленно повторять их без изменения
+доступа нельзя.
+
+Timeout, разрыв связи, HTTP 5xx/неполный success, crash во время sending, сбой
+commit после успешного Meta send — **unknown outcome**. Meta мог отправить DM:
+автоматического resend нет, нужен человек в Direct. Без provider idempotency
+нельзя обещать end-to-end exactly-once. Поздний результат сохраняется как
+`instagram_late_send_result`, но не отменяет dead-letter и не запускает resend.
+
+Локальное окно: 24 часа минус 60 секунд от исходного DM; retry его не продлевает.
+Старые сообщения до cutoff и ненадёжный timestamp не получают автоответ.
+Первый ответ — **один на сохранённый диалог**, не на каждый DM/день. Новый cutoff
+также проверяется перед отправкой старого queued job. Ручного resend endpoint нет.
+
+`GET /api/v1/integrations/meta/events/<externalEventId>`, Bearer
+`WEB_INGEST_API_KEY`: inbox status/attempts, messagePersisted, delivery states.
+Нет клиентского текста, токена, recipient или provider message ID. Для длинного
+mid используется нормализованный ключ приватного inbox. Request logs не содержат
+query string с verify token. Не публиковать диагностические URL/ключи.
+
+`/health/ready`: worker flags, общие backlog/dead counts; это не проверка scopes
+или реальной доставки. Оператор контролирует instagram_dead, зависшие sending,
+Telegram dead и возраст очереди. Если Telegram недоступен, alert остаётся
+retry/dead в outbox; гарантировать уведомление через сломанный Telegram нельзя.
+Лид и audit при этом сохранены.
+
+## Тесты и rollback
+
+```powershell
+npm run lead-hub:check
+# TEST_DATABASE_URL — отдельная localhost PostgreSQL, имя заканчивается _test.
+# Не использовать production DATABASE_URL!
+npm run test:integration --workspace @belstekloexpert/lead-hub
+```
+
+Integration tests очищают тестовые таблицы; Meta/Telegram заменены mocks.
+Guard отвергает remote host, имя без _test и совпадение с DATABASE_URL.
+Suites последовательны. Есть проверки replay, конкуренции, сохранения каждого
+DM, rollback message/outbox, сбоя commit после send, retry/dead/escalation,
+unknown outcome, позднего результата, выключенного режима и окна ответа.
+
+Kill switch: `INSTAGRAM_MESSAGING_ENABLED=false` + согласованный restart.
+**Ingress оставить включённым**: лиды продолжают сохраняться. Уже начатый HTTP
+может завершиться до остановки; неизвестные результаты сверять с Direct.
+PostgreSQL inbox/outbox/lead_events не очищать.
+
+Нельзя без подготовки откатиться на старую сборку, где Telegram worker выбирает
+все destinations: он может забрать Instagram pending/retry jobs. Для такого
+rollback требуется отдельно согласованный scoped quarantine этих заданий,
+остановка новых producers и сохранение sending для ручной сверки. Безопаснее
+оставить новую сборку с outbound off. Повторное включение — отдельное approval,
+review backlog и новый cutoff.
+
+## Отдельный статус: «снова не срабатывает бот»
+
+Локально missing outbound устранён кодом и тестами. **Реальный бот пока не
+объявлен исправленным**: необходим разрешённый production end-to-end smoke.
+Нет inbox → Meta delivery/HMAC/allow-list; inbox retry/dead → persistence/worker;
+inbox done + Instagram pending/retry/dead → outbound. Sent подтверждает принятие
+Meta API, а не прочтение клиентом.

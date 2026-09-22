@@ -62,7 +62,8 @@ function buildKufarLeadCard(lead: Lead) {
 function buildMetaLeadCard(lead: Lead) {
   const car = [lead.carMake, lead.carModel, lead.carYear].filter(Boolean).join(' ');
   return [
-    '🔵 Новая заявка Meta',
+    lead.sourceDetail === 'instagram' ? `🔵 Instagram DM #${lead.publicId}` : '🔵 Новая заявка Meta',
+    lead.sourceDetail === 'instagram' && `Статус: ${statusLabels[lead.status as LeadStatus] || lead.status}. Требует внимания менеджера.`,
     lead.name && `Имя: ${lead.name}`,
     lead.phoneNormalized && `Телефон: ${lead.phoneNormalized}`,
     lead.emailNormalized && `Email: ${lead.emailNormalized}`,

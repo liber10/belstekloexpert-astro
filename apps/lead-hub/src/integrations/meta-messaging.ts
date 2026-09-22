@@ -11,6 +11,8 @@ export interface MetaMessageEvent {
   timestamp?: number;
   text?: string;
   attachmentTypes: string[];
+  adId?: string;
+  messageId?: string;
 }
 
 /**
@@ -60,6 +62,8 @@ export function parseMetaMessageEvent(payload: unknown): MetaMessageEvent | null
     ...(typeof payload.timestamp === 'number' ? { timestamp: payload.timestamp } : {}),
     ...(typeof payload.text === 'string' && payload.text ? { text: payload.text } : {}),
     attachmentTypes: payload.attachmentTypes,
+    ...(typeof payload.adId === 'string' ? { adId: payload.adId } : {}),
+    ...(typeof payload.messageId === 'string' ? { messageId: payload.messageId } : {}),
   };
 }
 
@@ -100,13 +104,17 @@ function normalizeMessage(
   const recipientId = isRecord(value.recipient) ? text(value.recipient.id) : entryId;
   if (!senderId || !recipientId || (allowedRecipientIds.size > 0 && !allowedRecipientIds.has(recipientId))) return null;
   if (!isRecord(value.message)) return null;
-  const messageId = text(value.message.mid);
+  if (value.message.is_echo === true || value.message.is_deleted === true || senderId === recipientId) return null;
+  const messageId = typeof value.message.mid === 'string' ? value.message.mid.trim() : '';
+  if (object === 'instagram' && (!messageId || messageId.length > 4096)) return null;
   const textValue = limitText(value.message.text, 4_000);
   const attachmentTypes = normalizeAttachmentTypes(value.message.attachments);
   if (!messageId && !textValue && !attachmentTypes.length) return null;
   const timestamp = number(value.timestamp) ?? entryTime;
-  const externalEventId = messageId || `meta:${hashForEvent(value)}`;
+  const externalEventId = messageId.length > 255 ? `igmid:${hashForEvent(messageId)}` : messageId || `meta:${hashForEvent(value)}`;
   const platform = object === 'instagram' ? 'instagram' : object === 'page' ? 'facebook' : 'meta';
+  const referral = isRecord(value.message.referral) ? value.message.referral : isRecord(value.referral) ? value.referral : null;
+  const adId = referral?.source === 'ADS' ? text(referral.ad_id) : '';
   return {
     externalEventId,
     platform,
@@ -117,6 +125,8 @@ function normalizeMessage(
     ...(timestamp === undefined ? {} : { timestamp }),
     ...(textValue ? { text: textValue } : {}),
     attachmentTypes,
+    ...(messageId.length > 255 ? { messageId } : {}),
+    ...(adId && /^\d+$/.test(adId) ? { adId } : {}),
   };
 }
 

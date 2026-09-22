@@ -32,7 +32,7 @@ POST /api/v1/leads/web
 | Переменная | Назначение |
 | --- | --- |
 | `DATABASE_URL` | PostgreSQL URL для сервиса и миграций |
-| `TEST_DATABASE_URL` | Отдельная PostgreSQL БД для integration tests |
+| `TEST_DATABASE_URL` | Отдельная loopback PostgreSQL БД с именем `*_test`; integration tests очищают таблицы |
 | `WEB_INGEST_API_KEY` | Bearer-ключ для приёма форм сайта; обязателен в production |
 | `TELEGRAM_ENABLED` | `true` включает Telegram adapter и worker-доставку |
 | `TELEGRAM_BOT_TOKEN` | Токен существующего или тестового бота |
@@ -271,7 +271,7 @@ npm run deploy:cloudflare:production:dry
 Integration tests используют отдельную БД:
 
 ```powershell
-$env:TEST_DATABASE_URL='postgres://lead_hub:lead_hub@localhost:54329/lead_hub'
+$env:TEST_DATABASE_URL='postgres://lead_hub:lead_hub@localhost:54329/lead_hub_test'
 npm run test:integration --workspace @belstekloexpert/lead-hub
 ```
 

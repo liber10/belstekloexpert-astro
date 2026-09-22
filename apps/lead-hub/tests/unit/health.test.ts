@@ -4,6 +4,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { registerHealthRoutes } from '../../src/routes/health.js';
 
 describe('health diagnostics', () => {
+  it('is not ready when Instagram sending is enabled but the worker is stopped', async () => {
+    const pool = { query: vi.fn(() => Promise.resolve({ rows: [] })) } as unknown as Pool;
+    const app = Fastify({ logger: false });
+    registerHealthRoutes(app, pool, { telegramConfigured: false, telegramWorkerActive: () => false,
+      instagramConfigured: true, instagramWorkerActive: () => false, buildRevision: 'test' });
+    expect((await app.inject('/health/ready')).statusCode).toBe(503);
+    await app.close();
+  });
   it('reports safe outbox and revision diagnostics without sending Telegram', async () => {
     const pool = {
       query: vi.fn((query: string) => Promise.resolve(query.includes('select 1')
@@ -23,6 +31,7 @@ describe('health diagnostics', () => {
     expect(response.statusCode).toBe(200);
     expect(response.json()).toEqual({
       ok: true, database: 'ready', telegram_configured: true, telegram_worker_active: true,
+      instagram_configured: false, instagram_worker_active: false,
       outbox_pending: 2, outbox_retry: 0, outbox_dead: 1,
       oldest_pending_age_seconds: 31, revision: 'test-revision',
     });

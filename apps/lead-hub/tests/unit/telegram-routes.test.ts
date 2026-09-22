@@ -12,6 +12,7 @@ function createTelegram() {
     registerWebhook: vi.fn(() => Promise.resolve()),
     sendLeadCard: vi.fn(() => Promise.resolve({ chatId: '-100123', messageId: 42 })),
     editLeadCard: vi.fn(() => Promise.resolve()),
+    sendInstagramAlert: vi.fn(() => Promise.resolve()),
     handleUpdate,
   };
   return { telegram, handleUpdate };

@@ -17,8 +17,9 @@ import {
 import type { TelegramIntegration } from '../../src/integrations/telegram/index.js';
 import type { TelegramPublicIntegration } from '../../src/integrations/telegram-public.js';
 import type { LeadResponse } from '../../src/contracts/web-lead.js';
+import { testDatabaseUrl } from '../helpers/test-database.js';
 
-const databaseUrl = process.env.TEST_DATABASE_URL;
+const databaseUrl = testDatabaseUrl();
 const integration = describe.runIf(Boolean(databaseUrl));
 
 integration('Lead Hub database pipeline', () => {
@@ -32,6 +33,7 @@ integration('Lead Hub database pipeline', () => {
     registerWebhook: vi.fn(() => Promise.resolve()),
     sendLeadCard,
     editLeadCard,
+    sendInstagramAlert: vi.fn(() => Promise.resolve()),
     handleUpdate,
   };
   const sendPublicMessage = vi.fn(() => Promise.resolve());
@@ -375,8 +377,9 @@ integration('Lead Hub database pipeline', () => {
         headers: { 'x-telegram-bot-api-secret-token': 'integration-public-webhook-secret' }, payload,
       });
       expect(response.statusCode).toBe(200);
-      expect(await publicRuntime.inbox?.processOnce()).toBe(1);
-      expect(await publicRuntime.telegramPublicOutbox?.processOnce()).toBe(1);
+      // DB now() can be a fraction ahead of the host clock; production polls.
+      await expect.poll(() => publicRuntime.inbox?.processOnce()).toBe(1);
+      await expect.poll(() => publicRuntime.telegramPublicOutbox?.processOnce()).toBe(1);
     }
 
     const [lead] = await database.db.select().from(leads);

@@ -7,6 +7,7 @@ import { integrationOutbox, leadEvents, leads, type Lead } from '../db/schema.js
 import { hashPayload, IdempotencyConflictError } from '../domain/idempotency.js';
 import { normalizeBelarusPhone } from '../domain/phone.js';
 import type { LeadStatus } from '../domain/status.js';
+import { metaMessageToLeadInput, type MetaMessageEvent } from '../integrations/meta-messaging.js';
 
 export class LeadValidationError extends Error {
   constructor(message: string) {
@@ -32,6 +33,7 @@ interface CreateLeadOptions {
   idempotencyKey: string;
   externalLeadId?: string;
   sourceDetail?: string;
+  appendConversation?: boolean;
 }
 
 interface ChangeStatusOptions {
@@ -47,6 +49,17 @@ export class LeadService {
     private readonly db: LeadHubDatabase,
     private readonly photoReferenceValidator?: PhotoReferenceValidator,
   ) {}
+
+  // A conversation is stable, while each DM has a different payload. Only this
+  // Instagram-specific entry point relaxes the lead-level request hash check.
+  async getOrCreateInstagramConversation(event: MetaMessageEvent) {
+    if (event.platform !== 'instagram') throw new LeadValidationError('Instagram event required.');
+    const input = metaMessageToLeadInput(event);
+    return this.createNormalizedLead(normalizeExternalBody(input), {
+      source: 'meta', sourceDetail: 'instagram', externalLeadId: event.conversationId,
+      idempotencyKey: `meta:${event.conversationId}`, appendConversation: true,
+    });
+  }
 
   async createWebLead(body: WebLeadBody, idempotencyKey: string) {
     const sourceDetail = cleanText(body.sourceDetail);
@@ -365,7 +378,7 @@ export class LeadService {
       .limit(1);
 
     if (byIdempotency) {
-      if (byIdempotency.requestHash !== requestHash) throw new IdempotencyConflictError();
+      if (!options.appendConversation && byIdempotency.requestHash !== requestHash) throw new IdempotencyConflictError();
       return { lead: byIdempotency, deduplicated: true };
     }
 
@@ -535,5 +548,7 @@ function getStatusTimestamps(status: LeadStatus, current: Lead, now: Date) {
 }
 
 function isUniqueViolation(error: unknown): error is { code: '23505' } {
-  return Boolean(error && typeof error === 'object' && 'code' in error && error.code === '23505');
+  if (!error || typeof error !== 'object') return false;
+  if ('code' in error && error.code === '23505') return true;
+  return 'cause' in error && error.cause !== error && isUniqueViolation(error.cause);
 }

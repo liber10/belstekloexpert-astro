@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray, lte } from 'drizzle-orm';
+import { and, asc, eq, inArray, lte, sql } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
 import type { KufarEmailEvent } from '../contracts/kufar-email.js';
 import type { TelegramPublicUpdate } from '../contracts/telegram-public.js';
@@ -8,6 +8,7 @@ import { mapKufarEmailToLead } from '../integrations/kufar.js';
 import { metaMessageToLeadInput, parseMetaMessageEvent } from '../integrations/meta-messaging.js';
 import type { LeadService } from '../services/lead-service.js';
 import type { TelegramPublicSessionService } from '../services/telegram-public-session-service.js';
+import type { InstagramMessageService } from '../services/instagram-message-service.js';
 
 interface InboxOptions {
   pollIntervalMs: number;
@@ -26,6 +27,7 @@ export class InboxProcessor {
     private readonly logger: FastifyBaseLogger,
     private readonly options: InboxOptions,
     private readonly telegramPublic: TelegramPublicSessionService | null = null,
+    private readonly instagramMessages: InstagramMessageService | null = null,
   ) {}
 
   start() {
@@ -46,7 +48,7 @@ export class InboxProcessor {
     try {
       await this.releaseStale();
       const candidates = await this.db.select().from(integrationInbox)
-        .where(and(inArray(integrationInbox.status, ['pending', 'retry']), lte(integrationInbox.nextAttemptAt, new Date())))
+        .where(and(inArray(integrationInbox.status, ['pending', 'retry']), lte(integrationInbox.nextAttemptAt, sql`now()`)))
         .orderBy(asc(integrationInbox.createdAt)).limit(this.options.batchSize);
       let processed = 0;
       for (const candidate of candidates) {
@@ -62,7 +64,7 @@ export class InboxProcessor {
   }
 
   private trigger() {
-    void this.processOnce().catch((error: unknown) => this.logger.error({ err: error }, 'Inbox polling failed.'));
+    void this.processOnce().catch(() => this.logger.error('Inbox polling failed; durable events retained.'));
   }
 
   private async releaseStale() {
@@ -77,7 +79,7 @@ export class InboxProcessor {
   private async claim(id: string) {
     const [event] = await this.db.update(integrationInbox)
       .set({ status: 'processing', updatedAt: new Date() })
-      .where(and(eq(integrationInbox.id, id), inArray(integrationInbox.status, ['pending', 'retry'])))
+      .where(and(eq(integrationInbox.id, id), inArray(integrationInbox.status, ['pending', 'retry']), lte(integrationInbox.nextAttemptAt, sql`now()`)))
       .returning();
     return event;
   }
@@ -89,7 +91,11 @@ export class InboxProcessor {
       } else if (event.source === 'meta' && event.eventType === 'message.received') {
         const message = parseMetaMessageEvent(event.payload);
         if (!message) throw new PermanentInboxError('Invalid Meta message event.');
-        await this.leadService.createExternalLead(metaMessageToLeadInput(message));
+        if (message.platform === 'instagram' && this.instagramMessages) {
+          await this.instagramMessages.accept(message, event.createdAt);
+        } else {
+          await this.leadService.createExternalLead(metaMessageToLeadInput(message));
+        }
       } else if (event.source === 'telegram_public' && event.eventType === 'update.received' && this.telegramPublic) {
         await this.telegramPublic.handleUpdate(event.payload as TelegramPublicUpdate);
       } else {
@@ -115,5 +121,4 @@ export class InboxProcessor {
 
 class PermanentInboxError extends Error {}
 const retryDelayMs = (attempt: number) => Math.min(3_600_000, 2 ** Math.min(attempt, 10) * 1_000);
-const safeError = (error: unknown) => (error instanceof Error ? error.message : 'Unknown inbox error.')
-  .replace(/Bearer\s+\S+/gi, 'Bearer [redacted]').slice(0, 1_000);
+const safeError = (error: unknown) => error instanceof PermanentInboxError ? error.message : 'Inbox persistence or processing failed.';

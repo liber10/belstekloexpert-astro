@@ -20,6 +20,7 @@ try {
   runtime.outbox?.start();
   runtime.inbox?.start();
   runtime.telegramPublicOutbox?.start();
+  runtime.instagramOutbox?.start();
 } catch {
   runtime.app.log.error('Integration startup failed.');
   await runtime.app.close();

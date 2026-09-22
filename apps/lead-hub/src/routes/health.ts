@@ -5,6 +5,8 @@ interface HealthOptions {
   telegramConfigured: boolean;
   telegramWorkerActive: () => boolean;
   buildRevision: string;
+  instagramConfigured?: boolean;
+  instagramWorkerActive?: () => boolean;
 }
 
 export function registerHealthRoutes(app: FastifyInstance, pool: Pool, options: HealthOptions) {
@@ -29,12 +31,16 @@ export function registerHealthRoutes(app: FastifyInstance, pool: Pool, options: 
         }
       }
       const workerActive = options.telegramWorkerActive();
-      const ok = !options.telegramConfigured || workerActive;
+      const instagramWorkerActive = options.instagramWorkerActive?.() ?? false;
+      const ok = (!options.telegramConfigured || workerActive)
+        && (!options.instagramConfigured || instagramWorkerActive);
       const body = {
         ok,
         database: 'ready',
         telegram_configured: options.telegramConfigured,
         telegram_worker_active: workerActive,
+        instagram_configured: options.instagramConfigured ?? false,
+        instagram_worker_active: instagramWorkerActive,
         outbox_pending: counts.pending,
         outbox_retry: counts.retry,
         outbox_dead: counts.dead,

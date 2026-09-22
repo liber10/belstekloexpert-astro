@@ -7,7 +7,7 @@ describe('InstagramGraphClient', () => {
   it('reads identity through the fixed Instagram Graph host without exposing the token', async () => {
     const fetchImpl = vi.fn<typeof fetch>((input, init) => {
       const requestUrl = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
-      expect(requestUrl).toBe('https://graph.instagram.com/me?fields=id%2Cusername');
+      expect(requestUrl).toBe('https://graph.instagram.com/me?fields=id%2Cuser_id%2Cusername');
       expect(new Headers(init?.headers).get('authorization')).toBe(`Bearer ${fakeToken}`);
       return Promise.resolve(new Response(JSON.stringify({ id: '17840000000000000', username: 'belstekloexpert' }), {
         status: 200,

@@ -31,6 +31,9 @@ import { InboxProcessor } from './worker/inbox-processor.js';
 import { OutboxProcessor } from './worker/outbox-processor.js';
 import { TelegramPublicOutboxProcessor } from './worker/telegram-public-outbox-processor.js';
 import { registerRawBodyJsonParser } from './security/raw-body.js';
+import { InstagramMessageService } from './services/instagram-message-service.js';
+import { InstagramMessagingAdapter, type InstagramDelivery } from './integrations/instagram-messaging.js';
+import { InstagramOutboxProcessor } from './worker/instagram-outbox-processor.js';
 
 interface BuildRuntimeOptions {
   database?: DatabaseClient;
@@ -38,6 +41,7 @@ interface BuildRuntimeOptions {
   telegramPublic?: TelegramPublicIntegration | null;
   objectStorage?: ObjectStorage | null;
   startWorker?: boolean;
+  instagram?: InstagramDelivery;
 }
 
 export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptions = {}) {
@@ -53,6 +57,10 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     },
     logger: {
       level: config.logLevel,
+      serializers: {
+        req: (request) => ({ method: request.method, url: (request.url.split('?')[0] || '').replace(
+          /\/integrations\/meta\/events\/[^/]+/, '/integrations/meta/events/[redacted]'), hostname: request.hostname }),
+      },
       redact: {
         paths: [
           'req.headers.authorization',
@@ -89,6 +97,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     ? (reference, submissionId) => objectStorage.isReferenceForSubmission(reference, submissionId)
     : undefined);
   const inboxService = new InboxService(database.db);
+  const instagramMessages = new InstagramMessageService(database.db, leadService, config.instagramMessaging);
   const telegram = options.telegram === undefined
     ? createConfiguredTelegram(config, leadService, objectStorage)
     : options.telegram;
@@ -117,8 +126,13 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   const inbox = config.kufar.enabled
     || config.meta.enabled
     || config.telegramPublic.enabled
-    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, telegramPublicSession)
+    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, telegramPublicSession, instagramMessages)
     : null;
+  const instagramOutbox = config.instagramMessaging.enabled
+    ? new InstagramOutboxProcessor(database.db, options.instagram || new InstagramMessagingAdapter({
+        accessToken: config.meta.instagramAccessToken!, accountId: config.instagramMessaging.accountId!,
+        graphVersion: config.instagramMessaging.graphVersion, timeoutMs: config.outbox.deliveryTimeoutMs,
+      }), app.log, config.outbox, config.instagramMessaging.accountId!, Date.parse(config.instagramMessaging.startAt!)) : null;
   const telegramPublicOutbox = telegramPublic
     ? new TelegramPublicOutboxProcessor(database.db, telegramPublic, app.log, config.outbox)
     : null;
@@ -127,12 +141,15 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     telegramConfigured: config.telegram.enabled,
     telegramWorkerActive: () => outbox?.isActive() ?? false,
     buildRevision: config.buildRevision,
+    instagramConfigured: config.instagramMessaging.enabled,
+    instagramWorkerActive: () => instagramOutbox?.isActive() ?? false,
   });
 
   if (options.startWorker !== false) {
     outbox?.start();
     inbox?.start();
     telegramPublicOutbox?.start();
+    instagramOutbox?.start();
   }
 
   app.setErrorHandler(async (error, request, reply) => {
@@ -150,7 +167,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
       });
     }
 
-    request.log.error({ err: error }, 'Unhandled request error.');
+    // Driver errors can include SQL parameters containing client messages.
+    request.log.error('Unhandled request error; inspect durable state using the request/event ID.');
     return reply.code(500).send({ ok: false, error: 'internal_error' });
   });
 
@@ -158,6 +176,7 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     outbox?.stop();
     inbox?.stop();
     telegramPublicOutbox?.stop();
+    await instagramOutbox?.stop();
     if (ownsDatabase) await database.pool.end();
   });
 
@@ -173,6 +192,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     outbox,
     inbox,
     telegramPublicOutbox,
+    instagramOutbox,
+    instagramMessages,
   };
 }
 
