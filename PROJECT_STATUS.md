@@ -16,7 +16,7 @@ production-архитектуры, провайдера, режима доста
 | Kufar | Gmail Apps Script → durable inbox Lead Hub | Работает | Production smoke test прошёл 2 августа: письмо принято один раз, текст очищен, точный диалог открывается, статусы сохраняются |
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
-| Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Webhook регистрируется при старте; production smoke test доставки выполнен 28 июля 2026 года |
+| Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Рабочий получатель новых карточек — группа «БелСтеклоЭксперт»; bot-to-group smoke test пройден 27 сентября 2026 года, полный lead-to-group smoke ожидается |
 | Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Ingress и outbound включены; первая отправка не проверена | Render `15b77b7` Live, Instagram worker active, база ready; Meta app опубликовано, callback и подписки сохранены. Реальный DM → сохранённый лид → Telegram-карточка подтверждены. Auto-reply действует только для новых диалогов после cutoff; ещё нет outbox-задания для фактического send smoke |
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Meta Ads control plane | Repo-local guarded MCP | Локально интегрирован; repository default off | Commit `991a76f`; один allow-listed активный аккаунт ранее прошёл read/dry-run smoke; campaign-bundle v1 прошёл 72/72 локальных теста и plugin validator, live Meta writes не выполнялись |
@@ -157,6 +157,18 @@ production-архитектуры, провайдера, режима доста
     Обнаруженное расхождение с ранее сохранёнными шаблонами исправлено: все три
     `INSTAGRAM_REPLY_*_TEXT` дословно совпадают с утверждёнными владельцем.
     Render повторно развёрнут из того же `15b77b7`; health HTTP 200, worker active.
+20. 27 сентября 2026 года обнаружено, что карточки новых Instagram-лидов уходили
+    в личный чат рабочего Telegram-бота, а не в группу мастеров: единственный
+    `TELEGRAM_CHAT_ID` Lead Hub указывал на личный чат. Владелец подтвердил
+    маршрутизацию всех новых рабочих карточек в группу «БелСтеклоЭксперт».
+    Групповой ID сверён с названием супергруппы через Telegram Bot API; бот —
+    администратор. В Render сохранён групповой `TELEGRAM_CHAT_ID` и повторно
+    развёрнут тот же commit `15b77b7`: `Deploy succeeded | Live`, `/health/ready`
+    вернул `ok=true`, `database=ready`, активные Telegram и Instagram workers.
+    Одно явно тестовое сообщение без персональных данных от рабочего бота
+    доставлено в группу. Это не заменяет end-to-end проверку новой заявки через
+    Lead Hub outbox; старые карточки в личном чате не переносятся автоматически,
+    их inline-кнопки после смены разрешённого чата недоступны.
 
 ## Ближайшие решения
 
