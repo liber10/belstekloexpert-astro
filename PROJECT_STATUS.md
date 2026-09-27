@@ -17,7 +17,7 @@ production-архитектуры, провайдера, режима доста
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
 | Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Webhook регистрируется при старте; production smoke test доставки выполнен 28 июля 2026 года |
-| Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Код развёрнут; ingress и outbound выключены | Render `15b77b7` Live; `INSTAGRAM_MESSAGING_ENABLED=false`, `META_INGEST_ENABLED` не задан и использует default false. 65 unit + 37 локальных integration tests; Meta callback/scopes и реальный auto-reply smoke ещё требуют отдельного этапа |
+| Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Ingress и outbound включены; первая отправка не проверена | Render `15b77b7` Live, Instagram worker active, база ready; Meta app опубликовано, callback и подписки сохранены. Реальный DM → сохранённый лид → Telegram-карточка подтверждены. Auto-reply действует только для новых диалогов после cutoff; ещё нет outbox-задания для фактического send smoke |
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Meta Ads control plane | Repo-local guarded MCP | Локально интегрирован; repository default off | Commit `991a76f`; один allow-listed активный аккаунт ранее прошёл read/dry-run smoke; campaign-bundle v1 прошёл 72/72 локальных теста и plugin validator, live Meta writes не выполнялись |
 | Meta Page / Instagram publishing | Не входит в текущий Messaging MVP | Подготовка | Instagram token отделён от Ads-токенов; publishing и production permissions не подключены |
@@ -132,6 +132,28 @@ production-архитектуры, провайдера, режима доста
     callback не указан. Read-only Instagram Conversations API ответил HTTP 200,
     что не подтверждает получение webhook или отправку DM. В production оба
     Instagram-флага по-прежнему выключены, реального автоответа не было.
+18. 27 сентября 2026 года `META_INGEST_ENABLED=true` и случайный
+    `META_WEBHOOK_VERIFY_TOKEN` сохранены в Render Lead Hub без раскрытия значения.
+    Повторно развёрнут точный commit `15b77b7`: Render зафиксировал Live,
+    `/health/ready` вернул HTTP 200 с этой ревизией и ready PostgreSQL. Meta app
+    `BelSteklo_Ads_Read` опубликовано; callback существующего ingress сохранён,
+    подписки поля `messages` и аккаунта `belstekloexpert` включены. Meta отправила
+    фиктивное подписанное событие: endpoint ответил HTTP 200, `eventCount=0`
+    из-за тестового recipient вне allow-list. `INSTAGRAM_MESSAGING_ENABLED=false`;
+    Впоследствии логи показали принятые реальные сообщения (`eventCount=1`),
+    а владелец подтвердил получение Telegram-карточки Instagram-лида после
+    тестового DM. По коду карточка ставится в очередь после сохранения лида.
+    Исходящий ответ и Telegram escalation пока не проверены.
+19. 27 сентября 2026 года владелец утвердил три текста первого ответа и
+    подтвердил включение outbound для новых DM. В Render сохранены
+    `INSTAGRAM_MESSAGING_ENABLED=true` и `INSTAGRAM_REPLY_START_AT` =
+    `2026-09-27T13:58:00.000Z`; повторно развёрнут точный SHA `15b77b7`.
+    `/health/ready` вернул HTTP 200, `instagram_configured=true`,
+    `instagram_worker_active=true`, база ready и этот SHA. Read-only агрегаты
+    PostgreSQL за 27 сентября: 5 Meta inbox events `done`, 5 сохранённых
+    Instagram DM, 2 лида `new`; оба ранних решения первого ответа имеют
+    `skipped=disabled`. После cutoff нет ни нового решения, ни Instagram outbox
+    job. Поэтому фактическая отправка, retry/dead и эскалация пока не проверены.
 
 ## Ближайшие решения
 
@@ -144,7 +166,7 @@ production-архитектуры, провайдера, режима доста
 | `KUFAR-001` | Перевести Kufar email handler на durable Lead Hub inbox | P1 | Выполнено, production smoke test 2 августа 2026 года |
 | `TELEGRAM-LEADS-001` | Добавить отдельного публичного Telegram-бота для клиентов | P1 | Код и миграция `cae7eef` развёрнуты с feature flag off; production enable заблокирован `LEGAL-001` |
 | `META-001` | Подключить Meta Instant Forms к durable inbox | P1 | Заблокировано `LEGAL-001`, app review и подписанным webhook |
-| `META-MESSAGING-001` | Подключить Meta DM webhook к Lead Hub и отдельно согласовать auto-reply | P0 | Код ingress/outbound развёрнут в `15b77b7`, оба режима выключены; messaging permission, callback, copy и canary ещё не утверждены |
+| `META-MESSAGING-001` | Подключить Meta DM webhook к Lead Hub и отдельно согласовать auto-reply | P0 | Ingress и outbound включены для новых DM; реальные входящие и Telegram-карточка подтверждены. Нужны фактический send smoke, контроль retry/dead и устойчивости Render Free |
 | `META-CONTROL-001` | Ввести Meta Ads control plane | P1 | Plugin интегрирован локально в `991a76f`; 72/72 теста и validator проходят, repository default off; install/canary и production write отдельно не утверждены |
 | `META-PHOTO-001` | Подготовить рекламный photo-flow ремонта сколов на существующую private site/B2 форму | P1 | Запланировано; нужны consent-aware measurement и mobile E2E smoke |
 | `ADS-CHIP-001` | Запустить отдельный контролируемый эксперимент ремонта сколов | P1 | Заблокировано `META-PHOTO-001`, `LEGAL-001` и подтверждением оффера мастером |
