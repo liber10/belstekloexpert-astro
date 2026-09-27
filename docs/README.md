@@ -11,7 +11,7 @@
 | [Roadmap](roadmap.md) | Planning | Актуальный |
 | [Lead Hub runbook](lead-hub-runbook.md) | Operations | Актуальный |
 | [Публичный Telegram-бот](public-telegram-bot-runbook.md) | Operations | Подготовка; production заблокирован `LEGAL-001` |
-| [Instagram Messaging MVP](meta-messaging-runbook.md) | Operations | Ingress, durable first reply и escalation проверены локально; production rollout не выполнен |
+| [Instagram Messaging MVP](meta-messaging-runbook.md) | Operations | Код развёрнут на Render; ingress/outbound выключены, Meta rollout не выполнен |
 | [Аудит персональных данных](personal-data-audit.md) | Legal/operations | Проект `LEGAL-001` |
 | [Обязательные legal-входы](legal-required-inputs.md) | Checklist | Блокирует publication |
 | [Карта информационных ресурсов](personal-data-resources-map.md) | Registry | Требует проверки владельцем |

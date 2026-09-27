@@ -1,7 +1,8 @@
 # Instagram Messaging MVP — эксплуатация
 
-Дата: 22 сентября 2026 года. Реализовано **локально**. Production deploy,
-настройки Meta и реальные отправки требуют отдельного подтверждения владельца.
+Дата реализации: 22 сентября 2026 года. Код развёрнут на Render 27 сентября
+2026 года из commit `15b77b7` с выключенными ingress и outbound. Настройки Meta
+и реальные отправки требуют отдельного подтверждения владельца.
 Ads, content publishing и другие outbound-каналы не входят в MVP.
 
 ## A. Что готово
@@ -146,9 +147,12 @@ read-only. Заполнение Meta/Render — отдельное соглас�
    service может засыпать: для предсказуемого polling нужен постоянно работающий
    service. Проверить фактический тариф/поведение перед запуском; автоматически
    тариф не менять. [Ограничения Render Free](https://render.com/docs/free).
-3. Отдельно подтвердить deploy **этой ветки/SHA**, outbound пока off. Проверить
-   существующие миграции, readiness/revision. Новые таблицы/миграции для MVP
-   не нужны. Startup сохраняет существующую регистрацию Telegram webhook.
+3. Выполнено 27 сентября: деплой **`15b77b7`** вручную из точного SHA.
+   Dashboard: `Deploy succeeded | Live`; `/health/ready`: HTTP 200, revision
+   соответствует SHA, PostgreSQL ready, Telegram worker active, Instagram worker
+   inactive. `INSTAGRAM_MESSAGING_ENABLED=false`; `META_INGEST_ENABLED` не задан.
+   Новые таблицы/миграции для MVP не потребовались. Render автоматически отключил
+   Auto-Deploy для этого сервиса при выборе конкретного commit.
 4. Отдельно подтвердить Meta settings. Принять помеченный тестовый DM: проверить
    inbox, lead/message и рабочую Telegram-карточку, без автоматического ответа.
 5. Отдельно подтвердить один тестовый автоответ; установить новый startAt и

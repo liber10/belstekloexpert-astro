@@ -1,6 +1,6 @@
 # Архитектура BelStekloExpert
 
-Последняя актуализация: 22 сентября 2026 года.
+Последняя актуализация: 27 сентября 2026 года.
 
 ## Системный контекст
 
@@ -29,7 +29,7 @@ flowchart LR
     TG --> CHAT
 ```
 
-## Instagram Messaging MVP (локально, production off)
+## Instagram Messaging MVP (код в production, ingress/outbound off)
 
 ```text
 Existing Meta webhook: Instagram DM
@@ -59,8 +59,10 @@ Rollout/settings/env/rollback: [runbook](meta-messaging-runbook.md).
 фиксированный `graph.instagram.com`. Команда `instagram:check` не выводит токен,
 ID или username и не выполняет публикацию, отправку сообщений или изменение
 настроек. Отдельный `instagram-messaging.ts` использует этот Instagram Login token
-для отправки только при `INSTAGRAM_MESSAGING_ENABLED=true`. Production rollout
-не выполнен. `META_WRITE_MODE=off` и Ads MCP не изменены.
+для отправки только при `INSTAGRAM_MESSAGING_ENABLED=true`. Код развёрнут на
+Render в commit `15b77b7`, но `INSTAGRAM_MESSAGING_ENABLED=false` и
+`META_INGEST_ENABLED` не задан (default false). Meta rollout и реальные отправки
+не выполнены. `META_WRITE_MODE=off` и Ads MCP не изменены.
 
 ## Компоненты
 
