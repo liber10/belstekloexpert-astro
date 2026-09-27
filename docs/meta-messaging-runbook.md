@@ -50,6 +50,10 @@ Read-only проверка 21 сентября подтвердила соотв
 `belstekloexpert` и наличие `user_id`; поля `id` и `user_id` различаются.
 Это не проверка messaging scopes. Запрос `/me/permissions` вернул 400:
 он не подтверждает ни выдачу, ни отсутствие messaging permission.
+27 сентября read-only `GET /v25.0/<IG user_id>/conversations` с текущим
+Instagram token вернул HTTP 200. Это подтверждает доступность endpoint чтения,
+но не доказывает доставку webhook, право отправки или доступность реальных
+клиентов, пока приложение не опубликовано и не пройден необходимый App Review.
 
 Минимум: `instagram_business_basic` + `instagram_business_manage_messages`.
 Для этого MVP не нужны `ads_management`, `ads_read`, `business_management`,
@@ -105,7 +109,7 @@ read-only. Заполнение Meta/Render — отдельное соглас�
 | --- | --- |
 | `META_INGEST_ENABLED` | `true` только после согласованного deploy ingress |
 | `META_WEBHOOK_VERIFY_TOKEN` | Случайная строка ≥16 символов; одинаковая в Meta/Render |
-| `META_APP_SECRET` | App Secret приложения, подписывающего webhook; не access token |
+| `META_APP_SECRET` | Секрет приложения, подписывающего Instagram Login webhook; кандидат — **Instagram API → Настройка API для входа в Instagram → Секрет приложения Instagram**. Точный секрет подтвердить фактической подписью тестового POST. Не подставлять прежний Facebook/Ads App Secret без проверки; не access token |
 | `META_ALLOWED_RECIPIENT_IDS` | Проверенный business Instagram recipient; при необходимости список через запятую |
 | `META_INSTAGRAM_ACCESS_TOKEN` | Instagram Login user token с basic/manage_messages |
 | `INSTAGRAM_MESSAGING_ENABLED` | **`false`** до подтверждения реальных отправок |
@@ -153,6 +157,11 @@ read-only. Заполнение Meta/Render — отдельное соглас�
    inactive. `INSTAGRAM_MESSAGING_ENABLED=false`; `META_INGEST_ENABLED` не задан.
    Новые таблицы/миграции для MVP не потребовались. Render автоматически отключил
    Auto-Deploy для этого сервиса при выборе конкретного commit.
+   В Render сохранены **без redeploy** account ID/recipient allow-list, Graph
+   version, три предложенных текста и `META_INGEST_ENABLED=false`. Это только
+   staged-конфигурация: приложение ещё работает с прежним окружением. При
+   последующем изменении env не выбирать деплой `main` по умолчанию; повторно
+   указать точный проверенный commit `15b77b7` и сверить SHA в `/health/ready`.
 4. Отдельно подтвердить Meta settings. Принять помеченный тестовый DM: проверить
    inbox, lead/message и рабочую Telegram-карточку, без автоматического ответа.
 5. Отдельно подтвердить один тестовый автоответ; установить новый startAt и

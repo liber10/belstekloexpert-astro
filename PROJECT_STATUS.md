@@ -125,6 +125,13 @@ production-архитектуры, провайдера, режима доста
     `INSTAGRAM_MESSAGING_ENABLED=false`; `META_INGEST_ENABLED` не задан.
     Деплой конкретного коммита отключил Auto-Deploy этого сервиса. Meta settings,
     callback и отправка сообщений клиентам не выполнялись.
+17. При подготовке Instagram Messaging в Render сохранены без redeploy проверенный
+    Instagram account ID/recipient allow-list, версия Graph, три предложенных
+    текста и явный `META_INGEST_ENABLED=false`. Meta app получил contact/privacy/
+    data-deletion/domain/category metadata, но остаётся **неопубликованным**;
+    callback не указан. Read-only Instagram Conversations API ответил HTTP 200,
+    что не подтверждает получение webhook или отправку DM. В production оба
+    Instagram-флага по-прежнему выключены, реального автоответа не было.
 
 ## Ближайшие решения
 
