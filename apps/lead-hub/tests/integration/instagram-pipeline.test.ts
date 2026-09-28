@@ -20,6 +20,9 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   let disabled: Awaited<ReturnType<typeof buildRuntime>>;
   const secret = 'fake-meta-signature-secret';
   const send = vi.fn<(id: string, text: string) => Promise<{ messageId: string }>>(() => Promise.resolve({ messageId: 'fake-outbound-id' }));
+  const inspectFirstMessage = vi.fn<(senderId: string, messageId: string) => Promise<'first' | 'existing' | 'unverified'>>(
+    () => Promise.resolve('first'));
+  const history = { inspectFirstMessage };
   const alert = vi.fn(() => Promise.resolve());
   const card = vi.fn(() => Promise.resolve({ chatId: '-100999', messageId: 44 }));
   const telegram: TelegramIntegration = { sendLeadCard: card, editLeadCard: vi.fn(async () => {}),
@@ -55,7 +58,8 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   beforeAll(async () => {
     database = createDatabaseClient(databaseUrl!);
     await migrate(database.db, { migrationsFolder: fileURLToPath(new URL('../../drizzle', import.meta.url)) });
-    runtime = await buildRuntime(loadConfig(environment), { database, telegram, instagram: { sendText: send }, startWorker: false });
+    runtime = await buildRuntime(loadConfig(environment), { database, telegram, instagram: { sendText: send },
+      instagramHistory: history, startWorker: false });
     disabled = await buildRuntime(loadConfig({ ...environment, INSTAGRAM_MESSAGING_ENABLED: 'false' }), {
       database, telegram, instagram: { sendText: send }, startWorker: false,
     });
@@ -65,6 +69,7 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   beforeEach(async () => {
     await database.db.execute(sql`truncate table integration_inbox, integration_outbox, lead_events, leads restart identity cascade`);
     send.mockReset().mockResolvedValue({ messageId: 'fake-outbound-id' });
+    inspectFirstMessage.mockReset().mockResolvedValue('first');
     alert.mockReset().mockResolvedValue(undefined);
     card.mockClear();
   });
@@ -120,6 +125,50 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
     expect(await database.db.select().from(integrationInbox).where(eq(integrationInbox.status, 'dead'))).toHaveLength(0);
     expect(send).toHaveBeenCalledTimes(1);
   });
+  it.each(['existing', 'unverified'] as const)('keeps an %s Instagram conversation human-only', async (verdict) => {
+    inspectFirstMessage.mockResolvedValue(verdict);
+    await webhook(); await runtime.inbox!.processOnce(); await runtime.instagramOutbox!.processOnce();
+    expect(await database.db.select().from(leads)).toHaveLength(1);
+    expect(await database.db.select().from(leadEvents).where(eq(leadEvents.source, 'instagram_inbound'))).toHaveLength(1);
+    expect(await jobs()).toHaveLength(0);
+    expect(send).not.toHaveBeenCalled();
+    const [decision] = await database.db.select().from(leadEvents).where(eq(leadEvents.source, 'instagram_reply_policy'));
+    expect(decision?.payload.skipped).toBe(verdict === 'existing' ? 'existing_conversation' : 'history_unverified');
+  });
+  it('persists the DM and human lead when history lookup throws', async () => {
+    inspectFirstMessage.mockRejectedValueOnce(new Error('synthetic read outage'));
+    await webhook(); await runtime.inbox!.processOnce();
+    expect(await database.db.select().from(leads)).toHaveLength(1);
+    expect(await database.db.select().from(leadEvents).where(eq(leadEvents.source, 'instagram_inbound'))).toHaveLength(1);
+    expect(await jobs()).toHaveLength(0);
+  });
+  it('rechecks immediately before send and suppresses a manager-taken-over conversation', async () => {
+    await webhook(); await runtime.inbox!.processOnce();
+    inspectFirstMessage.mockResolvedValue('existing');
+    await runtime.instagramOutbox!.processOnce();
+    expect(send).not.toHaveBeenCalled();
+    expect((await jobs())[0]).toMatchObject({ status: 'dead', lastError: 'conversation_changed_before_send' });
+    expect(await database.db.select().from(integrationOutbox).where(eq(integrationOutbox.eventType, 'instagram.escalation'))).toHaveLength(1);
+  });
+  it('quarantines pre-fix pending jobs without a verifiable original message ID', async () => {
+    await webhook(); await runtime.inbox!.processOnce();
+    const [job] = await jobs();
+    const legacyPayload = { ...job!.payload };
+    delete legacyPayload.inboundMessageId;
+    await database.db.update(integrationOutbox).set({ payload: legacyPayload }).where(eq(integrationOutbox.id, job!.id));
+    await runtime.instagramOutbox!.processOnce();
+    expect(send).not.toHaveBeenCalled();
+    expect((await jobs())[0]).toMatchObject({ status: 'dead', lastError: 'invalid_job' });
+  });
+  it('does not send after a human has taken over the lead in Lead Hub', async () => {
+    await webhook(); await runtime.inbox!.processOnce();
+    const [lead] = await database.db.select().from(leads);
+    await database.db.update(leads).set({ status: 'contacted', firstResponseAt: new Date() })
+      .where(eq(leads.id, lead!.id));
+    await runtime.instagramOutbox!.processOnce();
+    expect(send).not.toHaveBeenCalled();
+    expect((await jobs())[0]).toMatchObject({ status: 'dead', lastError: 'lead_taken_over_or_claim_expired' });
+  });
   it('handles concurrent persistence of the same and different mids atomically', async () => {
     const first = parseMetaMessageEvents(envelope(), ['111'])[0]!;
     const second = parseMetaMessageEvents(envelope('mid-two'), ['111'])[0]!;
@@ -168,7 +217,7 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   });
   it('two outbound workers cannot send the same job', async () => {
     await webhook(); await runtime.inbox!.processOnce();
-    const second = new InstagramOutboxProcessor(database.db, { sendText: send }, runtime.app.log, loadConfig(environment).outbox, '111');
+    const second = new InstagramOutboxProcessor(database.db, { sendText: send }, history, runtime.app.log, loadConfig(environment).outbox, '111');
     await Promise.all([second.processOnce(), runtime.instagramOutbox!.processOnce()]);
     expect(send).toHaveBeenCalledTimes(1);
   });
@@ -258,7 +307,7 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
     const active = runtime.instagramOutbox!.processOnce();
     await sendStarted;
     await database.db.update(integrationOutbox).set({ updatedAt: new Date(0) }).where(eq(integrationOutbox.destination, 'instagram'));
-    const recovery = new InstagramOutboxProcessor(database.db, { sendText: send }, runtime.app.log, loadConfig(environment).outbox, '111');
+    const recovery = new InstagramOutboxProcessor(database.db, { sendText: send }, history, runtime.app.log, loadConfig(environment).outbox, '111');
     await recovery.processOnce();
     completeSend({ messageId: 'late-fake-id' }); await active;
     expect((await jobs())[0]?.status).toBe('dead');
@@ -283,7 +332,7 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   });
   it('respects a new rollout cutoff when an old pending job is resumed', async () => {
     await webhook(); await runtime.inbox!.processOnce();
-    const restart = new InstagramOutboxProcessor(database.db, { sendText: send }, runtime.app.log,
+    const restart = new InstagramOutboxProcessor(database.db, { sendText: send }, history, runtime.app.log,
       loadConfig(environment).outbox, '111', Date.now() + 1000);
     await restart.processOnce();
     expect(send).not.toHaveBeenCalled(); expect((await jobs())[0]?.status).toBe('dead');

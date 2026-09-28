@@ -34,6 +34,7 @@ import { registerRawBodyJsonParser } from './security/raw-body.js';
 import { InstagramMessageService } from './services/instagram-message-service.js';
 import { InstagramMessagingAdapter, type InstagramDelivery } from './integrations/instagram-messaging.js';
 import { InstagramOutboxProcessor } from './worker/instagram-outbox-processor.js';
+import { InstagramConversationHistory, type InstagramConversationGuard } from './integrations/instagram-conversation-guard.js';
 
 interface BuildRuntimeOptions {
   database?: DatabaseClient;
@@ -42,6 +43,7 @@ interface BuildRuntimeOptions {
   objectStorage?: ObjectStorage | null;
   startWorker?: boolean;
   instagram?: InstagramDelivery;
+  instagramHistory?: InstagramConversationGuard;
 }
 
 export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptions = {}) {
@@ -97,7 +99,12 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     ? (reference, submissionId) => objectStorage.isReferenceForSubmission(reference, submissionId)
     : undefined);
   const inboxService = new InboxService(database.db);
-  const instagramMessages = new InstagramMessageService(database.db, leadService, config.instagramMessaging);
+  const instagramHistory = config.instagramMessaging.enabled
+    ? options.instagramHistory || new InstagramConversationHistory({
+        accessToken: config.meta.instagramAccessToken!, accountId: config.instagramMessaging.accountId!,
+        graphVersion: config.instagramMessaging.graphVersion, timeoutMs: config.outbox.deliveryTimeoutMs,
+      }) : null;
+  const instagramMessages = new InstagramMessageService(database.db, leadService, config.instagramMessaging, instagramHistory);
   const telegram = options.telegram === undefined
     ? createConfiguredTelegram(config, leadService, objectStorage)
     : options.telegram;
@@ -132,7 +139,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     ? new InstagramOutboxProcessor(database.db, options.instagram || new InstagramMessagingAdapter({
         accessToken: config.meta.instagramAccessToken!, accountId: config.instagramMessaging.accountId!,
         graphVersion: config.instagramMessaging.graphVersion, timeoutMs: config.outbox.deliveryTimeoutMs,
-      }), app.log, config.outbox, config.instagramMessaging.accountId!, Date.parse(config.instagramMessaging.startAt!)) : null;
+      }), instagramHistory!, app.log, config.outbox, config.instagramMessaging.accountId!,
+      Date.parse(config.instagramMessaging.startAt!)) : null;
   const telegramPublicOutbox = telegramPublic
     ? new TelegramPublicOutboxProcessor(database.db, telegramPublic, app.log, config.outbox)
     : null;

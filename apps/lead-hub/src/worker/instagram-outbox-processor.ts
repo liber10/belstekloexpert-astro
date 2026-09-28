@@ -2,13 +2,15 @@ import { and, asc, eq, inArray, lte, sql } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
 import type { AppConfig } from '../config.js';
 import type { LeadHubDatabase } from '../db/client.js';
-import { integrationOutbox, leadEvents, type OutboxJob } from '../db/schema.js';
+import { integrationOutbox, leadEvents, leads, type OutboxJob } from '../db/schema.js';
 import { InstagramDeliveryError, type InstagramDelivery } from '../integrations/instagram-messaging.js';
+import type { InstagramConversationGuard } from '../integrations/instagram-conversation-guard.js';
 
 export class InstagramOutboxProcessor {
   private timer: NodeJS.Timeout | undefined;
   private activeRun: Promise<number> | undefined;
   constructor(private readonly db: LeadHubDatabase, private readonly delivery: InstagramDelivery,
+    private readonly history: InstagramConversationGuard,
     private readonly logger: FastifyBaseLogger, private readonly options: AppConfig['outbox'],
     private readonly accountId: string, private readonly startAt = 0) {}
 
@@ -70,12 +72,28 @@ export class InstagramOutboxProcessor {
     const payload = job.payload;
     const invalid = job.eventType !== 'instagram.first_reply' || payload.accountId !== this.accountId
       || typeof payload.recipientId !== 'string' || !/^\d+$/.test(payload.recipientId)
+      || typeof payload.inboundMessageId !== 'string' || !payload.inboundMessageId
       || typeof payload.text !== 'string' || !payload.text.trim() || payload.text.length > 1000
       || typeof payload.expiresAt !== 'number' || !Number.isFinite(payload.expiresAt);
     if (invalid || typeof payload.timestamp !== 'number' || payload.timestamp < this.startAt
       || Number(payload.expiresAt) <= Date.now()
       || Date.now() - job.updatedAt.getTime() >= this.options.deliveryTimeoutMs) {
       await this.fail(job, new InstagramDeliveryError(invalid ? 'invalid_job' : 'window_or_claim_expired', 'permanent'));
+      return;
+    }
+    const verdict = await this.history.inspectFirstMessage(payload.recipientId as string,
+      payload.inboundMessageId as string).catch(() => 'unverified' as const);
+    if (verdict !== 'first') {
+      await this.fail(job, new InstagramDeliveryError(verdict === 'existing'
+        ? 'conversation_changed_before_send' : 'conversation_unverified_before_send', 'permanent'));
+      return;
+    }
+    const [lead] = await this.db.select({ status: leads.status, firstResponseAt: leads.firstResponseAt })
+      .from(leads).where(eq(leads.id, job.leadId)).limit(1);
+    if (!lead || lead.status !== 'new' || lead.firstResponseAt
+      || Number(payload.expiresAt) <= Date.now()
+      || Date.now() - job.updatedAt.getTime() >= this.options.deliveryTimeoutMs) {
+      await this.fail(job, new InstagramDeliveryError('lead_taken_over_or_claim_expired', 'permanent'));
       return;
     }
     let result: { messageId: string };

@@ -179,6 +179,18 @@ production-архитектуры, провайдера, режима доста
     `telegram_worker_active=true`, `instagram_worker_active=false` и revision
     `15b77b791825086fa59983d5544f24be56c615c2`. Входящие лиды продолжают
     приниматься; автоответ не включать до исправления и canary-проверки.
+22. В feature-ветке локально реализована fail-closed проверка Instagram-
+    переписки по [ADR-0009](docs/decisions/0009-instagram-first-conversation-guard.md):
+    перед постановкой ответа и непосредственно перед отправкой read-only Graph
+    запрос должен подтвердить единственное сообщение с текущим provider mid и
+    отправителем. Старые, изменившиеся или недоступные переписки не получают
+    автоответ; лид и уведомление человека сохраняются. Задания прежнего формата
+    без provider mid не отправляются. `npm run lead-hub:check`: 73 unit-теста,
+    lint/typecheck/build прошли; локальные PostgreSQL integration tests:
+    43/43. Read-only probe реального Instagram Login API подтвердил поиск
+    беседы по одному существующему sender и поля `id`/`from` сообщений;
+    непрозрачный ID беседы учтён в коде. Токен, клиентские ID и тексты не
+    выводились. Код **не развёрнут** в production; Render outbound остаётся off.
 
 ## Ближайшие решения
 

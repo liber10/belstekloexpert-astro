@@ -32,6 +32,7 @@
 | [ADR-0006: Meta marketing agent](decisions/0006-meta-marketing-agent.md) | Decision | Принят для staged implementation; production publish не утверждён |
 | [ADR-0007: Instagram read-only boundary](decisions/0007-instagram-read-only-boundary.md) | Decision | Принят для локальной проверки; production outbound не утверждён |
 | [ADR-0008: Instagram Messaging MVP](decisions/0008-instagram-messaging-mvp.md) | Decision | Локально реализован; production требует отдельного approval |
+| [ADR-0009: новый Instagram-диалог](decisions/0009-instagram-first-conversation-guard.md) | Decision | Fail-closed проверка истории реализована локально; outbound выключен |
 
 ## Исторические документы
 
