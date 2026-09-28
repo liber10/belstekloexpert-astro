@@ -1,6 +1,6 @@
 # Состояние проекта BelStekloExpert
 
-Последняя актуализация: 27 сентября 2026 года.
+Последняя актуализация: 28 сентября 2026 года.
 
 Этот файл является короткой панелью проекта. Его нужно обновлять после изменения
 production-архитектуры, провайдера, режима доставки заявок или значимого ограничения.
@@ -17,7 +17,7 @@ production-архитектуры, провайдера, режима доста
 | База лидов | Neon PostgreSQL | Подключена | Pooled connection через `DATABASE_URL` |
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
 | Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Рабочий получатель новых карточек — группа «БелСтеклоЭксперт»; bot-to-group smoke test пройден 27 сентября 2026 года, полный lead-to-group smoke ожидается |
-| Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Ingress и outbound включены; первая отправка не проверена | Render `15b77b7` Live, Instagram worker active, база ready; Meta app опубликовано, callback и подписки сохранены. Реальный DM → сохранённый лид → Telegram-карточка подтверждены. Auto-reply действует только для новых диалогов после cutoff; ещё нет outbox-задания для фактического send smoke |
+| Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Ingress включён, outbound аварийно выключен | 28 сентября обнаружен автоответ в старом диалоге с уже работающим менеджером. `INSTAGRAM_MESSAGING_ENABLED=false` сохранён в Render; `/health/ready`: `instagram_worker_active=false`, PostgreSQL ready, Telegram worker active, revision `15b77b7`. Повторное включение заблокировано до проверки реальной истории диалога и ручного canary. |
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Meta Ads control plane | Repo-local guarded MCP | Локально интегрирован; repository default off | Commit `991a76f`; один allow-listed активный аккаунт ранее прошёл read/dry-run smoke; campaign-bundle v1 прошёл 72/72 локальных теста и plugin validator, live Meta writes не выполнялись |
 | Meta Page / Instagram publishing | Не входит в текущий Messaging MVP | Подготовка | Instagram token отделён от Ads-токенов; publishing и production permissions не подключены |
@@ -169,6 +169,16 @@ production-архитектуры, провайдера, режима доста
     доставлено в группу. Это не заменяет end-to-end проверку новой заявки через
     Lead Hub outbox; старые карточки в личном чате не переносятся автоматически,
     их inline-кнопки после смены разрешённого чата недоступны.
+21. 28 сентября 2026 года владелец показал автоответ в уже активной Instagram-
+    переписке о записи, где менеджер до этого отвечал вручную. Текущий код
+    определяет «первый ответ» по первому сообщению, сохранённому в Lead Hub,
+    а не по истории переписки Instagram; cutoff ограничивает время входящего DM,
+    но не дату начала диалога. С разрешения владельца в Render установлен
+    `INSTAGRAM_MESSAGING_ENABLED=false` через Save and deploy. Публичный
+    `/health/ready` подтвердил `ok=true`, `database=ready`,
+    `telegram_worker_active=true`, `instagram_worker_active=false` и revision
+    `15b77b791825086fa59983d5544f24be56c615c2`. Входящие лиды продолжают
+    приниматься; автоответ не включать до исправления и canary-проверки.
 
 ## Ближайшие решения
 
