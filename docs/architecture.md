@@ -1,6 +1,6 @@
 # Архитектура BelStekloExpert
 
-Последняя актуализация: 27 сентября 2026 года.
+Последняя актуализация: 28 сентября 2026 года.
 
 ## Системный контекст
 
@@ -29,7 +29,7 @@ flowchart LR
     TG --> CHAT
 ```
 
-## Instagram Messaging MVP (код в production, ingress/outbound off)
+## Instagram Messaging MVP (ingress включён, outbound выключен)
 
 ```text
 Existing Meta webhook: Instagram DM
@@ -37,14 +37,16 @@ Existing Meta webhook: Instagram DM
   -> integration_inbox (dedupe by message.mid)
   -> InboxProcessor retry/dead-letter
   -> PostgreSQL lead + Telegram human-card outbox (transaction 1)
-  -> each DM + first-reply decision + Instagram outbox (transaction 2)
-  -> InstagramOutboxProcessor -> separate Instagram Login adapter
+  -> each DM + read-only provider history gate + first-reply decision
+  -> eligible Instagram outbox (transaction 2)
+  -> InstagramOutboxProcessor -> repeat history gate -> Instagram Login adapter
   -> sent + audit OR retry -> dead + Telegram escalation outbox
 ```
 
 Два этапа фиксации восстанавливаются через тот же durable inbox; отправка
 Instagram начинается только после commit DM/outbox. Каждый DM сохраняется
-отдельно; первый ответ один на сохранённый диалог. Telegram-worker выбирает только
+отдельно; первый ответ допускается только для действительно новой переписки,
+не обработанной человеком. Telegram-worker выбирает только
 своё destination. Лид остаётся доступным человеку независимо от auto-response.
 Неизвестный исход отправки не повторяется автоматически: dead-letter и alert
 предпочтительнее дублирования DM. Существующие таблицы и уникальные индексы
@@ -60,9 +62,10 @@ Rollout/settings/env/rollback: [runbook](meta-messaging-runbook.md).
 ID или username и не выполняет публикацию, отправку сообщений или изменение
 настроек. Отдельный `instagram-messaging.ts` использует этот Instagram Login token
 для отправки только при `INSTAGRAM_MESSAGING_ENABLED=true`. Код развёрнут на
-Render в commit `15b77b7`, но `INSTAGRAM_MESSAGING_ENABLED=false` и
-`META_INGEST_ENABLED` не задан (default false). Meta rollout и реальные отправки
-не выполнены. `META_WRITE_MODE=off` и Ads MCP не изменены.
+Render в commit `097efdd`: ingress включён, но
+`INSTAGRAM_MESSAGING_ENABLED=false`. Fail-closed проверка истории Instagram
+выполняется перед постановкой и отправкой первого ответа. Canary нового диалога
+после релиза не выполнен. `META_WRITE_MODE=off` и Ads MCP не изменены.
 
 ## Компоненты
 
