@@ -9,6 +9,17 @@ describe('loadConfig', () => {
     expect(config.meta.enabled).toBe(false);
     expect(config.telegramPublic.enabled).toBe(false);
     expect(config.allowedOrigins).toEqual(['http://localhost:4321']);
+    expect(config.instagramMessaging.mode).toBe('off');
+  });
+
+  it('requires a one-time phrase and separates canary from general outbound', () => {
+    const base = { DATABASE_URL: 'postgres://localhost/lead_hub', INSTAGRAM_CANARY_ENABLED: 'true' };
+    expect(() => loadConfig(base)).toThrow('INSTAGRAM_CANARY_PHRASE');
+    expect(() => loadConfig({ ...base, INSTAGRAM_CANARY_PHRASE: 'short' })).toThrow();
+    expect(() => loadConfig({ ...base, INSTAGRAM_CANARY_PHRASE: 'SYNTHETIC CANARY PHRASE 123456' }))
+      .toThrow('META_INGEST_ENABLED');
+    expect(() => loadConfig({ ...base, INSTAGRAM_MESSAGING_ENABLED: 'true',
+      INSTAGRAM_CANARY_PHRASE: 'SYNTHETIC CANARY PHRASE 123456' })).toThrow('mutually exclusive');
   });
 
   it('keeps object storage disabled when no B2 settings are present', () => {

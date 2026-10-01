@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { and, eq } from 'drizzle-orm';
 import type { AppConfig } from '../config.js';
 import type { LeadHubDatabase } from '../db/client.js';
@@ -21,8 +22,11 @@ export class InstagramMessageService {
     const now = Date.now();
     const start = this.config.startAt ? Date.parse(this.config.startAt) : Infinity;
     const timestamp = message.timestamp;
+    const canaryMatch = this.config.mode !== 'canary'
+      || (message.text?.trim() === this.config.canaryPhrase && message.attachmentTypes.length === 0);
     const preliminarySkip = !this.config.enabled ? 'disabled'
       : message.recipientId !== this.config.accountId ? 'account_not_allowed'
+      : !canaryMatch ? 'canary_only'
       : !timestamp || !Number.isSafeInteger(timestamp) || timestamp > now + 60_000 ? 'invalid_timestamp'
       : timestamp < start || ingestedAt.getTime() < start ? 'before_rollout'
       : now - timestamp >= INSTAGRAM_REPLY_WINDOW_MS ? 'window_expired' : null;
@@ -49,18 +53,22 @@ export class InstagramMessageService {
         || (historyVerdict === 'existing' ? 'existing_conversation'
         : historyVerdict !== 'first' ? 'history_unverified'
         : !text ? 'text_not_configured' : null);
+      // A single, hashed phrase claims one global canary attempt. A replay is
+      // already stopped above; a second conversation cannot reuse the marker.
+      const canaryKey = this.config.mode === 'canary' && this.config.canaryPhrase
+        ? `instagram:canary:${createHash('sha256').update(this.config.canaryPhrase).digest('hex')}` : null;
+      const claimed = skipped ? [] : await tx.insert(integrationOutbox).values({
+        leadId: lead.id, destination: 'instagram', eventType: 'instagram.first_reply',
+        idempotencyKey: canaryKey || `instagram:first:${lead.id}`,
+        payload: { accountId: message.recipientId, recipientId: message.senderId, text, scenario,
+          replyMode: this.config.mode, inboundMessageId: message.messageId || message.externalEventId,
+          inboundEventId: message.externalEventId, timestamp, expiresAt: timestamp! + INSTAGRAM_REPLY_WINDOW_MS },
+      }).onConflictDoNothing({ target: integrationOutbox.idempotencyKey }).returning({ id: integrationOutbox.id });
       await tx.insert(leadEvents).values({
         leadId: lead.id, source: 'instagram_reply_policy', eventType: 'instagram_first_reply_decision',
-        externalEventId: lead.id, payload: { scenario, skipped, inboundEventId: message.externalEventId },
+        externalEventId: lead.id, payload: { scenario, skipped: skipped || (!claimed.length ? 'canary_consumed' : null),
+          inboundEventId: message.externalEventId },
       });
-      if (skipped) return;
-      await tx.insert(integrationOutbox).values({
-        leadId: lead.id, destination: 'instagram', eventType: 'instagram.first_reply',
-        idempotencyKey: `instagram:first:${lead.id}`,
-        payload: { accountId: message.recipientId, recipientId: message.senderId, text, scenario,
-          inboundMessageId: message.messageId || message.externalEventId,
-          inboundEventId: message.externalEventId, timestamp, expiresAt: timestamp! + INSTAGRAM_REPLY_WINDOW_MS },
-      }).onConflictDoNothing({ target: integrationOutbox.idempotencyKey });
       // Do not change lead.status or firstResponseAt: those represent human work.
     });
   }

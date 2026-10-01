@@ -43,6 +43,8 @@ const configSchema = z
     META_INSTAGRAM_ACCESS_TOKEN: optionalSecret,
     META_ALLOWED_RECIPIENT_IDS: z.string().default(''),
     INSTAGRAM_MESSAGING_ENABLED: booleanFromString.default(false),
+    INSTAGRAM_CANARY_ENABLED: booleanFromString.default(false),
+    INSTAGRAM_CANARY_PHRASE: z.string().trim().min(24).max(128).optional().or(z.literal('').transform(() => undefined)),
     META_INSTAGRAM_ACCOUNT_ID: z.string().regex(/^\d+$/).optional().or(z.literal('').transform(() => undefined)),
     META_INSTAGRAM_GRAPH_VERSION: z.string().regex(/^v\d+\.0$/).default('v25.0'),
     INSTAGRAM_REPLY_START_AT: z.iso.datetime().optional().or(z.literal('').transform(() => undefined)),
@@ -85,7 +87,13 @@ const configSchema = z
     LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   })
   .superRefine((config, context) => {
-    if (config.INSTAGRAM_MESSAGING_ENABLED) {
+    if (config.INSTAGRAM_MESSAGING_ENABLED && config.INSTAGRAM_CANARY_ENABLED) {
+      context.addIssue({ code: 'custom', message: 'Live and canary Instagram modes are mutually exclusive', path: ['INSTAGRAM_CANARY_ENABLED'] });
+    }
+    if (config.INSTAGRAM_CANARY_ENABLED && !config.INSTAGRAM_CANARY_PHRASE) {
+      context.addIssue({ code: 'custom', message: 'INSTAGRAM_CANARY_PHRASE is required for canary mode', path: ['INSTAGRAM_CANARY_PHRASE'] });
+    }
+    if (config.INSTAGRAM_MESSAGING_ENABLED || config.INSTAGRAM_CANARY_ENABLED) {
       for (const name of ['META_INGEST_ENABLED', 'TELEGRAM_ENABLED', 'META_INSTAGRAM_ACCESS_TOKEN',
         'META_INSTAGRAM_ACCOUNT_ID', 'INSTAGRAM_REPLY_START_AT', 'INSTAGRAM_REPLY_GENERAL_TEXT',
         'INSTAGRAM_REPLY_REPLACEMENT_TEXT', 'INSTAGRAM_REPLY_CHIP_REPAIR_TEXT'] as const) {
@@ -281,7 +289,10 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       deliveryTimeoutMs: parsed.data.OUTBOX_DELIVERY_TIMEOUT_MS,
     },
     instagramMessaging: {
-      enabled: parsed.data.INSTAGRAM_MESSAGING_ENABLED,
+      enabled: parsed.data.INSTAGRAM_MESSAGING_ENABLED || parsed.data.INSTAGRAM_CANARY_ENABLED,
+      mode: parsed.data.INSTAGRAM_MESSAGING_ENABLED ? 'live' as const
+        : parsed.data.INSTAGRAM_CANARY_ENABLED ? 'canary' as const : 'off' as const,
+      canaryPhrase: parsed.data.INSTAGRAM_CANARY_PHRASE,
       accountId: parsed.data.META_INSTAGRAM_ACCOUNT_ID,
       graphVersion: parsed.data.META_INSTAGRAM_GRAPH_VERSION,
       startAt: parsed.data.INSTAGRAM_REPLY_START_AT,

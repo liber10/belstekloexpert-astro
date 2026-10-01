@@ -16,6 +16,7 @@ describe('health diagnostics', () => {
     const pool = {
       query: vi.fn((query: string) => Promise.resolve(query.includes('select 1')
         ? { rows: [{ '?column?': 1 }] }
+        : query.includes("status = 'sending'") ? { rows: [{ count: '1' }] }
         : { rows: [
           { status: 'pending', count: '2', oldest_age_seconds: '31' },
           { status: 'dead', count: '1', oldest_age_seconds: '90' },
@@ -33,6 +34,7 @@ describe('health diagnostics', () => {
       ok: true, database: 'ready', telegram_configured: true, telegram_worker_active: true,
       instagram_configured: false, instagram_worker_active: false,
       outbox_pending: 2, outbox_retry: 0, outbox_dead: 1,
+      instagram_outbox_sending: 1,
       oldest_pending_age_seconds: 31, revision: 'test-revision',
     });
     await app.close();

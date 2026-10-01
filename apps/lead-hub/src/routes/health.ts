@@ -22,6 +22,10 @@ export function registerHealthRoutes(app: FastifyInstance, pool: Pool, options: 
         where status in ('pending', 'retry', 'dead')
         group by status
       `);
+      const instagramSending = await pool.query<{ count: string }>(`
+        select count(*)::text as count from integration_outbox
+        where destination = 'instagram' and status = 'sending'
+      `);
       const counts = { pending: 0, retry: 0, dead: 0 };
       let oldestPendingAge: number | null = null;
       for (const row of result.rows) {
@@ -44,6 +48,7 @@ export function registerHealthRoutes(app: FastifyInstance, pool: Pool, options: 
         outbox_pending: counts.pending,
         outbox_retry: counts.retry,
         outbox_dead: counts.dead,
+        instagram_outbox_sending: Number(instagramSending.rows[0]?.count ?? 0),
         oldest_pending_age_seconds: oldestPendingAge,
         revision: options.buildRevision,
       };

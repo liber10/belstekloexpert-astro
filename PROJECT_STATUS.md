@@ -1,6 +1,6 @@
 # Состояние проекта BelStekloExpert
 
-Последняя актуализация: 28 сентября 2026 года.
+Последняя актуализация: 30 сентября 2026 года.
 
 Этот файл является короткой панелью проекта. Его нужно обновлять после изменения
 production-архитектуры, провайдера, режима доставки заявок или значимого ограничения.
@@ -18,11 +18,21 @@ production-архитектуры, провайдера, режима доста
 | Фото заявок | Backblaze B2 | Работает | Закрытый bucket, signed upload/download |
 | Telegram | Webhook и outbox worker Lead Hub на Render | Работает | Рабочий получатель новых карточек — группа «БелСтеклоЭксперт»; bot-to-group smoke test пройден 27 сентября 2026 года, полный lead-to-group smoke ожидается |
 | Instagram Messaging MVP | Существующий Meta webhook → durable inbox → lead/message → Instagram outbox → retry/dead/Telegram escalation | Ingress включён, outbound выключен | 28 сентября развёрнут fail-closed history guard `097efdd`; `INSTAGRAM_MESSAGING_ENABLED=false`, `/health/ready`: Instagram worker inactive, PostgreSQL ready, Telegram worker active. Повторное включение ждёт canary нового диалога и отдельного подтверждения. |
+
 | Публичный Telegram-бот | Отдельный webhook, FSM и outbox Lead Hub | Выключен | Код и миграция `cae7eef` live; `TELEGRAM_PUBLIC_ENABLED=false`, включение ждёт `LEGAL-001` и smoke test |
 | Meta Ads control plane | Repo-local guarded MCP | Локально интегрирован; repository default off | Commit `991a76f`; один allow-listed активный аккаунт ранее прошёл read/dry-run smoke; campaign-bundle v1 прошёл 72/72 локальных теста и plugin validator, live Meta writes не выполнялись |
 | Meta Page / Instagram publishing | Не входит в текущий Messaging MVP | Подготовка | Instagram token отделён от Ads-токенов; publishing и production permissions не подключены |
 | Резервное object storage | Cloudflare R2 | Доступ получен | Пока не используется в production |
 | Основной домен | `belstekloexpert.by` | Работает | Authoritative DNS: Cloudflare; apex и `www` резолвятся через Cloudflare |
+
+Локально 30 сентября подготовлен ограниченный canary по одноразовой фразе в том же
+Instagram-контуре: обычные DM по-прежнему не получают ответ, а задания другого
+режима не отправляются. Добавлен счётчик `instagram_outbox_sending` для следующего
+production health. Проверки Lead Hub lint/typecheck/unit/build прошли (74 unit-теста),
+интеграционные тесты — 47/47 на отдельной локальной `lead_hub_test` PostgreSQL.
+Production-deploy и реальный canary пока не подтверждены. `roman5957788` уже
+участвовал в переписке и не является подходящим
+положительным тестом действительно новой беседы.
 
 ## Что уже реализовано
 

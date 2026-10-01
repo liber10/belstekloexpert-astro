@@ -18,6 +18,8 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   let database: DatabaseClient;
   let runtime: Awaited<ReturnType<typeof buildRuntime>>;
   let disabled: Awaited<ReturnType<typeof buildRuntime>>;
+  let canary: Awaited<ReturnType<typeof buildRuntime>>;
+  const canaryPhrase = 'SYNTHETIC CANARY 8f73d4b9a28c';
   const secret = 'fake-meta-signature-secret';
   const send = vi.fn<(id: string, text: string) => Promise<{ messageId: string }>>(() => Promise.resolve({ messageId: 'fake-outbound-id' }));
   const inspectFirstMessage = vi.fn<(senderId: string, messageId: string) => Promise<'first' | 'existing' | 'unverified'>>(
@@ -63,8 +65,13 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
     disabled = await buildRuntime(loadConfig({ ...environment, INSTAGRAM_MESSAGING_ENABLED: 'false' }), {
       database, telegram, instagram: { sendText: send }, startWorker: false,
     });
+    canary = await buildRuntime(loadConfig({ ...environment, INSTAGRAM_MESSAGING_ENABLED: 'false',
+      INSTAGRAM_CANARY_ENABLED: 'true', INSTAGRAM_CANARY_PHRASE: canaryPhrase }), {
+      database, telegram, instagram: { sendText: send }, instagramHistory: history, startWorker: false,
+    });
     await runtime.app.ready();
     await disabled.app.ready();
+    await canary.app.ready();
   });
   beforeEach(async () => {
     await database.db.execute(sql`truncate table integration_inbox, integration_outbox, lead_events, leads restart identity cascade`);
@@ -76,6 +83,7 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
   afterAll(async () => {
     await runtime?.app.close();
     await disabled?.app.close();
+    await canary?.app.close();
     await database?.pool.end();
   });
 
@@ -112,6 +120,49 @@ describe.runIf(Boolean(databaseUrl))('Instagram durable pipeline (synthetic data
     await runtime.instagramOutbox!.processOnce();
     expect(send).toHaveBeenCalledTimes(1);
     expect(await jobs()).toHaveLength(1);
+  });
+  it('canary leaves ordinary clients visible to humans without sending', async () => {
+    await webhook(envelope(), canary);
+    await canary.inbox!.processOnce();
+    await canary.instagramOutbox!.processOnce();
+    await canary.outbox!.processOnce();
+    expect(await database.db.select().from(leads)).toHaveLength(1);
+    expect(card).toHaveBeenCalledTimes(1);
+    expect(await jobs()).toHaveLength(0);
+    expect(send).not.toHaveBeenCalled();
+    const [decision] = await database.db.select().from(leadEvents).where(eq(leadEvents.source, 'instagram_reply_policy'));
+    expect(decision?.payload.skipped).toBe('canary_only');
+  });
+  it('canary sends once for an exact first message and cannot be reused', async () => {
+    const first = envelope('canary-first', { text: canaryPhrase });
+    await webhook(first, canary); await canary.inbox!.processOnce();
+    expect((await jobs())[0]?.payload.replyMode).toBe('canary');
+    await canary.instagramOutbox!.processOnce();
+    await webhook(first, canary); await canary.inbox!.processOnce();
+    const second = envelope('canary-second', { text: canaryPhrase });
+    second.entry[0]!.messaging[0]!.sender.id = '333';
+    await webhook(second, canary); await canary.inbox!.processOnce();
+    await canary.instagramOutbox!.processOnce();
+    expect(await database.db.select().from(leads)).toHaveLength(2);
+    expect(await jobs()).toHaveLength(1);
+    expect(send).toHaveBeenCalledTimes(1);
+    expect((await jobs())[0]?.status).toBe('sent');
+    const decisions = await database.db.select().from(leadEvents).where(eq(leadEvents.source, 'instagram_reply_policy'));
+    expect(decisions.some((decision) => decision.payload.skipped === 'canary_consumed')).toBe(true);
+  });
+  it('canary never replies to an existing conversation even with the exact phrase', async () => {
+    inspectFirstMessage.mockResolvedValue('existing');
+    await webhook(envelope('canary-existing', { text: canaryPhrase }), canary);
+    await canary.inbox!.processOnce(); await canary.instagramOutbox!.processOnce();
+    expect(await jobs()).toHaveLength(0);
+    expect(send).not.toHaveBeenCalled();
+  });
+  it('does not send a queued canary after switching to general mode', async () => {
+    await webhook(envelope('canary-pending', { text: canaryPhrase }), canary);
+    await canary.inbox!.processOnce();
+    await runtime.instagramOutbox!.processOnce();
+    expect(send).not.toHaveBeenCalled();
+    expect((await jobs())[0]).toMatchObject({ status: 'dead', lastError: 'invalid_job' });
   });
   it('persists different subsequent DMs in one conversation without conflict or second reply', async () => {
     await webhook(); await runtime.inbox!.processOnce();

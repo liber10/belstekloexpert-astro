@@ -140,7 +140,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
         accessToken: config.meta.instagramAccessToken!, accountId: config.instagramMessaging.accountId!,
         graphVersion: config.instagramMessaging.graphVersion, timeoutMs: config.outbox.deliveryTimeoutMs,
       }), instagramHistory!, app.log, config.outbox, config.instagramMessaging.accountId!,
-      Date.parse(config.instagramMessaging.startAt!)) : null;
+      Date.parse(config.instagramMessaging.startAt!),
+      config.instagramMessaging.mode === 'canary' ? 'canary' : 'live') : null;
   const telegramPublicOutbox = telegramPublic
     ? new TelegramPublicOutboxProcessor(database.db, telegramPublic, app.log, config.outbox)
     : null;

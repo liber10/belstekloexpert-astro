@@ -12,7 +12,8 @@ export class InstagramOutboxProcessor {
   constructor(private readonly db: LeadHubDatabase, private readonly delivery: InstagramDelivery,
     private readonly history: InstagramConversationGuard,
     private readonly logger: FastifyBaseLogger, private readonly options: AppConfig['outbox'],
-    private readonly accountId: string, private readonly startAt = 0) {}
+    private readonly accountId: string, private readonly startAt = 0,
+    private readonly mode: 'live' | 'canary' = 'live') {}
 
   start() {
     if (this.timer) return;
@@ -71,6 +72,7 @@ export class InstagramOutboxProcessor {
   private async deliver(job: OutboxJob) {
     const payload = job.payload;
     const invalid = job.eventType !== 'instagram.first_reply' || payload.accountId !== this.accountId
+      || payload.replyMode !== this.mode
       || typeof payload.recipientId !== 'string' || !/^\d+$/.test(payload.recipientId)
       || typeof payload.inboundMessageId !== 'string' || !payload.inboundMessageId
       || typeof payload.text !== 'string' || !payload.text.trim() || payload.text.length > 1000
