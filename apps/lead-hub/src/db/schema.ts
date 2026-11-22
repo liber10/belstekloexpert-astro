@@ -70,6 +70,8 @@ export const leads = pgTable(
     wonAt: timestamp('won_at', { withTimezone: true, mode: 'date' }),
     lostAt: timestamp('lost_at', { withTimezone: true, mode: 'date' }),
     quoteAmount: numeric('quote_amount', { precision: 12, scale: 2 }),
+    finalAmount: numeric('final_amount', { precision: 12, scale: 2 }),
+    paidAt: timestamp('paid_at', { withTimezone: true, mode: 'date' }),
     revenue: numeric('revenue', { precision: 12, scale: 2 }),
     cost: numeric('cost', { precision: 12, scale: 2 }),
     grossProfit: numeric('gross_profit', { precision: 12, scale: 2 }),
@@ -215,6 +217,7 @@ export const telegramPublicOutbox = pgTable(
   {
     id: uuid('id').primaryKey().defaultRandom(),
     sessionId: uuid('session_id').references(() => telegramPublicSessions.id, { onDelete: 'cascade' }),
+    subscriptionLeadId: uuid('subscription_lead_id').references(() => leads.id, { onDelete: 'cascade' }),
     chatId: varchar('chat_id', { length: 40 }).notNull(),
     payload: jsonb('payload').$type<Record<string, unknown>>().notNull(),
     idempotencyKey: varchar('idempotency_key', { length: 255 }).notNull(),
@@ -240,3 +243,17 @@ export type FormSubmissionAudit = typeof formSubmissionAudits.$inferSelect;
 export type InboxEvent = typeof integrationInbox.$inferSelect;
 export type TelegramPublicSession = typeof telegramPublicSessions.$inferSelect;
 export type TelegramPublicOutboxJob = typeof telegramPublicOutbox.$inferSelect;
+
+export const telegramPublicActivity = pgTable('telegram_public_activity', {
+  updateId: varchar('update_id', { length: 40 }).primaryKey(),
+  kind: varchar('kind', { length: 24 }).notNull(),
+  acquisitionCode: varchar('acquisition_code', { length: 64 }),
+  createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull(),
+}, (table) => [index('telegram_public_activity_created_idx').on(table.createdAt)]);
+
+export const telegramPublicSubscriptions = pgTable('telegram_public_subscriptions', {
+  leadId: uuid('lead_id').primaryKey().references(() => leads.id, { onDelete: 'cascade' }),
+  chatId: varchar('chat_id', { length: 40 }).notNull(),
+  optedInAt: timestamp('opted_in_at', { withTimezone: true, mode: 'date' }).notNull(),
+  revokedAt: timestamp('revoked_at', { withTimezone: true, mode: 'date' }),
+}, (table) => [index('telegram_public_subscriptions_chat_idx').on(table.chatId)]);

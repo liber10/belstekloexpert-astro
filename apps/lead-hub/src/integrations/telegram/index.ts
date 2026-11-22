@@ -1,15 +1,18 @@
-import { Bot, type Context } from 'grammy';
+import { Bot, GrammyError, type Context } from 'grammy';
 import type { Update } from 'grammy/types';
 import type { Lead } from '../../db/schema.js';
 import { maskPhone } from '../../domain/phone.js';
 import { isLeadStatus, statusLabels } from '../../domain/status.js';
 import type { LeadService } from '../../services/lead-service.js';
+import { parseStaffRoster, type TelegramStaffService } from '../../services/telegram-staff-service.js';
 import { buildLeadCard, buildLeadKeyboard } from './card.js';
+import { registerStaffCommands, staffError } from './staff.js';
 
 export interface TelegramDelivery {
   sendLeadCard(lead: Lead): Promise<{ chatId: string; messageId: number }>;
   editLeadCard(lead: Lead): Promise<void>;
   sendInstagramAlert(lead: Lead, unknownOutcome: boolean): Promise<void>;
+  sendSlaAlert?(lead: Lead): Promise<void>;
 }
 
 export interface TelegramIntegration extends TelegramDelivery {
@@ -20,6 +23,8 @@ export interface TelegramIntegration extends TelegramDelivery {
 interface TelegramOptions {
   botToken: string;
   chatId: string;
+  staffRoster?: string;
+  staff?: TelegramStaffService;
   photoUrlResolver?: (references: string[]) => Promise<string[]>;
 }
 
@@ -67,14 +72,17 @@ export function createTelegramIntegration(
 ): TelegramIntegration {
   const bot = new Bot(options.botToken);
   const isAllowedChat = (context: Context) => String(context.chat?.id || '') === options.chatId;
+  const roles = parseStaffRoster(options.staffRoster ?? '');
+  const staff = options.staff;
 
   bot.use(async (context, next) => {
-    if (!isAllowedChat(context)) {
+    if (!isAllowedChat(context) || (staff && !roles.has(String(context.from?.id)))) {
       if (context.callbackQuery) await context.answerCallbackQuery({ text: 'Нет доступа.' });
       return;
     }
     await next();
   });
+  if (staff) registerStaffCommands(bot, staff, roles);
 
   bot.callbackQuery(/^status:([^:]+):([0-9a-f-]{36})$/i, async (context) => {
     const [, rawStatus, leadId] = context.match;
@@ -84,21 +92,30 @@ export function createTelegramIntegration(
     }
 
     const externalEventId = `telegram:callback:${context.callbackQuery.id}`;
+    const actorId = String(context.from.id);
+    const master = roles.get(actorId) === 'master';
+    if (master && !['contacted', 'qualified', 'booked', 'arrived', 'won'].includes(rawStatus)) {
+      await context.answerCallbackQuery({ text: 'Нет доступа.' });
+      return;
+    }
     const lead = await leadService.changeStatus(leadId, rawStatus, {
-      source: 'telegram',
-      externalEventId,
-      actorId: String(context.from.id),
+      source: 'telegram', externalEventId, actorId, ...(master ? { requiredAssignee: actorId } : {}),
+    }).catch(async (error: unknown) => {
+      await context.answerCallbackQuery({ text: staffError(error) });
+      return null;
     });
+    if (!lead) return;
 
     await context.answerCallbackQuery({ text: `Статус: ${statusLabels[rawStatus]}` });
     if (rawStatus === 'won') {
-      await context.reply(`Лид #${lead.publicId} выполнен. Зафиксируйте сумму в учётной системе.`);
+      await context.reply(`Лид #${lead.publicId} выполнен. ${staff ? 'Менеджер может внести сумму через /price и подтвердить оплату через /paid.' : 'Зафиксируйте сумму в учётной системе.'}`);
     } else if (rawStatus === 'lost') {
       await context.reply(`Лид #${lead.publicId} потерян. Укажите причину ответом менеджеру.`);
     }
   });
 
   bot.command('new', async (context) => {
+    if (roles.get(String(context.from?.id)) === 'master') return;
     const value = context.match.trim();
     const [phone, ...serviceParts] = value.split(/\s+/);
     if (!phone) {
@@ -120,6 +137,7 @@ export function createTelegramIntegration(
   });
 
   bot.command('today', async (context) => {
+    if (roles.get(String(context.from?.id)) === 'master') return;
     const summary = await leadService.getTodaySummary();
     const total = summary.reduce((sum, row) => sum + row.total, 0);
     const lines = summary.map((row) => `${statusLabels[row.status as keyof typeof statusLabels] || row.status}: ${row.total}`);
@@ -127,6 +145,7 @@ export function createTelegramIntegration(
   });
 
   bot.command('sla', async (context) => {
+    if (roles.get(String(context.from?.id)) === 'master') return;
     const overdue = await leadService.getSlaBreaches();
     if (!overdue.length) {
       await context.reply('Просроченных новых лидов нет.');
@@ -138,6 +157,7 @@ export function createTelegramIntegration(
   });
 
   bot.command('funnel', async (context) => {
+    if (roles.get(String(context.from?.id)) === 'master') return;
     const match = /^(\d{1,3})d$/i.exec(context.match.trim());
     const days = Math.min(Number(match?.[1] || 7), 90);
     const funnel = await leadService.getFunnel(days);
@@ -146,6 +166,12 @@ export function createTelegramIntegration(
   });
 
   return {
+    ...(staff ? {
+      async sendSlaAlert(lead: Lead) {
+        if (lead.status !== 'new' || lead.firstResponseAt) return;
+        await bot.api.sendMessage(options.chatId, `Заявка #${lead.publicId} ожидает реакции более 5 минут.\n/queue`);
+      },
+    } : {}),
     async sendInstagramAlert(lead, unknownOutcome) {
       const text = [`Instagram: требуется ответ менеджера. Лид #${lead.publicId}.`,
         unknownOutcome
@@ -170,8 +196,8 @@ export function createTelegramIntegration(
       return deliverLeadWithBestEffortPhotos({
         lead,
         sendCard: async () => {
-          const message = await bot.api.sendMessage(options.chatId, buildLeadCard(lead), {
-            reply_markup: buildLeadKeyboard(lead),
+          const message = await bot.api.sendMessage(options.chatId, buildLeadCard(lead, Boolean(staff)), {
+            reply_markup: buildLeadKeyboard(lead, Boolean(staff)),
           });
           return { chatId: String(message.chat.id), messageId: message.message_id };
         },
@@ -190,8 +216,8 @@ export function createTelegramIntegration(
         await bot.api.editMessageText(
           lead.telegramChatId,
           lead.telegramMessageId,
-          buildLeadCard(lead),
-          { reply_markup: buildLeadKeyboard(lead) },
+          buildLeadCard(lead, Boolean(staff)),
+          { reply_markup: buildLeadKeyboard(lead, Boolean(staff)) },
         );
       } catch (error) {
         // Telegram returns HTTP 400 when an idempotent edit already matches the card.
@@ -201,7 +227,15 @@ export function createTelegramIntegration(
     },
 
     async handleUpdate(update) {
-      await bot.handleUpdate(update);
+      await bot.init();
+      try {
+        await bot.handleUpdate(update);
+      } catch (error) {
+        const cause = error instanceof Error && 'error' in error ? error.error : error;
+        if (cause instanceof GrammyError && cause.method === 'answerCallbackQuery' &&
+          cause.error_code === 400 && /query is too old|query ID is invalid/i.test(cause.description)) return;
+        throw cause;
+      }
     },
   };
 }

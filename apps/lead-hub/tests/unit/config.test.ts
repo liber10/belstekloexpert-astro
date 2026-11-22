@@ -98,6 +98,8 @@ describe('loadConfig', () => {
       TELEGRAM_PUBLIC_BOT_USERNAME: 'BelStekloExpertHelpBot',
       TELEGRAM_PUBLIC_WEBHOOK_SECRET: 'test-public-webhook-secret',
       TELEGRAM_PUBLIC_PRIVACY_VERSION: 'test-v1',
+      TELEGRAM_PUBLIC_PRIVACY_URL: 'https://example.test/privacy/',
+      TELEGRAM_PUBLIC_SUPPORT_PHONE: '+375291111111',
       LEAD_HUB_PUBLIC_URL: 'https://lead-hub.example.test',
     });
     expect(config.telegramPublic).toMatchObject({

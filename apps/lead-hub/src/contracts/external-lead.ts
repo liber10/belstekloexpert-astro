@@ -22,6 +22,7 @@ export interface ExternalLeadInput {
   visitType?: string;
   preferredAt?: string;
   message?: string;
+  photoRefs?: string[];
   sourceActionUrl?: string;
   sourceMetadata?: Record<string, string | number | boolean | null>;
   acquisitionCode?: string;

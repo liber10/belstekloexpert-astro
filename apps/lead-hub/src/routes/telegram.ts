@@ -1,8 +1,11 @@
 import { Type } from '@sinclair/typebox';
 import type { FastifyInstance } from 'fastify';
+import type { Update } from 'grammy/types';
 import type { AppConfig } from '../config.js';
 import type { TelegramIntegration } from '../integrations/telegram/index.js';
 import { matchesSecret } from '../security/secrets.js';
+import type { InboxService } from '../services/inbox-service.js';
+import { parseStaffRoster } from '../services/telegram-staff-service.js';
 
 interface TelegramHeaders {
   'x-telegram-bot-api-secret-token'?: string;
@@ -12,7 +15,9 @@ export function registerTelegramRoutes(
   app: FastifyInstance,
   config: AppConfig,
   telegram: TelegramIntegration | null,
+  inbox?: InboxService,
 ) {
+  const roles = parseStaffRoster(config.telegram.staffRoster);
   app.post<{ Body: unknown; Headers: TelegramHeaders }>(
     '/api/v1/webhooks/telegram',
     {
@@ -42,7 +47,20 @@ export function registerTelegramRoutes(
         return reply.code(401).send({ ok: false, error: 'invalid_webhook_secret' });
       }
 
-      await telegram.handleUpdate(request.body as Parameters<TelegramIntegration['handleUpdate']>[0]);
+      const update = request.body as Update | null;
+      if (!update || !Number.isSafeInteger(update.update_id) || update.update_id < 0) {
+        return reply.code(400).send({ ok: false, error: 'invalid_update' });
+      }
+      if (inbox && roles.size) {
+        const message = update.message ?? update.callback_query?.message;
+        const user = update.message?.from ?? update.callback_query?.from;
+        if (String(message?.chat?.id) !== config.telegram.chatId || user?.is_bot || !roles.has(String(user?.id))) {
+          return reply.code(200).send({ ok: true, ignored: true });
+        }
+        const result = await inbox.accept('telegram_staff', 'update.received', String(update.update_id), { ...update });
+        return reply.code(200).send({ ok: true, accepted: true, deduplicated: result.deduplicated });
+      }
+      await telegram.handleUpdate(update);
       return reply.code(200).send({ ok: true });
     },
   );

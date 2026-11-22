@@ -54,11 +54,14 @@ const configSchema = z
     TELEGRAM_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_CHAT_ID: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_WEBHOOK_SECRET: optionalSecret,
+    TELEGRAM_STAFF_ROSTER: z.string().trim().regex(/^(?:\d{1,16}:(?:admin|manager|master)(?:,\d{1,16}:(?:admin|manager|master))*)?$/).default(''),
     TELEGRAM_PUBLIC_ENABLED: booleanFromString.default(false),
     TELEGRAM_PUBLIC_BOT_TOKEN: z.string().trim().optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_PUBLIC_BOT_USERNAME: optionalText,
     TELEGRAM_PUBLIC_WEBHOOK_SECRET: optionalSecret,
     TELEGRAM_PUBLIC_PRIVACY_VERSION: optionalText,
+    TELEGRAM_PUBLIC_PRIVACY_URL: z.url({ protocol: /^https$/ }).optional().or(z.literal('').transform(() => undefined)),
+    TELEGRAM_PUBLIC_SUPPORT_PHONE: z.string().trim().regex(/^\+[\d ()-]{9,22}$/).optional().or(z.literal('').transform(() => undefined)),
     TELEGRAM_PUBLIC_SESSION_TTL_HOURS: z.coerce.number().int().min(1).max(168).default(24),
     OBJECT_STORAGE_ENDPOINT: z.string().url().optional().or(z.literal('').transform(() => undefined)),
     OBJECT_STORAGE_REGION: optionalText,
@@ -201,10 +204,21 @@ const configSchema = z
         ['TELEGRAM_PUBLIC_BOT_USERNAME', config.TELEGRAM_PUBLIC_BOT_USERNAME],
         ['TELEGRAM_PUBLIC_WEBHOOK_SECRET', config.TELEGRAM_PUBLIC_WEBHOOK_SECRET],
         ['TELEGRAM_PUBLIC_PRIVACY_VERSION', config.TELEGRAM_PUBLIC_PRIVACY_VERSION],
+        ['TELEGRAM_PUBLIC_PRIVACY_URL', config.TELEGRAM_PUBLIC_PRIVACY_URL],
+        ['TELEGRAM_PUBLIC_SUPPORT_PHONE', config.TELEGRAM_PUBLIC_SUPPORT_PHONE],
         ['LEAD_HUB_PUBLIC_URL', config.LEAD_HUB_PUBLIC_URL],
       ] as const;
       for (const [name, value] of required) {
         if (!value) context.addIssue({ code: 'custom', message: `${name} is required when TELEGRAM_PUBLIC_ENABLED=true`, path: [name] });
+      }
+      for (const [name, same] of [
+        ['TELEGRAM_PUBLIC_BOT_TOKEN', config.TELEGRAM_PUBLIC_BOT_TOKEN === config.TELEGRAM_BOT_TOKEN],
+        ['TELEGRAM_PUBLIC_WEBHOOK_SECRET', config.TELEGRAM_PUBLIC_WEBHOOK_SECRET === config.TELEGRAM_WEBHOOK_SECRET],
+      ] as const) {
+        if (config[name] && same) context.addIssue({ code: 'custom', path: [name], message: 'Public and staff credentials must differ' });
+      }
+      if (config.NODE_ENV === 'production' && (!config.TELEGRAM_ENABLED || !config.TELEGRAM_STAFF_ROSTER || !objectStorageEnabled)) {
+        context.addIssue({ code: 'custom', path: ['TELEGRAM_PUBLIC_ENABLED'], message: 'Public Telegram requires staff delivery, a staff roster and private object storage' });
       }
       if (config.TELEGRAM_PUBLIC_BOT_USERNAME && !/^[A-Za-z0-9_]{5,32}$/.test(config.TELEGRAM_PUBLIC_BOT_USERNAME)) {
         context.addIssue({ code: 'custom', message: 'TELEGRAM_PUBLIC_BOT_USERNAME is invalid', path: ['TELEGRAM_PUBLIC_BOT_USERNAME'] });
@@ -213,6 +227,10 @@ const configSchema = z
         && new URL(config.LEAD_HUB_PUBLIC_URL).protocol !== 'https:') {
         context.addIssue({ code: 'custom', message: 'LEAD_HUB_PUBLIC_URL must use HTTPS in production', path: ['LEAD_HUB_PUBLIC_URL'] });
       }
+    }
+    const staffIds = config.TELEGRAM_STAFF_ROSTER.split(',').filter(Boolean).map((entry) => entry.split(':')[0]);
+    if (staffIds.length !== new Set(staffIds).size || (staffIds.length && !config.TELEGRAM_STAFF_ROSTER.includes(':admin'))) {
+      context.addIssue({ code: 'custom', path: ['TELEGRAM_STAFF_ROSTER'], message: 'Staff roster requires unique accounts and an administrator' });
     }
   });
 
@@ -271,6 +289,7 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       botToken: parsed.data.TELEGRAM_BOT_TOKEN,
       chatId: parsed.data.TELEGRAM_CHAT_ID,
       webhookSecret: parsed.data.TELEGRAM_WEBHOOK_SECRET,
+      staffRoster: parsed.data.TELEGRAM_STAFF_ROSTER,
     },
     objectStorage,
     outbox: {
@@ -298,6 +317,8 @@ export function loadConfig(environment: NodeJS.ProcessEnv = process.env) {
       botUsername: parsed.data.TELEGRAM_PUBLIC_BOT_USERNAME,
       webhookSecret: parsed.data.TELEGRAM_PUBLIC_WEBHOOK_SECRET,
       privacyVersion: parsed.data.TELEGRAM_PUBLIC_PRIVACY_VERSION,
+      privacyUrl: parsed.data.TELEGRAM_PUBLIC_PRIVACY_URL,
+      supportPhone: parsed.data.TELEGRAM_PUBLIC_SUPPORT_PHONE,
       sessionTtlHours: parsed.data.TELEGRAM_PUBLIC_SESSION_TTL_HOURS,
     },
     inbox: {

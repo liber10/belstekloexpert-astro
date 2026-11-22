@@ -1,14 +1,16 @@
-import { and, asc, eq, inArray, lte, sql } from 'drizzle-orm';
+import { and, asc, eq, inArray, lte, notInArray, sql } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
+import { GrammyError } from 'grammy';
 import type { KufarEmailEvent } from '../contracts/kufar-email.js';
 import type { TelegramPublicUpdate } from '../contracts/telegram-public.js';
 import type { LeadHubDatabase } from '../db/client.js';
-import { integrationInbox, type InboxEvent } from '../db/schema.js';
+import { integrationInbox, telegramPublicSessions, type InboxEvent } from '../db/schema.js';
 import { mapKufarEmailToLead } from '../integrations/kufar.js';
 import { metaMessageToLeadInput, parseMetaMessageEvent } from '../integrations/meta-messaging.js';
 import type { LeadService } from '../services/lead-service.js';
 import type { TelegramPublicSessionService } from '../services/telegram-public-session-service.js';
 import type { InstagramMessageService } from '../services/instagram-message-service.js';
+import type { TelegramIntegration } from '../integrations/telegram/index.js';
 
 interface InboxOptions {
   pollIntervalMs: number;
@@ -16,6 +18,14 @@ interface InboxOptions {
   maxAttempts: number;
   processingTimeoutMs: number;
 }
+
+type InboxHandlers = {
+  telegramPublic: TelegramPublicSessionService;
+} | {
+  telegramStaff: TelegramIntegration;
+} | {
+  instagramMessages: InstagramMessageService;
+};
 
 export class InboxProcessor {
   private timer: NodeJS.Timeout | undefined;
@@ -26,8 +36,7 @@ export class InboxProcessor {
     private readonly leadService: LeadService,
     private readonly logger: FastifyBaseLogger,
     private readonly options: InboxOptions,
-    private readonly telegramPublic: TelegramPublicSessionService | null = null,
-    private readonly instagramMessages: InstagramMessageService | null = null,
+    private readonly handlers: InboxHandlers,
   ) {}
 
   start() {
@@ -42,13 +51,30 @@ export class InboxProcessor {
     this.timer = undefined;
   }
 
+  private get scope() {
+    if ('telegramPublic' in this.handlers) return eq(integrationInbox.source, 'telegram_public');
+    if ('telegramStaff' in this.handlers) return eq(integrationInbox.source, 'telegram_staff');
+    return notInArray(integrationInbox.source, ['telegram_public', 'telegram_staff']);
+  }
+
   async processOnce() {
     if (this.running) return 0;
     this.running = true;
     try {
       await this.releaseStale();
+      if ('telegramPublic' in this.handlers) {
+        await this.db.update(telegramPublicSessions).set({ stage: 'expired', payload: {} })
+          .where(and(lte(telegramPublicSessions.expiresAt, sql`now()`), sql`${telegramPublicSessions.stage} <> 'expired'`));
+      }
       const candidates = await this.db.select().from(integrationInbox)
-        .where(and(inArray(integrationInbox.status, ['pending', 'retry']), lte(integrationInbox.nextAttemptAt, sql`now()`)))
+        .where(and(this.scope, inArray(integrationInbox.status, ['pending', 'retry']), lte(integrationInbox.nextAttemptAt, sql`now()`),
+          'telegramPublic' in this.handlers ? sql`not exists (
+              select 1 from integration_inbox earlier
+              where earlier.source = 'telegram_public'
+                and earlier.status in ('pending', 'retry', 'processing')
+                and earlier.payload #>> '{message,chat,id}' = ${integrationInbox.payload} #>> '{message,chat,id}'
+                and (earlier.created_at, earlier.id) < (${integrationInbox.createdAt}, ${integrationInbox.id})
+          )` : undefined))
         .orderBy(asc(integrationInbox.createdAt)).limit(this.options.batchSize);
       let processed = 0;
       for (const candidate of candidates) {
@@ -71,7 +97,7 @@ export class InboxProcessor {
     const staleBefore = new Date(Date.now() - this.options.processingTimeoutMs);
     const released = await this.db.update(integrationInbox)
       .set({ status: 'retry', nextAttemptAt: new Date(), updatedAt: new Date() })
-      .where(and(eq(integrationInbox.status, 'processing'), lte(integrationInbox.updatedAt, staleBefore)))
+      .where(and(this.scope, eq(integrationInbox.status, 'processing'), lte(integrationInbox.updatedAt, staleBefore)))
       .returning({ id: integrationInbox.id });
     if (released.length) this.logger.warn({ count: released.length }, 'Stale inbox events released.');
   }
@@ -91,27 +117,33 @@ export class InboxProcessor {
       } else if (event.source === 'meta' && event.eventType === 'message.received') {
         const message = parseMetaMessageEvent(event.payload);
         if (!message) throw new PermanentInboxError('Invalid Meta message event.');
-        if (message.platform === 'instagram' && this.instagramMessages) {
-          await this.instagramMessages.accept(message, event.createdAt);
+        if (message.platform === 'instagram' && 'instagramMessages' in this.handlers) {
+          await this.handlers.instagramMessages.accept(message, event.createdAt);
         } else {
           await this.leadService.createExternalLead(metaMessageToLeadInput(message));
         }
-      } else if (event.source === 'telegram_public' && event.eventType === 'update.received' && this.telegramPublic) {
-        await this.telegramPublic.handleUpdate(event.payload as TelegramPublicUpdate);
+      } else if (event.source === 'telegram_public' && event.eventType === 'update.received' && 'telegramPublic' in this.handlers) {
+        await this.handlers.telegramPublic.handleUpdate(event.payload as TelegramPublicUpdate, event.createdAt);
+      } else if (event.source === 'telegram_staff' && event.eventType === 'update.received' && 'telegramStaff' in this.handlers) {
+        const updateId = event.payload.update_id;
+        if (typeof updateId !== 'number') throw new PermanentInboxError('Invalid Telegram staff update.');
+        await this.handlers.telegramStaff.handleUpdate({ ...event.payload, update_id: updateId });
       } else {
         throw new PermanentInboxError('Unsupported inbox event.');
       }
       await this.db.update(integrationInbox).set({
         status: 'done', attemptCount: event.attemptCount + 1, lastError: null,
         processedAt: new Date(), updatedAt: new Date(),
+        ...(['telegram_public', 'telegram_staff'].includes(event.source) ? { payload: { update_id: event.externalEventId } } : {}),
       }).where(eq(integrationInbox.id, event.id));
     } catch (error) {
       const attempts = event.attemptCount + 1;
       const dead = error instanceof PermanentInboxError || attempts >= this.options.maxAttempts;
       const message = safeError(error);
+      const retryAfter = error instanceof GrammyError ? (error.parameters.retry_after ?? 0) * 1_000 : 0;
       await this.db.update(integrationInbox).set({
         status: dead ? 'dead' : 'retry', attemptCount: attempts,
-        nextAttemptAt: new Date(Date.now() + retryDelayMs(attempts)),
+        nextAttemptAt: new Date(Date.now() + Math.max(retryDelayMs(attempts), retryAfter)),
         lastError: message, updatedAt: new Date(),
       }).where(eq(integrationInbox.id, event.id));
       this.logger.warn({ inboxId: event.id, source: event.source, attempts, dead, error: message }, 'Inbox processing failed.');

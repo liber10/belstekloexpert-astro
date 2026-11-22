@@ -27,7 +27,7 @@ export interface PreparedPhotoUpload {
 }
 
 export interface ObjectStorage {
-  prepareUploads(submissionId: string, files: PhotoUploadDescriptor[]): Promise<PreparedPhotoUpload[]>;
+  prepareUploads(submissionId: string, files: PhotoUploadDescriptor[], date?: Date): Promise<PreparedPhotoUpload[]>;
   createDownloadUrls(references: string[]): Promise<string[]>;
   isReferenceForSubmission(reference: string, submissionId: string): boolean;
 }
@@ -67,13 +67,13 @@ export function createObjectStorage(
   const now = dependencies.now || (() => new Date());
 
   return {
-    async prepareUploads(submissionId, files) {
+    async prepareUploads(submissionId, files, date = now()) {
       validateSubmissionId(submissionId);
       validatePhotoUploadDescriptors(files);
 
       return Promise.all(
         files.map(async (file, index) => {
-          const key = buildPhotoObjectKey(config.prefix, submissionId, file, index, now());
+          const key = buildPhotoObjectKey(config.prefix, submissionId, file, index, date);
           const uploadUrl = await sign(
             client,
             new PutObjectCommand({

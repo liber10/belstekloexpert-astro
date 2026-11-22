@@ -2,12 +2,13 @@ import { randomUUID } from 'node:crypto';
 import { and, count, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 import type { WebLeadBody } from '../contracts/web-lead.js';
 import type { ExternalLeadInput } from '../contracts/external-lead.js';
-import type { LeadHubDatabase } from '../db/client.js';
+import type { LeadHubDatabase, LeadHubTransaction } from '../db/client.js';
 import { integrationOutbox, leadEvents, leads, type Lead } from '../db/schema.js';
 import { hashPayload, IdempotencyConflictError } from '../domain/idempotency.js';
 import { normalizeBelarusPhone } from '../domain/phone.js';
 import type { LeadStatus } from '../domain/status.js';
 import { metaMessageToLeadInput, type MetaMessageEvent } from '../integrations/meta-messaging.js';
+import { enqueuePublicStatusNotice } from './telegram-public-notifications.js';
 
 export class LeadValidationError extends Error {
   constructor(message: string) {
@@ -22,6 +23,8 @@ export class LeadNotFoundError extends Error {
     this.name = 'LeadNotFoundError';
   }
 }
+
+export class LeadAccessError extends Error {}
 
 export interface CreateLeadResult {
   lead: Lead;
@@ -40,6 +43,7 @@ interface ChangeStatusOptions {
   source: string;
   externalEventId?: string;
   actorId?: string;
+  requiredAssignee?: string;
 }
 type PhotoReferenceValidator = (reference: string, submissionId: string) => boolean;
 
@@ -100,7 +104,7 @@ export class LeadService {
     );
   }
 
-  async createExternalLead(input: ExternalLeadInput): Promise<CreateLeadResult> {
+  async createExternalLead(input: ExternalLeadInput, transaction?: LeadHubTransaction): Promise<CreateLeadResult> {
     const externalLeadId = cleanText(input.externalLeadId);
     const externalEventId = cleanText(input.externalEventId);
     if (!externalLeadId || !externalEventId) {
@@ -125,7 +129,7 @@ export class LeadService {
       externalLeadId,
       idempotencyKey: `${input.source}:${externalLeadId}`,
       ...(sourceDetail ? { sourceDetail } : {}),
-    });
+    }, transaction ?? this.db);
   }
 
   async claimLegacyTelegramDelivery(leadId: string) {
@@ -189,25 +193,25 @@ export class LeadService {
   }
 
   async changeStatus(leadId: string, status: LeadStatus, options: ChangeStatusOptions) {
-    if (options.externalEventId) {
-      const [existingEvent] = await this.db
-        .select({ leadId: leadEvents.leadId })
-        .from(leadEvents)
-        .where(
-          and(
-            eq(leadEvents.source, options.source),
-            eq(leadEvents.externalEventId, options.externalEventId),
-          ),
-        )
-        .limit(1);
-
-      if (existingEvent) return this.getLead(existingEvent.leadId);
-    }
-
     return this.db.transaction(async (transaction) => {
-      const [current] = await transaction.select().from(leads).where(eq(leads.id, leadId)).limit(1);
+      const [current] = await transaction.select().from(leads).where(eq(leads.id, leadId)).for('update');
       if (!current) throw new LeadNotFoundError();
-      if (current.status === status) return current;
+      if (options.requiredAssignee && current.assignedTo !== options.requiredAssignee) throw new LeadAccessError();
+      if (options.externalEventId) {
+        const [existingEvent] = await transaction.select({ id: leadEvents.id }).from(leadEvents)
+          .where(and(eq(leadEvents.source, options.source), eq(leadEvents.externalEventId, options.externalEventId))).limit(1);
+        if (existingEvent) return current;
+      }
+      if (current.paidAt && status !== 'won') throw new LeadValidationError('Оплата уже зафиксирована.');
+      if (current.status === status) {
+        if (options.externalEventId) {
+          await transaction.insert(leadEvents).values({
+            leadId, eventType: 'status_unchanged', source: options.source, externalEventId: options.externalEventId,
+            payload: { status, actorId: options.actorId },
+          });
+        }
+        return current;
+      }
 
       const now = new Date();
       const statusTimes = getStatusTimestamps(status, current, now);
@@ -243,6 +247,7 @@ export class LeadService {
         })
         .onConflictDoNothing({ target: integrationOutbox.idempotencyKey });
 
+      await enqueuePublicStatusNotice(transaction, updated, status, eventId);
       return updated;
     });
   }
@@ -297,14 +302,15 @@ export class LeadService {
   private async createNormalizedLead(
     normalized: ReturnType<typeof normalizeBody> | ReturnType<typeof normalizeExternalBody>,
     options: CreateLeadOptions,
+    db: LeadHubDatabase | LeadHubTransaction = this.db,
   ): Promise<CreateLeadResult> {
     const requestHash = hashPayload({ source: options.source, ...normalized });
 
-    const duplicate = await this.findDuplicate(options, requestHash);
+    const duplicate = await this.findDuplicate(options, requestHash, db);
     if (duplicate) return duplicate;
 
     try {
-      return await this.db.transaction(async (transaction) => {
+      return await db.transaction(async (transaction) => {
         const id = randomUUID();
         const publicId = createPublicId(id);
         const [lead] = await transaction
@@ -364,14 +370,14 @@ export class LeadService {
       });
     } catch (error) {
       if (!isUniqueViolation(error)) throw error;
-      const racedDuplicate = await this.findDuplicate(options, requestHash);
+      const racedDuplicate = await this.findDuplicate(options, requestHash, db);
       if (racedDuplicate) return racedDuplicate;
       throw error;
     }
   }
 
-  private async findDuplicate(options: CreateLeadOptions, requestHash: string) {
-    const [byIdempotency] = await this.db
+  private async findDuplicate(options: CreateLeadOptions, requestHash: string, db: LeadHubDatabase | LeadHubTransaction) {
+    const [byIdempotency] = await db
       .select()
       .from(leads)
       .where(eq(leads.idempotencyKey, options.idempotencyKey))
@@ -384,7 +390,7 @@ export class LeadService {
 
     if (!options.externalLeadId) return null;
 
-    const [byExternalId] = await this.db
+    const [byExternalId] = await db
       .select()
       .from(leads)
       .where(
@@ -489,7 +495,7 @@ function normalizeExternalBody(body: ExternalLeadInput) {
     sourceActionUrl,
     sourceMetadata: body.sourceMetadata || {},
     acquisitionCode: cleanText(body.acquisitionCode),
-    photoRefs: [] as string[],
+    photoRefs: normalizePhotoReferences(body.photoRefs),
     utmSource: undefined,
     utmMedium: undefined,
     utmCampaign: undefined,

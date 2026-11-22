@@ -27,6 +27,7 @@ import { registerSubmissionDiagnosticRoutes } from './routes/submission-diagnost
 import { LeadService } from './services/lead-service.js';
 import { InboxService } from './services/inbox-service.js';
 import { TelegramPublicSessionService } from './services/telegram-public-session-service.js';
+import { parseStaffRoster, TelegramStaffService } from './services/telegram-staff-service.js';
 import { InboxProcessor } from './worker/inbox-processor.js';
 import { OutboxProcessor } from './worker/outbox-processor.js';
 import { TelegramPublicOutboxProcessor } from './worker/telegram-public-outbox-processor.js';
@@ -39,6 +40,7 @@ import { InstagramConversationHistory, type InstagramConversationGuard } from '.
 interface BuildRuntimeOptions {
   database?: DatabaseClient;
   telegram?: TelegramIntegration | null;
+  corporateWebhookReady?: () => boolean;
   telegramPublic?: TelegramPublicIntegration | null;
   objectStorage?: ObjectStorage | null;
   startWorker?: boolean;
@@ -106,16 +108,19 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
       }) : null;
   const instagramMessages = new InstagramMessageService(database.db, leadService, config.instagramMessaging, instagramHistory);
   const telegram = options.telegram === undefined
-    ? createConfiguredTelegram(config, leadService, objectStorage)
+    ? createConfiguredTelegram(config, leadService, database.db, objectStorage)
     : options.telegram;
   const telegramPublic = options.telegramPublic === undefined
     ? createConfiguredTelegramPublic(config)
     : options.telegramPublic;
-  const telegramPublicSession = telegramPublic && config.telegramPublic.botUsername && config.telegramPublic.privacyVersion
-    ? new TelegramPublicSessionService(database.db, leadService, {
+  const telegramPublicSession = telegramPublic && config.telegramPublic.privacyVersion
+    && config.telegramPublic.privacyUrl && config.telegramPublic.supportPhone
+    ? new TelegramPublicSessionService(database.db, leadService, telegramPublic, objectStorage, {
         ttlHours: config.telegramPublic.sessionTtlHours,
-        botUsername: config.telegramPublic.botUsername,
         privacyVersion: config.telegramPublic.privacyVersion,
+        privacyUrl: config.telegramPublic.privacyUrl,
+        supportPhone: config.telegramPublic.supportPhone,
+        timeoutMs: Math.min(8_000, config.outbox.deliveryTimeoutMs),
       })
     : null;
 
@@ -124,17 +129,19 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   registerLeadRoutes(app, config, leadService);
   registerUploadRoutes(app, config, objectStorage, leadService);
   registerSubmissionDiagnosticRoutes(app, config, database.db);
-  registerTelegramRoutes(app, config, telegram);
+  registerTelegramRoutes(app, config, telegram, inboxService);
   registerTelegramPublicRoutes(app, config, inboxService);
 
   const outbox = telegram
     ? new OutboxProcessor(database.db, leadService, telegram, app.log, config.outbox)
     : null;
-  const inbox = config.kufar.enabled
-    || config.meta.enabled
-    || config.telegramPublic.enabled
-    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, telegramPublicSession, instagramMessages)
-    : null;
+  const staffTelegram = config.telegram.staffRoster ? telegram : null;
+  const inbox = config.kufar.enabled || config.meta.enabled
+    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, { instagramMessages }) : null;
+  const publicInbox = telegramPublicSession
+    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, { telegramPublic: telegramPublicSession }) : null;
+  const corporateInbox = staffTelegram
+    ? new InboxProcessor(database.db, leadService, app.log, config.inbox, { telegramStaff: staffTelegram }) : null;
   const instagramOutbox = config.instagramMessaging.enabled
     ? new InstagramOutboxProcessor(database.db, options.instagram || new InstagramMessagingAdapter({
         accessToken: config.meta.instagramAccessToken!, accountId: config.instagramMessaging.accountId!,
@@ -148,14 +155,20 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   registerHealthRoutes(app, database.pool, {
     telegramConfigured: config.telegram.enabled,
     telegramWorkerActive: () => outbox?.isActive() ?? false,
+    corporateWebhookReady: options.corporateWebhookReady,
+    corporateInboxConfigured: Boolean(staffTelegram),
     buildRevision: config.buildRevision,
     instagramConfigured: config.instagramMessaging.enabled,
     instagramWorkerActive: () => instagramOutbox?.isActive() ?? false,
+    telegramPublicConfigured: config.telegramPublic.enabled,
+    telegramPublicWorkerActive: () => telegramPublicOutbox?.isActive() ?? false,
   });
 
   if (options.startWorker !== false) {
     outbox?.start();
     inbox?.start();
+    publicInbox?.start();
+    corporateInbox?.start();
     telegramPublicOutbox?.start();
     instagramOutbox?.start();
   }
@@ -183,6 +196,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
   app.addHook('onClose', async () => {
     outbox?.stop();
     inbox?.stop();
+    publicInbox?.stop();
+    corporateInbox?.stop();
     telegramPublicOutbox?.stop();
     await instagramOutbox?.stop();
     if (ownsDatabase) await database.pool.end();
@@ -199,6 +214,8 @@ export async function buildRuntime(config: AppConfig, options: BuildRuntimeOptio
     telegramPublicSession,
     outbox,
     inbox,
+    publicInbox,
+    corporateInbox,
     telegramPublicOutbox,
     instagramOutbox,
     instagramMessages,
@@ -210,7 +227,7 @@ function createConfiguredTelegramPublic(config: AppConfig) {
   if (!config.telegramPublic.botToken) {
     throw new Error('Public Telegram is enabled but its bot token is missing.');
   }
-  return createTelegramPublicIntegration(config.telegramPublic.botToken);
+  return createTelegramPublicIntegration(config.telegramPublic.botToken, Math.min(8_000, config.outbox.deliveryTimeoutMs));
 }
 
 function isValidationError(error: unknown): error is {
@@ -230,6 +247,7 @@ function isValidationError(error: unknown): error is {
 function createConfiguredTelegram(
   config: AppConfig,
   leadService: LeadService,
+  db: DatabaseClient['db'],
   objectStorage: ObjectStorage | null,
 ) {
   if (!config.telegram.enabled) return null;
@@ -241,6 +259,8 @@ function createConfiguredTelegram(
     {
       botToken: config.telegram.botToken,
       chatId: config.telegram.chatId,
+      staffRoster: config.telegram.staffRoster,
+      ...(config.telegram.staffRoster ? { staff: new TelegramStaffService(db, parseStaffRoster(config.telegram.staffRoster)) } : {}),
       ...(objectStorage
         ? { photoUrlResolver: (references: string[]) => objectStorage.createDownloadUrls(references) }
         : {}),

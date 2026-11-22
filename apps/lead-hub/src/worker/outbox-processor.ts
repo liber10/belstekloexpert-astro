@@ -1,5 +1,6 @@
 import { and, asc, eq, inArray, lte, sql } from 'drizzle-orm';
 import type { FastifyBaseLogger } from 'fastify';
+import { GrammyError } from 'grammy';
 import type { LeadHubDatabase } from '../db/client.js';
 import { integrationOutbox, leadEvents, leads, type OutboxJob } from '../db/schema.js';
 import type { TelegramDelivery } from '../integrations/telegram/index.js';
@@ -16,6 +17,7 @@ interface OutboxOptions {
 export class OutboxProcessor {
   private timer: NodeJS.Timeout | undefined;
   private running = false;
+  private nextSlaCheck = 0;
 
   constructor(
     private readonly db: LeadHubDatabase,
@@ -49,6 +51,10 @@ export class OutboxProcessor {
 
     try {
       await this.releaseStaleJobs();
+      if (this.telegram.sendSlaAlert && Date.now() >= this.nextSlaCheck) {
+        await this.enqueueSlaAlerts();
+        this.nextSlaCheck = Date.now() + 60_000;
+      }
       const candidates = await this.db
         .select()
         .from(integrationOutbox)
@@ -76,9 +82,23 @@ export class OutboxProcessor {
   }
 
   private trigger() {
-    void this.processOnce().catch((error: unknown) => {
-      this.logger.error({ err: error }, 'Outbox polling failed.');
+    void this.processOnce().catch(() => {
+      this.logger.error('Outbox polling failed.');
     });
+  }
+
+  private async enqueueSlaAlerts() {
+    await this.db.execute(sql`
+      insert into integration_outbox (lead_id, destination, event_type, payload, idempotency_key)
+      select id, 'telegram', 'lead.sla_breached', '{}'::jsonb, 'telegram:sla:' || id
+      from leads
+      where status = 'new' and first_response_at is null
+        and created_at between now() - interval '1 day' and now() - interval '5 minutes'
+        and not exists (select 1 from integration_outbox job where job.idempotency_key = 'telegram:sla:' || leads.id)
+      order by created_at
+      limit 20
+      on conflict (idempotency_key) do nothing
+    `);
   }
 
   private async releaseStaleJobs() {
@@ -149,8 +169,11 @@ export class OutboxProcessor {
             payload: { correlationId, outboxJobId: job.id, messageId: message.messageId },
           });
         });
-      } else if (job.eventType === 'lead.status_changed') {
+      } else if (job.eventType === 'lead.status_changed' || job.eventType === 'lead.details_changed') {
         await withTimeout(this.telegram.editLeadCard(lead), this.options.deliveryTimeoutMs);
+      } else if (job.eventType === 'lead.sla_breached') {
+        if (!this.telegram.sendSlaAlert) throw new Error('Telegram SLA alerts disabled.');
+        await withTimeout(this.telegram.sendSlaAlert(lead), this.options.deliveryTimeoutMs);
       } else if (job.eventType === 'instagram.escalation') {
         await withTimeout(this.telegram.sendInstagramAlert(lead, job.payload.outcome === 'unknown'), this.options.deliveryTimeoutMs);
         await this.db.insert(leadEvents).values({ leadId: lead.id, source: 'outbox',
@@ -170,8 +193,9 @@ export class OutboxProcessor {
     } catch (error) {
       const attempts = job.attemptCount + 1;
       const dead = attempts >= this.options.maxAttempts;
-      const nextAttemptAt = new Date(Date.now() + retryDelayMs(attempts));
-      const message = safeErrorMessage(error);
+      const retryAfter = error instanceof GrammyError ? (error.parameters.retry_after ?? 0) * 1_000 : 0;
+      const nextAttemptAt = new Date(Date.now() + Math.max(retryDelayMs(attempts), retryAfter));
+      const message = error instanceof GrammyError ? `Telegram API ${error.error_code}` : 'Telegram delivery failed.';
 
       await this.db
         .update(integrationOutbox)
@@ -219,9 +243,4 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T
 
 function retryDelayMs(attempt: number) {
   return Math.min(60 * 60 * 1_000, 2 ** Math.min(attempt, 10) * 1_000);
-}
-
-function safeErrorMessage(error: unknown) {
-  const message = error instanceof Error ? error.message : 'Unknown integration error.';
-  return message.replace(/bot\d+:[A-Za-z0-9_-]+/g, 'bot[redacted]').slice(0, 1_000);
 }

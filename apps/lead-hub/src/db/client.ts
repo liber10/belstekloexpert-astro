@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 import * as schema from './schema.js';
 
 export type LeadHubDatabase = NodePgDatabase<typeof schema>;
+export type LeadHubTransaction = Parameters<Parameters<LeadHubDatabase['transaction']>[0]>[0];
 
 export interface DatabaseClient {
   db: LeadHubDatabase;

@@ -15,7 +15,20 @@ export function registerTelegramPublicRoutes(app: FastifyInstance, config: AppCo
     if (!matchesSecret(request.headers['x-telegram-bot-api-secret-token'], config.telegramPublic.webhookSecret)) {
       return reply.code(401).send({ ok: false, error: 'invalid_webhook_secret' });
     }
-    const result = await inbox.accept('telegram_public', 'update.received', String(request.body.update_id), request.body);
+    const { update_id, message } = request.body;
+    if (!message?.from || message.from.is_bot || message.chat.type !== 'private' || message.chat.id !== message.from.id) {
+      return reply.code(200).send({ ok: true, ignored: true });
+    }
+    const result = await inbox.accept('telegram_public', 'update.received', String(update_id), {
+      update_id,
+      message: {
+        chat: { id: message.chat.id, type: message.chat.type },
+        from: { id: message.from.id },
+        text: message.text,
+        contact: message.contact && { user_id: message.contact.user_id, phone_number: message.contact.phone_number },
+        photo: message.photo?.map(({ file_id, file_size }) => ({ file_id, file_size })),
+      },
+    });
     return reply.code(200).send({ ok: true, accepted: true, deduplicated: result.deduplicated });
   });
 }

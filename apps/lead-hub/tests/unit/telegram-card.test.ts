@@ -58,6 +58,8 @@ const lead: Lead = {
   wonAt: null,
   lostAt: null,
   quoteAmount: null,
+  finalAmount: null,
+  paidAt: null,
   revenue: null,
   cost: null,
   grossProfit: null,

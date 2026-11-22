@@ -17,13 +17,16 @@ const buttonStatuses: Array<[LeadStatus, string]> = [
   ['duplicate', 'Дубль'],
 ];
 
-export function buildLeadCard(lead: Lead) {
-  if (lead.source === 'kufar') return guardTelegramText(buildKufarLeadCard(lead));
-  if (lead.source === 'meta') return guardTelegramText(buildMetaLeadCard(lead));
-  if (lead.source === 'telegram' && lead.sourceDetail === 'public_bot') {
-    return guardTelegramText(buildTelegramPublicLeadCard(lead));
-  }
-  return guardTelegramText(buildDefaultLeadCard(lead));
+export function buildLeadCard(lead: Lead, staffEnabled = false) {
+  const body = lead.source === 'kufar' ? buildKufarLeadCard(lead)
+    : lead.source === 'meta' ? buildMetaLeadCard(lead)
+    : lead.source === 'telegram' && lead.sourceDetail === 'public_bot' ? buildTelegramPublicLeadCard(lead)
+    : buildDefaultLeadCard(lead);
+  return guardTelegramText([
+    staffEnabled && lead.source === 'kufar' && `Заявка #${lead.publicId}`,
+    body, lead.assignedTo && 'Ответственный назначен',
+    lead.finalAmount && `Итого: ${lead.finalAmount} BYN`, lead.paidAt && 'Оплачено',
+  ].filter(Boolean).join('\n'));
 }
 
 export function guardTelegramText(value: string) {
@@ -75,19 +78,27 @@ function buildMetaLeadCard(lead: Lead) {
 
 function buildTelegramPublicLeadCard(lead: Lead) {
   return [
-    '🔷 Новая заявка из Telegram',
+    `Заявка из Telegram #${lead.publicId}`,
+    `Статус: ${statusLabels[lead.status as LeadStatus] ?? lead.status}`,
     lead.name && `Клиент: ${lead.name}`,
     lead.phoneNormalized && `Телефон: ${lead.phoneNormalized}`,
     lead.serviceType && `Услуга: ${lead.serviceType}`,
+    lead.carMake && `Авто: ${[lead.carMake, lead.carModel, lead.carYear].filter(Boolean).join(' ')}`,
+    lead.damageType && `Стекло: ${lead.damageType}`,
+    lead.photoRefs.length > 0 && `Фото: ${lead.photoRefs.length}`,
     lead.message && `Комментарий: ${lead.message}`,
     lead.acquisitionCode && `Кампания: ${lead.acquisitionCode}`,
   ].filter(Boolean).join('\n');
 }
 
-export function buildLeadKeyboard(lead: Lead) {
+export function buildLeadKeyboard(lead: Lead, staffEnabled = false) {
   const keyboard = new InlineKeyboard();
   const action = sourceAction(lead);
   if (action) keyboard.url(action.label, action.url).row();
+  if (staffEnabled && !lead.assignedTo) keyboard.text('Взять заявку', `take:${lead.id}`).row();
+  if (staffEnabled && lead.assignedTo && /^\d{1,16}$/.test(lead.assignedTo)) {
+    keyboard.url('Ответственный', `tg://user?id=${lead.assignedTo}`).row();
+  }
   buttonStatuses.forEach(([status, label], index) => {
     keyboard.text(label, `status:${status}:${lead.id}`);
     if (index % 2 === 1) keyboard.row();
